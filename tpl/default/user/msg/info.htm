@@ -1,0 +1,65 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/msg/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		            	<div class="toolbar">
+	                		<div class="actions">
+		                		<input type="button" value="返回列表" onclick="history.go(-1);">
+		                	</div>
+							<div class="actions">
+	                			<input type="button" value="删除" onclick="return kdel(this);">
+	                		</div>
+	                	</div>
+		                <div class="box_detail">
+							
+		                    <h2>{$date_arr['title']}</h2>
+		                	
+							<p>发件人：{if $data_arr['uid']}{$data_arr['username']}{else}系统消息{/if}</p>
+							<p>时间：{date('Y-m-d H:i:s',$date_arr['on_time'])}</p>
+							<div class="form_line"></div>
+								
+							<article >
+									<!--{eval echo htmlspecialchars_decode($date_arr['content']);}-->	
+							</article >
+
+							<div class="form_line"></div>
+
+							<div class="toolbar">
+		                		<div class="actions">
+		                			<input type="button" value="返回列表" onclick="history.go(-1);">
+		                		</div>
+								<div class="actions">
+		                			<input type="button" value="删除"  onclick="return del(this,'$del_url');">
+		                		</div>
+		                	</div>
+
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+   	
+<script type="text/javascript">
+   
+	
+function del(o,url){
+	d = art.dialog;
+	var c = "确认删除？";
+	d.confirm(c, function(){
+		location.href=url;				
+	}).follow(o);
+	return false;
+}
+	    //function del(){
+		//	location.href='{USER_URL}/msg_{$_GET['from']}/del?&ac=view&action={$_GET['action']}&msg_id='+{$date_arr['msg_id']}+'&status='+{$date_arr['msg_status']}+'&is_sys='+{$date_arr['uid']};
+	    //}
+
+
+</script>
+<!--{include user/footer}-->

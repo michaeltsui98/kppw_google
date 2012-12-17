@@ -1,0 +1,30 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['db_mange']}</h1>
+          <div class="tool">         
+			<a href="{BASE_URL}/index.php/admin/tool_dbbackup" >{$_lang['backup']}</a>
+            <a href="{BASE_URL}/index.php/admin/tool_dbrestore" >{$_lang['restore']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim" >{$_lang['optim']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim/repair" {$_K['action']=='repair'} class="here" {/if}>{$_lang['repair']}</a>
+		</div>
+</div>
+ 
+<div class="box tip clearfix p_relative">
+   <div class="detail pad10">
+      <ul>
+         <li>{$_lang['repair_tip1']}</li>
+         <li>{$_lang['repair_tip2']}</li>
+      </ul>
+   </div>
+</div>
+<div class="box post">
+  	 <div class="detail t_c">
+		<form method="post" action="{BASE_URL}/index.php/admin/tool_dboptim/dbrepair" id="frm_list">
+     		<button class="primary positive pill button" type="submit">
+      			<span class="check icon"></span>{$_lang['start']}{$_lang['repair']}
+			</button> 
+   		</form>
+	</div>	
+</div>
+ 
+<!--{include control/admin/tpl/admin_footer}-->

@@ -1,0 +1,37 @@
+<!--{include control/admin/tpl/admin_header}-->
+<link href="../../static/css/base.css" rel="stylesheet" type="text/css" />
+<div class="page_title">
+    	<h1>{$_lang['global_config']}</h1>
+         <div class="tool">         
+            <a href="{BASE_URL}/index.php/admin/config_basic" > {$_lang['website_config']}</a>
+            <a href="{BASE_URL}/index.php/admin/config_basic/sys">{$_lang['basic_config']}</a>
+			<a href="{BASE_URL}/index.php/admin/config_basic/seo"  class="here">{$_lang['seo_config']}</a>
+			<a href="{BASE_URL}/index.php/admin/config_basic/mail">{$_lang['mail_config']}</a>
+    	</div>
+</div>
+
+<div class="box post">
+        
+         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                     
+			{loop $rule_arr $k $v}	
+            <tr>
+                <th scope="row">
+                    {$k}
+                </th>
+                <td><a href="javascript:setCopy($('#pre_$k').text(),'copy_success','admin');">copy</a>
+                    <pre id="pre_$k">{$v}</pre>
+                </td>
+            </tr>
+            {/loop}
+              
+			<th scope="row">&nbsp;</th>
+			<td>
+				<div class="clearfix padt10">
+                                <button class="pill button" type="button" onclick="to_back();" value="{$_lang['return']}"><span class="uparrow icon"></span>{$_lang['return']}</button>
+                </div>
+			</td>
+</table>
+ </div>
+  
+<!--{include control/admin/tpl/admin_footer}-->

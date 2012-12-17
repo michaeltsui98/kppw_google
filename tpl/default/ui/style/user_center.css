@@ -1,0 +1,66 @@
+@charset "utf-8";
+/* CSS Document */
+h3{ color:#666;}
+h3 em{ font-style:normal; font-weight:normal; font-size:12px;}
+/*个人经历*/
+.exp_info span{ color:#999; display:block}
+.exp_info p{ clear:both; color:#333; font-size:14px; margin-bottom:10px;}
+
+
+/*威客技能*/
+.upd_infos{ border:1px solid #ccc; min-height:200px;_height: expression( this.scrollHeight < 200 ? "200px" : "auto" );}
+.upd_infos ul li{ line-height:35px; border-bottom:1px solid #dcdcdc; background:#FAFAFA;position:relative;}
+.upd_infos ul li a{ color:#323232;}
+.upd_infos ul li span{ white-space:nowrap; overflow:hidden;}
+.uplist ul{ border-bottom:1px solid #E5E7E6;}
+.uplist ul li{  border-top:1px solid #E5E7E6; line-height:35px; position:relative;}
+.tags_add{ min-height:120px;}
+.tags_add a{ display:inline-block; padding:3px 5px; background:#6798D0; color:#fff; margin-right:5px; float:left;}
+
+
+/*金融账户*/
+.map_img{ background-image:url(../images/world-map.gif); background-repeat:no-repeat; width:355px; height:200px; text-indent:-999em;}
+
+.map_item{}
+	.map_item li{ display:inline;}
+	.map_item li a{ display:block; font-size:14px; line-height:30px; color:#666; padding-left:40px;}
+	.map_item li a:hover{ background:#f4f4f4;}
+		.map_item li a:active,.map_item li a.select{ background:#30549e; color:#fff;}
+		
+.map_list{}
+.map_list dl{}
+	.map_list dt{ font-weight:bold; padding:5px 0;}
+		.map_list dd{ }
+			.map_list dd a{ display:block; font-size:12px; line-height:25px; color:#666; padding-left:20px;}
+			.map_list dd a:hover{background:#f4f4f4;}
+				.map_list dd a:active,.map_list dd a.select{ background:#30549e; color:#fff;}
+
+.box.basic_style .selecter a:hover .icon32.user{background-position:-32px -7616px;}
+.box.basic_style .selecter a:hover .icon32.users{background-position:-32px -7648px;}
+
+
+/*用户头像*/
+.img_cut{ background:#fefefe; height:280px; }
+
+.shooting{ height:300px; background:#f0f0f0 url(../images/kppw_2.0_user_shooting.png) no-repeat center center;}
+
+.choose_tx li { display:inline; float:left; margin:5px;}
+
+
+/*信誉等级*/
+.credit_list{ line-height:50px;}
+.credit_list p{ margin-bottom:0; font-size:14px}
+.credit_list .comment{ color:#999}
+.credit_list .comment a{ font-weight:bold}
+
+
+.box.basic_style  .groupinfo .loading_bar{ border-radius:5px}
+.box.basic_style  .groupinfo .progress_bar{ background-color:#690;border-radius:5px}
+
+.groupinfo p{ margin-bottom:0; clear:both; line-height:30px; padding:10px 0; overflow:hidden}
+.groupinfo p b{ float:left}
+.groupinfo p a{ float:right; font-size:2.5em; color:#690; font-weight:bold}
+.groupinfo p a img{ vertical-align:top}
+.groupinfo p a.pay{ color:#f60}
+.groupinfo p a.pay sub{ color:#f90; bottom:1em; font-size:14px;}
+.groupinfo p b.graid_b{ margin-top:15px}

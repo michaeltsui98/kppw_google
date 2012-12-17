@@ -1,0 +1,47 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/account/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 class="title">账号同步绑定</h2>
+		                    </div>
+		                </header>
+		               
+		                <div class="box_detail">
+
+		                	
+								
+		                		<div class="form_row bind float_row">
+		                			<label class="form_label">第三方账号：</label>
+		                	
+		                				<ul class="detail">
+		                					
+											{loop $api_open $k $v}
+												{if $_K[$k.'_app_id']}
+												<li class="{$k}">
+												<span class="icon"></span>
+												<span class="connect-info">已绑定到$api_name[$k]['name']</span>
+													{if $bind_info[$k]}
+													<span class="uname">({$bind_info[$k]['account']})</span>
+													<a href="{USER_URL}/account_bind/unbind?type=$k" onclick="return kconfirm(this,null)">取消绑定</a>
+													{else}
+													<a href="{USER_URL}/account_bind/bind?type=$k" >绑定</a>
+													{/if}
+												</li>
+												{/if}
+											{/loop}
+		                		</div>
+		                		
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+<!--{include user/footer}-->

@@ -1,0 +1,200 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/account/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 class="title">详细资料</h2>
+		                    </div>
+		                </header>
+		                <nav class="box_nav">
+								<ul id="test_ul" class="clearfix">
+									<li class="selected"><a href="{USER_URL}/account_detail">工作经历</a></li>
+									<li><a href="{USER_URL}/account_detail/skill">技能证书</a></li>
+									<li><a href="{USER_URL}/account_detail/skill_tag">技能标签</a></li>
+								</ul>
+		                </nav>
+						<form action="{USER_URL}/account_detail/work_save" name="certs" method="post" onsubmit="return checkForm(this)" >
+						<input type="hidden" name="formhash" value="{FORMHASH}">
+		                <div class="box_detail">
+		                	<div id="con">
+							{if $works}
+								{loop $works $k $v}
+			                	<div class="form_row">
+			                		    <input type="hidden" name="wid[]" value="{$v['wid']}">
+			                			<label class="form_label">公司名称：</label>
+			                			<input type="text" name="inc_name[]" value="{$v['inc_name']}">
+			                	</div>
+			                	<div class="form_row">
+			                			<label class="form_label">公司行业：</label>
+			                			<select name="inc_indus[]" >
+			                				{loop $inc_indus $v1}
+											 <option value="$v1" {if $v['inc_indus']==$v1} checked{/if}>$v1</option>
+											{/loop}
+			                			</select>
+			                	</div>
+			                	<div class="form_row">
+			                			<label class="form_label">任职职位：</label>
+			                			<select name="inc_job[]" >
+			                				{loop $inc_job $v1}
+											 <option value="$v1" {if $v['inc_job']==$v1} checked{/if}>$v1</option>
+											{/loop}
+			                			</select>
+			                	</div>
+			                	<div class="form_row">
+			                			<label class="form_label">工作时间：</label>
+			                			<select name="inc_time1[]" >
+			                				<!--{eval $y = explode(',', $v['inc_time'])}-->
+			                				{loop $year $v1}
+											    <option value="$v1" {if $y[0]==$v1}selected{/if}>$v1</option>
+											{/loop}
+			                			</select>
+			                			-
+			                			<select name="inc_time2[]">
+			                				{loop $year $v1}
+											    <option value="$v1" {if $y[1]==$v1}selected{/if}>$v1</option>
+											{/loop}
+			                			</select>
+										<div class="fl_r">
+										<a href="javascript:void(0)" onclick="add(this)">添加</a>
+										<a href="{USER_URL}/account_detail/work_del?wid={$v['wid']}" onclick="return kdel(this,'',remove)">删除</a>
+										</div>
+			                	</div>
+	
+			                	<div class="form_line"></div>
+	 							{/loop}
+							{else}
+							<div class="form_row">
+		                		    <input type="hidden" name="wid[]" >
+		                			<label class="form_label">公司名称：</label>
+		                			<input type="text" name="inc_name[]" >
+		                	</div>
+		                	<div class="form_row">
+		                			<label class="form_label">公司行业：</label>
+		                			<select name="inc_indus[]" >
+		                				{loop $inc_indus $v1}
+										 <option value="$v1">$v1</option>
+										{/loop}
+		                			</select>
+		                	</div>
+		                	<div class="form_row">
+		                			<label class="form_label">任职职位：</label>
+		                			<select name="inc_job[]" >
+		                				{loop $inc_job $v1}
+										 <option value="$v1" >$v1</option>
+										{/loop}
+		                			</select>
+		                	</div>
+		                	<div class="form_row">
+		                			<label class="form_label">工作时间：</label>
+		                			<select name="inc_time1[]" >
+		                				{loop $year $v1}
+										    <option value="$v1" {if $y1==$v1}selected{/if}>$v1</option>
+										{/loop}
+		                			</select>
+		                			-
+		                			<select name="inc_time2[]">
+		                				{loop $year $v1}
+										    <option value="$v1" {if $y2==$v1}selected{/if}>$v1</option>
+										{/loop}
+		                			</select>
+									<div class="fl_r">
+									<a href="javascript:void(0)" onclick="add(this)">添加</a>
+									<a href="javascript:void(0)" onclick="remove(this,0)">删除</a>
+									</div>
+		                	</div>
+
+		                	<div class="form_line"></div>
+							
+							{/if}
+							</div>
+							<div>
+		                	<div class="form_footer">
+		                		<div class="fl_l">
+		                			<input type="submit" value="提交">
+		                		</div>
+
+		                	</div>
+
+		                    </div>
+						</form>
+						
+		            
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+<script>
+	function add(o){
+	
+		var html = '<div class="form_row">';
+		    html += '      		    <input type="hidden" name="wid[]" >';
+		    html += '            			<label class="form_label">公司名称：</label>';
+		    html += '            			<input type="text" name="inc_name[]" >';
+		    html += '            	</div>';
+		    html += '           	<div class="form_row">';
+		    html += '           			<label class="form_label">公司行业：</label>';
+		    html += '            			<select name="inc_indus[]" >';
+		    html += '            				{loop $inc_indus $v1}';
+			html += '							 <option value="$v1">$v1</option>';
+			html += '							{/loop}';
+		    html += '            			</select>';
+		    html += '            	</div>';
+		    html += '            	<div class="form_row">';
+		    html += '            			<label class="form_label">任职职位：</label>';
+		    html += '            			<select name="inc_job[]" >';
+		    html += '            				{loop $inc_job $v1}';
+			html += '							 <option value="$v1" >$v1</option>';
+			html += '							{/loop}';
+		    html += '            			</select>';
+		    html += '            	</div>';
+		    html += '            	<div class="form_row">';
+		    html += '            			<label class="form_label">工作时间：</label>';
+		    html += '            			<select name="inc_time1[]" >';
+		    html += get_year();
+
+		    html += '            			</select>';
+		    html += '            			<select name="inc_time2[]">';
+
+			html +=    get_year();
+
+		    html += '            			</select>';
+			html += '						<div class="fl_r">';
+			html += '						<a href="javascript:void(0)" onclick="add(this)">添加</a>';
+			html += '						<a href="javascript:void(0)" onclick="remove(this,0)">删除</a>';
+			html += '						</div>';
+		    html += '            	</div>';
+		    html += '            	<div class="form_line"></div>';
+$("#con").append(html);
+}
+function remove(o,i){
+	var p = $(o).parent().parent();
+	var p1 = $(p).prev();
+	var p2 = $(p1).prev();
+	var p3 = $(p2).prev();
+	var n1 = $(p).next();
+	p.remove();
+	p1.remove();
+	p2.remove();
+	p3.remove();
+	n1.remove();
+}
+function get_year(){
+	var o = '';
+	var d = new Date();
+	var n = d.getFullYear();
+	for(i=0;i<=20;i++){
+		o += '<option value="'+(n-i)+'">'+(n-i)+'</option>'
+	}
+	return o;
+}
+	
+	
+</script>	
+	
+<!--{include user/footer}-->

@@ -1,0 +1,103 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    <h1>{$_lang['financial_model']}</h1>
+    <div class="tool">
+		<a href="{BASE_URL}/index.php/admin/finance_all" class="here">{$_lang['flow_record']}</a>
+    </div>
+</div>
+
+<form method="get" action="{BASE_URL}/index.php/admin/finance_all" id="frm_art_search">
+<div class="box list"  id="ajax_dom">
+	<div class="box search p_relative" id="detail">
+   		<table class="detail"  cellspacing="0" cellpadding="0">    		
+				<tbody>
+					<tr>
+		                <th>查询字段
+		                   <select name="slt_fields">
+		                   	<option></option>
+		                   	{loop $query_fields $k $v}
+		                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+							{/loop} 
+		                   </select>
+						 <select name="slt_cond">
+						 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+							<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+							<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+							<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+						 </select>
+		                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+						 <select name="page_size">
+                			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+                			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+                			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+            			</select>
+						 <input type="submit" value="{$_lang['search']}">
+						 </td>
+	                </tr>  			
+           		</tbody>
+			</table>
+    
+</div>
+
+     <table class="detail"   border="0" cellspacing="0" cellpadding="0"  >
+                <tr>
+                    <th width="80"><a href="javascript:;" onclick="submitSort('{$uri}','fina_id',{$ord_tag})">ID{if $_GET['f']=='fina_id'}{$ord_char}{/if}</a></th>
+                    <th class="motif" width="150">{$_lang['financial_type']}</th>                   
+                    <th width="150">{$_lang['financial_uses']}</th>
+                    <th width="150"><a href="javascript:;" onclick="submitSort('{$uri}','username',{$ord_tag})">用户名{if $_GET['f']=='username'}{$ord_char}{/if}</a></th>
+                    <th class="motif" width="150">{$_lang['money']}</th>                   
+                    <th width="150">{$_lang['user_balance']}</th>        
+                    <th class="motif" width="150">{$_lang['cash_coupon']}</th>                   
+                    <th width="150">{$_lang['user_remaining_coupons']}</th>
+                    <th width="150">{$_lang['clearing_time']}</th>                                        
+                    <th width="60">{$_lang['delete']}</th>
+                </tr>
+                {loop $fina_arr $key $value}
+                <tr class="item">
+                    <td>
+                        <input type="checkbox" name="ckb[]" class="checkbox" value="{$value['fina_id']}"> {$value['fina_id']}
+                    </td>
+                    <td>
+                     {if $value['fina_type']=="out"}{$_lang['outcome']}{else}{$_lang['income']}{/if}                      
+                    </td>
+                     <td>
+                        {$fina_action_arr[$value['fina_action']]}
+                    </td>
+                                       
+                    <td>{$value['username']}</td>
+                    <td>
+                                {c:$value['fina_cash']}
+                    </td>
+                    <td>
+                           {c:$value['user_balance']}                    
+                    </td>
+                    <td>
+                             {$value['fina_credit']}
+                    </td>
+                    <td>
+                             {$value['user_credit']}
+                    </td>
+                                                            
+                    <td><!--{eval echo date('Y-m-d',$value['fina_time'])}--></td>
+                    <td>
+                     <a href="{$del_uri}?fina_id={$value['fina_id']}" onclick="return cdel(this);" class="button"> 
+					   <span class="trash icon"></span>{$_lang['delete']}</a>
+                    </td>
+                </tr>
+				{/loop}
+			<tfoot>	
+				<tr >
+					    <td colspan="9">
+					    <div class="page" >{$pages['page']}</div>
+					    <input type="checkbox" onclick="checkall(event);" id="checkbox" name="checkbox"/>
+		            	<label for="checkbox"> {$_lang['select_all']}</label>
+						<button type="submit" name="sbt_action" onclick="return batch_act(this)" value="{$_lang['mulit_delete']}" class="pill negative" >
+							<span class="trash icon"></span>{$_lang['mulit_delete']}
+						</button>
+		            	</td>
+		        </tr>
+		 </tfoot>
+    </table>
+</div>		
+</form>
+    <!--{include control/admin/tpl/admin_footer}-->

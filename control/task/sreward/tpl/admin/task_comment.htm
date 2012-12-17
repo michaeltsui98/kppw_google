@@ -1,0 +1,39 @@
+<!--{include control/admin/tpl/admin_header}-->
+ <div class="page_title">
+    	<h1>{$model_info['model_name']}{$_lang['manage']}</h1>
+        <div class="tool">
+        	<a href="{$base_uri}">{$_lang['task_list']}</a>
+			<a href="{$base_uri}/add?task_id={$task_id}" >{$_lang['edit']}</a>
+			<a href="{$base_uri}/work?task_id={$task_id}"  >{$_lang['work']}</a>
+			<a href="{$base_uri}/comment?task_id={$task_id}" class="here">{$_lang['comment']}</a>
+			<a href="{$base_uri}/mark?task_id={$task_id}" >{$_lang['mark']}</a>
+			
+        </div>
+</div>
+<!--页头结束-->
+<div class="box list">
+	{if $comments}
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" >
+    	<thead>
+        <tr>
+        	<th>用户名</th><th>留言内容</th><th>留言时间</th>
+			<th>$_lang['operate']</th>
+        </tr>
+		</thead>
+		<tbody>
+		{loop $comments $v}
+		<tr>
+			<td>$v['username']</td>
+			<td>$v['content']</td>
+			<td>{date('Y-m-d H:i:s',$v['on_time'])}</td>
+			<td><a href="{$base_uri}/comment_del?comment_id=$v['comment_id']" onclick="return cdel(this);">$_lang['delete']</a></td>
+		</tr>
+        {/loop}
+		</tbody>
+    </table>
+	{else}
+	<div class='t_c'>{$_lang['no_data']}</div>
+	{/if}
+</div>
+<!--主体结束-->
+<!--{include control/admin/tpl/admin_footer}-->

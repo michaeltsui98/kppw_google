@@ -1,0 +1,50 @@
+@import url("mobile.min.css") only screen and (max-width: 240px);
+
+@import url("mobile.min.css") only screen and (min-width: 241px) and (max-width: 360px);
+
+@import url("mobile.min.css") only screen and (min-width: 361px) and (max-width: 480px);
+
+@import url("mobile.min.css") only screen and (max-width: 760px);
+
+@import url("720.min.css") only screen and (min-width:760px) and (max-width:980px);
+
+@import url("960.min.css") only screen and (min-width:980px) and (max-width:1280px);
+
+@import url("1200.min.css") only screen and (min-width:1280px) and (max-width:1600px);
+
+@import url("1560.min.css") only screen and (min-width:1600px) and (max-width:1920px);
+
+@import url("fluid.min.css") only screen and (min-width:1920px);
+
+
+/* ============================== */
+/* ! Layout for desktop version   */
+/* ============================== */
+	
+/*@media handheld, only screen and (max-width: 760px) {
+
+}*/
+
+/* for 980px width screen */
+/*@media only screen and (min-width:760px) and (max-width:980px){
+
+
+}*/
+ 
+/* for 1280px width screen */
+/*@media only screen and (min-width:980px) and (max-width:1280px){
+
+}*/
+
+/* for 1600px width screen */
+/*@media only screen and (min-width:1280px) and (max-width:1600px){
+    
+}*/
+/* for 1920px width screen */
+/*@media only screen and (min-width:1600px) and (max-width:1920px){
+   
+}*/
+/* for 1920px width screen */
+/*@media only screen and (min-width:1920px){
+    
+}*/

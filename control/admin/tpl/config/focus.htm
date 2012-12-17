@@ -1,0 +1,84 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['api_config_manage']}</h1>
+         <div class="tool">         
+            <a href="{BASE_URL}/index.php/admin/config_basic/weibo" >{$_lang['oauth_api_config']}</a>
+            <a href="{BASE_URL}/index.php/admin/config_basic/focus" class="here">{$_lang['weibo_view']}</a>
+    	</div>
+</div>
+<div class="box post">
+<form name="frm_config_basic" id="frm_config_basic" action="{BASE_URL}/index.php/admin/config_basic/save" method="post" accept-charset="{$_K['charset']}">
+<input type="hidden" name="formhash" value="{FORMHASH}">
+<input type="hidden" name="type" value="{$type}">
+<table class="detail" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+      <th scope="row" width="130">{$_lang['weibo_view_list']}{$_lang['zh_mh']}</th>
+      <td>
+      	{loop $oauth_type_list $k $v}
+		  	<label for="{$k}_api_open">
+					<input type="checkbox" name="api[{$k}]" class="attent_api"
+					rel="{$k}" value="1" id="{$k}_api_open" 
+					{if $api_open[$k]=='1'}checked="checked"{/if}>
+					{$v['name']}
+			    </label>
+		 {/loop}
+      </td>
+  </tr>
+<tbody id="sina_attent" style="{if !$api_open['sina']}display:none{/if}">
+<tr>
+	 <th scope="row" width="130">{$_lang['sina']}{$_lang['zh_mh']}</th>
+<td>
+	<input name="sina_attent" value="{$config_arr['sina_attent']}" class="txt">
+		 <span>{$_lang['view_user_weibo']}(http://weibo.com/u/<font color="red">2128335227</font>){$_lang['num_part']}</span>
+</td>
+</tr>
+</tbody>
+<tbody id="ten_attent" style="{if !$api_open['ten']}display:none{/if}">
+<tr>
+	 <th scope="row" width="130">{$_lang['ten']}{$_lang['zh_mh']}</th>
+<td>
+	<input name="ten_attent" value="{$config_arr['ten_attent']}" class="txt">
+		 <span>{$_lang['view_user_weibo']}(http://t.qq.com/<font color="red">shangjinglong</font>){$_lang['red_part']}</span>
+</td>
+</tr>
+</tbody>
+<tbody id="netease_attent" style="{if !$api_open['netease']}display:none{/if}">
+<tr>
+	 <th scope="row" width="130">{$_lang['wangyi']}{$_lang['zh_mh']}</th>
+<td>
+	<input name="netease_attent" value="{$config_arr['netease_attent']}" class="txt">
+ 	 
+ <span>{$_lang['view_user_weibo']}(http://t.163.com/<font color="red">2746053225</font>){$_lang['red_part']}</span>
+</td>
+</tr>
+</tbody>
+<tbody id="sohu_attent" style="{if !$api_open['sohu']}display:none{/if}">
+<tr>
+	 <th scope="row" width="130">{$_lang['souhu']}{$_lang['zh_mh']}</th>
+<td>
+	<input name="sohu_attent" value="{$config_arr['sohu_attent']}" class="txt">
+ <span>{$_lang['view_user_weibo']}(http://<font color="red">nanison</font>.blog.sohu.com){$_lang['red_part']}</span>
+</td>
+</tr>
+</tbody>
+
+<th scope="row">&nbsp;</th>
+<td>
+<div class="clearfix padt10">
+    <button class="positive primary pill button" type="submit" name='submit' value="{$_lang['submit']}"><span class="check icon"></span>{$_lang['submit']}</button>
+    <button class="pill button" type="button" onclick="history.go(-1);" value="{$_lang['return']}"><span class="uparrow icon"></span>{$_lang['return']}</button>
+</div>
+</td>
+    
+</table>
+</form>
+ </div>
+<script type="text/javascript">
+    $(function(){
+    	$(":checkbox.attent_api").click(function(){
+			var api_name=$(this).attr("rel");
+			$("#"+api_name+"_attent").toggle();
+		})
+    })
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

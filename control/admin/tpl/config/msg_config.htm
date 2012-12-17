@@ -1,0 +1,77 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['msg_tpl_page_title']}</h1>
+         <div class="tool">       
+		   <a href="{BASE_URL}/index.php/admin/config_msg" class="here">{$_lang['sms_config']}</a>
+           <a href="{BASE_URL}/index.php/admin/config_msg/send">{$_lang['send_sms']}</a>
+         </div>
+</div>
+<div class="box post">
+<table  class="detail" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr class="apply_bind">
+      <th scope="row" width="130">{$_lang['apply']}{$_lang['zh_mh']}</th>
+      <td>
+       	<a href="http://www.kekezu.com/add.html" style="color:red" target="_blank">{$_lang['apply_for_account']}</a>（{$_lang['click_to_apply_account']}）
+      </td>
+  </tr>
+<tr class="apply_bind">
+<tbody id="account" >
+<form action="{BASE_URL}/index.php/admin/config_msg/config_save" id="frm_bind" name="frm_bind" method="post">
+	<input type="hidden" name="formhash" value="{FORMHASH}">
+	<tr>
+		<th scope="row" width="130">{$_lang['sms_account']}{$_lang['zh_mh']}</th>
+        <td>
+        	 <input type="text" class="txt"
+			  name="mobile_username"
+			  value="{$_K['mobile_username']}"
+			  id="mobile_username" 
+			  limit="required:true;len:2-"
+			  msg="{$_lang['account_cannot_be_null']}"
+			  title="{$_lang['input_cellphone_validate_code']}"
+			  msgArea="span_mobile_username"><span id="span_mobile_username"></span>
+       </td>
+    </tr>
+	<tr>
+      <th scope="row" width="130">{$_lang['sms_password']}{$_lang['zh_mh']}</th>
+        <td>
+        	 <input type="password" class="txt"
+			  name="mobile_password"
+			  value="{$_K['mobile_password']}"
+			  id="mobile_passwrd"
+			  limit="required:true;len:2-"
+			  msg="{$_lang['password_cannot_be_null']}"
+			  title="{$_lang['input_cellphone_password']}"
+			  msgArea="span_mobile_password"><span id="span_mobile_password"></span>
+      </td>
+    </tr>
+  <tr>
+  	<th scope="row">短信用户信息：</th>
+	<td>用户余额：{c:$user['balance']}</td>
+  </tr>
+   <tr>
+		<th scope="row">&nbsp;</th>
+		<td>
+			<div class="clearfix padt10">
+        		 <button class="positive primary pill button" type="submit" name='sbt_edit' value="{$_lang['submit']}"><span class="check icon"></span>{$_lang['submit']}</button>
+        		  <button class="pill button" type="button" onclick="to_back();" value="{$_lang['return']}"><span class="leftarrow icon"></span>{$_lang['return']}</button>
+			</div>
+		</td>
+	</tr>
+	
+	 </form>
+</tbody>
+</table>
+ 
+</div>
+<script type="text/javascript">
+ $(function(){
+ 	$("#bind").click(function(){
+		$("#account").show();
+	})
+	$("#sbt_edit").click(function(){
+		if(checkForm(document.getElementById("frm_bind"))){
+			$("#frm_bind").submit();
+		}
+	})
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

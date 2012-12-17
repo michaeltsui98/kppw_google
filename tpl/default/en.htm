@@ -1,0 +1,32 @@
+<!--{include header}-->
+
+<!--
+<form action="{BASE_URL}/test/big_upload.php" method="post"  enctype="multipart/form-data">
+	<input type="hidden" name="file_name" value="upload2">
+	<input type="hidden" name="file_type" value="att">
+	<input type="file"  name="upload2" id="upload2">
+	<input type="submit" value="ÉÏ´«" />
+</form>
+-->
+
+<input type="hidden" name="file_ids" id="file_ids">
+<input type="file" class="file" name="upload" id="upload">
+<script type="text/javascript">
+		$(function(){
+			uploadify({
+					auto:true,
+					size:"{$_K['max_size']}MB",
+					exts:'*.jpg;*.png;*.jpeg',
+					file:'upload',
+					restext:'file_ids',
+					debug:true,
+					limit:5}
+				,{
+					fileType:'att',
+					objType:'att'
+				});
+		})
+In('ajaxfileupload');		
+</script>
+				
+<!--{include footer}-->

@@ -1,0 +1,143 @@
+<!--{include header}-->
+<div class="wrapper">
+    <div class="container_24">
+        <section class="clearfix section">
+        	<div class="box model blue ">
+        		<div class="inner">
+            <header class="box_header clearfix">
+            	<div class="grid_5 alpha omega">
+                	<h1 class="box_title"><span>{$_lang['login']}</span> Login</h1>
+				</div>
+				<div class="grid_18">
+					<nav class="box_nav clearfix">
+						<ul> 
+                			<li><a href="{BASE_URL}/index.php/register">{$_lang['no_account_now_register']}</a></li>
+						</ul>
+					</nav>
+				</div>
+            </header>
+			 
+            <div class="box_detail clearfix po_re box">
+                <div class="clear"></div>
+                <div class="grid_17">
+                    <!--from±íµ¥ start-->
+                    <div class="form_box clearfix border_n">
+                        <form action="{BASE_URL}/index.php/login/login" method="post" id="login_frm" name="login_frm" enctype="application/x-www-form-urlencoded">
+                            <input type="hidden" name="formhash" id="formhash" value="{FORMHASH}">
+							<input type="hidden" name="handlekey" value="login_frm1"><!--ÕËºÅ-->
+                            <div class="rowElem clearfix po_re">
+                                <label class="grid_4">
+                                  {$_lang['account']}
+                                </label>
+                                <div class="grid_10">
+                                	<!--{eval $inter==1 and $v=$_lang['you_can_user_phone_eamil'] or $v=$_lang['input_your_user_name'];}-->
+									<input style="width:200px;" type="text" value="{$v}" class="txt txt_input" size="20" autocomplete="off" name="txt_account" id="txt_account" limit="required:true;len:2-20" msg="{$_lang['user_error']}" title="{$_lang['username_can_chinese']}" msgArea="login_account_msg" />
+									<span class="msg" id="login_account_msg"></span>
+                                </div>
+								
+                            </div>
+
+                            <div class="rowElem clearfix po_re">
+                                <label class="grid_4">
+                                    {$_lang['password']}
+                                </label>
+                                <div class="grid_10">
+                                	<input type="text" style="width:200px;" id="txt_password" name="txt_password" value="{$_lang['password_is_not_null']}" style="" class="txt_input txt" original-title="">
+                                    <input class="txt_input txt" style="width:200px;display:none;" type="password" name="pwd_password" id="pwd_password" maxlength="20" limit="required:true;len:6-20" msg="{$_lang['password_length_limit']}" title="{$_lang['password_length']}" msgArea="login_password_msg" />
+									<span class="msg" id="login_password_msg"></span>
+                                </div>
+                                
+                            </div>
+
+                            <input type="hidden" name="logins" id="logins" value='0'>
+                            <div>
+                            <div onmouseout="$(this).removeClass('po_re');$('.tips_word hidden').addClass('hidden').hide();" onmouseover="$(this).addClass('po_re');$('.tips_word hidden').removeClass('hidden').show();" class="clearfix tips_box">
+								<span class="prefix_4 tips">
+								<label class="auto_login">
+									<input type="checkbox" name="auto_login" checked="checked" original-title="">
+									{$_lang['one_week_auto_login']}
+								</label>
+								</span>
+								<div class="tips_word hidden">{$_lang['in_order_account_security_not_check_on_public']}</div>	
+							</div>
+							</div>
+                            <div class="mt_20 prefix_4 ml_5">
+                                <button type="submit" onclick="return user_login();" class="button" id="user_login_btn">
+                                    <span class="key icon"></span>
+                                    {$_lang['login']}¡¡ 
+                                </button> ¡¡¡¡&gt;&gt;<a href="index.php?do=get_password" target="_blank">{$_lang['find_back_password']}</a>
+                                <a href="{BASE_URL}/index.php/login/logout" onclick="return showWindow('logout',this.href); false;">ÍË³ö</a>
+                            </div>
+                           
+                        </form>
+                    </div>
+                </div>
+                <div class="grid_7 omega border_l_c">
+                    <div class="pad10">
+
+                        <div class="pl_20">
+                        	<span>{$_lang['use_friend_web_login']}</span>
+							{loop $api_open $k $v}
+								{if $_K[$k.'_app_id']}
+		                            <div class="mt_10">
+		                                <a href="{BASE_URL}/index.php/login/ologin?type=$k"><img src="{BASE_URL}/static/img/ico/{$k}_t.gif"  title="{$api_name[$k]['name']}">$api_name[$k]['name']{$_lang['login']}</a>
+		                            </div>
+								{/if}
+							{/loop}
+						</div>
+                    </div>
+                </div>
+            </div>
+			</div>
+			</div>
+        </section>
+        <div id="login_msg">
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    In('form');
+	var inter = "{$inter}";
+    $("#txt_account").focus(function(){
+        var content = $("#txt_account").val();
+        if (content == "{$_lang['you_can_user_phone_eamil']}"||content=="{$_lang['input_your_user_name']}") {
+            $("#txt_account").val("");
+        }
+    });
+    
+    $("#txt_account").blur(function(){
+        var content = $("#txt_account").val();
+			inter==1?val="{$_lang['you_can_user_phone_eamil']}":val="{$_lang['input_your_user_name']}";
+    });
+    
+    $("#txt_password").focus(function(){
+        var content = $("#pwd_password").val();
+        $(this).hide();
+		$("#pwd_password").show();
+		$("#pwd_password")[0].focus();
+        if (content == L.password_not_empty) {
+        	$("#txt_account").val("");
+        }
+    });
+    
+    $("#pwd_password").blur(function(){
+        var content = $("#pwd_password").val();
+        if (!content) {
+            $(this).hide();
+            $('#txt_password').show();
+        }
+    });
+    
+    
+    //µÇÂ¼
+    function user_login(){ 
+        if (checkForm(document.getElementById("login_frm"), false)) {
+        	showWindow('login_frm1', 'login_frm', 'post',0,{cover:1});
+        }
+        return false;
+    }
+
+</script>
+<!--{include footer}-->

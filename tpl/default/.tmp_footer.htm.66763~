@@ -1,0 +1,103 @@
+<!--{if !$_K['inajax']}-->
+<!--页脚 satrt-->
+<footer class="footer clearfix">
+            <!--网站版权声明 start-->
+            <section class="site_copyright clearfix">
+            	<div class="container_24 clearfix ">
+                   <dl>
+					<dt>
+            	 		{$_lang['company']}{$_K['company']}<span class="pad10">{$_lang['address']}{$_K['address']}</span>{$_lang['contact_phone']}{$_K['phone']}
+					</dt>
+							<dd>
+                    	 	{P_NAME}{KEKE_VERSION} Copyright &copy; 2009 -2011 kekezu. All rights reserved <a href="http://icp.valu.cn/" target="_blank">{$_K['filing']}</a>
+								{if KEKE_DEBUG}
+								<!--{eval list($querys,$times)=Keke::execute_time();var_dump(Keke_lang::$_files);}-->
+								<span>
+									Querys: {$querys}
+									 &nbsp;
+									Times:{$times}
+								</span>			
+								{/if}
+							</dd>  
+                    	 	</dl>
+						 <div class="clear"></div>
+					<!--语言栏 关注我们 搜索 start-->
+                    <div class="site_attach clearfix">
+						{if $_K['attent_api_open']}
+                        	<div class="social">
+                            	{$_lang['about_us_']}
+                                {loop $_K['attent_api_open'] $k $v}
+									{if $_K['attent_list'][$k]['v']}
+											<!--{eval $i = explode("_", $k);$i = $i['0'];$j=($attent_list[$k]);}--> 
+											<a href="index.php?do=wb&focus=$j&wb_type=$i"><img src="static/img/ico/{$i}_t.gif" title="$attent_list[$k]"></a> 
+									{/if}
+								{/loop}
+								<a href="index.php?do=mobile" target="_blank">手机版</a>
+								<a href="index.php?do=mobile" target="_blank">安卓客户端</a>
+                            </div>
+     
+						{/if}
+                        <div class="lan_box">
+                            <form action="" method="post" id="lan_bottom">
+                                <div class="clearfix">
+                                     <label>{$_lang['language']}</label>
+                                     <select id="lan" name="lan" style="width:100px" onchange="setLang(this)">
+									  {loop $_K['lang_list'] $k $v}
+									    <option value="{$k}" c="{Keke::$_curr_list[$k][0]}" {if $k==$_K['language']}selected{/if}>{$v}</option>
+									  {/loop}
+                                     </select>
+                                
+                           
+                               
+                                     <label> {$_lang['currency']}{$_lang['zh_mh']}</label>
+                                     <select  style="width:100px" onchange="setCurr(this.value,1);">
+									  {loop Keke::$_curr_list $k $v}
+									    <option value="{$k}" id="{$k}" {if Keke::$_currency==$k}selected{/if}>{$v['title']}</option>
+									  {/loop}
+                                     </select>
+                                 </div>
+                            </form>
+						</div>	
+                        
+						
+						</div>
+						
+                  
+                    <!--语言栏 关注我们 搜索 end-->
+					
+					
+                </div>
+				<div class="clearfix">$_K['stats_code']</div>
+            </section>
+            <!--网站版权声明 end-->
+            
+            <!--返回顶部 start-->
+			
+        	<a class="top animated hidden" href="javascript:void(0);" title="{$_lang['return_top']}"><em>&diams;</em>Top</a></li>
+              
+            <!--返回顶部 end-->
+    </footer>
+    <!--页脚 end-->
+</div>
+{if $_K['uid']}
+	<!--{eval Keke::update_oltime($_K['uid'],$_K['username'])}-->
+{/if}
+<script type="text/javascript">
+	var uid="{$_K['uid']}";
+	var xyq = "<!--{eval echo $xyq = session_id();}-->";
+	 
+ //js异步加载
+In('common');
+
+</script>
+<!--需要时才加载-->
+{if $swf_upload === TRUE }
+<script src="{BASE_URL}/static/js/uploadify/jquery.uploadify-3.1.min.js" type="text/javascript"></script>
+<link href="{BASE_URL}/static/js/uploadify/uploadify.css" rel="stylesheet">
+{/if}
+<!--[if IE 6]></div><![endif]-->
+<!--[if IE 7]></div><![endif]-->
+<!--[if IE 8]></div><![endif]-->
+</body>
+</html>
+<!--{/if}-->

@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<shipin>
+	<ad name="text.flv" url="http://www.kekezu.com" time="4" tape="flv">一生一世</ad>
+	<ad_p name="11.jpg" url="http://www.0351114.com"></ad_p>
+	<sp name="11.flv"></sp>
+	<sp_list>
+		<list img="24.jpg" titl="345" url="http://www.0351cn.cn" cishu="播放 ：1001 次"></list>
+		<list img="24.jpg" titl="最新电影" url="http://www.0351cn.cn" cishu="播放 ：1002次"></list>
+		<list img="24.jpg" titl="最新电影" url="http://www.0351cn.cn" cishu="播放 ：1003次"></list>
+		<list img="24.jpg" titl="最新电影" url="http://www.0351cn.cn" cishu="播放 ：1004次"></list>
+	</sp_list>
+	<weibo>
+		<list url="http://www.0351cn.cn"></list>
+		<list url="http://www.0351cn.cn"></list>
+		<list url="http://www.baidu.cn"></list>
+	</weibo>
+</shipin>

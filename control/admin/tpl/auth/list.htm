@@ -1,0 +1,51 @@
+<!--{include control/admin/tpl/admin_header}--> 
+<div class="page_title"><h1>{$_lang['page_title']}</h1></div>
+<!--页头结束-->
+<div class="box list">
+<form method="post" action="$base_uri/install" name="frm_art_search" id="frm_art_search">
+<table cellspacing="0" cellpadding="0">
+  <tbody>
+  <tr>
+    <th>{$_lang['auth_logo']}</th>
+	<th>{$_lang['auth_name']}</th>
+	<th>{$_lang['auth_audit_days']}</th>
+	<th>{$_lang['auth_cash']}</th>
+	<th>{$_lang['auth_period']}</th>
+	<th>{$_lang['is_open']}</th>
+	<th>{$_lang['last_update']}</th>
+	<th>{$_lang['operate']}</th>
+  </tr>
+  {loop $auth_item_arr $v}
+ <tr class="item">
+	<td>{$v['auth_code']}</td>
+	<td>{$v['auth_title']}</td>
+	<td>{$v['auth_day']}{$_lang['workdays']}</td>
+	<td><font color="#ff7700">{c:$v['auth_cash']}</font></td>
+	<td>{if $v['auth_expir']}{$v['auth_expir']}{$_lang['day']}{else}{$_lang['no_limit']}{/if}</td>
+	<td>{if $v['auth_open']==1}<font color="green">{$_lang['open']}</font>{else}<font color="gray">{$_lang['close']}</font>{/if}</td>
+	<td>{date('Y-m-d',$v['update_time'])}</td>
+	<td>
+	{if $v['auth_open']==1}
+		<a class="button" href="$base_uri/disable?auth_code={$v['auth_code']}&auth_open=0}"><span class="cross icon"></span>{$_lang['disable']}</a>
+	{else}
+		<a class="button" href="$base_uri/disable?auth_code={$v['auth_code']}&auth_open=1}"><span class="check icon"></span>{$_lang['use']}</a>
+	{/if}
+		<a class="button dbl_target" href="{$base_uri}/edit?auth_code={$v['auth_code']}"><span class="pen icon"></span>{$_lang['edit']}</a>
+		<a class="button" href="{$base_uri}/del?auth_code={$v['auth_code']}" onclick="return cdel(this);"><span class="trash icon"></span>{$_lang['delete']}</a>
+	</td>
+</tr>
+{/loop}
+<tr>
+  	<td colspan='11'>
+	<span>{$_lang['enter_dirname']}:</span>
+	<input  type="text"   name="auth_dir"   id="auth_dir"    class="txt"/>&nbsp;
+	<button type="submit" name="sbt_add"    value="{$_lang['install_module']}" class="pill positive"><span class="check icon">&nbsp;</span>{$_lang['install_module']}</button>
+  	</td>
+ </tr>
+ </tbody>
+</table>
+</form>
+</div>
+<!--主体结束-->
+
+<!--{include control/admin/tpl/admin_footer}-->

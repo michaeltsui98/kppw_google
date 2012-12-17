@@ -1,0 +1,207 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/seller/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 title="我的任务" class="title">店铺管理</h2>
+		                    </div>
+		                </header>
+		                <nav class="box_nav">
+								<ul id="test_ul" class="clearfix">
+									<li ><a href="{USER_URL}/seller_shop">店铺设置</a></li>
+									<li class="selected"><a href="{USER_URL}/seller_shop/case">店铺案例</a></li>
+									<li><a href="{USER_URL}/seller_shop/member">店铺成员</a></li>
+								</ul>
+		                </nav>
+		                <div class="box_detail">
+
+		                	<div class="form_row">
+	                			<label class="form_label">行业：</label>
+	                			<select name="" id="">
+	                				<option value="1">设计</option>
+	                			</select>
+	                		</div>
+
+	                		<div class="form_row">
+	                			<label class="form_label">案例类型：</label>
+	                			<input type="radio" name="casetype" id="insite"><label for="insite">站内案例</label>
+	                			<input type="radio" name="casetype" id="outsite"><label for="outsite">站外案例</label>
+	                		</div>
+
+							<div class="form_row" rel="insite">
+	                			<label class="form_label">服务列表：</label>
+	                			<select name="" id="">
+	                				<option value="1">发布的任务列表</option>
+	                			</select>
+	                		</div>
+
+	                		<div class="form_row" rel="outsite">
+	                			<label class="form_label">案例名称：</label>
+	                			<input type="text">
+	                		</div>
+
+	                		<div class="form_row" rel="outsite">
+	                			<label class="form_label">站外链接：</label>
+	                			<input type="url">
+	                		</div>
+
+
+	                		<div class="form_row float_row">
+	                			<label class="form_label">图片：</label>
+
+	                			<div class="detail">
+	                				<input type="file">
+	                				<p>展示图片,推荐150X150,支持.jpg,.gif,.png,.jpeg格式</p>
+	                				<p><img class="pic_larger" src="{BASE_URL}/{SKIN_PATH}/ui/images/l_avatar.png" alt="avatar"></p>
+	                			</div>
+	                		</div>
+
+	                		<div class="form_row">
+	                			<label class="form_label">描述：</label>
+	                			<textarea name="" id="" cols="60" rows="5"></textarea>
+	                		</div>
+
+	                		<div class="form_line">
+	                			<hr>
+	                		</div>
+
+	                		<div class="form_footer">
+	                			<input type="submit" value="提交">
+	                		</div>
+
+
+		                	<div class="toolbar">
+		                		<div class="actions">
+		                			<input type="submit" value="添加案例">
+		                		</div>
+		                		<div class="actions">
+		                			<input type="search" placeholder="请输入标题关键字"><input type="button" value="搜索标题">
+		                		</div>
+		                		<div class="page">
+					                <p>
+					                    <a href="###" title="第一页">&#171;</a>
+					                    <a href="###" title="上一页">&#139;</a>
+					                    <a href="###" class="selected">1</a>
+					                    <a href="###">2</a>
+					                    <a href="###">3</a>
+					                    <a href="###">4</a>
+					                    <a href="###" title="下一页">&#155;</a>
+					                    <a href="###" title="最后一页">&#187;</a>
+					                    <span class="stats">1/10</span>
+					                </p>
+					            </div>
+		                	</div>
+
+		                	<!--date_table数据表格 start-->
+		                    <div class="data_list">
+		                        <table  class="data_table">
+		                            <thead>
+		                            <tr>
+		                              <th scope="col">展示</th>
+		                              <th scope="col">案例介绍</th>
+		                            </tr>
+		                            </thead>
+		                            <tbody>
+		                            <tr>
+		                              <td>
+		                              	<img class="pic_larger mt_5" src="http://img01.taobaocdn.com/tps/i4/T14x_UXmdiXXclNAI0-130-225.jpg" alt="欧莱雅">
+		                              </td>
+		                              <td>
+		                              	<a href="#" class="title">欧莱雅 买金致精华液 送金致精华液</a> 
+		                              	网页设计
+		                              	<p class="ws_break">
+		                              		秋去冬来，年终将至。为感谢并回馈广大新老用户对123RF中国的支持与鼓励，123RF联手站酷网于2012年11月5日至2012年12月31日共同在线举行123RF中国年终巨惠活动。所有参与123RF中国点数购图交易的用户在满足活动规则的情况下均会得到123RF中国的一份诚挚谢礼。
+		                              	</p>
+		                              	<div class="item_action">
+		                              		<a href="#">编辑</a>
+		                              		<a href="#">删除</a>
+		                              		<a href="#">查看</a>
+		                              	</div>
+		                              </td>
+		                              
+		                              
+
+		                            </tr>
+		                            <tr>
+		                            	<td>
+		                            		<img class="pic_larger mt_5" src="http://drmcmm.baidu.com/media/id=rHcvPH6vrH6&gp=401&time=nHndnWDLnWn4n0.gif" alt="">
+		                            	</td>
+		                              <td>
+		                              	<a href="#" class="title">123RF中国年终钜惠三部曲</a>
+		                              	网页设计
+		                              	<p class="ws_break">
+		                              		秋去冬来，年终将至。为感谢并回馈广大新老用户对123RF中国的支持与鼓励，123RF联手站酷网于2012年11月5日至2012年12月31日共同在线举行123RF中国年终巨惠活动。所有参与123RF中国点数购图交易的用户在满足活动规则的情况下均会得到123RF中国的一份诚挚谢礼。
+		                              	</p>
+		                              	<div class="item_action">
+		                              		<a href="#">编辑</a>
+		                              		<a href="#">删除</a>
+		                              		<a href="#">查看</a>
+		                              	</div>
+		                              </td>
+		                              
+		                              
+
+		                            </tr>
+		                            <tr>
+		                              <td>
+		                              	<img class="pic_larger mt_5" src="http://drmcmm.baidu.com/media/id=rH04nHDvnj6&gp=401&time=nHndnHm3njDsP6.jpg" alt="">
+		                              </td>
+		                              <td>
+		                              	<a href="#" class="title">#框不住　网易邮箱首页设计大赛</a>
+		                              	网页设计
+		                              	<p class="ws_break">
+		                              		
+
+本次大赛的评委由中国美术学院设计艺术学院教授、网易艺术顾问连放，《南方都市报》视觉总监、摄影家王景春，艺术家、四川美术学院教授、
+
+中国当代艺术研究院艺术总监叶永青，网络热门卡通形象阿狸的原创者、互联网知名动漫画家徐瀚和网易邮箱-LOFTER联合评审小组共同组成。
+
+		                              	</p>
+		                              	<div class="item_action">
+		                              		<a href="#">编辑</a>
+		                              		<a href="#">删除</a>
+		                              		<a href="#">查看</a>
+		                              	</div>
+		                              </td>
+		                              
+		                              
+		                            </tr>
+		                            </tbody>
+		                            
+		                          </table>
+		                    </div>
+			               	<!--data_table数据表格 end-->
+
+			               	<div class="toolbar bottom">
+		                		<div class="actions">
+		                			<input type="submit" value="添加案例">
+		                		</div>
+		                		<div class="page">
+					                <p>
+					                    <a href="###" title="第一页">&#171;</a>
+					                    <a href="###" title="上一页">&#139;</a>
+					                    <a href="###" class="selected">1</a>
+					                    <a href="###">2</a>
+					                    <a href="###">3</a>
+					                    <a href="###">4</a>
+					                    <a href="###" title="下一页">&#155;</a>
+					                    <a href="###" title="最后一页">&#187;</a>
+					                    <span class="stats">1/10</span>
+					                </p>
+					            </div>
+		                	</div>
+
+
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+<!--{include user/footer}-->

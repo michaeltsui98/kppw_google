@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+.butt{
+    background:#3399CC;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.5em;
+    margin: 0.5em 0.25em;
+    padding: 0.5em 0.75em;
+    text-decoration: none;
+	height:20px;
+	width:170px;
+}

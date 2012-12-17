@@ -1,0 +1,83 @@
+<!--{include control/admin/tpl/admin_header}--> 
+<div class="page_title">
+    	<h1>{$_lang['skill_manage']}</h1>
+        <div class="tool">
+        	<a href="{BASE_URL}/index.php/admin/config_skill" class="here">{$_lang['skill_list']}</a>
+            <a href="{BASE_URL}/index.php/admin/config_skill/add">{$_lang['skill']}{if $skill_id}{$_lang['edit']}{else}{$_lang['add']}{/if}</a>
+    	</div>
+</div>
+<div class="box search p_relative">
+		 <form method="get" action="{BASE_URL}/index.php/admin/config_skill"  id="frm_list">
+        	<table class="detail" cellspacing="0" cellpadding="0">
+			 <tbody>
+			 	<tr>
+		                <th>查询字段
+		                   <select name="slt_fields">
+		                   	<option></option>
+		                   	{loop $query_fields $k $v}
+		                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+							{/loop} 
+		                   </select>
+						 <select name="slt_cond">
+						 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+							<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+							<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+							<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+						 </select>
+		                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+						 <select name="page_size">
+                			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+                			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+                			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+            			</select>
+						 <input type="submit" value="{$_lang['search']}">
+						 </td>
+	            </tr>
+			 </tbody>
+			</table>
+		</form>
+ </div>
+<div class="box list">
+        	<form class="detail" method="post" id="skill_op" action="">
+              <table cellspacing="0" cellpadding="0">
+                  <tr>
+                    <th width="15">
+                    	<input type="checkbox" onclick="checkall();" id="checkbox" name="checkbox"/>
+					<a href="javascript:;" onclick="submitSort('{$uri}','skill_id',{$ord_tag})">ID{if $_GET['f']=='skill_id'}{$ord_char}{/if}</a>	
+					</th>
+					
+                    <th width="20%">{$_lang['by_industry']}</th>
+                    <th width="25%">{$_lang['skill_name']}</th>
+                    <th width="10%">{$_lang['order']}</th>
+                    <th width="15%">{$_lang['add_time']}</th>
+                    <th width="20%">{$_lang['operate']}</th>
+                  </tr>
+				  <tbody>
+				  {loop $skill_arr $k $v}	
+                  <tr class="item">
+                    <td class="td25"><input type="checkbox" class="checkbox" name="ckb[]" value="$v['skill_id']">{$v['skill_id']}</td>
+                    <td class="td28">$indus_show_arr[$v['indus_id']]['indus_name']</td>
+					<td>$v['skill_name']</td>
+                    <td>$v['listorder']</td>
+                    <td>{date('Y-m-d H:i:s',$v['on_time'])}</td>
+                    <td>
+						<a href="{$base_uri}/add?skill_id={$v['skill_id']}" class="button dbl_target"><span class="pen icon"></span>{$_lang['edit']}</a>
+						<a href="{$base_uri}/del?skill_id={$v['skill_id']}"  onclick="return cdel(this);" class="button"><span class="trash icon"></span>{$_lang['delete']}</a>
+					</td>
+                  </tr>
+                  <tr>
+                  	{/loop}
+				  </tbody>
+				  <tfoot>
+				  	<tr>
+                    <td colspan="7">
+ 	                    <div class="page">{$pages['page']}</div>
+                        <label for="checkbox">{$_lang['select_all']}</label>
+						<button name="sbt_action" type="submit" value={$_lang['mulit_delete']} onclick="return batch_act(this,'skill_op');" >{$_lang['mulit_delete']}</button>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+        	</form>
+    </div>           
+<!--{include control/admin/tpl/admin_footer}-->

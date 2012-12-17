@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={$_K['charset']}">
+        <title>{P_NAME} {KEKE_VERSION}--{$_K['sitename']}</title>
+    </head>
+    <link href="{BASE_URL}/control/admin/tpl/css/admin_management.css" rel="stylesheet" type="text/css" />
+    <link href="{BASE_URL}/control/admin/tpl/skin/default/style.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{BASE_URL}/static/js/jquery.js">
+    </script>
+    </head>
+    <body class="skin">
+        <!--[if IE 6]><div id="ie6"><![endif]--><!--[if IE 7]><div id="ie7"><![endif]--><!--[if IE 8]><div id="ie8"><![endif]-->
+        <div id="append_parent">
+        </div>
+        <div class="login_box">
+            <div class="login_con">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td>
+                            <h1><img src="{BASE_URL}/control/admin/tpl/img/logo.png" title="{$_lang['keke_professional_witkey_system']}"/>{$_lang['system_manage']}</h1>
+                           
+                            <form action="#" method="post" id="admin_login">
+                                <input type="hidden" name="formhash" id="token" value="{FORMHASH}"/><input type="hidden" name="allow_time" id="allow_num" value="{$allow_times}"/>
+                                <p>
+                                    &nbsp;<span id="try_info"></span>
+                                </p>
+								<p class="loginform">
+	                                <label class="logintitle">
+	                                    {$_lang['username']}
+	                                </label>
+	                                <input name="username" type="text" id="txt_username" class="txt" limit="required:true" msg="{$_lang['username_can_not_null']}" title="{$_lang['please_input_right_login_username']}" msgArea="try_info"/>
+                                </p>
+								<p class="loginform">
+	                                <label class="logintitle">
+	                                    {$_lang['password']}
+	                                </label>
+	                                <input name="password" type="password" id="pwd_pwd" class="txt" limit="required:true" msg="{$_lang['password_can_not_null']}" title="{$_lang['please_input_right_login_password']}" msgArea="try_info"/>
+                               	</p>
+                                <p class="loginbtn">
+                                    <button type="submit" id="logsubmit" name="login" onclick=" return check_login();">
+                                        {$_lang['submit']}
+                                    </button>
+                                    <button id="re" type="reset" name="reset">
+                                        {$_lang['reset']}
+                                    </button>
+                                </p>
+                            </form>
+							 <p class="copy">
+                                Powered by KPPW{KEKE_VERSION} &copy;2012 {$_lang['keke_info_technology_company']}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!--[if IE 6]></div><![endif]-->
+        <!--[if IE 7]></div><![endif]-->
+        <!--[if IE 8]></div><![endif]-->
+        <script type="text/javascript">
+            var remain_times = parseInt("{$remain_times}") + 0;
+            $(function(){
+                $("#txt_username").focus();
+                lock_screen(remain_times);
+                
+            })
+            function check_login(){
+                var allow_num = $("#allow_num").val();
+                
+                var i = checkForm(document.getElementById("admin_login"));
+                
+                if (i) {
+                    if (allow_num > 0) {
+                        var username = $("#txt_username").val();
+                        var password = $("#pwd_pwd").val();
+                        var token = $("#token").val();
+                        $.post("{BASE_URL}/index.php/admin/login/login", {
+                            user_name: username,
+                            pass_word: password,
+                            allow_num: allow_num,
+                            token: token
+                        }, function(json){
+                            if (json.status == 1) {
+                                location.href = "{BASE_URL}/index.php/admin/index";
+                            }
+                            else {
+                                if (json.data.times > 0) {
+                                    $("#allow_num").val(json.data.times);
+                                    $("#try_info").html(json.msg + "{$_lang['you_have']}" + json.data.times + "{$_lang['times_try_chance']}");
+                                    $("#token").val(json.data.formhash);
+                                }
+                                if (json.data.times == 0) {
+                                    location.href = '{BASE_URL}/index.php/admin/login';
+                                }
+                                return false;
+                            }
+                        }, 'json')
+                    }
+                }
+                return false;
+                
+            }
+            
+            
+            function lock_screen(remain_times){
+                if (remain_times > 0) {
+                    art.dialog({
+                        title: "{$_lang['screen_lock_status']}",
+                        width: 675,
+                        height: 130,
+                        lock: true,
+                        fixed: true,
+                        resize: false,
+                        drag: false,
+                        content: "{$_lang['login_fail_notice']}",
+                        noFn: function(){
+                            return false;
+                        },
+                        noText: ''
+                    
+                    });
+                }
+            }
+            
+        </script>
+<script src="{BASE_URL}/static/js/system/valid.js"></script>
+<script src="{BASE_URL}/static/js/artdialog/artDialog.js"></script>
+<script src="{BASE_URL}/static/js/artdialog/plugins/iframeTools.js"  ></script>
+         
+    </body>
+</html>

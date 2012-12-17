@@ -1,0 +1,163 @@
+</div>
+<script src="{BASE_URL}/static/js/artdialog/artDialog.js?skin=default" ></script>
+<script src="{BASE_URL}/static/js/artdialog/plugins/iframeTools.js"  ></script>
+<script src="{BASE_URL}/lang/{$_K['language']}/script/lang.js"></script>
+
+ 
+<script type="text/javascript">
+var tips = window.parent.document.getElementById('del_tips');
+function clear_tips(){
+	var s = setInterval(function(){
+		$(tips).children().html('').removeClass('tips_info');
+		clearInterval(s);
+	},1000);
+	
+}
+function cdel(o,s){
+	d = art.dialog;
+	var c = "{$_lang['confirm_delete']}";
+	if(s){
+		c=s;
+	}
+	//d.follow(o);
+	d.confirm(c, function(){
+		$.ajax({
+			url:o.href,
+			dataType:'text',
+			beforeSend:function(){
+	 	        $(tips).children().html('删除中... ').addClass('tips_info'); 
+			},
+			success: function(data){
+			   if(data >=0){
+					$(o).parent().parent().remove();
+				}
+			},
+			complete:function(){
+				$(tips).children().html('提交成功!');
+				clear_tips();
+			}
+			
+		});
+ 
+	}).follow(o);
+	return false;	
+}
+
+function kconfirm(o,s){
+	d = art.dialog;
+	var c = "{$_lang['confirm']}";
+	if(s){
+		c=s;
+	}
+	d.confirm(c, function(){
+		$.get(o.href,function(){
+			location.href = location.href;
+		})
+	}).follow(o);
+	return false;
+}
+//交互性提交
+function kprom(o,s){
+	d = art.dialog;
+	var u = o.href;
+	d.prompt(s,function(data){
+		$.post(u,{'data':data},function(){
+			location.href = location.href;
+		})
+	}).follow(o);
+	return false;
+}
+//排序 
+function submitSort(uri,f,ord){
+	uri += (uri.indexOf('?')==-1)?"?":"&";
+	uri += 'f='+f;
+	uri += '&ord='+ord;
+	//要去掉同级A标签到中最后一个排序字符
+	
+	location.href = uri;
+}
+					 
+ 
+//批量删除，obj=>删除按钮对象
+function batch_act(obj){ 
+	d = art.dialog;
+	//var frm = frm; 
+	var c = $(obj).val(); 
+	var conf = $(":checkbox[name='ckb[]']:checked").length;
+	if (conf > 0) {
+		d.confirm("{$_lang['confirm']}" + c + '?', function(){
+			//获取选中的值
+			var str = [];
+			$(":checkbox[name='ckb[]']:checked").each(function(){
+				str.push($(this).val());
+			})
+			var val = str.join(',');
+			var url = '{$del_uri}?ids='+val;
+ 
+			$.ajax({
+				url:url,
+			dataType:'text',
+			beforeSend:function(){
+	 	        $(tips).children().html('删除中...').addClass('tips_info'); 
+			},
+			success: function(data){
+				location.href= location.href;
+
+			},
+			complete:function(){
+				$(tips).children().html('提交成功!');
+				clear_tips();
+			}
+			});
+		}).follow(obj);
+	}else{
+		d.alert("{$_lang['has_none_being_choose']}");
+	}
+	return false;  
+}
+/**
+ * 删除提交
+ * @param {Object} obj buttion
+ * @param {string} frm form_id
+ */
+function batch_sub(obj,frm,action){ 
+	d = art.dialog;
+	var frm = frm; 
+	var c = $(obj).val(); 
+	var conf = $(":checkbox[name='ckb[]']:checked").length;
+	if (conf > 0) {
+		d.confirm("{$_lang['confirm']}" + c + '?', function(){
+			var uri = $("#"+frm).attr('action');
+			$("#"+frm).attr('action',uri+action);
+			//获取选中的值
+			$("#" + frm).submit();
+		}).follow(obj);
+	}else{
+		d.alert("{$_lang['has_none_being_choose']}");
+	}
+	return false;  
+}
+/**
+ * 对<a>标签进行进行ajax请求
+ * @param {Object} o
+ */
+function js_submit(o){
+		var url = o.href;
+		$.get(url,function(){
+			location.href = location.href;
+		})
+		return false;
+}
+</script> 
+{if KEKE_DEBUG}
+<div style="background-color:green;color:#fff;text-align:center;">
+	<!--{eval list($times,$memory)=Keke::execute_time()}-->
+	执行时间: {$times} &nbsp;{$memory}
+	
+ 
+	
+</div>
+					
+{/if}
+</body>
+</html>

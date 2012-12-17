@@ -1,0 +1,93 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/finance/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 class="title">提现</h2>
+		                    </div>
+		                </header>
+		                <nav class="box_nav">
+								<ul id="test_ul" class="clearfix">
+									 
+								</ul>
+		                </nav>
+		                <div class="box_detail">
+
+		                	<div class="form_row">
+	                			<label class="form_label">账户余额：</label>
+	                			{c:$user['balance']}
+		                	</div>
+		               <form action="{USER_URL}/finance_withdraw/save" onsubmit="return checkForm(this)" method="post" >
+							<input type="hidden" name="formhash" value="{FORMHASH}">
+		                	<div class="form_row">
+	                			<label class="form_label">银行：</label>
+	                			<input type="text"  size="26" name="fds[bank_name]"
+								placeholder="支付宝/中国农业银行"
+								limit="required:true"
+								title="如：支付宝，中国银行..."
+								msg="不能为空值"
+								>
+		                	</div>
+							<div class="form_row">
+	                			<label class="form_label">收款人名称：</label>
+	                			<input type="text" size="26"  name="fds[bank_username]"
+								placeholder="张宝支"
+								title="收款人名称"
+								limit="required:true"
+								msg="不能为空值"
+								>
+		                	</div>
+		                	<div class="form_row">
+	                			<label class="form_label">账号：</label>
+	                			<input type="text" size="26"  name="fds[bank_account]"
+								placeholder="6228110050005515"
+								title="收款账号"
+								limit="required:true"
+								msg="不能为空值"
+								>
+		                	</div>
+
+		                	<div class="form_row">
+	                			<label class="form_label">提现金额：</label>
+	                			<input type="text" placeholder="请输入提现金额" size="26" name="fds[cash]"
+								  limit="required:true;between:{$pay_config['withdraw_min']['v']}-$pay_config['withdraw_max']['v'];type:float" 
+								 msg="提现金额不对"
+								 >
+								 
+								提现金额最小{c:$pay_config['withdraw_min']['v']}，提现金额最大 {c:$pay_config['withdraw_max']['v']}
+		                	</div>
+
+		                	<div class="form_row">
+	                			<label class="form_label" >安全密码：</label>
+	                			<input type="password" size="26" name="code"
+								limit="required:true"
+								ajax="{USER_URL}/finance_withdraw/check_code?code="
+								msg="安全码不对"
+								>
+								 
+		                	</div>
+
+		                	<div class="form_line"></div>
+
+		                	<div class="form_footer">
+		                			<input type="submit" value="提交">
+		                	</div>
+
+						</form>
+
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+<script type="text/javascript">
+	In('valid');
+</script>		
+<!--{include user/footer}-->

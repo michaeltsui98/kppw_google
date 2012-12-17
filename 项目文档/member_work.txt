@@ -1,0 +1,6 @@
+wid  
+uid
+inc_name  公司名称
+inc_indus 公司行业
+inc_time  在职时间
+inc_title 公司职位

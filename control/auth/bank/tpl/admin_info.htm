@@ -1,0 +1,21 @@
+<!--{include control/admin/tpl/admin_header}-->
+<form action="{BASE_URL}/index.php/auth/bank_admin_list/save" target="display_frame" id="frm" method="post">
+	<input type="hidden" value="{$uid}" name="u_id">
+	<input type="hidden" value="{$page}" name="page">
+	打款金额：
+	<input type="text" name='txt_cash' id="txt_cash"> (打款到银行卡的钱，用户用收到的金额来完成银行卡认证!eg:0.21)
+	<p><input type="submit" value="{$_lang['submit']}" id="sbt" onclick="return sub()" /></p>
+</form>
+<script>
+function sub(){
+	var api = art.dialog.open.api,	 
+	form = $('#frm');
+	form.submit();
+	//api.close();
+	//var win = art.dialog.open.origin;//来源页面
+	// 如果父页面重载或者关闭其子对话框全部会关闭
+	//win.location.reload();
+	return false;
+}
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

@@ -1,0 +1,109 @@
+
+<script type="text/javascript" defer="defer" src="{BASE_URL}/static/js/artdialog/artDialog.js"></script>
+<script type="text/javascript" defer="defer" src="{BASE_URL}/static/js/artdialog/plugins/iframeTools.js"></script> 
+<script type="text/javascript">
+var tips = window.document.getElementById('ajax_tips');
+function clear_tips(){
+	var s = setInterval(function(){
+		$(tips).children().html('').removeClass('tips_info');
+		clearInterval(s);
+	},1000);
+} 
+//排序 
+function submitSort(uri,f,ord){
+	uri += (uri.indexOf('?')==-1)?"?":"&";
+	uri += 'f='+f;
+	uri += '&ord='+ord;
+	//要去掉同级A标签到中最后一个排序字符
+	
+	location.href = uri;
+}
+//删除单条
+function kdel(o,s){
+	d = art.dialog;
+	var c = "确认删除？";
+	if(s){
+		c=s;
+	}
+	d.confirm(c, function(){
+		$.ajax({
+			url:o.href,
+			dataType:'text',
+			beforeSend:function(){
+	 	        $(tips).children().html('删除中...').addClass('tips_info'); 
+			},
+			success: function(data){
+				location.href= location.href;
+			},
+			complete:function(){
+				$(tips).children().html('提交成功!')
+				 clear_tips();
+			}
+			
+		});
+	}).follow(o);
+	return false;
+}
+//删除多条
+function batch_del(obj){
+	d = art.dialog;
+	var c = $(obj).val(); 
+	var conf = $(":checkbox[name='ckb[]']:checked").length;
+	if (conf > 0) {
+		d.confirm("{$_lang['confirm']}" + c + '?', function(){
+			//获取选中的值
+			var str = [];
+			$(":checkbox[name='ckb[]']:checked").each(function(){
+				str.push($(this).val());
+			})
+			var val = str.join(',');
+			var url = '{$del_uri}?ids='+val;
+			$.ajax({
+			url:url,
+			dataType:'text',
+			beforeSend:function(){
+	 	        $(tips).children().html('删除中...').addClass('tips_info'); 
+			},
+			success: function(data){
+				location.href= location.href;
+			},
+			complete:function(){
+				$(tips).children().html('提交成功!')
+				 clear_tips();
+			}
+			});
+		}).follow(obj);
+	}else{
+		d.alert("no_checkbox");
+	}
+	return false;  
+}
+
+function check_all(){
+    var ckb = $("input[type='checkbox']");
+    $.each(ckb,function(){
+    	if($(this).attr('checked')){
+    		$(this).attr('checked',false);
+    	}else{
+    		$(this).attr('checked',true);
+    	}
+    })
+}
+function kconfirm(o,s){
+	d = art.dialog;
+	var c = "{$_lang['confirm']}?";
+	if(s){
+		c=s;
+	}
+	d.confirm(c, function(){
+			location.href = o.href;
+	}).follow(o);
+	return false;
+}
+</script>
+<!--{eval list($times,$memory)=Keke::execute_time()}-->
+ 
+	执行时间: {$times} &nbsp;{$memory}
+ 
+</body>
+</html>

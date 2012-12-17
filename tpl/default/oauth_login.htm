@@ -1,0 +1,104 @@
+<!--{include header}-->
+<div class="wrapper">
+	<div class="container_24 ">
+		<section class="section clearfix">
+			<div class="box model blue ">
+        		<div class="inner">
+        	 <header class="box_header clearfix pad10">
+            	<div class="grid_5 alpha omega">
+            		<h1 class="box_title">{$_lang['account_bind']}</h1>
+				</div>
+				<div class="fl_l">
+					<nav class="box_nav">
+						<ul>
+                			<li><a href="{BASE_URL}/index.php/register/oauth?type=$type" class="fl_r">{$_lang['improve_information']}</a></li>
+						</ul>
+					</nav>
+				</div>
+            </header>
+            
+            <div class="box_detail clearfix po_re box ">
+                <div class="grid_17" >
+                    <div class="use_now">
+	                	<img src="{BASE_URL}/static/img/ico/{$type}_t.gif" style="vertical-align:middle;" >
+	                    <span class="font14">{$u['nick']}</span>
+	               </div>
+                                                
+                    <!--from±íµ¥ start-->
+                    <div class="form_box clearfix box">
+                    	<form action="{BASE_URL}/index.php/login/bind" method="post" id="oauth_login_frm"  name="oauth_login_frm">
+                    		
+                    		<input type="hidden" name="formhash" id="formhash" value="{FORMHASH}">
+							<input type="hidden" name="handlekey" value="oauth_login_frm1">
+							<input type="hidden" name="type" value="$type">
+                    		<!--ÕËºÅ-->
+                        	 <div class="rowElem clearfix po_re">
+                                <label class="grid_4">{$_lang['account']}</label>
+                                <div class="fl_l mr_5 ml_5">
+                                    <input  type="text" value="{$_lang['you_can_use_more_login_way']}" class="txt" autocomplete="off" name="txt_account" id="txt_account" limit="required:true;len:2-20" msg="{$_lang['user_error']}" title="{$_lang['username_can_zh']}" msgArea="login_account_msg" />
+                               </div>
+                                <span class="msg" id="login_account_msg"></span>
+                             </div>
+						 
+        
+                             <div class="rowElem clearfix po_re">
+                                <label class="grid_4">{$_lang['password']}</label>
+                                <div class="fl_l mr_5 ml_5">
+                                  <input  type="password"  name="pwd_password" id="pwd_password" maxlength="20" limit="required:true;len:6-20" msg="{$_lang['password_length_limit']}" title="{$_lang['password_length']}" msgArea="login_password_msg" />
+                                </div>
+                                <span class="msg" id="login_password_msg"></span>
+                             </div>
+							 <input type="hidden" name="logins" id="logins" value='0'>
+                          
+                             <p class="mt_20 prefix_4 ml_5"><input name="inputtext" type="checkbox" checked/> &nbsp;{$_lang['i_has_read_and_accept']}<a href="index.php?do=protocol&pro_id=218">{$_lang['login_agreement']}</a>{$_lang['and_copyright_notice']}</p>
+                             <div class="mt_20 prefix_4 ml_5">
+                          	<button  type="submit" onclick="return user_login();" class="button"  > <span class="check icon"></span> {$_lang['now_bindding']}¡¡</button> 
+						  	</div>
+                        </form>
+                    </div>
+                </div>
+                <div class="grid_7 omega border_l_c">
+                    <div class="pad10">
+                        <div class="pl_20">
+                        	<span>{$_lang['use_friend_web_login']}</span>
+							{loop $api_open $k $v}
+								{if $_K[$k.'_app_id']}
+		                            <div class="mt_10">
+		                                <a href="{BASE_URL}/index.php/login/ologin?type=$k"><img src="{BASE_URL}/static/img/ico/{$k}_t.gif"  title="{$api_name[$k]['name']}">$api_name[$k]['name']{$_lang['login']}</a>
+		                            </div>
+								{/if}
+							{/loop}
+							 </div>
+                    </div>
+                </div>
+            </div>
+			</div>
+		</div>
+			 
+		</section>
+			
+	</div>
+</div>			
+<div class="clear"></div>
+<script type="text/javascript">
+In('form'); 
+ 	$("#txt_account").focus(function (){
+		var content = $("#txt_account").val();
+		if(content =="{$_lang['you_can_use_more_login_way']}"){ 
+			$("#txt_account").val("");
+		} 
+	});
+	
+	$("#txt_account").blur(function (){
+		var content = $("#txt_account").val();
+	});
+	
+	//µÇÂ¼
+	function user_login(){  
+		if(checkForm(document.getElementById("oauth_login_frm"), false)){ 
+			showWindow('oauth_login_frm1','oauth_login_frm','post'); 
+		}
+		return false; 
+	}
+</script>
+<!--{include footer}-->

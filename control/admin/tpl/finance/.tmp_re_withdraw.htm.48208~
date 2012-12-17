@@ -1,0 +1,129 @@
+<!--{include control/admin/tpl/admin_header}-->
+ <div class="page_title">
+    <h1>{$_lang['financial_model']}</h1>
+    <div class="tool">
+    	<a href="{BASE_URL}/index.php/admin/finance_revenue/index" >{$_lang['flow_statistics']} </a>
+        <a href="{BASE_URL}/index.php/admin/finance_revenue/charge"  >{$_lang['total_prepaid']}</a>
+		<a href="{BASE_URL}/index.php/admin/finance_revenue/withdraw" class="here">{$_lang['atm_totals']}</a>
+		<a href="{BASE_URL}/index.php/admin/finance_revenue/profit" >{$_lang['site_profit']}</a>    		
+    </div>
+</div>
+<div class="box search p_relative">
+        <form action="{BASE_URL}/index.php/admin/finance_revenue/withdraw" method="post" id=frm_search name='frm_search'>
+        	 <table cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                    	<th width="100">{$_lang['time_coverage']}
+                    	 </th>
+						<td>
+                            <input type="text" value="{$st}" name="st" class="txt"
+							  onclick="showcalendar(event, this, 0)" limit='required:false;type:date;less:{$today}'
+							   msg="{$_lang['time_tips']}" msgArea='span_notice' id='start_time'/>~
+                            <input type="text" value="{$ed}" name="ed" class="txt"
+							  onclick="showcalendar(event, this, 0)"  limit='required:false;type:date;less:{$today};than:start_time'
+							   msg="{$_lang['time_tips']}" msgArea='span_notice' id='end_time'/>
+							<input type="hidden" name="id" value="{$id}">  
+                             <button class="pill" type="submit" value="{$_lang['search']}" name="sbt_search" onclick="return checkForm(document.getElementById('frm_search'));">
+                                <span class="icon magnifier">&nbsp;</span>{$_lang['search']}
+                              </button>
+							  <span id='span_notice' style='color:#ff0000'></span>
+                        </td>   
+				   </tr>
+                  </tbody>
+            </table>
+        </form>
+ </div>
+ <div class="box list">	   
+<table id='tb_cont_1' class='t_sub clear_l clear_b'>
+	<thead align="center">
+	<th> {$_lang['category']} </th>
+	<th> {$_lang['cash']} </th>
+	<th> {$_lang['profit']} </th>
+</thead>
+<tbody>
+	<tr>
+		<td >{$_lang['third_party']}</td>
+		<td>
+			<ul>
+				<!--{eval $w_c=0;}-->
+				{if sizeof($list)>0}
+					{loop $pay_online $k $v}
+					  {if $list[$k]}
+						<!--{eval $w_c+=$list[$k]['cash'];}-->
+						<li>
+							{$v['pay_name']}
+								(<!--{eval echo intval($list[$k]['count'])}-->
+								{$_lang['ci']}){$_lang['zh_mh']}{c:$list[$k]['cash']}
+						</li>
+					   {/if}
+					{/loop}
+				{else}
+					{$_lang['no_data']}
+				{/if}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				<!--{eval $w_f=0;}-->
+				{if sizeof($list)>0}
+					{loop $pay_online $k $v}
+					  {if $list[$k]}
+						<!--{eval $w_f+=$list[$k]['fee'];}-->
+						<li>
+							{c:$list[$k]['fee']}
+						</li>
+					   {/if}
+					{/loop}
+				{else}
+					{$_lang['no_data']}
+				{/if}
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td >{$_lang['offline_bank']}</td>
+		<td>
+			<ul>
+				{if sizeof($list)>0}
+					{loop $bank_arr $k $v}
+					  {if $list[$k]}
+						<!--{eval $w_c+=$list[$k]['cash'];}-->
+						<li>
+							{$v}
+								(<!--{eval echo intval($list[$k]['count'])}-->
+								{$_lang['ci']}){$_lang['zh_mh']}{c:$list[$k]['cash']}
+						</li>
+					   {/if}
+					{/loop}
+				{else}
+					{$_lang['no_data']}
+				{/if}
+			</ul>
+		</td>
+		<td>
+			<ul>
+				{if sizeof($list)>0}
+					{loop $bank_arr $k $v}
+					  {if $list[$k]}
+						<!--{eval $w_f+=$list[$k]['fee'];}-->
+						<li>
+							{c:$list[$k]['fee']}
+						</li>
+					   {/if}
+					{/loop}
+				{else}
+					{$_lang['no_data']}
+				{/if}
+			</ul>
+		</td>
+	</tr>
+</tbody>
+<tfoot>
+	<tr>
+		<td><strong>{$_lang['total']}</strong></td>
+		<td><strong style="color:red">{c:$w_c}</strong></td>
+		<td ><strong style="color:red">{c:$w_f}</strong></td>
+	</tr>
+</tfoot>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

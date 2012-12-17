@@ -1,0 +1,138 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    <h1>{$_lang['financial_model']}</h1>
+    <div class="tool">
+	   <a href="{$base_uri}" class="here">{$_lang['withdraw_audit']}</a>
+    </div>
+</div>
+<div class="box search p_relative">
+ <form method="get" action="{$base_uri}"  id="frm_list">
+	<table class="detail" cellspacing="0" cellpadding="0">
+	 <tbody>
+	 	<tr>
+            <th>查询字段
+               <select name="slt_fields">
+               	<option></option>
+               	{loop $query_fields $k $v}
+               	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+				{/loop} 
+               </select>
+			 <select name="slt_cond">
+			 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+				<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+				<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+				<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+			 </select>
+             <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+			 <select name="page_size">
+    			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+    			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+    			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+			</select>
+			 <input type="submit" value="{$_lang['search']}">
+			 </th>
+        </tr>
+	 </tbody>
+	</table>
+</form>
+ </div>
+<!--搜索结束-->
+<div class="box list">
+<form action="{$base_uri}" method="post" id='frm_art_action' >
+  <table class="detail" cellpadding="0" cellspacing="0">
+       <tr>
+       	    <th width="5%">
+       	   	<input type="checkbox" id="checkbox" onclick="checkall();" class="checkbox" >ID</th>
+            <th width="15%">{$_lang['withdraw_type']}</th>
+            <th width="10%">{$_lang['withdraw_people']}</th>
+            <th width="10%">{$_lang['real_withdraw_amount']}</th>
+            <th width="20%">{$_lang['payment_accoun']}</th>
+            <th width="10%">{$_lang['collection_name']}</th>
+            <th width="5%">{$_lang['withdraw_state']}</th>
+            <th width="20%">{$_lang['operate']}</th>
+             
+        </tr>
+		{loop $list_arr  $v}
+        <tr class='item'>
+            <td>
+                <input type="checkbox" name="ckb[]" id="ckb_$v['wid']" class="checkbox" value="{$v['wid']}">{$v['wid']}
+            </td>
+            <td>
+                {$v['bank_name']} 
+             </td>
+            <td>
+                {$v['username']}
+            </td>
+            <td>
+                <font color="red">
+                  {c:$v['cash']} 
+				</font>
+            </td>
+            <td>
+                {$v['bank_account']}
+            </td>
+            <td>
+                {$v['bank_username']}
+            </td>
+            <td>
+            	{$status_arr[$v['status']]}
+            </td>
+             <td>
+            	{if $v['status']==0}
+					{if $v['bank_name'] =='alipayjs'}
+					  <a href="javascript::void(0);" onclick="batch_pay({$v['wid']})" class="button">
+					   	 	{$_lang['alipay']}</a>
+					{/if}
+               	<a href="{$base_uri}/pass?wid={$v['wid']}" onclick="return kconfirm(this);" >
+               	{$_lang['confirm_cash']}</a>
+                  <a href="{$base_uri}/nopass?wid={$v['wid']}" onclick="return kprom(this,'不通过的理由？');" class="button">{$_lang['nopass']}</a>
+            	{/if}
+			</td>
+			  
+		 </tr>
+		 {/loop}
+		 <tfoot>	
+            <tr>
+            <td colspan="9">
+			 <div class="page" >{$pages['page']}</div>
+			 <input type="checkbox" id="checkbox" onclick="checkall();" class="checkbox" >
+			 <label for="checkbox">{$_lang['select_all']}</label>
+             <input type="hidden" name="sbt_action" class="sbt_action"/>   
+				{if $w['pay_type'] =='alipayjs'}
+				 <button name="sbt_action" type="button" value="{$_lang['mulit_payment']}" onclick="batch_pay();" class="pill positive button">
+	                  <span class="icon check"></span>{$_lang['mulit_payment']}
+	             </button>
+				{/if} 
+       		 
+            </td>
+          </tr>
+          <tfoot>	
+      </table>
+</form>
+</div>
+<script type="text/javascript">
+	function batch_pay(wid){
+		var ids;
+		
+		if(wid){ 
+			$("#ckb_"+wid).attr("checked","checked");
+		}
+		d = art.dialog;
+		if($(":checkbox[name='ckb[]']:checked").length>0){
+			$(":checkbox[name='ckb[]']:checked").each(function(i,n){
+				i==0?ids=$(this).val():ids+=","+$(this).val();
+			})
+			if(ids&&typeof(ids)!=undefined){
+			$.post("{$base_uri}/batch?type=alipayjs&ids="+ids,function(url){
+ 				d.confirm("{$_lang['you_confirm_payment']}", function(){
+				     window.open(url);
+					 d.close();
+				});	
+			},'text')
+			 }
+		}else{
+			art.dialog.alert("{$_lang['have_no_choice_play_money']}");
+		}
+	}
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

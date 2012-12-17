@@ -1,0 +1,70 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['tpl_manage']}</h1>
+         <div class="tool"></div>
+</div>
+<div class="box list">
+    
+        <table class="detail"  height="auto" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+            	<th>{$_lang['tpl_name']}</th>
+				<th width="150">{$_lang['tpl_img']}</th>
+				<th>{$_lang['explain']}</th>
+				<th>{$_lang['open_status']}</th>
+				<th>{$_lang['current_skin']}</th>
+				<th>{$_lang['author']}</th>
+				<th>{$_lang['operate']}</th>
+            </tr>
+			<form name="frm_list" action="{BASE_URL}/index.php/admin/tool_tpl/save" method="post">
+			{loop $list_arr $v}
+			<tr class="item">
+                <td>{$_lang[$v['tpl_title']]}</td>
+				<td>
+                    <img src="../../tpl/$v['tpl_title']/img/style/{$v['tpl_title']}.jpg" alt={$_lang['preview']} width="110px;" height="120px;" />
+				</td>
+				<td>$v['tpl_desc']</td>
+                <td>
+                	<label for="rdo_temp_{$v['tpl_id']}">
+                         <input type="radio" value="{$v['tpl_id']}" 
+						 id="rdo_temp_{$v['tpl_id']}" name="rdo_is_selected" 
+						 {if $v['is_selected']==1}checked="checked"{/if}/>
+                    </label>
+                </td>
+                <td>
+                	{loop $skins $k $vv}
+						<input type="radio" value="{$k}" id="rdo_tpl_{$v['tpl_id']}"
+						 name="skin[{$v[tpl_title]}]" {if $v['tpl_pic']==$k}checked{/if}/>{$_lang[$vv]}</br>
+					{/loop}
+                </td>
+				<td>$v['develop']</td>	
+                <td>
+                	<button type="submit"  name="sbt_edit" id="sbt_edit" class="button" value="{$_lang['use']}"> {$_lang['use']} </button>
+                	 <a type="button" class="button" value="{$_lang['preview']}" onclick="window.open('http://www.kekezu.com/app_store-view-app_tpl.html#holder')"><span class="book icon"></span>{$_lang['view']}</a>
+                     <a type="button" class="button" value="{$_lang['edit']}" href='{BASE_URL}/index.php/admin/tool_tpl/list?tplname={$v['tpl_path']}'><span class="pen icon"></span>{$_lang['edit']}</a>
+					 <a type="button" class="button" value="{$_lang['export']}" href='{BASE_URL}/index.php/admin/tool_tpl/backup?tplname={$v['tpl_path']}'>{$_lang['backup']}</a>
+					 {if $v['tpl_path']!='default'}
+                        <a href="{BASE_URL}/index.php/admin/tool_tpl/del?delid=$v['tpl_id']" 
+						type="button" class="button" value="{$_lang['uninstall']}" onclick="return confirm({$_lang['comfirm_want_del']})">{$_lang['uninstall']}</a>
+                     {/if}
+                </td>  
+                   
+            </tr>
+			{/loop}
+			</form>
+			  <tr>
+                <td scope="row">
+                    
+                </td>
+                <td colspan="6">
+                	{$_lang['enter_dir_name']}
+					<form name="frm_list" action="{BASE_URL}/index.php/admin/tool_tpl/install" method="post" enctype="multipart/form-data">
+					<input name="txt_newtplpath" type="text" class="txt" >
+					<button type="submit" name="sbt_edit" class="button" value={$_lang['from_dir_install']}>{$_lang['from_dir_install']}</button>
+					</form>
+                </td>
+             </tr>
+        </table>
+   
+
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

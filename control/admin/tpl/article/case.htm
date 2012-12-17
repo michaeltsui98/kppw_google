@@ -1,0 +1,111 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    <h1>{$_lang['case_manage']}</h1>
+    <div class="tool">
+    	 <a href="{BASE_URL}/index.php/admin/article_case" class="here">{$_lang['case_list']}</a>
+         <a href="{BASE_URL}/index.php/admin/article_case/add">{$_lang['add_case']}</a>
+    </div>
+</div>
+<div class="box search p_relative">
+	<form method="get" action="{BASE_URL}/index.php/admin/article_case"  id="frm_list">
+        	<table class="detail" cellspacing="0" cellpadding="0">
+			 <tbody>
+			 	<tr>
+		                <th>查询字段
+		                   <select name="slt_fields">
+		                   	<option></option>
+		                   	{loop $query_fields $k $v}
+		                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+							{/loop} 
+		                   </select>
+						 <select name="slt_cond">
+						 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+							<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+							<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+							<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+						 </select>
+		                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+						 <select name="page_size">
+                			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+                			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+                			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+            			</select>
+						 <input type="submit" value="{$_lang['search']}">
+						 </td>
+	            </tr>
+		 </tbody>
+	</table>
+ </form>
+ 
+</div>
+	
+<div class="box list">
+     		<table   class="detail" cellpadding="0" cellspacing="0">
+  				<thead>
+  					 <tr>
+  					 <th width="50"><input type="checkbox" onclick="checkall();" id="checkbox" name="checkbox"/> 
+                       <a href="javascript:;" onclick="submitSort('{$uri}','case_id',{$ord_tag})">ID{if $_GET['f']=='case_id'}{$ord_char}{/if}
+                    </th>
+                    <th width="38%">
+                      <a href="javascript:;" onclick="submitSort('{$uri}','case_title',{$ord_tag})">{$_lang['case_name']}{if $_GET['f']=='case_title'}{$ord_char}{/if}
+                    </th>
+                    <th width="10%">
+                       <a href="javascript:;" onclick="submitSort('{$uri}','case_price',{$ord_tag})">{$_lang['case_money']}{if $_GET['f']=='case_price'}{$ord_char}{/if}
+                    </th>
+                    <th width="10%">{$_lang['case_type']}</th>
+                    <th width="17%">
+                       <a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})"> {$_lang['time']}{if $_GET['f']=='on_time'}{$ord_char}{/if}
+                    </th>
+                    <th width="15%">{$_lang['operate']}</th>
+                </tr>
+				</thead>
+				<tbody>
+                {loop $list_arr $v}
+                <tr class="item">
+                	<td>
+                		<input type="checkbox" name="ckb[]" class="checkbox" value="{$v['case_id']}"> {$v['case_id']}
+                	</td>
+                    
+                    <td>
+                     {if $v[obj_type]=='service'}
+					   <a href="../../index.php?do=service&sid=$v['obj_id']" target="_blank">
+                        	<!--{eval echo Keke::cutstr($v['case_title'],54)}--></a>
+					 {elseif $v[obj_type]=='task'}
+					   <a href="../../index.php?do=task&task_id=$v['obj_id']" target="_blank">
+                        	<!--{eval echo Keke::cutstr($v['case_title'],54)}--></a>
+					 {/if}
+					  
+                    </td>
+                    <td>
+                        {if $v['task_cash']}{c:$v['task_cash']} {else}{c:$v['case_price']}{/if}
+                    </td>
+                    <td>
+                        {if $v['obj_type']=="task"}{$_lang['task']}{else}{$_lang['shop']}{/if}
+                    </td>
+                    <td>
+                        <!--{eval echo date('Y-m-d H:i',$v['on_time'])}-->
+                    </td>
+                    <td>
+                        <a href="{$add_uri}?case_id={$v['case_id']}" class="button dbl_target"><span class="pen icon"></span>{$_lang['edit']}</a>
+                       <a href="{$del_uri}?case_id={$v['case_id']}" onclick="return cdel(this);" class="button"><span class="trash icon"></span>{$_lang['delete']}</a>
+                    </td>
+                </tr>
+				{/loop}
+				</tabody>
+				<tfoot>	
+					<tr >
+					    <td colspan="9">
+					    <div class="page" >{$pages['page']}</div>
+					    <input type="checkbox" onclick="checkall(event);" id="checkbox" name="checkbox"/>
+			        	<label for="checkbox"> {$_lang['select_all']}</label>
+			        	<input type="hidden" name="sbt_action" class="sbt_action"/>
+						<button type="submit" name="sbt_action" onclick="return batch_act(this)" value="{$_lang['mulit_delete']}" class="pill negative" >
+							<span class="trash icon"></span>{$_lang['mulit_delete']}
+						</button>
+			        	</td>
+			        </tr>
+			   </tfoot>
+  			</table>
+ 
+</div>	 
+<!--{include control/admin/tpl/admin_footer}-->

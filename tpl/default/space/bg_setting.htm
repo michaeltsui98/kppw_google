@@ -1,0 +1,44 @@
+<div class="rowElem clearfix">
+    <label class="grid_3 t_r">
+        {$_lang['space_background_picture']}{$_lang['zh_mh']}
+    </label>
+    <div class="grid_15">
+        <div class="grid_10">
+            <input type="file" name="shop_background" id="shop_background" ext=".jpg,.gif,.png,.jpeg" class="button block t_c" onchange="isExtName(this,1)">
+            <button type="button" class="button" value="{$_lang['upload']}" onclick="fileUpload('shop_background','950')">
+                <span class="icon"></span>{$_lang['upload']}
+            </button>
+			<input type="hidden" name="file_temp" id="file_temp">
+            <div class="grid_12 alpha ui_note">
+                {$_lang['tips_about_background_picture']}
+            </div>
+            <br/>
+            <br/>
+            <div id="bg_style" {if !$shop_info['shop_background']}style="display:none;"{/if}>
+                <a href="#" onclick="change_default();return false;">$_lang['resotre_default']</a>
+                <br/>
+                $_lang['bg_fixed']:
+                <br/>
+                <select name="repeat">
+                    <option value="no-repeat"{if $shop_backstyle['repeat']=='no-repeat'}  selected="selected"{/if}>$_lang['default']</option><!-- 不重复 -->
+                    <option value="repeat"{if $shop_backstyle['repeat']=='repeat'}  selected="selected"{/if}>$_lang['repeat']</option>
+                    <option value="repeat-x"{if $shop_backstyle['repeat']=='repeat-x'}  selected="selected"{/if}>$_lang['x_repeat']</option><!-- x轴方向重复 -->
+                    <option value="repeat-y"{if $shop_backstyle['repeat']=='repeat-y'}  selected="selected"{/if}>$_lang['y_repeat']</option><!-- y轴方向重复 -->
+                </select>
+                <select name="scroll">
+                    <option value="scroll"{if $shop_backstyle['scroll']=='scroll'}  selected="selected"{/if}>$_lang['scroll']</option>
+                    <option value="fixed"{if $shop_backstyle['scroll']=='fixed'}  selected="selected"{/if}>$_lang['fixed']</option>
+                    <!-- 背景图像不会移动 -->
+                </select>
+                <select name="position">
+                    <option value="left"{if $shop_backstyle['position']=='left top'}  selected="selected"{/if}>$_lang['upper_left_corner']</option>
+                    <option value="center"{if $shop_backstyle['position']=='center top'}  selected="center"{/if}>$_lang['center']</option>
+                    <option value="right"{if $shop_backstyle['position']=='right top'}  selected="right"{/if}>$_lang['upper_right_corner']</option>
+                </select>
+                <br/>
+                <br/>
+                <a href="{$_K['siteurl']}/$shop_info['shop_background']" target="_blank">$_lang['view']</a>
+            </div>
+        </div>
+    </div>
+</div>

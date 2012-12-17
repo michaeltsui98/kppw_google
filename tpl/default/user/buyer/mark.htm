@@ -1,0 +1,126 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/buyer/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 class="title">来自服务商的评价</h2>
+		                    </div>
+		                </header>
+		                <nav class="box_nav">
+								<ul id="test_ul" class="clearfix">
+									<li {if !$_GET['status']} class="selected" {/if}><a href="{USER_URL}/buyer_mark?status=">所有评价</a></li>
+									<li {if $_GET['status']==1} class="selected" {/if}><a href="{USER_URL}/buyer_mark?status=1">好评</a></li>
+									<li {if $_GET['status']==2} class="selected" {/if}><a href="{USER_URL}/buyer_mark?status=2">中评</a></li>
+									<li {if $_GET['status']==3} class="selected" {/if}><a href="{USER_URL}/buyer_mark?status=3">差评</a></li>
+								</ul>
+		                </nav>
+		                <div class="box_detail">
+		                	<div class="toolbar">
+		                		<form class="detail" action="{USER_URL}/buyer_mark" method="get" id="frm_user_search">
+										<table cellspacing="0" cellpadding="0">
+											<tbody>
+											<tr>
+										    <td> 条件
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											 <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											 </select>
+										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											 <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											</select>
+											 <input type="submit" value="{$_lang['search']}">
+											 </td>
+										</tr>
+										</tbody>
+										</table>
+										</form>
+		                	 
+		                	</div>
+
+		                	<!--date_table数据表格 start-->
+		                    <div class="data_list">
+		                        <table  class="data_table">
+		                            <thead>
+		                            <tr>
+		                              <th scope="col" width="40%"><a href="javascript:;" onclick="submitSort('{$uri}','mark_status',{$ord_tag})">评价{if $_GET['f']=='mark_status'}{$ord_char}{/if}</a></th>
+		                              <th scope="col" width="20%">项目</th>
+		                              <th scope="col">辅助评价</th>
+		                              <th scope="col"><a href="javascript:;" onclick="submitSort('{$uri}','mark_time',{$ord_tag})">时间{if $_GET['f']=='mark_time'}{$ord_char}{/if}</a></th>
+		                            </tr>
+		                            </thead>
+		                            <tbody>
+		                            {if $list_arr}
+		                            {loop $list_arr $k $v}	
+		                            <tr>
+		                              <td>
+		                              	<a href="#" class="title">{$v['by_username']}</a> 
+										<img src="{BASE_URL}/static/img/ico/ico_mark_{$v['mark_status']}.gif" > 
+										<!--{eval echo self::$_mark[$v['mark_status']]}-->
+		                              	<p>{$v['mark_content']}</p>
+		                              </td>
+		                              <td>
+		                              	<p>{$v['model_name']} <a href="{PHP_URL}/task/{$v['origin_id']}">{$v['obj_title']}</a></p>
+		                              </td>
+		                              <td>
+		                              	<!--{eval $aid_name = explode(',',$v['aid_name']) }-->
+										<!--{eval $aid_star = explode(',',$v['aid_star']) }-->
+										{loop $aid_name $k1 $v1}
+		                              	<p>
+                                            <span class="mr_10">{$v1}</span>
+                                            <em class="cc00 mr_10"><!--{eval echo (float)$aid_star[$k1]}-->分</em>
+                                            <span class="stars a5 s<!--{eval echo (int)$aid_star[$k1]}-->">
+                                            	<span class="star_selected"></span></span>
+                                        </p>
+										{/loop}
+								                                                
+                                	 </td>
+		                              <td>{date('Y-m-d',$v['mark_time'])}</td>
+
+		                            </tr>
+		                            {/loop}
+									{else}
+									<tfoot>
+				                            <tr>
+					                            <td colspan="4" class="t_c">暂无记录</td>
+					                        </tr>
+				                    </tfoot>
+									{/if}
+		                             
+		                            </tbody>
+		                            
+		                          </table>
+		                    </div>
+			               	<!--data_table数据表格 end-->
+
+			               	<div class="toolbar bottom">
+		                		
+		                		<div class="page">
+					                 {$pages['page']}
+					            </div>
+		                	</div>
+
+
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+<!--{include user/footer}-->

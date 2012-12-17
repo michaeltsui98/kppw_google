@@ -1,0 +1,99 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['global_config']}</h1>
+         <div class="tool">         
+            <a href="{BASE_URL}/index.php/admin/config_basic" > {$_lang['website_config']}</a>
+            <a href="{BASE_URL}/index.php/admin/config_basic/sys" class="here">{$_lang['basic_config']}</a>
+			<a href="{BASE_URL}/index.php/admin/config_basic/seo">{$_lang['seo_config']}</a>
+			<a href="{BASE_URL}/index.php/admin/config_basic/mail">{$_lang['mail_config']}</a>
+    	</div>
+</div> 
+<div class="box post">
+     <form name="frm_config_basic" class="detail" id="frm_config_basic" action="{BASE_URL}/index.php/admin/config_basic/save" method="post" accept-charset="{$_K['charset']}" enctype='multipart/form-data'>
+        <input type="hidden" name="formhash" value="{FORMHASH}">
+		<input type="hidden" name="type" value="{$type}">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th scope="row">
+                    {$_lang['voucher_is_enabled']}{$_lang['zh_mh']}
+                </th>
+                <td>
+                    <label for="rdo_credit_is_allow">
+                        <input type="radio" id="rdo_credit_is_allow" onclick="if(this.checked){$('#sp_inp_credit_rename').hide();}else{$('#sp_inp_credit_rename').show()}" name="credit_is_allow" {if $config_arr['credit_is_allow']==2}checked="checked" {/if} value="2">{$_lang['close']}
+                    </label>
+                    <label for="rdo_crdeit_is_allow2">
+                        <input type="radio" id="rdo_crdeit_is_allow2" onclick="if(this.checked){$('#sp_inp_credit_rename').show();}else{$('#sp_inp_credit_rename').hide()}" name="credit_is_allow" {if $config_arr['credit_is_allow']==1}checked="checked" {/if} value="1">{$_lang['open']}
+                    </label><b style="font-weight:normal;" id="sp_inp_credit_rename" {if $credit_is_allow==2}style="display:none;"{/if}>{$_lang['vouchers_renamed']}{$_lang['zh_mh']}  <input type="text"  class="txt" name="credit_rename" id="inp_credit_rename" value="$config_arr['credit_rename']">({$_lang['default_please_leave_blank']})</b>
+                </td>
+            </tr>
+			<tr>
+                <th scope="row">
+                    {$_lang['attachment_cap']}{$_lang['zh_mh']}
+                </th>
+                <td>
+                    <input type="text" size="50" name="max_size" value="{$config_arr['max_size']}" limit="required:true;type:int;len:1-2" value="2" msg="{$_lang['attachment_cap']}" msgArea="txt_max_size_msg" class="txt"/><b style="color:red">*</b>
+                    <span id="txt_max_size_msg"></span>{$_lang['attachment_cap_notice']}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    {$_lang['attachment_format']}{$_lang['zh_mh']}
+                </th>
+                <td>
+                    <input type="text" size="50" name="file_type" value="{$config_arr['file_type']}" limit="required:true;len:3-100;general:false" msg="{$_lang['attachment_format_msg']}{$_lang['zh_mh']}3-100" msgArea="txt_file_type_msg" class="txt"/><b style="color:red">*</b>
+                    <span id="txt_file_type_msg"></span>{$_lang['attachment_format_notice']}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    {$_lang['user_disable_keyword']}{$_lang['zh_mh']}
+                </th>
+                <td>
+                    <textarea cols="50" name="ban_users" rows="3" class="textarea">{$config_arr['ban_users']}</textarea>
+                   {$_lang['user_disable_keyword_msg']}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    {$_lang['content_disable_keyword']}{$_lang['zh_mh']}
+                </th>
+                <td>
+                    <textarea cols="50" name="ban_content" rows="3" class="textarea">{$config_arr['ban_content']}</textarea>
+                   {$_lang['content_disable_keyword_msg']}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    {$_lang['register_time_limit']}{$_lang['zh_mh']}
+                </th>
+                <td>
+                    <input type="text" size="51" name="reg_limit" value="{$config_arr['reg_limit']}" limit="type:int" msg="{$_lang['register_time_limit_msg']}" msgArea="txt_reg_limit_msg" class="txt"/><span id="txt_reg_limit_msg"></span>{$_lang['register_time_limit_notice']}
+                </td>
+            </tr>
+			<tr>
+                <th scope="row">
+                   {$_lang['user_email_active']}{$_lang['zh_mh']}
+                </th>
+                <td>
+                	<label for="red_reg">
+                        <input type="radio" id="rdo_reg" name="allow_reg_action" {if $config_arr['allow_reg_action']==1}checked="checked" {/if}value="1" />{$_lang['open']}
+                    </label>
+                    <label for="rdo_reg2">
+                        <input type="radio" id="rdo_reg2" name="allow_reg_action" {if $config_arr['allow_reg_action']==0}checked="checked" {/if}value="0" />{$_lang['close']}
+                    </label>
+					{$_lang['user_email_active_notice']}
+               
+                </td>
+            </tr>
+			<th scope="row">&nbsp;</th>
+			<td>
+				<div class="clearfix padt10">
+                    <button class="positive pill primary button" type="submit" name='submit' value="{$_lang['submit']}"><span class="check icon"></span>{$_lang['submit']}</button>
+                    <button class="pill button" type="button" onclick="history.go(-1);" value="{$_lang['return']}"><span class="uparrow icon"></span>{$_lang['return']}</button>
+                </div>
+			</td>
+                    
+      </table>
+    </form>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

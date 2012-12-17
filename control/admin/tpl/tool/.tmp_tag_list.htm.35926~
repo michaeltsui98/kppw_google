@@ -1,0 +1,92 @@
+<!--{include control/admin/tpl/admin_header}-->
+<link href="{$_K['siteurl']}/static/css/base.css" rel="stylesheet">
+<div class="page_title">
+    	<h1>{$_lang['tag_manage']}</h1>
+        <div class="tool">         
+            <a href="{BASE_URL}/index.php/admin/tool_tag/" {if $_K['action'] == 'index' and !$this->request->param('id')}class="here"{/if} >{$_lang['tag_list']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_tag/index/1" {if $this->request->param('id') == '1'}class="here"{/if} >活动</a>
+			<a href="{BASE_URL}/index.php/admin/tool_tag/index/2" {if $this->request->param('id') == '2'}class="here"{/if} >协议</a>
+			<a href="{BASE_URL}/index.php/admin/tool_tag/add/{$id}">{$_lang['add']} </a>
+        </div>
+</div>
+<div class="box search p_relative">
+  <form method="get" action="{BASE_URL}/index.php/admin/tool_tag"  id="frm_list">
+        	<table class="detail" cellspacing="0" cellpadding="0">
+			 <tbody>
+			 	<tr>
+		                <th>查询字段
+		                   <select name="slt_fields">
+		                   	<option></option>
+		                   	{loop $query_fields $k $v}
+		                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+							{/loop} 
+		                   </select>
+						 <select name="slt_cond">
+						 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+							<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+							<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+							<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+						 </select>
+		                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+						 <select name="page_size">
+                			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+                			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+                			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+            			</select>
+						 <input type="submit" value="{$_lang['search']}">
+						 </td>
+	            </tr>
+		 </tbody>
+	</table>
+ </form>
+</div>
+ 
+<div class="box list clearfix">
+    <table width="100%" class="detail" border="0" cellspacing="0" cellpadding="0" class="tab_list t_c">
+        	<tr class="item">
+        		<th width="50">
+        			<a href="javascript:;" onclick="submitSort('{$uri}','tag_id',{$ord_tag})">ID{if $_GET['f']=='tag_id'}{$ord_char}{/if}</a>
+        		</th>
+        		<th align="left">{$_lang['tag_name']}</th>
+           		<th>{$_lang['internal_calling_code']}</th>
+                <th>{$_lang['js_calling_code']}</th>
+				<th><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">{$_lang['time']}{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>
+                <th width="160">{$_lang['operate']}</th>
+               
+            </tr>
+                {loop $list_arr  $v}
+                <tr class="item">
+                	<td><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['tag_id']}">{$v['tag_id']}</td>
+                    <td>{$v['tagname']}</td>
+                    <td>
+                        <input type="text" class="txt" value="<!--{eval echo '<!--{tag '.$v['tagname'].'}-';}-->->" size="30" onfocus="setCopy(this.value,'点击复制','admin')">
+                    </td>
+                    <td>
+                        <input type="text" class="txt" value="<script src='{$_K['siteurl']}/js.php?op=tag&tag_id=$v['tag_id']'></script>"  size="40" onfocus="setCopy(this.value,'点击复制','admin')">
+                    </td>
+					<td><!--{date('Y-m-d',$v['on_time'])}--></td>
+                    <td colspan="3">
+                        <a href="{$base_uri}/preview?&tag_id={$v['tag_id']}" target="_blank" class="button dbl_target">
+                        <span class="book icon"></span>{$_lang['view']}</a>
+                        <a href="{$add_uri}?tag_id=$v['tag_id']" class="button">
+                        <span class="pen icon"></span>{$_lang['edit']}</a>
+                        <a href="{$del_uri}?tag_id=$v['tag_id']" onclick="return cdel(this)"  class="button"><span class="trash icon"></span>{$_lang['delete']}</a>
+                    </td>
+                </tr>
+				{/loop}
+				<tfoot>	
+					<tr >
+					    <td colspan="9">
+					    <div class="page" >{$pages['page']}</div>
+					    <input type="checkbox" onclick="checkall(event);" id="checkbox" name="checkbox"/>
+			        	<label for="checkbox"> {$_lang['select_all']}</label>
+			        	<input type="hidden" name="sbt_action" class="sbt_action"/>
+						<button type="submit" name="sbt_action" onclick="return batch_act(this)" value="{$_lang['mulit_delete']}" class="pill negative" >
+							<span class="trash icon"></span>{$_lang['mulit_delete']}
+						</button>
+			        	</td>
+			        </tr>
+			   </tfoot>
+       </table>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

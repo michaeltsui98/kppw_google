@@ -1,0 +1,99 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    <h1>{$_lang['financial_model']}</h1>
+    <div class="tool">
+     <a href="{$base_uri}" class="here">{$_lang['recharge_audit']}</a>
+    </div>
+</div>
+<div class="box search p_relative">
+ <form method="get" action="{$base_uri}"  id="frm_list">
+	<table class="detail" cellspacing="0" cellpadding="0">
+	 <tbody>
+	 	<tr>
+                <th>查询字段
+                   <select name="slt_fields">
+                   	<option></option>
+                   	{loop $query_fields $k $v}
+                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+					{/loop} 
+                   </select>
+				 <select name="slt_cond">
+				 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+					<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+					<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+					<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+				 </select>
+                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+				 <select name="page_size">
+        			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+        			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+        			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+    			</select>
+				 <input type="submit" value="{$_lang['search']}">
+				 </td>
+        </tr>
+	 </tbody>
+	</table>
+</form>
+ </div>
+<!--搜索结束-->
+<div class="box list">
+<table class="detail" cellpadding="0" cellspacing="0">
+   <tr>
+   		<th width="5%">
+		<a href="javascript:;" onclick="submitSort('{$uri}','rid',{$ord_tag})">ID{if $_GET['f']=='rid'}{$ord_char}{/if}</a></th>
+		<th width="10%">方式</th>
+        <th width="20%">银行</th>
+        <th width="10%">{$_lang['recharge_er']}</th>
+        <th width="15%"><a href="javascript:;" onclick="submitSort('{$uri}','cash',{$ord_tag})">{$_lang['recharge_cash']}{if $_GET['f']=='cash'}{$ord_char}{/if}</a></th>
+        <th width="10%"><a href="javascript:;" onclick="submitSort('{$uri}','pay_time',{$ord_tag})">{$_lang['recharge_time']}{if $_GET['f']=='pay_time'}{$ord_char}{/if}</a></th>
+        <th width="10%">{$_lang['recharge_status']}</th>
+        <th width="15%">{$_lang['operate']}</th>
+    </tr>
+		 {loop $list_arr $k $v}
+    <tr class='item'>
+    	<td><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['rid']}">{$v['rid']}</td>
+        <td>{$charge_type_arr[$v['btype']]}</td>
+        <td>
+            
+				
+				{if $v['btype'] == 'offline'}
+					银行：{$bank_arr[$v['bpayment']]} $v['bpay_name']
+					<br/>
+					收款人：{$v['bpay_user']} <br/> 卡号:{$v['bpay_account']}
+				{else}
+					{$bank_arr[$v['bpayment']]}
+				{/if}
+			 
+        </td>
+        <td>{$v['username']}</td>
+		<td>{c:$v['cash']} {if $v['btype'] == 'offline'}<a href="javascript:void(0);" 
+		onclick="art.dialog.open('{BASE_URL}/$v['recharge_pic']',{title:'图片',width: '50%', height: '50%'})">充值凭证</a>{/if}</td>
+		<td>{date('Y-m-d',$v['pay_time'])}</td>
+        <td>{$status_arr[$v['status']]}
+		{if $v['status']=='fail'}:$v['mem']{/if}
+		</td>
+        <td>
+        	{if $v['status']=='wait'}
+			 {if $v['btype']=='offline'}
+        		<a href="{$base_uri}/update?rid={$v['rid']}" onclick="return kconfirm(this,'{$_lang[confirm_cashin]}？');" class="button">
+        			 {$_lang['confirm_of_payment']}？</a>
+			 
+			    <a href="{$base_uri}/nopass?rid={$v['rid']}" onclick="return kprom(this,'不通过的理由？');" class="button">{$_lang['nopass']}</a>	
+			 {/if}
+           		<a href="{$del_uri}?&rid={$v['rid']}" onclick="return cdel(this);" class="button"><span class="trash icon"></span>{$_lang['delete']}</a>
+				
+        	{/if}
+		</td>
+    </tr>
+    {/loop}
+    <tfoot>	
+    	<tr >
+        	<td colspan="9">
+           	<div class="page" >{$pages['page']}</div>
+        </tr>
+   </tfoot>
+  </table>
+       
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

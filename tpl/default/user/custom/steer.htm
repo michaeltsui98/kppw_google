@@ -1,0 +1,111 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/custom/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 class="title">建议</h2>
+		                    </div>
+		                </header>
+		                <div class="box_detail">
+
+		                	<div class="toolbar">
+		                		<div class="actions">
+ 									<form class="detail" action="{USER_URL}/custom_steer" method="get" id="frm_user_search">
+										   <input type="hidden" value="{$page}" name="page">
+										<table cellspacing="0" cellpadding="0">
+											<tbody>
+											<tr>
+										    <td> 查询字段
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											 <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											 </select>
+										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											 <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											</select>
+											 <input type="submit" value="{$_lang['search']}">
+											 </td>
+										</tr>
+										</tbody>
+										</table>
+										</form>
+					            </div>
+		                	</div>
+
+		                	<!--date_table数据表格 start-->
+		                    <div class="data_list">
+		                        <table  class="data_table">
+		                            <thead>
+		                            <tr>
+		                              <th scope="col"><a href="javascript:;" onclick="submitSort('{$uri}','report_id',{$ord_tag})">编号{if $_GET['f']=='report_id'}{$ord_char}{/if}</a></th>	
+		                              <th scope="col" width="40%">内容</th>
+		                              <th scope="col" width="40%">回复</th>
+		                              <th scope="col"><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">时间{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>
+		                            </tr>
+		                            </thead>
+		                            <tbody>
+		                           {loop $data_list $v}
+		                            <tr>
+		                              <td>{$v['report_id']}</td>
+		                              <td><p>
+		                              		
+									  			{cutstr($v['report_desc'],45)}
+											</p>
+		                              	<div class="item_action">
+		                              		<a href="{$del_uri}/?report_id={$v['report_id']}" onclick="kdel(this);return false;">删除</a>
+		                              	</div>
+		                              </td>
+		                              <td>
+									  		{if $v['report_status'] == 1}
+												--
+											{elseif $v['report_status'] == 4}
+									  			{cutstr($v['op_result'],30)}
+											{/if}
+									  </td>
+		                              <td>{date('Y-m-d',$v['on_time'])}</td>
+		                            </tr>
+									{/loop}
+		                            
+		                            </tbody>
+		                            
+		                          </table>
+		                    </div>
+			               	<!--data_table数据表格 end-->
+
+			               	<div class="toolbar bottom">
+		                		<div class="actions">
+		                			<input type="submit" value="提建议" id="sbt_steer" onclick="art.dialog.open('{$open_url}',{id:'sbt_steer',title:'提交建议'},false);">
+		                		</div>
+		                		<div class="page">
+					                <p>
+					                    {$pages['page']}
+					                </p>
+					            </div>
+		                	</div>
+
+
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+ 
+<!--{include user/footer}-->

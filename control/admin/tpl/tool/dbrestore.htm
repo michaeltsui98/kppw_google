@@ -1,0 +1,67 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['db_mange']}</h1>
+          <div class="tool">         
+			<a href="{BASE_URL}/index.php/admin/tool_dbbackup" >{$_lang['backup']}</a>
+            <a href="{BASE_URL}/index.php/admin/tool_dbrestore" class="here">{$_lang['restore']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim">{$_lang['optim']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim/repair">{$_lang['repair']}</a>
+		</div>
+</div>
+<div class="box post">
+    <div id="loading" style="background:url('{BASE_URL}/control/admin/tpl/img/loading.gif') no-repeat center;width:400px;height:150px;position:absolute;left:50%;margin-left:-200px;text-align:center;line-height:150px;display:none;">
+        {$_lang['just_a_moment_restoring']}
+    </div>
+             
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th class="100" align="left">{$_lang['database_name']}</th>
+            <th width="200">{$_lang['time']}</th>
+            <th width="60">{$_lang['restore']}</th>
+			<th width="60">{$_lang['delete']}</th>
+        </tr>
+        {loop $this->_file_arr $k $v}
+	        <tr>
+	            <td align="left"><!--{eval echo Keke::set_star($v['name'],7,11,'3','*');}--></td>
+	            <td><!--{eval echo  date('Y-m-d',$v['date']);}-->
+	            </td>
+	            <td>
+	                <a href="#" onclick="restore('{$k}');" class="button"><span calss="reload icon"></span>{$_lang['restore']}</a>
+	            </td>
+	         	 <td>
+	                <a href="{BASE_URL}/index.php/admin/tool_dbrestore/del?restore_name=$k" class="button" onclick="return cdel(this);"><span calss="trash icon"></span>{$_lang['delete']}</a>
+	            </td>
+	        </tr>
+		{/loop}
+</table>
+</div>
+<script type="text/javascript">
+ 
+    
+function restore(id){
+	art.dialog({
+				title: "{$_lang['comfirm_to_tips']}",
+				content: "{$_lang['comfirm_to_restore_data']}",
+			    icon: 'succeed',
+				yesFn: function(){
+				url = '{BASE_URL}/index.php/admin/tool_dbrestore/restore?restore_name=' + id;
+				$.ajax({
+					url:url,
+					dataType:'json',
+					beforeSend:function(){
+			 	       $("#loading").show(); 
+					},
+					success: function(json){
+					   art.dialog(json.msg);
+					},
+					complete:function(){
+						$("#loading").hide();
+					}
+				})  
+			 },
+			noFn :function(){this.close();return false;}
+		})
+}
+ 
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

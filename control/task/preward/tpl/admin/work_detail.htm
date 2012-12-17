@@ -1,0 +1,34 @@
+<!--{include control/admin/tpl/admin_header}--> 
+<div class="box post">
+	  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	    <tr>
+		   <th scope="row"  >稿件内容：</th>
+		    <td>
+		       {$work_info['work_desc']}
+			   <br>
+			  $work_info['username']- {date('Y-m-d H:i:s',$work_info['work_time'])}
+			</td>
+        </tr>
+		<tr>
+		   <th scope="row"  >稿件留言:</th>
+		     <td>
+		        {loop $comments $v}
+				 $v['content'] - $v['username'] - {date('Y-m-d H:i:s',$v['on_time'])}<br>
+				{/loop}
+			</td>
+        </tr>
+		<tr>
+		 
+        </tr>
+		<tr>
+		  <th scope="row" >稿件附件：</th>
+		    <td>
+              {loop $files $v}
+			  <a href="{BASE_URL}/$v['save_name']">$v['file_name']</a>
+			  {/loop}
+			</td>
+         </tr>
+	 	  
+        </table>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

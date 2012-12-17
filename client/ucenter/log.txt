@@ -1,0 +1,7 @@
+http://localhost/discuz/uc_server/index.php?m=user&a=synlogin&inajax=2&release=20090121&input=1e87fMzsSLF8wzNywFuHgcftlCaACrNkBSA7%2B0HclaR0zgz1h3uNmAmkhrb48C3OtcqG4o1pIbLkbS%2FYaUbxmx0yl2%2FGuhZCRTliq5X%2Ba7axv%2Fdmn%2FdE6iQ&appid=3
+
+http://localhost/discuz/uc_server/index.php?m=user&a=synlogin&inajax=2&release=20090121&input=9de0jZClSSP1LT8FsQTxN%2Fkt2uuSpPhfiAUJShu9oK8PNPkou9YZV879NaCOZO40PGXThwfdAkIB0zhMPq3ehJQs3Fzlc%2BfFK4Ig13BXDqJTUoVNzyQaaiQ&appid=3
+
+http://localhost/discuz/uc_server/index.php?m=user&a=synlogin&inajax=2&release=20090121&input=27f4WyflZadK6Ifnb%2FD9gtOw1Awdycwc83Whlt65pwhI0IaOYcDzYW6nAQE%2FWSkDDnNIGE2527WbnZuvhLDo5SJEwPLrRASEEXpvuMqEeSoyxslHr0DTWJ4&appid=3
+
+

@@ -1,0 +1,78 @@
+<!--{include control/admin/tpl/admin_header}-->
+ <div class="page_title">
+    	<h1>{$model_info['model_name']}{$_lang['manage']}</h1>
+        <div class="tool">
+        	<a href="{$base_uri}">{$_lang['shop_list']}</a>
+			<a href="{$base_uri}/add?sid={$sid}" class="here">{$_lang['edit']}</a>
+			<a href="{$base_uri}/order?sid={$sid}" >{$_lang['order_list']}</a>
+			<a href="{$base_uri}/comment?sid={$sid}" >{$_lang['comment']}</a>
+			<a href="{$base_uri}/mark?sid={$sid}" >{$_lang['mark']}</a>
+			
+        </div>
+</div>
+<!--页头结束-->    
+<div class="box post">
+<form method="post" action="{$base_uri}/save" id="frm_art_edit" name="frm_art_edit" enctype="multipart/form-data">
+<input type="hidden" name="formhash" value="{FORMHASH}">	
+<input type="hidden" name="sid" value="$service_info['sid']">
+     
+<table width="100%" border="0" cellspacing="0" cellpadding="0"> 
+	<tr>
+		<th scope="row" width="130">{$_lang['shopkeeper']}{$_lang['zh_mh']}</th>
+		<td>{$service_info['username']}</td>
+	</tr>                   
+  <tr>
+    <th scope="row" width="130">{$_lang['goods_name']}{$_lang['zh_mh']}</th>
+    <td>
+         <input type="text" class="txt" name="fds[title]" value="$service_info['title']" size="50" limit="required:true" msg="{$_lang['goods_name_is_null']}" tips="{$_lang['please_input_goods_name']}" msgArea="title_msg">
+		 &nbsp;&nbsp;&nbsp;<input type="checkbox" name="fds[is_top]" value="1" {if $service_info['is_top']==1}checked{/if}>{$_lang['is_top']}<span id="title_msg"></span>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">{$_lang['goods_quotation']}{$_lang['zh_mh']}</th>
+    <td>
+    	{c:$service_info['price']}   
+	</td>
+  </tr>
+  <tr>
+  	<th scope="row" >{$_lang['status']}{$_lang['zh_mh']}</th>
+	<td>
+		<select name="fds[status]" id="slt_status">
+			{loop $status_arr $k $v}
+				<option {if $service_info['status']==$k}selected=selected{/if} value="{$k}">{$v}</option>
+			{/loop}
+		</select>							
+	</td>
+  </tr>
+<tr>
+    <th scope="row">{$_lang['pub_time']}{$_lang['zh_mh']}</th>
+    <td>{date('Y-m-d H:i:s',$service_info['on_time'])}</td>
+</tr>    
+
+<tr>
+    <th scope="row">{$_lang['goods_desc']}:</th>
+    <td>
+		<textarea rows="18" name="fds[content]" style="width:75%;" id="tar_content"  class="xheditor {urlBase:'{BASE_URL}/',admin:'{BASE_URL}/',tools:'simple',skin:'nostyle',html5Upload:false,emotMark:false,upImgUrl:'{BASE_URL}/index.php/ajax/upload?file_type=att'}" cols="70">{$service_info['content']}</textarea>
+	</td>
+  </tr>            
+<tr>
+    <th scope="row">&nbsp;</th>
+	<td>
+	<button name="sbt_edit" value="1" class="positive primary  button" type="submit">
+	<span class="check icon"></span>{$_lang['submit']}</button>						
+	<button type="reset"  name="rst_edit" class="button" onclick="javascript:history.go(-1)"  /><span class="uparrow icon"></span>{$_lang['return']}</button>
+	</td>
+</tr>
+</table>
+</form>
+    
+</div>
+<!--主体结束-->
+<!--{include control/admin/tpl/admin_footer}-->
+<script>
+	In('edit');
+
+	function form_submit(frm_id){
+		return checkForm(document.getElementById(frm_id));
+	}
+</script>

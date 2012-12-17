@@ -1,0 +1,88 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+  <h1>{$_lang['sms_internal_tpl_title']}</h1>
+  <div class="tool">         
+    <a href="{BASE_URL}/index.php/admin/config_msg/tpl"> {$_lang['sms_config']}</a>
+    <a href="{BASE_URL}/index.php/admin/config_msg/tpl_add" class="here"> {$_lang['sms_tpl_config_edit']}</a>
+  </div>
+</div>
+<div class="box post">
+     <form name="frm_config_msg" action="{BASE_URL}/index.php/admin/config_msg/tpl_save" method="post">
+        <input type="hidden" name="hdn_tpl_id" id="hdn_tpl_id" value="{$tpl_id}">
+		<input type="hidden" name="formhash" value="{FORMHASH}">
+        <table width="100%" class="detail" height="" border="0" cellspacing="0" cellpadding="0" >
+            <tr>    
+                 <td scope="row" width="130">
+                    {$_lang['type_of_sms_email']}{$_lang['zh_mh']}
+                </td>
+                <td>
+                    <select name="slt_tpl_code" id="slt_tpl_code" class="ps vm">
+                        <option value="-1">{$_lang['select_tpl_type']}</option>
+						{loop $msg_tpl_arr $v}
+							<option {if $tpl_id ==$v['tpl_id']}selected="selected"{/if}  value="{$v['tpl_id']}">{$v['desc']}{$_lang['msg_tips']}</option>
+						{/loop}
+                    </select>
+					<span id="list"></span>
+                </td>
+            </tr>
+			<tr>
+				<td scope="row">
+					消息通知方式：
+				</td>
+				<td>
+					{loop $message_send_type[0] $k2 $v2}
+					<label for="cbk_{$msg_tpl_info['tpl_id']}_{$k2}">
+						<input type="checkbox" id="cbk_{$k2}" name="ckb[{$v2}]" value="1" {if $msg_tpl_info[$v2]==1}checked="checked"{/if}>
+						$message_send_type['1'][$v2]&nbsp;&nbsp;&nbsp;&nbsp;
+					</label>
+					{/loop}
+				</td>
+			</tr>
+            <tr>
+                <td scope="row">{$_lang['sms_email_content']}{$_lang['zh_mh']}</td>
+                <td>
+                    <div class="field" style="margin-left:-10px;*margin-left:0">
+                        <textarea name="txt_msg" id="system-create-location_1" id="tar_content" class="xheditor-mini {urlBase:'{BASE_URL}/',html5Upload:false,upImgUrl:'../../ajax/upload?file_type=att'}" cols="70" style="width: 75%; display: none;" rows="15">$msg_tpl_info['msg_tpl']</textarea>
+                    </div>
+                </td>
+            </tr> 
+			 
+            <tr>
+                <td scope="row">
+         	       {$_lang['sms_content_tpl']}{$_lang['zh_mh']}
+                </td>
+                <td>
+                    <div class="field" style="margin-left:-10px;*margin-left:0">
+                        <textarea name="txt_sms" id="system-create-location_2" cols="122" rows="10">$msg_tpl_info['sms_tpl']</textarea>
+                    </div>
+                </td>
+            </tr>
+			 
+            <tr>
+            	<th scope="row">&nbsp;</th>
+				<td>
+					<div class="clearfix padt10">
+					  <button class="positive primary pill button" type="submit" name='sbt_edit' value="{$_lang['submit']}"><span class="check icon"></span>{$_lang['submit']}</button>
+					  <button class="pill button" type="button" value="{$_lang['return']}" onclick="to_back();"><span class="uparrow icon"></span>{$_lang['return']}</button>
+                 	</div>
+				</td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript">
+	In('edit');	
+	$(function(){
+		$("#slt_tpl_code").change(function(){
+			var selectValue = $(this).val();
+            if (selectValue != '-1') {
+                var url = "{BASE_URL}/index.php/admin/config_msg/tpl_add?tpl_id="+selectValue;
+				location.href=url;
+            }else {
+				art.dialog.alert("{$_lang['select_tpl']}");
+                return false;
+            }
+		})
+	})
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

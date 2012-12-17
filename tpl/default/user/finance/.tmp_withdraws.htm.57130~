@@ -1,0 +1,109 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/finance/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 class="title">提现记录</h2>
+		                    </div>
+		                </header>
+		                
+		                <div class="box_detail">
+
+		                	<div class="toolbar">
+		                <form class="detail" action="{BASE_URL}/index.php/user/finance_recharges" method="get" id="frm_user_search">
+							<input type="hidden" value="{$page}" name="page">
+								<table cellspacing="0" cellpadding="0">
+									<tbody>
+										<tr>
+										    <td> 条件
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											   <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											   </select>
+										       <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											   <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											   </select>
+											   <input type="submit" value="{$_lang['search']}">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+		                </div>
+
+		                	<!--date_table数据表格 start-->
+		                    <div class="data_list">
+		                        <table  class="data_table">
+		                            <thead>
+		                            <tr>
+		                              <th scope="col"><a href="javascript:;" onclick="submitSort('{$uri}','cash',{$ord_tag})">金额{if $_GET['f']=='cash'}{$ord_char}{/if}</a></th>
+		                              <th scope="col" width="40%">账户</th>
+		                              <th scope="col" width="30%">状态</th>
+		                              <th scope="col"><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">时间{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>
+		                            </tr>
+		                            </thead>
+								{if $data_list}
+								
+		                            <tbody>
+		                            	 <!--{loop $data_list $v}-->
+				                            <tr>
+					                              <td><span class="money">￥$v['cash']元</span></td>
+					                              <td>
+					                              	<p>{$v['bank_account']} {$v['bank_username']} {$v['bank_name']}</p>
+					                              	
+					                              </td>
+					                              <td>{$status_arr[$v['status']]}</td>
+					                              <td>{date('Y-m-d',$v['on_time'])}</td>
+				                            </tr>
+										<!--{/loop}-->
+
+		                            </tbody>
+								{else}
+		                            <tfoot>
+		                           
+									 	<tr>
+			                            	<td colspan="5" class="t_c">暂无记录</td>
+			                        	</tr>
+									
+			                    	</tfoot>
+								{/if}
+		                          </table>
+		                    </div>
+			               	<!--data_table数据表格 end-->
+
+			               	<div class="toolbar bottom">
+		                		<div class="actions">
+		                			<a href="{BASE_URL}/index.php/user/finance_withdraw" class="submit">我要提现</a>
+		                		</div>
+		                		<div class="page">
+					                <p>
+					                    {$pages['page']}
+					                </p>
+					            </div>
+		                	</div>
+
+
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+<!--{include user/footer}-->

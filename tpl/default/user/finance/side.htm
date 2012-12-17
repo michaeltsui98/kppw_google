@@ -1,9 +1,0 @@
-<aside class="aside">
-	<nav class="minor_nav">
-	  <ul class="nav_group">
-	  	  {loop self::$_finance_nav $k $v}
-		     <li><a href="{USER_URL}/{$v[1]}" {if $k == self::$_left}class="selected"{/if} ><strong>{$v[0]}</strong></a></li>
-		  {/loop}
-      </ul>
-    </nav>
-</aside>

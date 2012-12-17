@@ -4,7 +4,7 @@
  * @author Michael
  *
  */
-Class Sys_cron_database {
+Class Sys_cron_db {
 	
 	
 	public static function batch_run(){

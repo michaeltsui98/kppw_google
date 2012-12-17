@@ -620,18 +620,4 @@ class keke_file_class {
 		$str .= ' type="application/x-shockwave-flash" wmode="transparent"/></embed></object>';
 		return Keke::k_stripslashes ( $str );
 	}
-	// function according_size_get_name($filepath,$size=array()){
-	// if (is_null($size)){
-	// return false;
-	// }
-	// $more_name = array();
-	// $dirname = dirname($filepath);
-	// $dirname = $dirname .'/';
-	// $basename = basename($filepath);
-	// $size_arr = explode(',', $size);
-	// for ($i=1;$i<=sizeof($size_arr);$i++){
-	// $more_name[] = $dirname . $size_arr[$i] . '_' . $basename ;
-	// }
-	// return $more_name;
-	// }
 }

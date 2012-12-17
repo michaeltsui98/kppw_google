@@ -1,85 +1,97 @@
-<?php
-Keke_lang::load_lang_class('keke_loaddata_class');
+<?php defined('IN_KEKE') or die('access deined');
 
+Keke_lang::load_lang_class('keke_loaddata_class');
+/**
+ * 模板标签数据调用
+ * @author Michael
+ * @version 3.0 2012-12-17
+ *
+ */
 class Sys_tag {
 	
 	/**
-	 * 获取标签列表
-	 * @param  $mode 1=>tag_id 索引数组,其它的用tagname 索引数组
-	 * @return array
+	 * @var 标签数组
 	 */
-	public static function get_tag($mode = '') {
-		$tag_obj = new Keke_witkey_tag();
-		$taginfo = $tag_obj->query('*',6000);
-		
- 
-		return $taginfo;
-	}
+	public $tag = array();
+	/**
+	 * @var 广告位
+	 */
+	public $target = array();
 	
-	static function get_ad($adname = null, $limit_num = null) {
-		is_null ( $adname ) or $where = "and ad_name ='$adname'";
-		$limit_num > 0 and $limit = $limit_num;
-		return self::get_table_data ( '*', 'witkey_ad', '1=1 ' . $where, 'listorder', '', $limit, '', 3600 );
-	}
-	 
-    
-	static function readtag($name) { 
-		global $kekezu,$_lang;
-         
-       	$tag_arr = self::get_tag(0);
-	 
- 		$tag_info = $tag_arr [$name];
-	    if ($tag_info ['tag_type'] == 5) {
-			echo htmlspecialchars_decode ( $tag_info ['code'] );
-		}else{
-	 		if ($tag_info ['cache_time']) { 
-				$cid = 'db_tag_' . $tag_info ['tag_id'];
-				$datalist = Keke::$_cache_obj->get ( $cid );
-				if (! $datalist) {
-					$datalist = Keke_loaddata::loaddata ( $tag_info );
-					Keke::$_cache_obj->set ( $cid, $datalist, $tag_info ['cache_time'] );
-				}
-			 
-				require Keke_tpl::parse_code ( htmlspecialchars_decode ( $tag_info [tag_code] ), $tag_info [tag_id] );
-			} else if ($tag_info) { //不带缓存的  用传统调用
-				Keke_loaddata::previewtag ( $tag_info );
-			} else {
-				echo $_lang['tag'] . $name . $_lang['not_found'];
-			}
-		}
-	}
+	private static $_instance = NULL;
 	
 	/**
-	 * 显示tag的预览
+	 * 对象工厂
+	 * @return Sys_tag
 	 */
-	static function previewtag($tag_info) {
-		if ($tag_info ['tag_type'] == 5) {
-			echo htmlspecialchars_decode ( $tag_info ['tag_code'] );
-		} else {
-			$datalist = Keke_loaddata::loaddata ( $tag_info );
-			require Keke_tpl::parse_code ( htmlspecialchars_decode ( $tag_info ['tag_code'] ), $tag_info ['tag_id'] );
+	public static function factory(){
+		if(self::$_instance!==NULL){
+			return self::$_instance;
 		}
-	
+		$class = __CLASS__;
+		return self::$_instance = new $class;
 	}
- 
-	//显示广告的预览
-	static function preview_addgroup($adname,$loadcount) {
-		self::adgroup ( $adname,$loadcount);
+	/**
+	 * 初始化标签数组
+	 */
+	protected function __construct(){
+		$this->tag = DB::select()->from('witkey_tag')->cached(9999)->execute();
 	}
-	
-	//纯读数据
-	static function loaddata($tag_info) {
-		global $_K;
-		$tag_type = Keke_global::get_tag_type ();
-		if ($tag_info ['tag_type'] != 5) {
-			$f = $tag_type [$tag_info ['tag_type']] [2]?$tag_type [$tag_info ['tag_type']] [2]:'article';
-			$func_name = "load_" . $f . "_data";
-			$temp_arr = self::$func_name ( $tag_info );
-			return $temp_arr;
+	 /**
+	  * 解析标签 
+	  * @param string $tag_name
+	  */
+	public function readtag($tag_name){
+		$tag_arr = Arr::get_arr_by_key($this->tag, 'tagname');
+		$tag_info = $tag_arr[$tag_name];
+		if($tag_info['tag_type']=='art_info'){
+			echo $tag_info['tag_code'];
+			die;
 		}
+		call_user_func(array(__CLASS__,$tag_info['tag_type']),$tag_info);
+		
 	}
-	 
-	 
+	/**
+	 * 文章列表
+	 * @param array $tag_info
+	 */
+	public function art_list($tag_info){
+	     $datalist = DB::select()->from('witkey_article')->where($tag_info['tag_cond'])->cached($tag_info['cache_time'])->execute();	
+	     require Keke_tpl::parse_code ( htmlspecialchars_decode ( $tag_info ['tag_code'] ), $tag_info ['tag_id'] );
+	     
+	}
+	/**
+	 * 广告位数据调用
+	 * @param unknown_type $target_name
+	 */
+	public function ad_tag($target_name){
+	   
+		$this->target = DB::select()->from('witkey_ad_target')->where("is_allow=1")->cached(3600*24)->execute();
+	    $arr = Arr::get_arr_by_key($this->target, 'name');
+	    $target_info = $arr[$target_name];    
+	    if($target_info['tag_code']){
+	    	$this->slide_ad($target_info);
+	    }else{
+	    	$this->sing_ad($target_info);
+	    }
+		
+	}
+	/**
+	 * 普通广告位
+	 */
+	public function sing_ad($target_info){
+		
+	}
+	/**
+	 * 幻灯广告位
+	 */
+	public function slide_ad($target_info){
+		$datalist = DB::select()->from('witkey_ad')->where('target_id='.$target_info['target_id'])
+		->order("listorder asc")->cached('99999')->execute();
+		return Keke_tpl::parse_code($target_info['tag_code'], $target_info['target_id'],'ad');
+	}
+	
+	
 	/**
 	 * 显示指定位置的广告
 	 * @param $code 广告位置代码
@@ -94,8 +106,6 @@ class Sys_tag {
 			    return self::adgroup($is_slide,$ad_target ['ad_num']);
 			}
 			$pos_config = unserialize ( $ad_target ['position'] ); //位置配置数组
-			/** 更新本类过期广告*/
-			//dbfactory::execute ( sprintf ( " update %switkey_ad set is_allow='0' where target_id='%d' and  end_time>0 and end_time>%d", TABLEPRE, $ad_target ['target_id'], time () ));
 			
 			/** 获取指定条数广告*/
 			$sql = " select a.ad_id,a.ad_name,a.ad_file,a.ad_content,a.ad_url,a.width,a.height,
@@ -137,29 +147,15 @@ class Sys_tag {
 		}
 		
 	}
-	/**
-	 * 广告更新10分钟执行一次更新每条广告
-	 * @param 广告信息 $ad_info
-	 */
-	static function update_ad($ad_info){
-	   global $_K,$kekezu;
-	     if((SYS_START_TIME - intval($ad_info['on_time']))>$_K['timespan']){
-	      //更新时间值
-	      dbfactory::execute(sprintf('update %switkey_ad set on_time  = %s where ad_id = %d',TABLEPRE,time()+$_K['timespan'],$ad_info['ad_id']));   
-	      //更新广告生命
-	      dbfactory::execute(sprintf("update %switkey_ad set is_allow='0' where target_id='%d' and  end_time>0 and end_time>%d",TABLEPRE,$ad_info['ad_id'],time()));	
-	   }
-	}
+ 
 	
-	static function init_ad(){
-		$obj = new Keke_witkey_ad();
-		return  Keke::get_arr_by_key($obj->query(6000),'ad_id');
-	}
+ 
+	
 	/**
 	 * 单广告
 	 * @param int $adid
 	 */
-	static function ad($adid) {
+	/* static function ad($adid) {
 		
 		$ad_arr = self::init_ad();
 		$ad_info = $ad_arr [$adid];
@@ -178,7 +174,7 @@ class Sys_tag {
 		}
 		echo $adstr;
 	
-	}
+	} */
 	/**
 	 * 广告组，一般用于幻灯片调用
 	 */

@@ -310,10 +310,6 @@ class Keke_global {
 				"7" =>array("desc"=>$_lang['freezing'],"time"=>""),
 				"8" =>array("desc"=>$_lang['has_end'],"time"=>"end_time"),
 				"9" =>array("desc"=>$_lang['fail'],"time"=>"")
-			 
-				 
-				 
-			
 		);
 	 
 	}

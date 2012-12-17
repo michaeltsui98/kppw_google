@@ -49,34 +49,34 @@ class Keke_tpl {
 	 */
 	public static function parse_rule($template, $tpl = null) {
 		global $_K;
-		//($_K['inajax'])&&ob_start();
-		//ob_start();
+		 
 		$template = preg_replace ( "/\<\!\-\-\{include\s+([a-z0-9_\/]+)\}\-\-\>/ie", "Keke_tpl::readtemplate('\\1')", $template );
 		//处理子页面中的代码
 		$template = preg_replace ( "/\<\!\-\-\{include\s+([a-z0-9_\/]+)\}\-\-\>/ie", "Keke_tpl::readtemplate('\\1')", $template );
 		
 		//标签调用
-		$template = preg_replace ( "/\<\!\-\-\{tag\s+([^!@#$%^&*(){}<>?,.\'\"\+\-\;\":~`]+)\}\-\-\>/ie", "Keke_tpl::readtag(\"'\\1'\")", $template );
+		$template = preg_replace ( '/\{tag\((.+?)\)\}/ie', "Keke_tpl::readtag(\"'\\1'\")", $template );
 		
-		//广告调用
-		$template = preg_replace ( "/\<\!\-\-\{showad\((.+?)\)\}\-\-\>/ie", "Keke_tpl::showad('\\1')", $template );
+		/* //广告调用
+		$template = preg_replace ( '/\{showad\((.+?)\)\}/ie', "Keke_tpl::showad('\\1')", $template );
+		
 		//多广告调用
-		$template = preg_replace ( "/\<\!\-\-\{showads\((.+?)\)\}\-\-\>/ie", "Keke_tpl::showads('\\1')", $template );
+		$template = preg_replace ( '/\{showads\((.+?)\)\}/ie', "Keke_tpl::showads('\\1')", $template ); */
 		
 		//预设广告调用
-		$template = preg_replace ( "/\<\!\-\-\{ad_show\((.+?),(.+?)\)\}\-\-\>/ie", "Keke_tpl::ad_show('\\1','\\2')", $template );
+		//$template = preg_replace ( '/\{ad_show\((.+?),(.+?)\)\}/ie', "Keke_tpl::ad_show('\\1','\\2')", $template );
+		//广告调用
+		$template = preg_replace ( '/\{ad_tag\((.+?)\)\}/ie', "Keke_tpl::ad_tag('\\1')", $template );
 		
-		$template = preg_replace ( "/\<\!\-\-\{ad_show\((.+?)\)\}\-\-\>/ie", "Keke_tpl::ad_show('\\1')", $template );
-		//动态调用
-		//$template = preg_replace ( "/\<\!\-\-\{loadfeed\((.+?)\)\}\-\-\>/ie", "Keke_tpl::loadfeed('\\1')", $template );
 		//时间处理
-		$template = preg_replace ( "/\{date\((.+?),(.+?)\)\}/ie", "Keke_tpl::datetags('\\1','\\2')", $template );
+		$template = preg_replace ( '/\{date\((.+?),(.+?)\)\}/ie', "Keke_tpl::datetags('\\1','\\2')", $template );
 		//货币显示
-		$template = preg_replace ( "/{c\:(.+?)(,?)(\d?)\}/ie", "Curren::currtags('\\1','\\3')", $template );
+		$template = preg_replace ( '/{c\:(.+?)(,?)(\d?)\}/ie', "Curren::currtags('\\1','\\3')", $template );
 		//头像处理
-		$template = preg_replace ( "/\{avatar\((.+?),(.+?)\)\}/ie", "Keke_tpl::avatar('\\1','\\2')", $template );
+		$template = preg_replace ( '/\{avatar\((.+?),(.+?)\)\}/ie', "Keke_tpl::avatar('\\1','\\2')", $template );
 		//文字裁剪
-		$template = preg_replace ( "/\{cutstr\((.+?),(.+?)\)\}/ie", "Keke_tpl::cutstr('\\1','\\2')", $template );
+		$template = preg_replace ( '/\{cutstr\((.+?),(.+?)\)\}/ie', "Keke_tpl::cutstr('\\1','\\2')", $template );
+		
 		//PHP代码
 		$template = preg_replace ( "/\<\!\-\-\{eval\s+(.+?)\s*\}\-\-\>/ies", "Keke_tpl::evaltags('\\1')", $template );
 		//开始处理
@@ -123,16 +123,17 @@ class Keke_tpl {
 	 */
 	public static function chars($value, $double_encode = FALSE)
 	{
-		if(CHARSET==='gbk'){
-			$charset = 'iso-8859-1';
-		}else{
-			$charset = CHARSET;
-		}
+		
 		if(is_array($value) or is_object($value)){
 			foreach ($value as $k=>$v){
 			   $value[$k]=Keke_tpl::chars($v,$double_encode);
 			}
 		}else{
+			if(CHARSET==='gbk'){
+				$charset = 'iso-8859-1';
+			}else{
+				$charset = CHARSET;
+			}
 			$value = htmlspecialchars( (string) $value, ENT_QUOTES, $charset, $double_encode);
 		}
 		return $value;
@@ -162,33 +163,32 @@ class Keke_tpl {
 	}
 	
 	//广告调用
-	static function showad($adid) {
+	/* static function ad($adid) {
 		global $_K;
-		$content = '<!--{eval Keke_loaddata::ad(' . $adid . ')}-->';
+		$content = '<!--{eval Sys_tag::ad(' . $adid . ')}-->';
 		return $content;
+	} */
 	
-	}
 	/**
-	 * 显示指定位置的广告
-	 * @param $target 广告位置代码
-	 * @param $do	     当前路由DO
+	 * 调用广告位
+	 * @param $target 广告位置名称
 	 */
-	static function ad_show($target, $is_slide = null) {
-		global $_K, $do;
-		$content = '<!--{eval Keke_loaddata::ad_show(\'' . $target . '\',\'' . $do . '\',\'' . $is_slide . '\')}-->';
+	static function ad_tag($target_name) {
+		$content = '<!--{eval Sys_tag::ad_tag(\'' . $target_name . '\')}-->';
 		return $content;
 	}
-	static function runwidget($widgetname) {
+	
+	/* static function runwidget($widgetname) {
 		global $_K;
 		$content = '<!--{eval $widgetname = \'' . $widgetname . '\'; include(S_ROOT.\'widget/run.php\')}-->';
 		return $content;
-	}
+	} */
 	
 	//广告群调用
-	static function showads($adname) {
-		$content = '<!--{eval Keke_loaddata::adgroup(' . $adname . ')}-->';
+	/* static function showads($adname) {
+		$content = '<!--{eval Sys_tag::adgroup(' . $adname . ')}-->';
 		return $content;
-	}
+	} */
 	
 	/**
 	 * 头像调用
@@ -229,7 +229,7 @@ class Keke_tpl {
 	
 	static function readtag($name) {
 		global $kekezu; 	
-		$content = '<!--{eval Keke_loaddata::readtag(' . $name . ')}-->';
+		$content = '<!--{eval Sys_tag::readtag(' . $name . ')}-->';
 		return $content;
 	
 	}

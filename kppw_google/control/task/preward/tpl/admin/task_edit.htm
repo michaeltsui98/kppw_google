@@ -1,0 +1,122 @@
+<!--{include control/admin/tpl/admin_header}-->
+ <div class="page_title">
+    	<h1>{$model_info['model_name']}{$_lang['manage']}</h1>
+        <div class="tool">
+        	<a href="{$base_uri}">{$_lang['task_list']}</a>
+			<a href="{$base_uri}/add?task_id={$task_id}" class="here">{$_lang['edit']}</a>
+			<a href="{$base_uri}/work?task_id={$task_id}" >{$_lang['work']}</a>
+			<a href="{$base_uri}/comment?task_id={$task_id}" >{$_lang['comment']}</a>
+			<a href="{$base_uri}/mark?task_id={$task_id}" >{$_lang['mark']}</a>
+			
+        </div>
+</div>
+<!--页头结束-->    
+<div class="box post">
+<form method="post" action="{$base_uri}/save" id="frm_art_edit" name="frm_art_edit" enctype="multipart/form-data">
+<input type="hidden" name="formhash" value="{FORMHASH}">	
+<input type="hidden" name="task_id" value="$task_info['task_id']">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th scope="row" width="130">{$_lang['task_title']}{$_lang['zh_mh']}</th>
+        <td>
+             <input type="text" class="txt" name="task_title" value="$task_info['task_title']" size="80" id="task_title" msgArea="span_task_title"
+			 limit="required:true;len:5-50" msg="{$_lang['task_title_msg']}" title="{$_lang['task_title_msg']}"><span id="span_task_title"></span>
+		{if $task_info['task_status']==1}
+    	<a href="{$base_uri}/pass?task_id={$task_info['task_id']}" onclick="return js_submit(this);" >{$_lang['pass']}</a>
+		<a href="{$base_uri}/no_pass?task_id={$task_info['task_id']}" onclick="return js_submit(this);">{$_lang['nopass']}</a>
+		{/if}
+		{if in_array($task_info['task_status'],array('2','3','4','5'))}
+    	<a href="{$base_uri}/freeze?task_id={$task_info['task_id']}" onclick="return js_submit(this);">{$_lang['freeze']}</a>
+		{/if}
+		{if in_array($task_info['task_status'],array('2','3')) && $task_info['is_top']!=1}
+		<a href="{$base_uri}/recommend?task_id={$task_info['task_id']}" onclick="return js_submit(this);">{$_lang['recommend']}</a>
+		{/if}
+		{if $task_info['task_status']==7}
+		<a href="{$base_uri}/unfreeze?task_id={$task_info['task_id']}" onclick="return js_submit(this);">{$_lang['unfreeze']}</a>
+		{/if}
+		{if $task_info['is_top']==1}
+			<a href="{$base_uri}/unrecommend?task_id={$task_info['task_id']}" onclick="return js_submit(this);">{$_lang['cancel_recommend']}</a>
+		{/if}
+		</td>
+      </tr>
+      <tr>
+        <th scope="row">{$_lang['pub_name']}{$_lang['zh_mh']}</th>
+        <td><b>{$task_info['username']}</b></td>
+	  </tr>
+	  <tr>
+        <th scope="row">{$_lang['show_time']}{$_lang['zh_mh']}</th>
+        <td><b>{$_lang['start_time']}:</b>{date('Y-m-d H:i:s',$task_info['start_time'])}&nbsp;&nbsp;
+			<b>{$_lang['contribution_end_time']}:</b>{date('Y-m-d H:i:s',$task_info['sub_time'])}&nbsp;&nbsp;
+			<b>{$_lang['choose_end_time']}:</b>{date('Y-m-d H:i:s',$task_info['end_time'])}
+		</td>
+	  </tr>
+      <tr>
+        <th scope="row">{$_lang['task_status']}{$_lang['zh_mh']}</th>
+        <td>{$status_arr[$task_info['task_status']]}</td>
+      </tr>
+      <tr>
+        <th scope="row">{$_lang['industry']}{$_lang['zh_mh']}</th>
+        <td> <select name="slt_indus_id">
+	        	<option value="0"></option>
+				{loop $indus_option_arr $v}
+				 {$v}
+				{/loop}
+			</select>　
+        </td>
+      </tr>
+	<tr>
+        <th scope="row">{$_lang['add_service']}{$_lang['zh_mh']}</th>
+        <td>
+        	<b>{$_lang['count']}:</b>$task_info['att_cash']{$_lang['yuan']}<br>
+			{loop $payitem_list $v}
+				<b>{$task_info['item_name']}</b>:<font color="red">{$task_info['item_cash']}</font>{$_lang['yuan']}<br>
+			{/loop}
+		</td>
+    </tr>
+
+     <tr>
+        <th scope="row">{$_lang['task_attachment']}{$_lang['zh_mh']}</th>
+	    <td>
+	    	{if $file_list}
+	        	{loop $file_list $file}
+	    			<a target="_blank" href="{BASE_URL}/{$file['file_name']}">{$file['file_name']}</a>&nbsp;&nbsp;&nbsp;
+	    		{/loop}
+			{else}
+			{$_lang['now_no_attachment']}
+			{/if}
+	   </td>
+	</tr>
+	<tr>
+        <th scope="row">{$_lang['task_cash']}{$_lang['zh_mh']}</th>
+        <td>
+        	{c:$task_info['task_cash']} 
+		</td>
+    </tr> 
+	 <tr>
+        <th scope="row">{$_lang['task_description']}{$_lang['zh_mh']}</th>
+        <td>
+         <textarea rows="18" name="task_desc" style="width:75%;" id="tar_content"  class="xheditor {urlBase:'{BASE_URL}/',tools:'simple',skin:'nostyle',admin:'{BASE_URL}/',html5Upload:false,emotMark:false,upImgUrl:'{BASE_URL}/index.php/ajax/upload?file_type=att'}" cols="70">{$task_info['task_desc']}</textarea>
+		</td>
+	</tr>
+    <tr>
+        <th scope="row">&nbsp;</th>
+    	<td>
+    	<button name="sbt_edit" value="1"  type="submit" 
+		onclick="return form_submit('frm_art_edit')">
+    	{$_lang['submit']}</button>
+    	<button type="button" name="rst_edit"  onclick="history.go(-1)"/>{$_lang['return']}</button>
+    	</td>
+    </tr>
+    </table>
+</form>
+    
+</div>
+<!--主体结束-->
+<!--{include control/admin/tpl/admin_footer}-->
+<script>
+	In('edit');
+
+	function form_submit(frm_id){
+		return checkForm(document.getElementById(frm_id));
+	}
+</script>

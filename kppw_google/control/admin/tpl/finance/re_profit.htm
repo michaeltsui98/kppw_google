@@ -1,0 +1,78 @@
+<!--{include control/admin/tpl/admin_header}-->
+
+<div class="page_title">
+    <h1>{$_lang['financial_model']}</h1>
+    <div class="tool">
+    	<a href="{BASE_URL}/index.php/admin/finance_revenue/index" >{$_lang['flow_statistics']} </a>
+        <a href="{BASE_URL}/index.php/admin/finance_revenue/charge" >{$_lang['total_prepaid']}</a>
+		<a href="{BASE_URL}/index.php/admin/finance_revenue/withdraw" >{$_lang['atm_totals']}</a>
+		<a href="{BASE_URL}/index.php/admin/finance_revenue/profit" class="here" >{$_lang['site_profit']}</a>    		
+    </div>
+</div>
+<div class="box search p_relative">
+        <form action="{BASE_URL}/index.php/admin/finance_revenue/profit" method="post" id=frm_search name='frm_search'>
+        	 <table cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr>
+                    	<th width="100">{$_lang['time_coverage']}
+                    	 </th>
+						<td>
+                            <input type="text" value="{$st}" name="st" class="txt"
+							  onclick="showcalendar(event, this, 0)" limit='required:false;type:date;less:{$today}'
+							   msg="{$_lang['time_tips']}" msgArea='span_notice' id='start_time'/>~
+                            <input type="text" value="{$ed}" name="ed" class="txt"
+							  onclick="showcalendar(event, this, 0)"  limit='required:false;type:date;less:{$today};than:start_time'
+							   msg="{$_lang['time_tips']}" msgArea='span_notice' id='end_time'/>
+							<input type="hidden" name="id" value="{$id}">  
+                             <button class="pill" type="submit" value="{$_lang['search']}" name="sbt_search" onclick="return checkForm(document.getElementById('frm_search'));">
+                                <span class="icon magnifier">&nbsp;</span>{$_lang['search']}
+                              </button>
+							  <span id='span_notice' style='color:#ff0000'></span>
+                        </td>   
+				   </tr>
+                  </tbody>
+            </table>
+        </form>
+ </div>
+ 
+ <div class="box list">	 
+		<table id='tb_cont_1' class='t_sub clear_l clear_b'>
+		<thead align="center">
+			<th> {$_lang['from']} </th>
+			<th> {$_lang['cash']} </th>
+		</thead>
+		<tbody>
+			<tr>
+				<td >{$_lang['task_cash']}</td>
+				<td >{c:$task}</td>
+			</tr>
+			<tr>
+				<td >{$_lang['shop_profit']}</td>				
+				<td>{c:$service}</td>
+			</tr>
+			<tr>
+				<td >{$_lang['payitem']}</td>
+				<td>{c:$payitem}</td>
+			</tr>
+			<tr>
+				<td >{$_lang['user_auth']}</td>
+				<td>{c:$auth}</td>
+			</tr>
+			<tr>
+				<td >{$_lang['user_withdraw']}</td>
+				<td>{c:$withdraw}</td>
+			</tr>			
+		</tbody>
+	    <tfoot>
+			<tr>
+				<td></td>
+				<td ><strong>{$_lang['total']}</strong> <strong style="color:red"> {c:$p_all}</strong></td>
+			</tr>
+		</tfoot>
+		</table>	
+ <div class='tip'><div class='title'>{$desc}{$_lang['profit_description']}</div></div>						
+ </div>      
+ 
+
+    <!--{include control/admin/tpl/admin_footer}-->
+

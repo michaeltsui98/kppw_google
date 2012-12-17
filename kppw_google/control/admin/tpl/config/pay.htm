@@ -1,0 +1,60 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+<h1>{$_lang['pay_manage']}</h1>
+<div class="tool">
+    <a href="{BASE_URL}/index.php/admin/config_pay" class="here">{$_lang['pay_config']}</a>
+    <a href="{BASE_URL}/index.php/admin/config_pay/online" >{$_lang['online_pay_interface']}</a>
+	<a href="{BASE_URL}/index.php/admin/config_pay/offline" >{$_lang['line_pay_interface']}</a>
+</div>
+</div>
+<div class="box post">
+<form name="frm_config_pay" id="frm_config_pay" action="{BASE_URL}/index.php/admin/config_pay" method="post">
+	<input type="hidden" name="formhash" value="{FORMHASH}">
+    <table width="100%"  class="detail"border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th scope="row" width="160">{$_lang['recharge_mini_money']}{$_lang['zh_mh']}</th>
+        <td><input type="text"  name="recharge_min" id="txt_recharge_min" value="{$pay_config['recharge_min']}" limit='type:float' title='{$_lang['recharge_mini_money']}{$pay_config['recharge_min']['v']}{$_lang['yuan']}' msg="{$_lang['recharge_big_money']}{$pay_config['recharge_min']['v']}{$_lang['yuan']}" msgArea="recharge_min_msg" class="txt" style=" width:260px;"/><span id="recharge_min_msg"></span>{$_lang['umit']}</td>
+      </tr>
+      <tr>
+        <th scope="row">{$_lang['ment_mini_value']}{$_lang['zh_mh']}</th>
+        <td><input type="text" name="withdraw_min" id="txt_withdraw_min" value="{$pay_config['withdraw_min']}" limit="type:float" title="{$_lang['a_ment_mini_value']}{$pay_config['withdraw_min']['v']}{$_lang['yuan']}" msg="{$_lang['ment_big_money']}{$pay_config['withdraw_min']['v']}{$_lang['yuan']}" msgArea="withdraw_min_msg"  class="txt" style=" width:260px;"/><span id="withdraw_min_msg"></span>{$_lang['umit']}</td>
+      </tr>
+      <tr>
+        <th scope="row">{$_lang['date_ment_hight']}{$_lang['zh_mh']}</th>
+        <td><input type="text" name="withdraw_max" id="txt_withdraw_max"  value="{$pay_config['withdraw_max']}" limit="type:int" title="{$_lang['day_ment_hight']}{$pay_config['withdraw_max']['v']}{$_lang['yuan']}£¬{$_lang['excess_not_ment']}" msg={$_lang['date_ment_big_zero']} msgArea="withdraw_max_msg" maxlength="10" class="txt" style=" width:260px;"/><span id="withdraw_max_msg"></span>{$_lang['umit']}</td>
+      </tr>
+	  <tr>
+           <th scope="row">{$_lang['single_tariff']}{$_lang['zh_mh']}</th>
+           <td>
+                <input type="text" name="per_charge" value="{$pay_config['per_charge']}" class="txt" style=" width:260px;"/>
+				<div class="padt10 direct"><p>({$_lang['user_a_single_charge_ratio']} )</p></div>
+		   </td>
+	   </tr>
+		<tr>
+           <th scope="row">{$_lang['single_minimum_charge']}{$_lang['zh_mh']}</th>
+           <td>
+                <input type="text" name="per_low" value="{$pay_config['per_low']}" class="txt" style=" width:260px;"/>
+				<div class="padt10 direct"><p>({$_lang['user_single_charge_minimum_amount']})</p></div>
+		  </td>
+	   </tr>
+		<tr>
+           <th scope="row">{$_lang['single_highest_fees']}{$_lang['zh_mh']}</th>
+           <td>
+                <input type="text" name="per_high" value="{$pay_config['per_high']}" class="txt" style=" width:260px;"/>
+				<div class="padt10 direct"><p>({$_lang['user_single_charge_highest_amount']})</p></div>
+		  </td>
+	   </tr>
+	   <tr>
+      <tr>
+        <th scope="row">&nbsp;</th>
+        <td>
+            <div class="clearfix padt10">
+                <button class="positive pill primary button" type="submit" onclick="return checkForm(document.getElementById('frm_config_pay'),false)"  name="sbt_edit" value="{$_lang['edit']}"><span class="check icon"></span>{$_lang['submit']}</button>
+                <button class="pill button" type="button" onclick="history.go(-1);" value={$_lang['return']}><span class="uparrow icon"></span>{$_lang['return']}</button>
+            </div>
+        </td>
+      </tr>
+    </table>
+</form>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

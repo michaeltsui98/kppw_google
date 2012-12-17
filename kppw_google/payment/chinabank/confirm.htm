@@ -1,0 +1,57 @@
+<!--{template header}-->
+<form   id="frm_chinabank" method="post" action="https://Pay3.chinabank.com.cn/PayGate" target="_blank">
+<input type="hidden" name="v_mid" value="{$v_mid}" />
+<input type="hidden" name="v_oid" value="{$v_oid}" />
+<input type="hidden" name="v_amount" value="{$total_money}" />
+<input type="hidden" name="v_moneytype" value="{$v_moneytype}" />
+<input type="hidden" name="v_url" value="{$v_url}" />
+<input type="hidden" name="v_md5info" value="{$v_md5info}" />
+<!--<input type="hidden" value="1001" name="v_mid">
+<input type="hidden" value="221312" name="v_oid">
+<input type="hidden" value="0.01" name="v_amount">
+<input type="hidden" value="CNY" name="v_moneytype">
+<input type="hidden" value="http://localhost/chinabak/Receive.php" name="v_url">
+<input type="hidden" value="F831FFD2792D7DE6E1FC6A31A024B539" name="v_md5info">-->
+<table width="450" height="150" border="0" cellspacing="0" cellpadding="0" class="td_p10 mt_10 font14n">
+<tr>
+<th colspan="2" class="font14"><h2>充值金额：<span class="red"><!--{eval printf('%10.2f',$cash)}--></span> 元</h2></th>
+</tr>
+<tr>
+<td width="1%"></td>
+<td width="99%"><img src="payment/{$payment_config[pay_dir]}/{$payment_config[img]}" align="absmiddle"> 支持招商、工行、建行、中行等主流银行的网银支付</td>
+</tr>
+<tr>
+<td colspan="2"><input type="button" name="btn_confirm_pay" 
+onclick="return confirm_chinabank_pay(this);" value="确认付款" class="rele_btn"></td>
+</tr>
+					  
+</table>
+</form>
+<script>
+function confirm_chinabank_pay(obj){
+	
+	 obj.form.submit(); return false;
+		var url =  'index.php?do=user&view=cash&ajax=order';
+		$.ajax( {
+			type : "POST",
+			url : url,
+			cache : false,
+			async : false,
+			data : 'uid=$uid&username=$username&cash=$cash&pay_m=$pay_m&type=$type&obj_id=$obj_id',
+			dataType : "json",
+			error : function(json) {
+				showDialog('系统繁忙，请稍后再试!', 'alert', '错误提示','',1);
+			},
+			success : function(json) {
+				if (json.status == 0) {
+			        showDialog('提交失败，请稍后再试!', 'alert', '错误提示','',1);
+				} else {
+					$("input[name='v_oid']").val(json.msg);
+					$("input[name='v_md5info']").val(json.data.url);
+					   obj.form.submit();
+				}
+			}
+		});
+	 }
+</script>
+<!--{template footer}-->

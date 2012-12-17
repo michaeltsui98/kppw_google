@@ -1,0 +1,189 @@
+<!--{template header}-->
+<div class="wrapper">
+<div class="container_24">
+<!--{template user/user_nav}-->
+	<!--main start-->
+
+<section class="clearfix section">
+<!--{template user/user_side}-->
+<div class="show_panel container_24 po_re">
+  <div class="prefix_3 grid_21">
+    <div class="panel clearfix box">
+     <!--main content-->
+      <div class="">
+        <!--header内容头部 start-->
+        <header class="clearfix box_header" >
+           <h2 class="grid_4 alpha omega box_title t_c">{$_lang['auth_center']}</h2>
+             <div class="grid_17 alpha omega">
+                   <nav class="box_nav">
+                       <ul>
+                       	{loop $auth_item_list $v}
+                            <li {if $auth_code==$v['auth_code']}class="selectedLava"{/if}>
+                            	<a href="index.php?do={$do}&view={$view}&op={$op}&auth_code={$v[auth_code]}#userCenter" title="{$v[auth_title]}{$_lang['info']}">{$v[auth_title]}</a>
+							</li>
+						{/loop}
+                       </ul>
+                   </nav>
+               </div>
+           <div class="clear"></div>
+       </header>
+	   <!--header内容头部 end-->
+   {if $verify}
+		 <!--{template verify_secode}-->
+{else}
+	 	 <!--detail内容 start-->
+            <article class="box_detail last_step_three">
+               <!--messages消息 start-->   
+                   <div class="messages m_infor clearfix">
+                      <div class="icon16 fl_l">warning</div>
+                           <div class="grid_18">{$_lang['realname_will_cost']}:{c:$auth_item['auth_cash']}. {$_lang['customer_service_personnel_will']} {$auth_item[auth_day]}{$_lang['working_days_to_complete_certification']}{$_lang['zh_mh']}{$basic_config['kf_phone']}</div>
+                       <a href="###" class="close">&times;</a>
+                   </div> 
+                   <!--messages消息 end-->
+                   <div class="prefix_1 suffix_1 clearfix">
+                     <!--step步骤 start-->
+                       <div class="step_progress clearfix">
+                       	{loop $step_arr $k $v}
+						  <div class="step {$k} {if $k==$auth_step}selected{/if}">
+                           <span class="icon32">{$k}</span>
+                           <strong>{$v[0]}</strong>{$v[1]}
+                         </div>
+						{/loop}
+                     </div>
+                     <!--step步骤 end-->
+                     {if $auth_step=='step1'}
+				  <form action="{$ac_url}&auth_step=step2" method="post" id="frm_auth" enctype="multipart/form-data" name="frm_auth">
+                     <div class="form_box pt_20">
+                      	<div class="rowElem clearfix">
+              				<label class="grid_5 clearfix">
+              					<div class="fl_r pr_10">
+              						<img src="{$auth_item['auth_big_ico']}" />
+              					</div>
+              				</label>
+                            <div class="grid_6"> <strong class="font14b">{$auth_item['auth_title']}</strong> <span class="c999 block">{$auth_item['auth_desc']}</span> </div>
+                      	</div>
+                         <div class="rowElem clearfix">
+                            <label class="grid_5 t_r">{$_lang['username']}{$_lang['zh_mh']}</label>
+                               <div class="grid_4">{$user_info[username]}</div>                                 
+                          </div>
+                          <div class="rowElem clearfix">
+                              <label class="grid_5 t_r">{$_lang['realname']}{$_lang['zh_mh']}</label>
+                              <input type="text" class="mr_5" name="fds[realname]" id="realname" size="35" value="{$user_info[truename]}"
+							   limit="required:true;len:2-10" msg="{$_lang['msg_about_realname']}" title="{$_lang['title_about_realname']}" msgArea="span_realname"/><span id="span_realname"></span>
+							   <div class=" prefix_5 c999">{$_lang['enter_correct_realname']}</div>
+						  </div>
+                          <div class="rowElem clearfix">
+                              <label class="grid_5 t_r">{$_lang['id_card']}{$_lang['zh_mh']}</label>
+                              <input type="text"class="mr_5"  name="fds[id_card]" id="id_card" size="35" msgArea="msg_id_card"
+							   limit="required:true;type:idCard" msg="{$_lang['msg_about_card_num']}" title="{$_lang['title_about_card_num']}" value="{$user_info[idcard]}"/><span class="red" id="msg_id_card"></span>
+                              <div class=" prefix_5 c999">{$_lang['please_fill_in_with_realname_corresponding_to_the_card_num']}</div>
+						   </div>
+                           <div class="rowElem clearfix">
+                           	<label class="grid_5 t_r">{$_lang['card_copies']}{$_lang['zh_mh']}</label>
+								<input type="file" name="id_pic" ext='.gif,.jpg,.png' onchange="isExtName(this);" id="id_pic"/>
+						   </div>
+                           <div class="rowElem clearfix form_button">
+                           		{if $auth_info&&!$auth_info['auth_status']}
+									<button type="button" class="button" value="{$_lang['waiting_for_approval']}"><span class="icon"></span>{$_lang['waiting_for_approval']}</button>
+								{else}
+									<input type="hidden" name="formhash" id="formhash" value="{FORMHASH}">
+                             	    <button type="button" name="sbt_add" class="button" value="{$_lang['auth_now']}" onclick="user_auth()">{$_lang['auth_now']}</button>
+                   		  		{/if}
+						   </div>  
+                         </div>
+                      </form >
+				 {elseif $auth_step=='step2'||$auth_step=='step3'}
+				 <div class="box complete form_box ml_40 mr_40">
+                    <div class="prefix_4 suffix_4 clearfix ">
+                      	<div class="last_success_step clearfix">
+                      	<div class="fl_l {$auth_style} po_re" style="top:30px; left:30px; _left:0px;">
+          					<span class="tip_icon"></span>
+                        </div>
+                        <div class="completedata clearfix">                        		
+                           <ul>
+                           	<li class="clearfix">                        
+                                 <div class=" grid_2"><img src="{$auth_item['auth_big_ico']}" /></div>                                 
+                                  <div class="font14b">{$auth_item['auth_title']}
+                                  <span style="font-size:10px;">（{$auth_tips}）</span></div>
+                                  <div class="c999">{$_lang['use_realname_to_auth']}</div>
+                             </li>
+							 
+							 <li class="clearfix">
+  								<div class=" grid_2 ">{$_lang['realname']}{$_lang['zh_mh']}</div>
+								<div class=" font14b">$auth_info['realname']</div>
+                           	 </li>
+							<li class="clearfix">                          
+								<div class=" grid_2 ">{$_lang['id_card']}{$_lang['zh_mh']}</div>
+								 <div class="c999">
+                                  <!--{eval echo kekezu::set_star($auth_info['id_card'],3,5);}-->
+                               	  </div>
+                           	 </li>
+					 
+                        </ul>
+                    </div>
+                   		<div class="fl_r pad10">
+							<a href="{$ac_url}&auth_step=step1" class="button">{$_lang['return_and_modify']}</a>
+						</div>
+					</div>
+				   </div>
+               </div>
+             </div> 
+			{/if}
+            </div> 
+            <div class="clear"></div> 
+       </article>
+   <!--detail内容 end-->
+   {/if}
+  </div>
+	 <!--main content end -->
+	<div class="clear"></div>
+  </div>
+ </div>
+ </section>
+ <!--main end-->
+ </div>
+</div>
+<script type="text/javascript"> 
+	function user_auth(){
+		if(!$("#id_pic").val()){
+			showDialog("$_lang['pleace_upload_card']",'alert',"$_lang['friend_tishi']");
+			return false;
+			
+		}
+		var user_balance = parseInt($user_info['balance'])+0;
+		var user_credit = parseInt($user_info['credit'])+0;
+		var is_allow_credit = $basic_config['credit_is_allow'];
+		var pay_cash = parseInt($auth_item['auth_cash'])+0;
+		var i=checkForm(document.getElementById("frm_auth"));
+		if(i){
+			if(pay_cash<=0){form_sbt();
+			}else{
+				if((user_credit+user_balance)>=pay_cash){
+					if(is_allow_credit==1){
+						if(user_credit>=pay_cash){
+							showDialog("{$_lang['from_your']}{CREDIT_NAME}{$_lang['take_off']}{c:$auth_item['auth_cash']}", 'confirm', "{$_lang['confirm_to_pay']}",'form_sbt()',0);return false;
+						}else{
+							showDialog("{$_lang['will_take_off_from_your_account']} "+(pay_cash-user_credit)+" {CREDIT_NAME}{$_lang['take_off']}"+user_credit+"{$_lang['point']}", 'confirm', "{$_lang['confirm_to_pay']}",'form_sbt()',0);return false;
+						} 
+					}else{
+						showDialog("{$_lang['will_take_off_from_your_account']} {c:$auth_item['auth_cash']} ", 'confirm', "{$_lang['confirm_to_pay']}",'form_sbt()',0);return false;
+					}
+				}else{
+					showDialog("{$_lang['balance_not_enough']}{c:$auth_item['auth_cash']} ", 'confirm', "{$_lang['online_pay']}",'online_pay('+pay_cash+')',0);return false;
+				}
+			}
+		}else{
+			return false;
+		}
+	}
+	function form_sbt(){
+		//$('#frm_auth').submit();
+		formSub('frm_auth','form',true);
+	}
+	function online_pay(cash){
+		window.location.href='index.php?do=user&view=finance&op=recharge&cash='+cash+'#userCenter';
+	}
+	In('form');
+</script>
+<!--{template user/user_footer}-->
+<!--{template footer}-->

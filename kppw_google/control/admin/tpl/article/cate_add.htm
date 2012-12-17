@@ -1,0 +1,66 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+   <h1>{$_lang['cat_manage']}</h1>
+         <div class="tool"> 
+            <a href="{BASE_URL}/index.php/admin/article_cate{$ac}" >{$_lang['cat_list']}</a>
+            <a href="{BASE_URL}/index.php/admin/article_cate/add?type={$type}"class="here">{if $_GET['art_cat_id']}{$_lang['cat_edit']}{else}{$_lang['cat_add']}{/if}</a>
+    	</div>
+</div>
+<!--页头结束-->
+<div class="box post">
+<form method="post" action="{BASE_URL}/index.php/admin/article_cate/save" id="frm_cat" >
+<input type="hidden" name="hdn_art_cat_id" value="{$cate_info['art_cat_id']}">
+<input type="hidden" name="hdn_cat_type" value="{$type}">
+    <table width="100%" class="detail" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th scope="row" width="130">{$_lang['father_cat']}{$_lang['zh_mh']}</th>
+        <td>
+            <select id="slt_cat_id" name="slt_cat_id" style=" width:270px;"
+            		 limit = "required:true;type:int" 
+                     msg = '{$_lang['select_father_cat']}' 
+                     title='{$_lang['cat_what']}{$_lang['zh_wh']}' 
+                     msgArea="msg_cat_id">
+					<option value="0">顶级</option>
+		            {loop $t_arr $v}
+		            	$v
+		            {/loop}
+       		 </select>
+            <span id="msg_cat_id"></span>
+        </td>
+      </tr>
+      
+      <tr>
+        <th scope="row">{$_lang['cat_name']}{$_lang['zh_mh']}</th>
+        <td> 
+         <input type="text" class="txt" style=" width:260px;" name="txt_cat_name" id="txt_cat_name" value="{$cate_info['cat_name']}" maxlength="20" 
+         limit="required:true;len:2-20" 
+         msg="{$_lang['cat_name_limit']}" 
+         msgArea="cat_name_msg" 
+         title="{$_lang['input_cat_name']}"/><span id="cat_name_msg"></span>
+    	</td>
+      </tr>
+      
+      <tr>
+        <th scope="row">{$_lang['order']}{$_lang['zh_mh']}</th>
+        <td>
+         <input type="text"  class="txt" style=" width:260px;" id="txt_listorder" name="txt_listorder" value="{$cate_info['listorder']}" maxlength="5" 
+				limit = "required:true;type:int" 
+                onkeyup="clearstr(this)"
+                msg = '{$_lang['please_enter']}{if $type=='art'}{$_lang['article']}{elseif $type=='help'}{$_lang['help']}{else}{$_lang['single_page']}{/if}{$_lang['category']}{lang:order' 
+                title='{if $type=='art'}{$_lang['article']}{elseif $type=='help'}{$_lang['help']}{else}{$_lang['single_page']}{/if}{$_lang['category_order']}' 
+                msgArea="slt_txt_listorder"/><span id="slt_txt_listorder"></span>
+        </td>
+      </tr>
+    <tr>
+        <th scope="row">&nbsp;</th>
+    	<td>
+    	<button name="sbt_edit" value="1" onclick="return checkForm(document.getElementById('frm_cat_edit'),false)" class="pill positive primary  button" type="submit"><span class="check icon"></span>{$_lang['submit']}</button>
+    	<button class="pill button" type="button" onclick="history.go(-1);" value="{$_lang['return']}"><span class="uparrow icon"></span>{$_lang['return']}</button>
+    	</td>
+    </tr>
+    
+    </table>
+</form>
+</div>
+<!--主体结束-->
+<!--{include control/admin/tpl/admin_footer}-->

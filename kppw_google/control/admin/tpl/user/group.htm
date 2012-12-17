@@ -1,0 +1,47 @@
+<!--{include control/admin/tpl/admin_header}-->  
+<div class="page_title">
+	<h1>{$_lang['system_group_manage']}</h1>
+     <div class="tool"> 
+         <a href="{BASE_URL}/index.php/admin/user_group" class="here">{$_lang['user_group_manage']}</a>
+        <a href="{BASE_URL}/index.php/admin/user_group/add">{$_lang['add_user_group']}</a>
+	</div>
+</div>
+<!--页头结束-->
+<div class="box list">
+			<form  class="detail" method="post" action="{{BASE_URL}/index.php/admin/user_group/add}" id="frm_user_search">
+		  		<table cellpadding="0" cellspacing="0">
+		  		  <tbody>
+		          <tr>
+		            <th>{$_lang['id']}</th>
+					<th>{$_lang['group_name']}</th>
+					<th>{$_lang['update_time']}</th>
+					<th>{$_lang['operate']}</th>
+		          </tr>
+				{loop $list_arr $v}
+		        <tr class="item">
+		            <td >$v['group_id']</td>
+		            <td class="motif">$v['groupname']</td>
+		            <td>{date('Y-m-d',$v['on_time'])}</td>
+					<td>
+						<a href="{BASE_URL}/index.php/admin/user_group/add?group_id=$v[group_id]" class="button dbl_target"><span class="pen icon"></span>{$_lang['edit']}</a>
+						<a href="{BASE_URL}/index.php/admin/user_group/del?group_id=$v[group_id]" onclick="return cdel(this);"class="button"><span class="trash icon"></span>{$_lang['delete']}</a>
+					</td>
+		          </tr>
+				 {/loop}
+		          <tr>
+		          	<td colspan="4">
+		            <div class="clearfix">
+		            	<button type="button" name="sbt_add" value="{$_lang['add_user_group']}" class="positive pill button" onclick="document.location.href='{BASE_URL}/index.php/admin/user_group/add'"/><span class="check icon"></span>{$_lang['add_user_group']}</button>
+					</div>
+					</td>
+		          </tr>
+				  </tbody>
+		        </table>
+			</form>
+</div>
+<!--主体结束-->
+
+
+<!--{include control/admin/tpl/admin_footer}-->
+
+

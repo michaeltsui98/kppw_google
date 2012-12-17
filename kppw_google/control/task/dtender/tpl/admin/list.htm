@@ -1,0 +1,108 @@
+<!--{include control/admin/tpl/admin_header}--> 
+<div class="page_title">	
+	<h1>{$model_info['model_name']}{$_lang['manage']}</h1>
+     <div class="tool">
+     	<a href="javascript:;" class="here">{$_lang['task_list']}</a>
+	 </div>
+</div>
+    <!--页头结束-->
+<div class="box search p_relative" id="detail">
+<form action="{$base_uri}" method="get">
+<input type="hidden" name="type" value="{$type}"> 		
+<table class="detail"  cellspacing="0" cellpadding="0">    		
+	<tbody>
+		<tr>
+            <th>查询字段
+               <select name="slt_fields">
+               	<option></option>
+               	{loop $query_fields $k $v}
+               	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+				{/loop} 
+               </select>
+			 <select name="slt_cond">
+			 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+				<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+				<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+				<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+			 </select>
+             <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+			 <select name="page_size">
+    			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+    			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+    			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+			</select>
+			 <input type="submit" value="{$_lang['search']}">
+			 </td>
+        </tr>  			
+		</tbody>
+</table>
+</form>    
+</div>
+<!--搜索结束-->
+    
+<div class="box list">
+<form action="{$base_uri}" id='frm_list' method="post">
+<table cellpadding="0" cellspacing="0">
+  <tr>
+    <th width="8%"><a href="javascript:;" onclick="submitSort('{$uri}','task_id','{$ord_tag}')">ID{if $_GET['f']=='task_id'}{$ord_char}{/if}</a></th>
+    <th width="27%">{$_lang['task_title']}</th>
+    <th width="10%">{$_lang['task_status']}</th>
+    <th width="10%"><a href="javascript:;" onclick="submitSort('{$uri}','start_time','{$ord_tag}')">{$_lang['pub_time']}{if $_GET['f']=='start_time'}{$ord_char}{/if}</a></th>
+    <th width="15%"><a href="javascript:;" onclick="submitSort('{$uri}','task_cash','{$ord_tag}')">{$_lang['task_cash']}{if $_GET['f']=='task_cash'}{$ord_char}{/if}</a></th>
+	<th><a href="javascript:;" onclick="submitSort('{$uri}','work_num','{$ord_tag}')">稿件数{if $_GET['f']=='work_num'}{$ord_char}{/if}</a></th>
+	<th width="8%">{$_lang['pub_name']}</th>
+    <th width="25%">{$_lang['operate']}</th>
+  </tr>
+  <tbody>
+  {loop $list_arr $k $v}
+  <tr class="item">
+ 	<td class="td25"><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['task_id']}" class="checkbox">{$v['task_id']}</td>
+    <td class="td28">
+    	<a href="{BASE_URL}/index.php/task/{$v['task_id']}" target="_blank"><!--{eval echo Keke::cutstr($v['task_title'],40)}--></a>
+		{if $v['is_top']==1}<font color="red">[{$_lang['recommend']}]</font>{/if}
+	</td>
+    <td>{$task_status[$v['task_status']]}</td>
+    <td><!--{eval echo Keke::get_gmdate($v['start_time'])}--></td>
+    <td>{c:$v['task_cash']}</td>
+	<td>{$v['work_num']}</td>
+    <td>$v['username']</td>
+    <td>
+    	{if $v['task_status']==1}
+    	<a href="{$base_uri}/pass?task_id={$v['task_id']}" onclick="return js_submit(this);" >{$_lang['pass']}</a>
+		<a href="{$base_uri}/no_pass?task_id={$v['task_id']}" onclick="return js_submit(this);">{$_lang['nopass']}</a>
+		{/if}
+		{if in_array($v['task_status'],array('2','3','4','5'))}
+    	<a href="{$base_uri}/freeze?task_id={$v['task_id']}" onclick="return js_submit(this);">{$_lang['freeze']}</a>
+		{/if}
+		{if in_array($v['task_status'],array('2','3')) && $v['is_top']!=1}
+		<a href="{$base_uri}/recommend?task_id={$v['task_id']}" onclick="return js_submit(this);">{$_lang['recommend']}</a>
+		{/if}
+		{if $v['task_status']==7}
+		<a href="{$base_uri}/unfreeze?task_id={$v['task_id']}" onclick="return js_submit(this);">{$_lang['unfreeze']}</a>
+		{/if}
+		{if $v['is_top']==1}
+			<a href="{$base_uri}/unrecommend?task_id={$v['task_id']}" onclick="return js_submit(this);">{$_lang['cancel_recommend']}</a>
+		{/if}
+		<a href="{$add_uri}?task_id=$v['task_id']" class="button dbl_target">{$_lang['edit']}</a>
+		{if in_array($v['task_status'],array('8','9','10'))}
+		<a href="{$del_uri}?task_id=$v['task_id']" class="button"  onclick="return cdel(this);">{$_lang['delete']}</a>
+		{/if}
+
+	</td>
+  </tr>
+  {/loop}
+  </tbody>
+  <tfoot>          
+  <tr>
+    <td colspan="8">
+        <div class="page">{$pages['page']}</div>
+      		<input type="checkbox" onclick="checkall();" id="checkbox" name="checkbox"/>
+            <label for="checkbox">{$_lang['select_all']}</label>
+    </td>
+  </tr>
+  </tfoot>
+</table> 
+	</form>
+</div>       
+ 
+<!--{include control/admin/tpl/admin_footer}-->

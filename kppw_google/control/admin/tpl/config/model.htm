@@ -1,0 +1,122 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+	<h1>{$_lang['model_manage']}</h1>
+	<div class="tool"> 
+    <a href="{BASE_URL}/index.php/admin/config_model" {if $_K['action']=='index'}class="here"{/if}>{$_lang['task_model_manage']}</a>
+    <a href="{BASE_URL}/index.php/admin/config_model/shop" {if $_K['action']=='shop'}class="here"{/if}>{$_lang['mall_model_manage']}</a>
+	</div>
+</div>
+<div class="box list">
+  	<form action="{BASE_URL}/index.php/admin/config_model/install" method="post">
+  		<input type="hidden" name="formhash" value="{FORMHASH}">
+		<input type="hidden" name="type" value="{$type}">
+        <table cellpadding="0" cellspacing="0" class="detail">
+            	<tr>
+                <th scope="row">
+                    {$_lang['model_id']}
+                </th>
+                <th scope="row">
+                    {$_lang['enabled_status']}
+                </th>
+               <th scope="row">
+                    {$_lang['model_id']}
+                </th>
+                <th scope="row">
+                    {$_lang['model_name']}
+                </th>
+               <th scope="row">
+                    {$_lang['model_dir']}
+                </th>
+               <th scope="row">
+                    {$_lang['model_author']}
+                </th>
+                <th scope="row" width="50">
+                    {$_lang['order']}
+                </th>
+                <th scope="row">
+                     {$_lang['set_to_disable']}
+                </th>
+				<th scope="row">
+       	             {$_lang['config']}            
+                </th>
+				<th scope="row">
+                    {$_lang['uninstall']}
+                </th>
+				
+            </tr>
+       {loop $model_list $v}
+            <tr>
+                <td>
+                    $v['model_id']
+                </td>
+                <td>
+                    {if $v['model_status']>0}
+                    <font color="green">
+                        {$_lang['open']}
+                    </font>{else}{$_lang['disable']}{/if}
+                </td>
+                <td>$v['model_code']</td>
+                <td>$v['model_name']</td>
+                <td>$v['model_dir']</td>
+                <td>$v['model_dev']</td>
+                <td>
+                    <input size="3" class="txt" name="md_list_order{$v['model_id']}"  id="md_list_order{$v['model_id']}" value="$v['listorder']" type="text" onchange="set_listorder('{$v['model_id']}',this.value);">
+                </td>
+                <td>
+                    {if $v['model_status']>0}
+						<a href="{BASE_URL}/index.php/admin/config_model/disable?disable=1&model_id={$v['model_id']}&type={$type}"  class="button">
+							<span class="lock icon"></span>{$_lang['disable']}
+						</a>
+                    {else}
+						<a href="{BASE_URL}/index.php/admin/config_model/disable?disable=0&model_id={$v['model_id']}&type={$type}" class="button" >
+							<span class="unlock icon"></span>{$_lang['set_to_enable']}
+						</a>
+                    {/if}
+				</td>
+				<td>
+					{if $v['model_status']}
+					 	<a href="{BASE_URL}/index.php/admin/config_model/config?model_id={$v['model_id']}" class="button">
+						 	<span class="cog icon"></span>{$_lang['config']}
+						</a>
+					{/if}
+				</td>
+				<td>
+					<a href="{BASE_URL}/index.php/admin/config_model/uninstall?model_id={$v['model_id']}" onclick="return cdel(this);" class="button">
+						<span class="downarrow icon"></span>{$_lang['uninstall']}
+					</a>
+                </td>
+            </tr>
+			 
+	  {/loop}
+         <tr>
+            <td colspan="7">
+                {$_lang['install_new_model_dir']}: <input type="text" name="txt_model_name" value="" class="txt">
+				<button type="submit" name="submit" class="button pill" value={$_lang['install']} ><span class="uparrow icon"></span>{$_lang['install']}
+				</button>
+            </td>
+        </tr>
+           
+  </table>
+ </form>
+</div>
+
+<script type="text/javascript">
+    function set_listorder(model_id, value){
+        $.get('index.php?do=config&view=model&op=listorder', {
+            model_id: model_id,
+            value: value
+        });
+    }
+	function uninstall(o,s){
+		d = art.dialog;
+		var c = "{$_lang['unloading_task_model']}";
+		if(s){
+			c=s;
+		}
+		d.confirm(c, function(){
+			window.location.href = o.href;
+		});
+		return false;	
+	}
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

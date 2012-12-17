@@ -1,0 +1,64 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+	<h1>{$_lang['payitem_manage']}</h1>
+	 <div class="tool"> 
+    <a href="{BASE_URL}/index.php/admin/config_payitem?type=witkey" {if $_GET['type']=='witkey' or !$_GET['type']}class="here"{/if}>{$_lang['witkey']}</a>
+    <a href="{BASE_URL}/index.php/admin/config_payitem?type=employer" {if $_GET['type']=='employer'}class="here"{/if}>{$_lang['employer']}</a>
+	</div>
+</div>
+<div class="box list">
+	  <form action="{BASE_URL}/index.php/admin/config_payitem/install" method="post"> 
+		<table class="detail" cellpadding="0" cellspacing="0">
+    	<tr>
+        <th scope="row">{$_lang['use_status']}</th>
+        <th scope="row">{$_lang['serve_name']}</th>
+        <th scope="row">{$_lang['serve_icon']}</th>
+        <th scope="row">{$_lang['serve_cost']}</th>
+        <th scope="row" >{$_lang['user_type']}</th>
+        <th scope="row">{$_lang['set_to_disable']}</th>
+		<th scope="row">{$_lang['config']}</th>
+		<th scope="row">{$_lang['uninstall']}</th>
+     </tr>
+{loop $payitem_arr $v}
+    <tr>
+        <td>
+            {if $v['is_open']==1}
+             {$_lang['yes']}
+			{else}
+			 <font color="red">{$_lang['disable']}</font>
+			{/if}
+        </td>
+        <td>$v['item_name']</td>
+        <td><img src="../../{$v['small_pic']}" /></td>
+        <td>{c:$v['item_cash']}/{$unit[$v['item_standard']]}</td>
+        <td> {$type_arr[$v['user_type']]}</td>
+        <td>
+        	{if $v['is_open']==1}   
+			<a href="{BASE_URL}/index.php/admin/config_payitem/change_status?type=$v['user_type']&item_id={$v['item_id']}&status=2"  class="button"><span class="cross icon"></span>{$_lang['set_to_disable']}</a>
+            {else}
+			<a href="{BASE_URL}/index.php/admin/config_payitem/change_status?type=$v['user_type']&item_id={$v['item_id']}&status=1" class="button" ><span class="check icon"></span>{$_lang['set_to_enable']}</a>
+            {/if}
+		</td>
+		<td>
+			<a href="{BASE_URL}/index.php/admin/config_payitem/add?item_code={$v['item_code']}" class="button"><span class="cog icon"></span>{$_lang['config']}</a>
+		</td>
+		<td>
+			<a href="{BASE_URL}/index.php/admin/config_payitem/uninstall?item_id=$v['item_id']" onclick="return cdel(this);" class="button"><span class="downarrow icon"></span>{$_lang['uninstall']}</a>
+        </td>
+    </tr>
+	 
+{/loop}
+    
+        <tr>
+            <td colspan="7">
+                {$_lang['install_payitem_input_contents']}: <input type="text" name="txt_item_code" value="" class="txt">
+				<button type="submit" name="submit" class="button pill" value={$_lang['install']} ><span class="uparrow icon"></span>{$_lang['install']}
+				</button>
+            </td>
+        </tr>
+   
+</table>
+</form>
+  
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

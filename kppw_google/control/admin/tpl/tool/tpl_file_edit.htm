@@ -1,0 +1,30 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['tpl_manage']}</h1>
+		<div class='tool'>
+			{$_lang['tpl_edit']}
+		</div>
+</div>
+<div class="box list">
+<form method="post"  action="{BASE_URL}/index.php/admin/tool_tpl/tpl_save">
+	<input type="hidden" name="filename" value="{$filename}">
+	<input type="hidden" name="tname" value="{$tname}">
+	<input type="hidden" name="tplname" value="{$tplname}">
+        <table  border="0" class="detail" cellspacing="0" cellpadding="0"  >
+        	<tr>
+                <td colspan="2">
+                    <textarea name="txt_code_content" limit="required:true" cols="150" rows="25">$code_content</textarea>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" >
+                </th>
+                <td>
+                	<button type="submit" name="sbt_edit" class="pill positive button" value="{$_lang['submit']}"  onclick="return checkForm(this,false)"/><span class="check icon"></span>{$_lang['submit']}</button>
+                    <button  type="button"  name="rst_edit" class="pill button" value={$_lang['return']} onclick="to_back();"><span class="uparrow icon"></span>{$_lang['return']}</button>
+                </td>
+            </tr>
+        </table>
+</form>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

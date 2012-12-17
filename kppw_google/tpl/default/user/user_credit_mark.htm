@@ -1,0 +1,182 @@
+<!--{template header}--><!--contain start-->
+<div class="wrapper">
+    <div class="container_24">
+        <!--{template user/user_nav}-->
+		<!--main start-->
+		<!--星级评定样式-->
+        <script type="text/javascript">
+            $(function(){
+                //自定义显示星级评定
+                $('.hover-star').rating({
+                    focus: function(value, link){
+                        var tip = $('#hover-test');
+                        tip['0'].data = tip['0'].data || tip.html();
+                        tip.html(link.title || 'value: ' + value);
+                    },
+                    blur: function(value, link){
+                        var tip = $('#hover-test');
+                        $('#hover-test').html(tip['0'].data || '');
+                    }
+                });
+            })
+        </script>
+        <section class="clearfix section">
+        <!--{template user/user_side}-->
+        <div class="show_panel container_24 po_re">
+        <div class="prefix_3">
+            <div class="panel clearfix box">
+                <!--main content-->
+                <div class="grid_21">
+                    <!--header内容头部 start-->
+                    <header class="clearfix box_header">
+                        <h2 class="grid_3 alpha box_title t_c">{$_lang['credit_grade']}</h2>
+                        <div class="grid_18 omega">
+                            <nav class="box_nav">
+                                <ul>
+                                    <li>
+                                        <a href="{$ac_url}&opp=grow#userCenter">{$_lang['credit_growup']}</a>
+                                    </li>
+                                    <li class="selectedLava">
+                                        <a href="{$ac_url}&opp=mark#userCenter">{$_lang['review_each_record']}</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="clear">
+                        </div>
+                    </header>
+                    <!--header内容头部 end--><!--detail内容 start-->
+                    <article class="box_detail">
+                    <div class="prefix_1 suffix_1">
+                        <div class="clearfix box">
+                            <div class=" mb_10  border_b_c clearfix">
+                                <div class="grid_2 t_c fl_l">
+                                    <b>{$_lang['filter']}</b>
+                                </div>
+                                <div class="grid_16 cf60 fl_l lineh">
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&mark_status=n#userCenter" {if $mark_status=='n'}class="b396"{/if}>{$_lang['all_evaluation']}( <!--{eval echo intval($mark_count['1']['count']+$mark_count['2']['count']+$mark_count['3']['count']+$mark_count['0']['count'])}-->)</a>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&mark_status=1#userCenter" {if $mark_status=='1'}class="b396"{/if}>{$_lang['praise']}( <!--{eval echo intval($mark_count['1']['count'])}-->)</a>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&mark_status=2#userCenter" {if $mark_status=='2'}class="b396"{/if}>{$_lang['the_assessment']}( <!--{eval echo intval($mark_count['2']['count'])}-->)</a>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&mark_status=3#userCenter" {if $mark_status=='3'}class="b396"{/if}>{$_lang['negative_feedback']}( <!--{eval echo intval($mark_count['3']['count'])}-->)</a>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&mark_status=0#userCenter" {if $mark_status=='0'}class="b396"{/if}>{$_lang['to_be_evaluated']}( <!--{eval echo intval($mark_count['0']['count'])}-->)</a>
+                                    </div>
+                                </div>
+                                <div class="grid_16 cf60 fl_l lineh">
+                                    <div class="grid_2 t_c fl_l">
+                                        <b>&nbsp;</b>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&role_type=1#userCenter" {if $role_type=='1'}class="b396"{/if}>{$_lang['evaluation_from_others']}</a>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&role_type=2#userCenter" {if $role_type=='2'}class="b396"{/if}>{$_lang['evaluation_of_others']}</a>
+                                    </div>
+                                </div>
+								<!--
+                                <div class="grid_16 cf60 fl_l lineh">
+                                    <div class="grid_2 t_c fl_l">
+                                        <b>&nbsp;</b>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&mark_type=1#userCenter" {if $mark_type=='1'}class="selected"{/if}>{$_lang['witkey_identity']}</a>
+                                    </div>
+                                    <div class="grid_3 omega">
+                                        <a href="{$url}&mark_type=2#userCenter" {if $mark_type=='2'}class="selected"{/if}>{$_lang['employer']}</a>
+                                    </div>
+                                </div>
+								-->
+                            </div>
+                            <div class="clear">
+                            </div>
+                            <dl class="credit_list clearfix mt_10">
+                                {if $mark_list}
+								<!--{eval $i=1;}-->
+								{loop $mark_list $k $v}
+								<!--{eval $i++;}-->
+                                <dt class="bf7 mt_10 clearfix">
+                                    <div class="grid_14 omega">
+                                        <div class="fl_l">
+                                            {if $role_type=='1'}<!--{userpic($v['by_uid'],'small')}-->{else}<!--{userpic($v['uid'],'small')}-->{/if}
+                                        </div>
+                                        <div class="comment fl_l ml_10">
+                                            {if $role_type=='1'}
+                                            {$_lang['from']}<a href="index.php?do=space&member_id=$v['by_uid']" target="_blank">{$v['by_username']}</a>{$_lang['de']}
+                                            {else}
+                                            {$_lang['to']}<a href="index.php?do=space&member_id=$v['uid']" target="_blank">{$v['username']}</a>{$_lang['de']}
+                                            {/if}
+                                        </div>
+                                        <div class="graid cf60 fl_l ml_10">
+                                            {if $v['mark_status']=='1'}{$_lang['praise']}{elseif $v['mark_status']=='2'}{$_lang['the_assessment']}{elseif $v['mark_status']=='3'}{$_lang['negative_feedback']}{else}{$_lang['didnot_respond_to_evaluation']}{/if}
+                                        {if $v['mark_status']}
+										<a href="index.php?do=ajax&view=task&ajax=mark_aid&auid={$v['uid']}&mark_type={$v['mark_type']}&mark_status={$v['mark_status']}&obj_id={$v['obj_id']}"
+								 			onclick="return false;" onmouseover="loadMarkAid(this)" id="mark_{$v['mark_id']}" class="mr_10">{$_lang['check_evalue']}</a>
+                                    	{/if}
+										</div>
+                                    </div>
+                                    <div class="grid_5 t_r mr_10 alpha">
+                                        {if $v['obj']=='work'}<a href="index.php?do=task&task_id={$v['origin_id']}&view=list_work#t_work_list" class="mr_10" target="_blank">{$_lang['view_the_task_details']}</a>
+                                        {elseif $v['obj']=='service'}<a href="shop.php?do=service_info&sid={$v['obj_id']}" class="mr_10" target="_blank">{$_lang['view_the_goods_details']}</a>
+                                        {elseif $v['obj']=='hire'}<a href="shop.php?do=hire&hire_id={$v['obj_id']}" class="mr_10" target="_blank">{$_lang['view_the_hire_details']}</a>
+                                        {/if}
+										</div>
+                                </dt>
+                                <dd>
+                                    <div class="pad10 ">
+                                        {$v['mark_content']}
+                                    <div class="clear"></div>
+                                    </div>
+                                </dd>
+                                {/loop}
+                                {else}
+                                <dt class="bf7 mt_10 clearfix t_c font14b">
+                                   {$_lang['no_comments']}
+                                </dt>
+                                {/if}
+                            </dl>
+                        </div>
+                        <div class="page">
+                            <p>
+                                {$pages['page']} 
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                </article>
+                <!--detail内容 end-->
+            </div>
+            <!--main content end -->
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+    </section>
+    <!--main end-->
+</div>
+</div>
+<!--contain end-->
+<script type="text/javascript">
+	In('rating','metaData','css_rating');
+    $(function(){
+        /**进度条加载**/
+        $('.progress_bar').each(function(){
+            $(this).animate({
+                width: $(this).attr("grade") + "%"
+            }, 3000, 'easein')
+        })
+    })
+function loadMarkAid(obj){
+	ajaxmenu(obj, 250,'1','2','43');
+	return false;
+}
+</script>
+<!--{template user/user_footer}-->
+<!--{template footer}-->

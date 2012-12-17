@@ -1,0 +1,64 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['db_mange']}</h1>
+        <div class="tool">         
+            <a href="{BASE_URL}/index.php/admin/tool_dbbackup" class="here">{$_lang['backup']}</a>
+            <a href="{BASE_URL}/index.php/admin/tool_dbrestore">{$_lang['restore']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim">{$_lang['optim']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim/repair">{$_lang['repair']}</a>
+		</div>
+</div>
+<div class="box list">
+     <div class="title"><h2>{$_lang['database_backup']}</h2></div>
+		<form method="post" action="{BASE_URL}/index.php/admin/tool_dbbackup/save" id="frm_list">
+          	 <table class="detail" cellpadding="0" cellspacing="0">
+           	  <tbody>
+            	  <tr class="item">
+              		<td width="300"><img src="{BASE_URL}/control/admin/tpl/img/SQl15bg.gif"></td>
+              		<td class="loading" align="center">{DBNAME}</td>
+              		<td width="300">
+              		 	<input type="button"  name="sbt_edit" id="backup" value="{$_lang['backup_now']}">
+					</td>
+             	 </tr>
+          	 </tbody>
+             </table>
+       </form>
+<div class="backshow"></div>
+</div>
+<script type="text/javascript">
+	$("#backup").click(function(){
+		$.ajax({
+			url:"{BASE_URL}/index.php/admin/tool_dbbackup/save",
+			dataType:'json',
+			beforeSend:function(){
+				$(".loading").html("{$_lang['building']}</br><img src='{BASE_URL}/control/admin/tpl/img/loading.gif'>");
+			},
+			success:function(json){
+				if(json.status==1){
+					$.each(json.data,function(i,n){
+						str = "<p>{$_lang['backup_table']}"+n+"{$_lang['success']}</p>";
+						if(i==0){
+							$(".detail").html(str);
+						}else{
+							$(".detail").append(str);
+						}
+						$("html,body").animate({scrollTop:$(".backshow").offset().top},50);
+						if(i+1==json.data.length){
+							setTimeout("winReload(1)",6500);
+						}
+					})
+				}else{
+					setTimeout("winReload(0)",1500);
+				}
+			},
+		error:function(){
+				setTimeout("winReload(0)",1500);
+		}
+	})
+})
+
+function winReload(t){
+	window.location.replace("{BASE_URL}/index.php/admin/tool_dbbackup/save?t="+t);
+}
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

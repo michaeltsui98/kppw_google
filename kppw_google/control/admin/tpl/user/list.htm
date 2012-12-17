@@ -1,0 +1,112 @@
+<!--{include control/admin/tpl/admin_header}--> 
+
+<div class="page_title">
+	<h1>{$_lang['member_manage']}</h1>
+<div class="tool">
+            <a href="{BASE_URL}/index.php/admin/user_list" class="here">{$_lang['user_manage']}</a>
+            <a href="{BASE_URL}/index.php/admin/user_add" >{if $edituid}{$_lang['edit']}{else}{$_lang['add']}{/if}{$_lang['user']}</a>
+    	    <a href="{BASE_URL}/index.php/admin/user_add/charge">{$_lang['charge']}</a>
+    	</div>
+</div>
+<!--页头结束--> 
+<div class="box search p_relative">
+		 <form method="get" action="{BASE_URL}/index.php/admin/user_list"  id="frm_list">
+        	<table class="detail" cellspacing="0" cellpadding="0">
+			 <tbody>
+			 	<tr>
+		                <th>查询字段
+		                   <select name="slt_fields">
+		                   	<option></option>
+		                   	{loop $query_fields $k $v}
+		                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+							{/loop} 
+		                   </select>
+						 <select name="slt_cond">
+						 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+							<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+							<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+							<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+						 </select>
+		                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+						 <select name="page_size">
+                			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+                			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+                			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+            			</select>
+						 <input type="submit" value="{$_lang['search']}">
+						 </td>
+	            </tr>
+			 </tbody>
+			</table>
+		</form>
+ </div>
+   <div class="box list">
+			<form class="detail" method="post" action="{BASE_URL}/index.php/admin/user_list" id="frm_user_search">
+				<div id="ajax_dom">
+					<input type="hidden" name="page" value="{$page}" />
+			  		<table cellpadding="0" cellspacing="0">
+			  		<thead>
+			          <tr>
+			          	<th width="15"><input type="checkbox" id="checkbox" onclick="checkall()"></th>
+			            <th width="20" ><a href="javascript:;" onclick="submitSort('{$uri}','uid',{$ord_tag})">UID{if $_GET['f']=='uid'}{$ord_char}{/if}</a></th>
+			            <th width="15" >{$_lang['username']}</th>
+						<th width="45"  class="wraphide">{$_lang['user_group']}</th>
+						<th width="60"  class="wraphide" >{$_lang['user_status']}</th>
+						<th width="90"><a href="javascript:;" onclick="submitSort('{$uri}','reg_time',{$ord_tag})">{$_lang['register_time']}{if $_GET['f']=='reg_time'}{$ord_char}{/if}</a></th>
+						<th width="45" >{$_lang['register']}ip</th>
+						<th width="45">{$_lang['cash_coupon']}</th>
+						<th width="45">{$_lang['balance']}</th>
+						<th width="25%">{$_lang['operate']}</th>
+			         </tr>
+					 </thead>
+					 <tbody> 
+					{loop $list_arr $key $v}
+			        <tr class="item">
+			        	<td class="td25"><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['uid']}"></td>
+			            <td class="td25">{$v['uid']}</td>
+			            <td class="td25 wraphide"><a href="javascript:void(0)" >{$v['username']}</a></td>
+			            <td class="wraphide">{if $grouplist_arr[$v['group_id']]['groupname']} $grouplist_arr[$v['group_id']]['groupname'] {else}{$_lang['normal']}{/if}</td>
+						<td class="wraphide">{if $v['status']!=2}{$_lang['normal']}{else}{$_lang['disable']}{/if}</td>
+						<td>{date('Y-m-d',$v['reg_time'])}</td>
+			            <td><div class="ws_break" style="width:70%;">{$v['reg_ip']}</div></td>
+			            <td><div class="ws_break" style="width:70%;">{$v['credit']}</div></td>
+						<td><div class="ws_break" style="width:70%;">{c:$v['balance']}</div></td>
+						<td>
+							<a class="button dbl_target" href="{BASE_URL}/index.php/admin/user_add?uid=$v['uid']"><span class="pen icon"></span>{$_lang['edit']}</a>
+							{if $shop_open[$v['uid']]}
+								{if $v['recommend']==0}
+									<a class="button" href="{BASE_URL}/index.php/admin/user_list/recommend?uid={$v['uid']}&page={$page}">
+										<span class="uparrow icon"></span>{$_lang['recommend']}</a>
+								{else}
+									<a class="button" href="{BASE_URL}/index.php/admin/user_list/moverecommend?uid={$v['uid']}&page={$page}"">
+										<span class="downarrow icon"></span>{$_lang['move_recommend']}</a>
+								{/if}
+							{/if}
+							 
+ 							{if $v['status']!=2}<a class="button" href="{BASE_URL}/index.php/admin/user_list/disable?uid={$v['uid']}&page={$page}"><span class="lock icon"></span>{$_lang['disable']}</a>
+ 							{else} 
+							<a class="button" href="{BASE_URL}/index.php/admin/user_list/able?uid={$v['uid']}&page={$page}"><span class="unlock icon"></span>{$_lang['use']}</a>{/if} 
+ 						<a class="button" href="{BASE_URL}/index.php/admin/user_list/del?uid={$v['uid']}" onclick="return {if $basic_config['user_intergration']>1} cdel(this,'{$_lang['open_user_integration_confirm_notice']}'); {else}cdel(this);{/if}"><span class="trash icon"></span>{$_lang['delete']}</a>
+						</td>
+ 			        </tr>
+					{/loop}
+					 </tbody>
+					 <tfoot>
+			          <tr>
+			           <td colspan="10">
+						<div class="clearfix">
+						<div class="page">{$pages['page']}</div>
+						<label for="checkbox">{$_lang['select_all']}</label>　
+						<input type="hidden" name="sbt_action" class="sbt_action" />
+						<button type="submit" name="sbt_action" onclick="return batch_act(this)" value="{$_lang['mulit_delete']}" class="pill negative" ><span class="trash icon"></span>{$_lang['mulit_delete']}</button>
+						<button type="button" name="sbt_add"    value="{$_lang['add_new_user']}" class="positive primary pill button" onclick="document.location.href='{BASE_URL}/index.php/admin/user_add'"><span class="check icon"></span>{$_lang['add_new_user']}</button>
+					    </div>
+					   </td>
+					 </tr>
+					 </tfoot>
+			        </table>
+					</div>
+			</form>
+        </div>
+
+<!--{include control/admin/tpl/admin_footer}-->

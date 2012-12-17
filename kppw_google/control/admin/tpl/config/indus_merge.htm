@@ -1,0 +1,50 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['industry_manage']}</h1>
+        <div class="tool">
+            <a href="{BASE_URL}/index.php/admin/config_indus" >{$_lang['industry_list']}</a>
+            <a href="{BASE_URL}/index.php/admin/config_indus/add" >{if $indus_id}{$_lang['edit']}{else}{$_lang['add']}{/if}{$_lang['industry']}</a> 
+            <a href="{BASE_URL}/index.php/admin/config_indus/merge" class="here" >{$_lang['industry_merge']}</a>
+		</div>
+</div>
+<div class="box post">
+ 
+<form method="post" action="#" id="frm_cat_edit">
+    <input type="hidden" name="formhash" value="{FORMHASH}">
+        <table width="100%" class="detail"   border="0" cellspacing="0" cellpadding="0" >
+        
+		<tr>
+            <th scope="row">
+                {$_lang['choose_industry']}{$_lang['zh_mh']}
+            </th>
+            <td>
+                                                        将
+			    <select name="slt_indus_id">
+                    <option value="0">{$_lang['top']}</option>
+                    {loop $indus_p_arr $k $v}
+                    <option value="$v['indus_id']" >$v['indus_name']</option>
+                    {/loop}
+                </select>　
+				 (合并到 →)
+				 <select name="to_indus_id">
+                    <option value="0">{$_lang['top']}</option>
+                    {loop $indus_p_arr $v}
+                      <option value="$v['indus_id']" >$v['indus_name']</option>
+                    {/loop}
+                </select>　
+				
+            </td>
+        </tr>
+         
+		<tr>
+        <td align="left" colspan="2">
+            <div style="padding-left:300px;">
+               <button value="{$_lang['submit']}" name="sbt_edit" type="submit" class="positive primary pill button"><span class="check icon"></span>{$_lang['submit']}</button>
+			   <button value="{$_lang['return']}" class="pill button" type="button" name="rst_edit" onclick="to_back();" ><span class="uparrow icon"></span>{$_lang['return']}</button>
+		    </div>
+        </td>
+        </tr>
+    </table>
+</form>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

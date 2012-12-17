@@ -1,0 +1,158 @@
+<!--{template header}-->
+<!--contain start-->
+<div class="wrapper">
+    <div class="container_24">
+        <!--{template user/user_nav}-->
+		<!--main start-->
+        <section class="clearfix section">
+            <!--{template user/user_side}-->
+            <div class="show_panel container_24 po_re">
+                <div class="prefix_3">
+                    <div class="panel clearfix box">
+                        <!--main content-->
+                        <div class="grid_21">
+                            <!--header内容头部 start-->
+                            <header class="clearfix box_header">
+                                <h2 class="grid_4 alpha box_title t_c">{$_lang['goods_trans']}</h2>
+                                <div class="grid_17 omega">
+                                    <nav class="box_nav">
+                                        <ul>
+                                            {loop $third_nav $v}
+                                            <li {if $model_id==$v['1']}class="selectedLava"{/if}>
+                                                <a href="index.php?do={$do}&view={$view}&op={$op}&model_id={$v['1']}#userCenter" title="{$v['2']}">{$v['2']}(<!--{eval echo intval($v['3'])}-->)</a>
+                                            </li>
+                                            {/loop} 
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="clear">
+                                </div>
+                            </header>
+                            <!--header内容头部 end-->
+							
+							<!--detail内容 start-->
+                            <article class="box_detail">
+                                <div class="">
+                                    <!--from表单 start-->
+                                    <div class="clearfix box pad10">
+                                        <form action="{$url}#userCenter" method="post" id="frm">
+                                            <input type="hidden" name="page" value="{$page}">
+                                            <div class="rowElem clearfix">
+                                                <div class="mr_10 fl_l">
+                                                    <input type="text" name="order_id" class="togg_u txt_input" value="{$_lang['please_input_order_id']}" title="{$_lang['please_input_order_id']}" size="13"/>
+                                                </div>
+  
+                                                <div class="fl_l">
+                                                    <select class="fl_l" name="ord">
+                                                        {loop $ord_arr $k $v}<option value="$k" {if $k==$ord}selected="selected"{/if}>{$v} </option>
+                                                        {/loop}
+                                                    </select>
+                                                </div>
+                                                <div class=" fl_l">
+                                                    <select class="fl_l" name="page_size">
+                                                        <option value="10" {if $page_size=='10'}selected="selected"{/if}>{$_lang['page_size']}10{$_lang['tiao']}</option>
+                                                        <option value="20" {if $page_size=='20'}selected="selected"{/if}>{$_lang['page_size']}20{$_lang['tiao']}</option>
+                                                        <option value="30" {if $page_size=='30'}selected="selected"{/if}>{$_lang['page_size']}30{$_lang['tiao']}</option>
+                                                    </select>
+                                                </div>
+                                                <div class="fl_r">
+                                                    <button class="block" type="submit" name="sbt_search" value="{$_lang['search']}"><span class="icon magnifier"></span>{$_lang['search']}</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <!--date_table数据表格 start-->
+                                        <div class="data_list mt_10">
+                                            <table cellpadding="0" cellspacing="0" class="data_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">
+                                                            {$_lang['order_id']}
+                                                        </th>
+                                                        <th scope="col" width="280px">
+                                                            {$_lang['goods_name']}
+                                                        </th>
+                                                        <th scope="col">
+                                                            {$t}
+                                                        </th>
+                                                        <th scope="col">
+                                                            {$_lang['total_money']}
+                                                        </th>
+                                                        <th scope="col">
+                                                            {$_lang['seller_profit']}
+                                                        </th>
+                                                        <th scope="col">
+                                                            {$_lang['buy_time']}
+                                                        </th>
+                                                        <th scope="col">
+                                                            {$_lang['order_status']}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                 {if $order_info}
+												    {loop $order_info $v}
+                                                    <tr>
+                                                        <td>
+                                                            #{$v['order_id']}
+                                                        </td>
+                                                        <td  width="280px">
+                                                            <!--{eval echo substr($v['order_body'],8)}-->
+                                                        </td>
+                                                        <td>
+                                                            <a href="index.php?do=space&member_id={$v[$u]}" target="_blank">{$v[$n]}</a>
+                                                        </td>
+                                                        <td>
+                                                            {$v['order_amount']}
+                                                        </td>
+                                                        <td >
+                                                        	<!--{eval echo $v['order_amount']*(1-$config_rate['service_profit']/100)}-->
+                                                        </td>
+                                                        <td>
+                                                            <!--{date('Y-m-d H:i',$v['order_time'])}-->
+                                                        </td>
+                                                        <td>
+                                                           {$status_arr[$v['order_status']]}
+                                                        </td>
+                                                    </tr>
+                                                    {/loop}
+													{else}
+														<tr>
+														    <td colspan="7" class="t_c">
+	                                                            {$_lang['norecord']}
+	                                                        </td>
+	                                                    </tr> 
+													{/if}
+                                                </tbody>
+                                                <tfoot> 
+                                                        <td colspan="7" class="t_r">
+                                                           {$_lang['total']}:{$count}{$_lang['ge']}
+                                                        </td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                        <!--data_table数据表格 end-->
+                                        <div class="page clearfix">
+                                            <p>
+                                                {$pages['page']}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!--from表单 end-->
+                                </div>
+                            </article>
+                            <!--detail内容 end-->
+                        </div>
+                    </div>
+                    <!--main content end -->
+                    <div class="clear">
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--main end-->
+    </div>
+</div>
+<!--contain end-->
+<!--{template user/user_footer}-->
+<!--{template footer}-->

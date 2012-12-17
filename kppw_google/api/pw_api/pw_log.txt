@@ -1,0 +1,15 @@
+ ApiResponse::__set_state(array(
+   'result' => 1,
+   'mode' => NULL,
+))array (
+  'charset' => 'gbk',
+  'format' => 'PHP',
+  'method' => 'connect',
+  'mode' => 'Site',
+  'type' => 'uc',
+  'v' => '1.0',
+  'sig' => 'bc611447ef166d2be1994dab5f1303e6',
+)ApiResponse::__set_state(array(
+   'result' => 1,
+   'mode' => NULL,
+))

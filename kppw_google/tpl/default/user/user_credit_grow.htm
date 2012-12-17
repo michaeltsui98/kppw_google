@@ -1,0 +1,214 @@
+<!--{template header}--><!--contain start-->
+<div class="wrapper">
+    <div class="container_24">
+        <!--{template user/user_nav}-->
+		<!--main start-->
+    <!--星级评定样式-->
+        <section class="clearfix section">
+        <!--{template user/user_side}-->
+        <div class="show_panel container_24 po_re">
+        <div class="prefix_3">
+            <div class="panel clearfix box">
+                <!--main content-->
+                <div class="grid_21">
+                    <!--header内容头部 start-->
+                    <header class="clearfix box_header">
+                        <h2 class="grid_4 alpha box_title t_c">{$_lang['credit_grade']}</h2>
+                        <div class="grid_17 omega">
+                            <nav class="box_nav">
+                                <ul>
+                                    <li class="selectedLava">
+                                        <a href="{$ac_url}&opp=grow#userCenter">{$_lang['credit_growup']}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{$ac_url}&opp=mark#userCenter">{$_lang['review_each_record']}</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="clear">
+                        </div>
+                    </header>
+                    <!--header内容头部 end--><!--detail内容 start-->
+                    <article class="box_detail">
+                        <div class="prefix_1 suffix_1">
+                            <div class="grid_9 alpha groupinfo">
+                                <div class="border_b_c clearfix">
+                                    <p>
+                                        <b class="graid_b">{$_lang['credit_grade']}</b>{$credit_level['pic']}&nbsp;{$_lang['next_level_need']}{$credit_level['level_up']}{$_lang['reputation_value']}{$_lang['zh_jh']}
+                                    </p>
+                                    <!--loading 加载 start-->
+                                    <div class="loading_bar">
+                                        <div class="progress_bar" grade="{$credit_level['grade_rate']}">
+                                            $credit_level['level_name']
+                                        </div>
+                                    </div>
+                                    <!--loading 加载 end-->
+                                </div>
+                                <div class="border_b_c clearfix">
+                                    <p>
+                                        <b>{$_lang['reputation_value']}</b>
+                                        <a href="javascript:void(0);">{$user_info['buyer_credit']}</a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['release_tasks_num']}</b>
+                                        <a href="javascript:void(0);"><!--{eval echo intval($found_count['pub_task']['count'])}--></a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['task_payment']}</b>
+                                        <a href="javascript:void(0);" class="pay">
+                                            <sub>
+                                                RMB
+                                            </sub><!--{eval echo number_format($found_count['pub_task']['cash'],2)}-->
+                                        </a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['goods_num']}</b>
+                                        <a href="javascript:void(0);"><!--{eval echo intval($found_count['buy_service']['count'])}--></a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['payment_services_section']}</b>
+                                        <a href="javascript:void(0);" class="pay">
+                                            <sub>
+                                                RMB
+                                            </sub><!--{eval echo number_format($found_count['buy_service']['cash'],2)}-->
+                                        </a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['favorable_rate']}</b>
+                                        <a href="javascript:void(0);">{if $user_info['buyer_total_num']}<!--{eval echo number_format($user_info['buyer_good_num']/$user_info['buyer_total_num'],2)*100}-->{else}0{/if}%</a>
+                                    </p>
+                                </div>
+                                <!--{eval $i=3}--><!--辅助评价start-->
+								{loop $saler_aid $k $v}
+                                <div class="border_b_c clearfix">
+                                    <div class="mt_10">
+                                        <div class="fl_l mr_5">
+                                            <b>{$v['aid_name']}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <font color="red">
+                                                {$v['avg']}
+                                            </font>{$_lang['fen']}
+                                        </div>
+                                        <div class="grid_1 omega">
+                                        </div>
+                                        <div class="grid_3 alpha">
+                                            <div class="stars ">
+                                                <!--{eval echo keke_user_mark_class::gen_star($v['avg'],$k);}-->
+                                            </div>
+                                        </div>
+                                        <div class="fl_r">
+                                            {$_lang['total']}{$v['count']}{$_lang['people']}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/loop}<!--辅助评价end-->
+                                <div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="prefix_1 suffix_1">
+                            <div class="border_b_c ">
+                                <div class="grid_1">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                        <div class="prefix_1 suffix_1">
+                            <div class="grid_9 alpha groupinfo">
+                                <div class="border_b_c clearfix">
+                                    <p>
+                                        <b class="graid_b">{$_lang['ability_grade']}</b>{$able_level['pic']}&nbsp;{$_lang['next_level_need']}{$able_level['level_up']}{$_lang['reputation_value']}{$_lang['zh_jh']}
+                                    </p>
+                                    <!--loading 加载 start-->
+                                    <div class="loading_bar">
+                                        <div class="progress_bar" grade="{$able_level['grade_rate']}">
+                                            {$able_level['level_name']} 
+                                        </div>
+                                    </div>
+                                    <!--loading 加载 end-->
+                                </div>
+                                <div class="border_b_c clearfix">
+                                    <p>
+                                        <b>{$_lang['ability']}</b>
+                                        <a href="javascript:void(0);">{$user_info['seller_credit']}</a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['number_of_successful_releases']}</b>
+                                        <a href="javascript:void(0);"><!--{eval echo intval($found_count['task_bid']['count'])}--></a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['get_task_models']}</b>
+                                        <a href="javascript:void(0);" class="pay">
+                                            <sub>
+                                                RMB
+                                            </sub><!--{eval echo number_format($found_count['task_bid']['cash'],2)}-->
+                                        </a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['goods_sold_num']}</b>
+                                        <a href="javascript:void(0);"><!--{eval echo intval($found_count['sale_service']['count'])}--></a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['access_to_services_section']}</b>
+                                        <a href="javascript:void(0);" class="pay">
+                                            <sub>
+                                                RMB
+                                            </sub><!--{eval echo number_format($found_count['sale_service']['cash'],2)}-->
+                                        </a>
+                                    </p>
+                                    <p>
+                                        <b>{$_lang['favorable_rate']}</b>
+                                        <a href="javascript:void(0);">{if $user_info['seller_total_num']}<!--{eval echo number_format($user_info['seller_good_num']/$user_info['seller_total_num'],2)*100}-->{else}0{/if}%</a>
+                                    </p>
+                                </div>
+                                <!--辅助评价start-->
+								{loop $buyer_aid $k $v}
+                                <div class="border_b_c clearfix">
+                                    <div class="mt_10">
+                                        <div class="grid_3 omega">
+                                            <b>{$v['aid_name']}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <font color="red">
+                                                {$v['avg']}
+                                            </font>{$_lang['fen']}
+                                        </div>
+                                        <div class="grid_3 alpha">
+                                            <div class="stars fl_r">
+                                                <!--{eval echo keke_user_mark_class::gen_star($v['avg'],$k);}-->
+                                            </div>
+                                        </div>
+                                        <div class="fl_r">
+                                            {$_lang['total']}{$v['count']}{$_lang['people']}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/loop}<!--辅助评价end-->
+                            </div>
+                        </div>
+                    </article>
+                    <!--detail内容 end-->
+                </div>
+                <!--main content end -->
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+        </section>
+        <!--main end-->
+    </div>
+</div>
+<!--contain end-->
+<script type="text/javascript">
+	In('rating','metaData','css_rating');
+    $(function(){
+        /**进度条加载**/
+        $('.progress_bar').each(function(){
+            $(this).animate({
+                width: $(this).attr("grade") + "%"
+            }, 3000)
+        })
+		$(".border_b_c:last").removeClass("border_b_c");
+    })
+</script>
+
+ <!--{template user/user_footer}-->
+<!--{template footer}-->

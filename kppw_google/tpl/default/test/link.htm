@@ -1,0 +1,108 @@
+<!--{include header}-->
+<div class="wrapper">
+	<div class="container_24">
+    	<section class="clearfix section">
+        	<div class="box model green ">
+        		<div class="inner">
+            		<header class="box_header clearfix ">
+            			<div class="grid_5 alpha omega">
+            				<h1 class="box_title">友情连接添加</h1>
+						</div>
+						
+					</header>
+        			<div class="box_detail clearfix po_re box pt_10 pl_5">
+            			<div class="grid_17">
+                		<!--from表单 start-->
+                			<div class="form_box clearfix border_n">
+                    			<form action="{BASE_URL}/index.php/test_link/add" method="post" id="frm" name="frm">
+                        			<input type="hidden" name="formhash" id="formhash" value="{FORMHASH}">
+                        			<div class="rowElem clearfix po_re">
+                            			<label class="grid_4">
+                                			链接名称:
+                            			</label>
+                            			<div class="grid_6">
+                                			<input type="text" class="txt" autocomplete="off" name="link_name" id="link_name"
+											 limit="required:true;len:2-20;type:string" msg="{$_lang['username_input_error']}"  
+											 title="只能是地址" msgArea="login_account_msg" style="width:200px;" />
+                            			</div>
+										<span class="login_msg" id="login_account_msg"></span>
+                        			</div>
+                        			<div class="prefix_4 ml_5">
+                        			</div>
+                        		<!--end 账号--><!--密码-->
+                        			<div class="rowElem clearfix po_re">
+                            			<label class="grid_4">
+                                			链接Url:
+                            			</label>
+                            			<div class="grid_6">
+                                			<input style="width:200px;" type="text" name="link_url" id="link_url" maxlength="20" 
+											limit="required:true;type:url" msg="不是有效的url地址" title="请输入链接url" 
+											msgArea="password_msg"/>
+                            			</div>
+										<span class="" id="password_msg">友情连接地址</span>
+                        			</div>
+                        			 
+                        		<!--end 密码-->
+								<!--邮箱-->
+                        			<div class="rowElem clearfix po_re">
+                            			<label class="grid_4">
+                                			连接图片:
+                            			</label>
+                            			<div class="grid_6">
+                                			<input style="width:200px;" autocomplete="off" type="text" class="txt" name="link_pic" id="link_pics"limit="type:string;required:true" msg="友连图片" 
+											title="图片地址"   msgArea="email_msg"/>
+                            			</div>
+										<span class="" id="email_msg">{$_lang['please_input_eamil']}</span>
+                        			</div>
+                        	<!--end 邮箱-->					
+								<!--验证码-->
+                        			<div class="rowElem clearfix po_re">
+                            			<label class="grid_4">
+                                			验证码:
+                            			</label>
+                            			<div class="grid_6">
+                                			<input name="txt_code" type="text" size="8" id="txt_code"
+								 			limit="required:true;len:4"
+								  			msg="{$_lang['auth_code_error']}"
+											msgArea="secode_msg"
+											ajax="{BASE_URL}/index.php/captcha/check/" 
+								 			>
+											<!--ajax 用来检查验证码，mvc模式下就这么简单,后面要'/'，亲哟！-->
+								            <img src="{BASE_URL}/index.php/captcha/index/word" onclick="this.src='{BASE_URL}/index.php/captcha/index/basic/150/30?t='+Math.random()">
+								 		
+                            			</div>
+                            			<span class="" id="secode_msg">{$_lang['please_input_auth_code']}</span>
+                        			</div>						
+                        	<!--end 验证码-->
+							
+                        <div class="mt_20 prefix_4 ml_5">
+                            <button type="submit" class="button" onclick="return link_sumit();" >
+                                <span class="clock icon"></span>
+                                {$_lang['submit']}
+                            </button>
+                        </div>
+												
+                        <script type="text/javascript">
+                        	function link_sumit(){
+								return checkForm(document.getElementById("frm"));
+							}
+                        </script>
+                    </form>
+                </div>
+            </div>
+             
+        </div>
+		</div>
+		</div>
+        </section>
+         
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<input type="button" value="Ajax测试" onclick="showWindow('test','{BASE_URL}/index.php/en/ajax/12')">
+<input type="button" value="弹框" onclick="showDialog('系统提示','提示内容','alert_error')">
+<script type="text/javascript">
+	In('form');
+</script>
+<!--{include footer}-->

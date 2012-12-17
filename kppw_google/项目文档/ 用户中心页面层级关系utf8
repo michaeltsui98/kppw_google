@@ -1,0 +1,57 @@
+1.账号管理		/tpl/default/user/account/
+	二级菜单	side.htm
+	首页		index.htm
+	基本资料	basic.htm
+	用户头像	avatar.htm
+	工作经历	work_list.htm
+	技能证书	skill.htm
+	技能标签	skill_tag.htm
+	修改密码	pwd.htm
+	修改安全码	safe.htm
+	实名认证	auth_realname.htm
+	企业认证	auth_enter.htm
+	账号绑定	bind.htm
+	推广赚钱	prom.htm
+
+2.消息			/tpl/default/user/msg/
+	二级菜单	side.htm
+	写短信		index.htm
+	收件箱		in.htm
+	发件箱		out.htm
+	短信详细	info.htm
+
+3.买家			/tpl/default/user/buyer/
+	二级菜单	side.htm
+	发布的任务	index.htm
+	买到的商品	goods.htm
+	收藏的任务	faver_task.htm
+	收藏的商品	faver_goods.htm
+	评价		mark.htm
+	任务编辑	task_edit.htm
+
+4.服务商		/tpl/default/user/seller/
+	二级菜单	side.htm
+	参与的任务	index.htm
+	卖出的商品	order.htm
+	发布的商品	goods.htm
+	评价		mark.htm
+	店铺设置	shop.htm
+	店铺案例	shop_case.htm
+	店铺成员	shop_member.htm
+	商品编辑	goods_edit.htm
+
+5.收支明细		/tpl/default/user/finance/
+	二级菜单	side.htm
+	收支明细	detail.htm
+	充值		recharge.htm
+	充值记录	recharges.htm
+	提现		withdraw.htm
+	提现记录	withdraws.htm
+	推广收入	prom_in.htm
+	推广关系	prom_relation.htm
+
+6.客户服务		/tpl/default/user/custom/
+	二级菜单	side.htm
+	举报		report.htm
+	建议		steer.htm
+	提交建议	comment.htm

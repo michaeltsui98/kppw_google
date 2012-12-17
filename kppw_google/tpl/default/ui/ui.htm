@@ -1,0 +1,415 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>box</title>
+<!--<link href="style/base.css" rel="stylesheet">
+<link href="{BASE_URL}/{SKIN_PATH}/ui/style/typo.css" rel="stylesheet">
+<link href="{BASE_URL}/{SKIN_PATH}/ui/style/ui.css" rel="stylesheet" >-->
+<!--<link href="style/boxs.css" rel="stylesheet" >-->
+<link href="{BASE_URL}/{SKIN_PATH}/ui/style/theme.css" rel="stylesheet" >
+<!--<link href="{BASE_URL}/{SKIN_PATH}/ui/style/theme.less" rel="stylesheet/less" type="text/css" >
+<!--<link href="style/layout/layout.css" rel="stylesheet" >-->
+<!--[if lte IE 8]>
+<link href="style/layout/960.min.css" rel="stylesheet">
+<![endif]-->
+
+<!--[if lte IE 6]>
+ <script type="text/javascript" src="http://www.webrebuild.org/webrebuild_api.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+<script src="{BASE_URL}/static/js/system/html5.js"></script>
+<![endif]-->
+
+<!--jQuery1.4.4库-->
+<script src="{BASE_URL}/static/js/jquery.js"></script>
+<script src="{BASE_URL}/static/js/keke.js"></script>
+<!--滑动导航效果--
+<script src="plugin/lavalamp/jquery.lavalamp-1.3.5.min.js"></script>-->
+
+<script src="{BASE_URL}/static/js/less-1.3.0.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*jQuery*/
+		$(function(){
+
+
+      $("#styles a").click(function(){
+          var style_name = $(this).html();
+          var style_title= $(this).attr("title");
+          var style_have = $(".box").attr("class");
+          //alert(style_name);
+          //alert(style_title);
+          //alert(style_have);
+          //("box " +style_name != style_have);
+          if("box " +style_name != style_have){
+            $("#main .box").removeClass().addClass("box " +style_name);
+            $("#main .box_title .title").html(".box." +style_name + " " +style_title);
+            $(this).addClass("selected").siblings().removeClass();
+         }
+
+         setcookie("style_class",style_name+","+style_title);
+      });
+
+      /*$("#test_ul li").each(function(i){
+        $(this).click(function (){
+          setcookie('sss',i+1);
+        });
+
+      });
+
+
+       $(".icon16,.icon32,.icon48").hover(function(){
+
+       },function(){
+        
+       });
+    
+
+			/*$('a').not('nav.box_nav li a').click(function(){
+				return false;
+			});*/
+			$("table tr:odd").addClass("odd");
+			
+			$(".list dd:odd").not('dd.tags').addClass("odd");
+			
+			//为表格内容区添加鼠标事件
+			$('table tbody tr,.list dd').not('.list dd.tags,table.jqTransformTextarea tr').hover(function(){
+				$(this).addClass("hover");
+			}, function(){
+				$(this).removeClass("hover");
+			});
+			
+			
+			
+			
+
+      var style = getcookie("style_class");
+        //alert(style);
+      if(style){
+        var style_arr = style.split(',');
+        var style_name  = style_arr[0];
+        var style_title = style_arr[1];
+        var style_have = $(".box").attr("class");
+
+        if("box " +style_name != style_have){
+              $("#main .box").removeClass().addClass("box " +style_name);
+              $("#main .box_title .title").html(".box." +style_name + " " +style_title);
+              $("#styles a[title="+style_title+"]").addClass("selected").siblings().removeClass();
+        }
+        //滑动菜单效果
+        /*$("nav.box_nav ul").lavaLamp({
+          speed: 200,
+          startItem: show_cookie-1
+        }); 
+      }
+      else{
+        $("nav.box_nav ul").lavaLamp({
+          speed: 200
+        }); */
+      }
+/*
+      $("nav.box_nav ul").lavaLamp({
+          speed: 200
+        }); 
+      var show_cookie = getcookie('sss');
+      $("#tab_nav_"+show_cookie).addClass("selected").siblings().removeClass("selected");
+      $("#div_nav_"+show_cookie).removeClass("hidden").siblings().addClass("hidden");*/
+
+
+      
+
+
+
+      //将页面图片作为背景显示
+      $(".pic_small,.pic_middle,.pic_larger").load(function() {
+              $(this).wrap(function(){
+                        return '<span class="image-wrap ' + $(this).attr('class') + '"style="position:relative; display:inline-block; background:url(' + $(this).attr('src') + ') no-repeat center center; width: ' + $(this).width() + 'px; height: ' + $(this).height() + 'px;" />';
+              }).css("opacity","0");
+      });
+
+      
+
+
+      
+
+
+      function display_window(){
+        window.onresize 	= null;
+		var win 			= $("#win");
+        var windowbody 		= $("html body");
+        var windowdetail 	= $("#win .box_detail");
+        var windowloading 	= $("#win .loading_bar");
+		win.fadeIn(function(){
+			$("#win .mask").height(windowbody.height());
+			//resitexy();
+	
+			var sd = setTimeout(function(){
+				windowloading.slideUp();
+		        windowdetail.slideDown(function(){
+					//resitexy();
+				});
+		        
+				clearTimeout(sd);
+			},2000);
+	
+	        windowbody.css({"overflow":"hidden"});
+		});
+		
+		
+		
+        //setTimeout(monitor,500);
+	    }
+	  function monitor()
+	    {
+	        window.onresize = resitexy;
+	    } 
+
+	  function resitexy(){
+      	var boxwindow 	= $("#win .box");
+      	var hs 			= boxwindow.height();
+        var ws 			= boxwindow.width();
+        boxwindow.css({"left":($(window).width()-ws)/2+"px","top":($(window).height()-hs)/2+"px"});
+      }
+	  
+	  
+	  function close_window(){
+	  	var win =	$("#win");
+		var windowbody 		= $("html body");
+	  	
+		windowbody.css({"overflow":""});
+		win.fadeOut();
+		
+	  }
+	  
+	  //display_window();
+	  
+	  $("#win .box_footer").click(function(){
+	  	close_window();
+	  });
+	  
+	});
+</script>
+
+</head>
+
+<body>
+
+
+<nav class="nav ">
+        <div  class="container">
+          <div class="menu clearfix">
+                <ul class="clearfix">
+                      <li><a class="selected" href="#"><span>UI</span></a></li>
+                      <li class="line"></li>
+                      <li><a href="#"><span>About</span></a></li>
+                      <li class="line"></li>
+                      <li><a href="#"><span>Blog</span></a></li>
+                      <li class="line"></li>
+                      <li><a href="#"><span>Link</span></a></li>
+                      <li class="line"></li>
+                      <li><a href="#"><span class="icon16 help reverse"></span> <span>Help</span></a></li>
+                      <li class="line"></li>
+                </ul>
+    
+    
+          </div>
+        </div>
+</nav>
+
+
+<header id="top">
+  <div  class="container">
+    <hgrounp class="logo  clearfix">
+      <h1>BoxUI</h1>
+      <h2>统一代码 设计无限</h2>
+    </hgrounp>
+  </div>
+</header>
+
+
+<div class="container mt_30">
+
+
+
+	<article id="main" class="">
+
+        <div class="box rigo_light">
+            <div class="inner clearfix">
+                <header class="box_header">
+                    <div class="box_title">
+                        <h2 class="title" title="这里是标题说明">.box.normal 普通</h2>
+                    </div>
+                    
+                </header>
+                <nav class="box_nav">
+                      
+                </nav>
+                <div class="box_detail">
+<!--1-->
+                    <div id="div_nav_1" class="detail ">
+                     
+                     <!--{include ui/typography}-->
+                      
+                    </div>  
+
+<!--2-->
+                    <div id="div_nav_2" class="detail clearfix hidden">
+                      <!--{include ui/stars}-->
+                    </div>
+<!--3-->
+                    <div id="div_nav_3" class="detail hidden">
+                      
+                      <!--{include ui/js}-->
+
+                    </div>
+<!--4-->
+                    <div id="div_nav_4" class="detail hidden">
+                      
+                    	<!--{include ui/gallery}-->
+
+                    </div>
+
+<!--5-->
+                    <div id="div_nav_5" class="detail hidden">
+                      <iframe id="buttonframe" src="css3buttons/demo.html" frameborder="0"></iframe>
+                    </div>
+<!--6-->
+                    <div id="div_nav_6" class="detail hidden">
+                      <!--{include ui/navigate}-->
+                    </div>
+<!--7-->
+                    <div id="div_nav_7" class="detail hidden">
+                      
+                    </div>
+<!--8-->
+                    <div id="div_nav_8" class="detail hidden t_c icontable">
+                      <!--{include ui/icon}-->
+                    </div>
+<!--9-->
+                    <div id="div_nav_9" class="detail hidden"> 
+			                <!--{include ui/form}-->      
+			              </div>
+			                    
+								
+<!--10-->								
+								
+					         <div id="div_nav_10" class="detail hidden">      
+			                <!--{include ui/ul_ol_dl}--> 
+			             </div>
+					   
+					   
+					   
+<!--11-->					   
+					   <div id="div_nav_11" class="detail hidden">
+                      <!--{include ui/list}--> 
+					   	</div>
+<!--12-->
+		            	<div id="div_nav_12" class="detail hidden">
+			            	
+			            </div>
+		        </div>
+                <div class="box_footer">
+                   
+                   
+                </div>
+             </div>
+        </article>
+                       
+
+
+
+<section id="sidebar">
+
+        <div id="styles" class="box ">
+          <div class="inner clearfix">
+              <header class="box_header">
+                <h2 class="box_title" title="BOX皮肤">BOX皮肤</h2>
+              </header>
+              <nav class="box_nav">
+                <a href="###" class="selected" title="普通">normal</a>
+                <a href="###" title="模型">model</a>
+                <a href="###" title="苹果">apple_style</a>
+                <a href="###" title="win7玻璃">aero_style</a>
+                <a href="###" title="星际2">star_craft2</a>
+                <a href="###" title="皮肤工厂">skins_factory</a>
+                <a href="###" title="青花">blue_a_white</a>
+                <a href="###" title="光">rigo_light</a>
+                <a href="###" title="海滩">beach</a>
+              </nav>
+          </div>
+        </div>
+
+        <div class="box ">
+            <div class="inner clearfix">
+                <header class="box_header">
+                    <div class="box_title">
+                        <h2 class="title" title="UI元素">UI元素</h2>
+                    </div>
+                </header>
+                <div class="box_detail">
+                    <div class="detail clearfix">
+                     <ul class="clearfix" id="test_ul">
+                          <li id="tab_nav_1" class="selected" onclick="swaptab('nav','selected','',12,1)"><a href="#">HTML标记</a></li>
+                          <li id="tab_nav_2" onclick="swaptab('nav','selected','',12,2)"><a href="#">星星</a></li>
+                          <li id="tab_nav_3" onclick="swaptab('nav','selected','',12,3)"><a href="#">js选项卡、加载、手风琴</a></li>
+                          <li id="tab_nav_4" onclick="swaptab('nav','selected','',12,4)"><a href="#">相册</a></li>
+                          <li id="tab_nav_5" onclick="swaptab('nav','selected','',12,5)"><a href="#">按钮</a></li>
+                          <li id="tab_nav_6" onclick="swaptab('nav','selected','',12,6)"><a href="#">导航</a></li>
+                          <li id="tab_nav_7" onclick="swaptab('nav','selected','',12,7)"><a href="#">**</a></li>
+                          <li id="tab_nav_8" onclick="swaptab('nav','selected','',12,8)"><a href="#">图标</a></li>
+                          <li id="tab_nav_9" onclick="swaptab('nav','selected','',12,9)"><a href="#">表单</a></li>
+						  <li id="tab_nav_10" onclick="swaptab('nav','selected','',12,10)"><a href="#">UI、OL、DL</a></li>
+						  <li id="tab_nav_11" onclick="swaptab('nav','selected','',12,11)"><a href="#">筛选、列表、翻页</a></li>
+						  <li id="tab_nav_12" onclick="swaptab('nav','selected','',12,12)"><a href="#">**</a></li>
+                      </ul>
+                    </div>
+                </div>
+                <footer class="box_footer">
+                   
+                </footer>
+             </div>
+        </div>
+
+</section>
+
+</div>
+    
+
+    
+    
+    
+	<div class="clear"></div>
+
+
+<div id="win" class="win hidden">
+	<table cellspacing="0" cellpadding="0" class="win_table"><tbody><tr><td class="tt_l"></td><td class="tt_c"></td><td class="tt_r"></td></tr><tr><td class="m_l"></td><td class="m_c">
+	<div class="box">
+		<div class="inner">
+			<header class="box_header">
+				<div class="box_title">
+					<h1 class="title">示例说明</h1>
+				</div>
+			</header>	
+			<article class="box_detail">
+				<div class="detail">本示例是boxUI的演示页面，用于展示box的不同样式对UI元素的影响，以及自身的展示效果。使用HTML5代码编写。</div>
+			</article>
+			<div class="loading_bar">
+                <div class="progress_bar stripes" style="width:100%;"></div>
+            </div>
+			<footer class="box_footer">
+				<button class="button">确定</button>
+				<button class="button">取消</button>
+			</footer>
+		</div>
+	</div>
+	</td><td class="m_r"></td></tr><tr><td class="b_l"></td><td class="b_c"></td><td class="b_r"></td></tr></tbody></table>
+	<div class="mask"></div>
+</div>
+
+ <div id="video_layout">
+<video  autoplay="autoplay" autobuffer="" id="vid"  loop="true" src="http://cn.bing.com/az/hprichv/?p=FarmhouseGhosts_Getty_126171235_ZH-CN.ogv" tabindex="0"></video>
+</div>
+
+</body>
+</html>

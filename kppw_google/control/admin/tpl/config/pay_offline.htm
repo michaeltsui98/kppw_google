@@ -1,0 +1,61 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+<h1>{$_lang['pay_manage']}</h1>
+<div class="tool">
+    <a href="{BASE_URL}/index.php/admin/config_pay"  >{$_lang['pay_config']}</a>
+	<a href="{BASE_URL}/index.php/admin/config_pay/online"  >{$_lang['online_pay_interface']}</a>
+	<a href="{BASE_URL}/index.php/admin/config_pay/offline" class="here" >{$_lang['line_pay_interface']}</a>
+</div>
+</div>
+<div class="box list">
+     <form action="" method="post">
+     	<input type="hidden" value="$do" name="do">
+		<input type="hidden" value="$view" name="view">
+      <table class="detail" cellpadding="0" cellspacing="0">
+        <tbody>
+          <tr>
+            <th width="150">{$_lang['bank_name']}</th>
+            <th width="170">{$_lang['account']}</th>
+			<th width="170">{$_lang['username']}</th>
+            <th>{$_lang['contact_tel']}</th>
+            <th>{$_lang['application_status']}</th>
+            <th>{$_lang['operate']}</th>
+          </tr>
+		  <!--{loop $payment_list $v}-->
+			
+			<!--{eval $pay_config=unserialize($v['config'])}-->
+              <tr class="item">
+                <td>{$bank_arr[$v['payment']]}</td>
+                <td>$pay_config['pay_account']</td>
+                <td>$pay_config['pay_user']</td>
+				<td>$pay_config['pay_phone']</td>
+                <td class="td25">{if $v['status']}{$_lang['open']}{else}{$_lang['close']}{/if}</td>
+                <td> 
+                {if $v['status']}
+					<a href="{BASE_URL}/index.php/admin/config_pay/change_status?status=0&pay_id={$v['pay_id']}&type=offline"  class="button"><span class="cross icon"></span>{$_lang['disable']}</a>
+				{else} 
+					<a href="{BASE_URL}/index.php/admin/config_pay/change_status?status=1&pay_id={$v['pay_id']}&type=offline" class="button" ><span class="check icon"></span>{$_lang['use']}</a>
+				{/if} 
+					<a href="{BASE_URL}/index.php/admin/config_pay/offline_add?pay_id={$v['pay_id']}" class="button"><span class="cog icon"></span>{$_lang['config']}</a>
+					<a href="{BASE_URL}/index.php/admin/config_pay/del?pay_id={$v['pay_id']}" onclick="return cdel(this);"  class="button"><span class="negative icon"></span>{$_lang['delete']}</a>
+				</td>
+               </tr>
+          <!--{/loop}-->
+          </tbody>
+		   <tfoot>	
+			<tr >
+			    <td colspan="9">
+			    <div class="page" >{$pages['page']}</div>
+			     <button class="positive primary pill button t_r" type="button" value={$_lang['add']} 
+				 onclick="location.href='{BASE_URL}/index.php/admin/config_pay/offline_add'"><span class="check icon"></span>{$_lang['add']}</button>
+				 
+	        	</td>
+	        </tr>
+		 </tfoot>
+         </table>
+       </form>
+     
+</div>
+
+
+<!--{include control/admin/tpl/admin_footer}-->

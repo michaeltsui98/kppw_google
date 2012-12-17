@@ -1,0 +1,87 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+   <h1>{$_lang['trans_rights']}</h1>
+    <div class="tool">
+        <a href="{BASE_URL}/index.php/admin/user_trans">{$_lang['list']}</a>
+		<a href="javascript:void(0);" class="here">{$_lang['manage']}</a>
+    </div>
+</div>
+<div class="box post">
+     <form action="{BASE_URL}/index.php/admin/user_trans/save?report_id={$report_id}" method="post" name="frm" id="frm">
+     <input type="hidden" name="report_id" value="{$report_info['report_id']}">	
+     <input type="hidden" name="formhash" value="{FORMHASH}">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+         <th scope="row" width="130">举报{$_lang['type']}</th>
+       	  <td>{$rp_type[$report_info['report_type']]}</td>
+       </tr>
+	   
+	   <tr>
+	   	 <th scope="row">举报内容</th>
+		 <td>
+          {if $report_info['obj']=='task'||$report_info['obj']=='work'}<!--任务、稿件-->
+				<a href="{BASE_URL}/index.php/task/{$report_info['origin_id']}"  target="_blank"> 任务ID:{$report_info['origin_id']};稿件ID:{$report_info['obj_id']},
+			{elseif $report_info['obj']=='product'}<!--商品-->
+				<a href="{BASE_URL}/index.php/service/{$report_info['obj_id']}"  target="_blank"> 商品ID:{$report_info['origin_id']}
+			{elseif $report_info['obj']=='seller'}<!--商家-->
+				<a href="{BASE_URL}/index.php/space/{$report_info['to_uid']}"  target="_blank"> 店铺ID:{$report_info['origin_id']}
+	  	  {/if}
+		  {$report_info['report_desc']}
+		 
+		  </a>
+		 </td>
+       </tr>
+ 	  <tr>
+       <th scope="row" width="130">{$_lang['sponsor']}</th>
+       <td>
+       		$report_info['username']
+			<font color="red">E-mail</font>:{$user_info['email']}&nbsp;||&nbsp;<font color="red">{$_lang['contact_tel']}</font>:{$user_info['phone']}&nbsp;||&nbsp;<font color="red">QQ</font>:{$user_info['qq']}&nbsp;||&nbsp;<font color="red">{$_lang['tel']}</font>:{$user_info['mobile']}
+	   </td>
+      </tr>
+	   <tr>
+       <th scope="row" width="130">{$_lang['object']}</th>
+       <td>
+       		 $report_info['to_username']
+			<font color="red">E-mail</font>:{$to_userinfo['email']}&nbsp;||&nbsp;<font color="red">{$_lang['contact_tel']}</font>:{$to_userinfo['phone']}&nbsp;||&nbsp;<font color="red">QQ</font>:{$to_userinfo['qq']}&nbsp;||&nbsp;<font color="red">{$_lang['tel']}</font>:{$to_userinfo['mobile']}
+	   </td>
+      </tr> 
+	  <tr>
+         <th scope="row" width="130">{$_lang['apply']}{$_lang['time']}</th>
+         <td>{date('Y-m-d ',$report_info['on_time'])}</td>
+      </tr>
+	  <tr>
+        <th scope="row" width="130">{$_lang['status']}</th>
+        <td>{$trans_status[$report_info['report_status']]}</td>
+      </tr>
+	  
+	 <tr>
+        <th scope="row" width="130">{$_lang['attachment']}</th>
+        <td>
+			{if $report_info['report_file']}<a href="{BASE_URL}/{$v['report_file']}">下载</a>{else}{$_lang['no_submit_attachment']}{/if}
+		</td>
+    </tr>
+	<tr id="pass">
+       <th scope="row" width="130">{$_lang['reply']}</th>
+	   <td>
+	  	 <textarea cols="" rows="7" style="width:360px;" name="op_result" id="op_result">{$report_info['op_result']}</textarea>
+	   </td>
+	</tr>
+ 	<tr>
+      <th scope="row">&nbsp;</th>
+      <td>
+          <div class="clearfix padt10">
+          	 
+			{if $report_info['report_status']==1 || $report_info['report_status']==2}
+				 <button type="submit" name="btn_report" value="{$_lang['process']}" >{$_lang['process']}</button>
+				 
+				 <button type="submit" name="btn_untenable" value="{$_lang['untenable']}" >{$_lang['untenable']}</button>
+			{/if}
+         	 <button class="pill button" type="button" id="go_back" onclick="to_back();" value="{$_lang['return']}" > {$_lang['return']}</button>
+          </div>
+      </td>
+   </tr>
+  </tbody>
+ </table>
+ </form>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

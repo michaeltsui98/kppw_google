@@ -1,0 +1,82 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    <h1>用户建议</h1>
+</div>
+<div class="box search p_relative">
+<form class="detail" action="{BASE_URL}/index.php/admin/user_trans/$_K[action]" method="get" id="frm_user_search">
+   <input type="hidden" value="{$page}" name="page">
+<table cellspacing="0" cellpadding="0">
+	<tbody>
+	<tr>
+    <td> 查询字段
+       <select name="slt_fields">
+       	<option></option>
+       	{loop $query_fields $k $v}
+       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+		{/loop} 
+       </select>
+	 <select name="slt_cond">
+	 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+		<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+		<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+		<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+	 </select>
+     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+	 <select name="page_size">
+		<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+		<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+		<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+	</select>
+	 <input type="submit" value="{$_lang['search']}">
+	 </td>
+</tr>
+</tbody>
+</table>
+  </form>
+ </div>
+<!--搜索结束-->
+<div class="box list">
+ 	<table cellpadding="0" cellspacing="0">
+      <tbody>
+       <tr>
+        <th width="5%">ID</th>
+        <th width="30%">建议内容</th>
+	    <th>{$_lang['username']}</th>
+		<th width="30%">回复</th>
+        <th>{$_lang['status']}</th>
+		<th width="10%">{$_lang['time']}</th>
+		<th width="10%">{$_lang['operate']}</th>
+       </tr>
+     {loop $data_list $v}
+       <tr class="item">
+         <td class="td25"><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['report_id']}">{$v['report_id']}</td>
+		 <td><!--{eval echo nl2br($v['report_desc'])}--></td>
+		<td>{$v['username']}</td>
+		<td>{$v['op_result']}</td>
+		<td>{$trans_status[$v['report_status']]}</td>
+		<td>{date('Y-m-d',$v['on_time'])}</td>
+		
+		<td>
+            {if $v['report_status']=='1'||$v['report_status']=='2'}<!--待处理、处理中、已受理-->
+			<a onclick="return kprom(this,'回复用户建议！');" href="{BASE_URL}/index.php/admin/user_trans/reply?report_id={$v['report_id']}">
+				回复
+			</a>
+			{/if}
+			<a class="button" href="{BASE_URL}/index.php/admin/user_trans/del?report_id={$v['report_id']}" onclick="return cdel(this);">{$_lang['delete']}</a>
+		 </td>
+        </tr>
+        {/loop}
+       </tbody>
+	   <tfoot>
+	    <tr>
+       
+       <td colspan="9">
+         <div class="page ">{$pages['page']}</div>
+       </td>
+      </tr>
+     </tfoot>
+   </table> 
+ 
+</div>
+
+<!--{include control/admin/tpl/admin_footer}-->

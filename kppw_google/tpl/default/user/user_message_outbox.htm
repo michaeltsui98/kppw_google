@@ -1,0 +1,135 @@
+<!--{template header}-->
+<!--contain start-->
+<div class="wrapper">
+    <div class="container_24">
+        <!--{template user/user_nav}-->
+		<!--main start-->
+        <section class="clearfix section">
+            <!--{template user/user_side}-->
+            <div class="show_panel container_24 po_re">
+                <div class="prefix_3">
+                    <div class="panel clearfix box">
+                        <!--main content-->
+                        <div class="grid_21">
+                            <!--header内容头部 start-->
+                            <header class="clearfix box_header">
+                                <h2 class="grid_4 alpha box_title t_c">{if $op=='inbox'}{$_lang['inbox']}{else}{$_lang['outbox']}{/if}</h2>
+                                <div class="grid_17 omega">
+                                    <nav class="box_nav">
+	                                        <ul>
+                                            <li {if $op=='inbox'&&$opp=='system'}  class="selectedLava" {/if}>
+                                                <a href="index.php?do=$do&view=$view&op=inbox&opp=system" original-title="{$_lang['system_msg']}">{$_lang['system_msg']}</a>
+                                            </li>
+                                            <li {if $opp=='inbox'}  class="selectedLava" {/if}>
+                                                <a href="index.php?do=$do&view=$view&op=inbox&opp=inbox" original-title="{$_lang['private_message']}">{$_lang['private_message']}</a>
+                                            </li>
+                                            <li {if $op=='outbox'}  class="selectedLava" {/if}>
+                                                <a href="index.php?do=$do&view=$view&op=outbox" original-title="{$_lang['private_message']}">{$_lang['sms_has_been_sent']}</a>
+                                            </li>
+                                            <li {if $op=='send'}  class="selectedLava" {/if}>
+                                                <a href="index.php?do=$do&view=$view&op=send" original-title="{$_lang['private_message']}">{$_lang['write_message']}</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="clear">
+                                </div>
+                            </header>
+                            <!--header内容头部 end-->
+                            <div class="data_list">
+                                <form method="post" action="index.php?do=user&view=message&op=outbox" id="frm_msg" name="frm_msg">
+                                    <table class="data_table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">
+                                                   {$_lang['status']}
+                                                </th>
+                                                <th scope="col" colspan="3" width="250">
+                                                    {$_lang['title']}
+                                                </th>
+                                                <th scope="col">
+                                                    {$_lang['addressee']}
+                                                </th>
+                                                <th scope="col">
+                                                    {$_lang['time']}
+                                                </th>
+                                                <th scope="col" colspan="1">
+                                                   {$_lang['operate']}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        	{if $data}
+                                            {loop $data $k $v}
+                                            <tr class="odd">
+                                                <td>
+                                                    <input type="checkbox" value="$v['msg_id']" id="cbk_selected" name="ckb[]">
+                                                </td>
+                                                <td colspan="3">
+                                                    <a title="$v['title']" href="index.php?do=$do&view=message&op=outbox&ac=view&msg_id=$v['msg_id']&page=$page">$v['title']</a>
+                                                </td>
+                                                <td>
+                                                    $v['to_username']
+                                                </td>
+                                                <td>
+                                                    <!--{date('Y-m-d',$v['on_time'])}-->
+                                                </td>
+                                                <td colspan="1">
+                                                    <a class="button" href="index.php?do=$do&view=$view&ac=view&msg_id=$v['msg_id']"><span class="book icon"></span>{$_lang['view']}</a>
+													<a class="button" href="index.php?do=$do&view=$view&op=$op&ac=del&msg_id=$v['msg_id']&page=$page"
+													 onclick="return del(this);"><span class="trash icon"></span>{$_lang['delete']}</a>
+                                                </td>
+                                            </tr>
+                                            {/loop}
+										
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                         <td colspan="7">
+                                       	<div class="clearfix pad10">   
+										    <!--<input type="checkbox" id="checkbox" onclick="checkall()" style="display:none;cursor:pointer;">-->
+											<a href="javascript:;" value="0" id="checkbox" onclick="checkall(this.id)">{$_lang['select_all']}</a>
+                                      	 	<button class="pill negative" onclick="return mulit_del();" value="{$_lang['delete_selected']}" type="button">
+												<span class="icon trash"></span>{$_lang['delete_selected']}</button>
+										</div>
+                                        </td>
+                                            </tr>
+                                        </tfoot>
+											{else}
+												<tr>	
+													<td colspan="8" class="t_c">
+													{$_lang['norecord']}
+													</td> 
+												</tr>
+											{/if}
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="page">
+                                {$pages['page']}
+                                <div class="clear">
+                                </div>
+                            </div>
+                        </div>
+                        <!--main content end -->
+                        <div class="clear">
+                        </div>
+                    </div>
+                </div>
+                </section>
+                <!--main end-->
+            </div>
+            </div>
+            <!--contain end-->
+			
+  <script type="text/javascript">
+	function del(obj){
+		var url = obj.href;
+		showDialog("{$_lang['confirm_delete']}",'confirm',"{$_lang['operate_notice']}",function(){location.href=url;});return false;
+	}
+	function mulit_del(){
+		showDialog("{$_lang['confirm_delete']}",'confirm',"{$_lang['operate_notice']}",function(){$("#frm_msg").submit();});return false;
+	}
+   </script>
+   <!--{template user/user_footer}-->
+<!--{template footer}-->

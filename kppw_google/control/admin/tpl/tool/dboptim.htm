@@ -1,0 +1,52 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['db_mange']}</h1>
+          <div class="tool">         
+			<a href="{BASE_URL}/index.php/admin/tool_dbbackup" >{$_lang['backup']}</a>
+            <a href="{BASE_URL}/index.php/admin/tool_dbrestore" >{$_lang['restore']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim" {$_K['action'] =='index'} class="here" {/if}>{$_lang['optim']}</a>
+			<a href="{BASE_URL}/index.php/admin/tool_dboptim/repair">{$_lang['repair']}</a>
+		</div>
+</div>
+<div class="box post">
+	<form method="post" action="{BASE_URL}/index.php/admin/tool_dboptim/optim" id="frm_list">
+ 	<table class="detail" width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+            <th class="100" align="left">{$_lang['db_table']}</th>
+            <th width="200">{$_lang['type']}</th>
+            <th width="60">{$_lang['record']}</th>
+			<th width="60">{$_lang['data']}</th>
+			<th width="60">{$_lang['home']}</th>
+			<th width="60">{$_lang['chip']}</th>
+        </tr>
+		{if $optim_table_list}
+        {loop $optim_table_list $v}
+        <tr>
+            <td align="left">
+                <label>
+                  <input  type="checkbox" name="optimizetables[]" value="$v['Name']" checked="checked"> $v['Name']
+                </label>
+			</td>
+            <td>$v['Engine']</td>
+            <td>$v['Rows']</td>
+         	<td><!--{eval echo Keke::get_format_size($v['Data_length'])}--></td>
+			<td>$v['Index_length']</td>
+			<td><!--{eval echo Keke::get_format_size($v['Data_free'])}--></td>
+        </tr>
+		{/loop}
+        <tr>
+        	<th colspan="6"  align="left">
+        		<input type="submit" value="{$_lang['submit']}"> 
+        	</th>
+          
+        </tr>
+		{else}
+        <tr>
+        	<th colspan="6" align="center">{$_lang['no_optimizations']}</th>
+        </tr>
+		
+		{/if}
+   </table>
+</form>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

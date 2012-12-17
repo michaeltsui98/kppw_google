@@ -1,0 +1,17 @@
+<script src="{BASE_URL}/static/js/jquery.js"></script>
+<script src="{BASE_URL}/static/js/artdialog/artDialog.js?skin=default" ></script>
+<script src="{BASE_URL}/static/js/artdialog/plugins/iframeTools.js"  ></script>
+<script src="{BASE_URL}/lang/{$_K['language']}/script/lang.js"></script>
+<script type="text/javascript">
+	//排序 
+function submitSort(uri,f,ord){
+	uri += (uri.indexOf('?')==-1)?"?":"&";
+	uri += 'f='+f;
+	uri += '&ord='+ord;
+	//要去掉同级A标签到中最后一个排序字符
+	
+	location.href = uri;
+}
+</script>
+</body>
+</html>

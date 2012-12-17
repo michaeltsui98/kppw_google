@@ -1,0 +1,78 @@
+<!--{include control/admin/tpl/admin_header}--> 
+<div class="page_title">
+    <h1>{$_lang['nav_menu']}</h1>
+    <div class="tool">
+        <a href="{BASE_URL}/index.php/admin/config_nav" class="here">{$_lang['list']}</a>
+        <a  href="{BASE_URL}/index.php/admin/config_nav/add" >{$_lang['add']}</a>
+    </div>
+</div>
+<div class="box list">
+<form name="frm_config_basic" id="frm_config_basic" action="{BASE_URL}/index.php/admin/config_nav" method="post" enctype='application/x-www-form-urlencoded'>
+<input type="hidden" name="formhash" value="{FORMHASH}">
+<table  class="detail" cellspacing="0" cellpadding="0">
+<tr>
+    <th width="150">{$_lang['title']}</th>
+    <th width="200" >{$_lang['link']}</th>
+   <th width="12%">{$_lang['style']}</th>
+    <th width="100">{$_lang['order']}</th>
+    <th width="120">{$_lang['open_new_window']}</th>
+    <th width="100">{$_lang['display_mode']}</th>
+    <th width="200">{$_lang['operate']}</th>
+</tr>
+
+{loop $nav_list $k $v}
+<tr id="olditem_$k" class="item">
+	
+	<td style='font-weight:bold'>
+			<input type="text" value="{$v['nav_title']}" name="nav[$k][nav_title]" class='txt' size='12'>
+		{if $v['nav_style'] == $default_index} 
+		      ({$_lang['default_index']})
+		{/if}
+ 	</td>
+    <td><!--{eval  $readonly = $this->url_analysis($v['nav_url']);}-->
+    	{if $readonly}
+			$v['nav_url']
+			<input type="hidden" value="{$v['nav_url']}" name="nav[$k][nav_url]">
+		{else}
+			<input type="text" value="{$v['nav_url']}" name="nav[$k][nav_url]" class='txt' size="30">
+		{/if}
+	</td>
+    <td style="width:80px;">
+		<input type="text" value="{$v['nav_style']}" name="nav[$k][nav_style]" class='txt' size='10'>
+	</td>
+   	<td style="width:30px;">
+		<input type="text" value="{$v['listorder']}" name="nav[$k][listorder]" class='txt' size='3'>
+	</td>
+    <td class="wraphide">
+    	<label>{if $v['newwindow']}{$_lang['yes']}&nbsp;{else}{$_lang['no']}{/if}</label>
+		</td>
+    <td class="wraphide">
+    	<label>{if !$v['ishide']}{$_lang['show']}{else}{$_lang['hide']}{/if}</label>
+    </td>
+    <td>
+        <a href="{BASE_URL}/index.php/admin/config_nav/add?nav_id=$v['nav_id']" class="button dbl_target"><span class="pen icon"></span>{$_lang['edit']}</a>
+        <a href="{BASE_URL}/index.php/admin/config_nav/del?nav_id=$v['nav_id']"  onclick="return cdel(this);" class="button"><span class="trash icon"></span>{$_lang['delete']}</a>
+    	<a href="{BASE_URL}/index.php/admin/config_nav/set_index?nav_style=$v['nav_style']" class="button"><span class="check icon"></span>{$_lang['set_index']}</a>
+    </td>
+</tr>
+{/loop}
+<tfoot>
+<tr>
+	<td colspan="9"> 
+    <button  class="positive pill negative" type="submit"><span class="check icon"></span>{$_lang['submit']}</button>
+	</td>
+</tr>
+</tfoot>
+</table>
+</form>
+ 
+</div>
+<!--主体结束-->
+<script type="text/javascript">
+function modify(){
+	art.dialog.confirm('确定提交更改吗?',function(){
+		$('#frm_config_basic').submit();
+	});
+}
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

@@ -1,0 +1,87 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+  <h1>{$_lang['config']}</h1>
+     <div class="tool">
+       <a href="{BASE_URL}/index.php/shop/{$model_info['model_code']}_admin_config" >{$_lang['basic_config']}</a>
+       <a href="{BASE_URL}/index.php/shop/{$model_info['model_code']}_admin_config/control" class="here">{$_lang['control_config']}</a>
+     </div>
+</div>
+<div class="box post">
+  <form name="frm_config" action="{BASE_URL}/index.php/shop/{$model_info['model_code']}_admin_config/control_save" method="post" id="frm_config">
+  <input type="hidden" name="formhash" value="{FORMHASH}">
+  <input type="hidden" name="model_id" value="{$model_info['model_id']}">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	 
+	 
+  <tr>
+    <th scope="row">{$_lang['goods_royalty_rate']}{$_lang['zh_mh']}</th>
+    <td> 
+		<input type="text" size="10" name="conf[service_profit]" value="{$model_info['service_profit']}" limit="type:int;len:1-2;between:0-100" msg="{$_lang['goods_royalty_rate_msg']}{$_lang['zh_mh']}1-2" title="{$_lang['goods_royalty_rate_positive_integer']},1-100" msgArea="goods_rate_msg" class="txt"/>%<span id="goods_rate_msg"></span>
+    </td>
+  </tr>
+   <tr>
+      	 <th scope="row" width="150">{$_lang['service_attachment_number_limit']}{$_lang['zh_mh']}</th>
+        <td>
+        <input type="text" value="{$model_info['max_filecount']}" name="conf[max_filecount]" id="max_filecount" size="10" limit="required:true;type:int;between:1-20" msg="{$_lang['service_attachment_number_can_not_null']}" title="{$_lang['please_input_allow_attachment_number']}" msgArea="max_filecount_msg" class="txt"/>{$_lang['counts']}
+         <span id="max_filecount_msg"></span>
+	    </td>
+  </tr>
+	 
+	<tr>
+		<th scope="row" width="200">&nbsp;</th>
+		<td>
+            <div class="clearfix padt10">
+			 <button type="submit" name="sbt_edit" class="positive primary  button"  onclick="return checkForm(document.getElementById('frm_config'))"><span class="check icon"></span>{$_lang['submit']}</button>
+			</div>
+		</td>
+	</tr>
+  </table>
+  </form>
+   </div>
+ </div>
+<script type="text/javascript">
+$(function(){
+	if($("#end_action_1").attr("checked")==true){
+		$("#slt").hide();
+	}
+	if($("#end_action_2").attr("checked")==true){
+		 $("#slt").show();
+	 }
+	$("#end_action_1").click(function(){
+		$("#slt").hide();
+	})
+	$("#end_action_2").click(function(){
+		  $("#slt").show();
+	})
+	
+	$("#add_time_rule").click(function(){
+		var ruleNum=parseInt($("#add_new_rul").find("li").length)+1;
+		var newRule=$("<li><span id='span_"+ruleNum+"'>"+ruleNum+"</span><input type='text' size='10' name='timeOld["+ruleNum+"][rule_cash]' class='txt'/>元以上 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
+				 "&nbsp;&nbsp;<input type='text' size='10' name='timeOld["+ruleNum+"][rule_day]' class='txt'> 天<br></li>");
+			newRule.appendTo($("#add_new_rul"));
+	})	
+	
+	$(".del_time_rule").click(function(){
+		var timeRuleId=parseInt($(this).attr("rel"));
+			if(!isNaN(timeRuleId)){
+				$.get("{$del_time_url}",{rule_id:timeRuleId});
+			}
+		$(this).parent().remove();
+	})	
+	$("#add_delay_rule").click(function(){
+		var delayNum=parseInt($("#new_delay_rule").find("li").length)+1;
+		var newRule=$("<li>{$_lang['di']}<input type='text' size='10' name='delayOld["+delayNum+"][defer_times]' value="+delayNum+" class='txt'/>{$_lang['times']}"+
+				 "{$_lang['delay_rule_notice']}&nbsp;<input type='text' size='10' name='delayOld["+delayNum+"][defer_rate]' class='txt'>%"+
+				 "</li>");
+			newRule.appendTo($("#new_delay_rule"));
+	})
+	$(".del_delay_rule").click(function(){
+		var delayRuleId=parseInt($(this).attr("rel"));
+			if(!isNaN(delayRuleId)){
+				$.get("{$del_delay_url}",{rule_id:delayRuleId});
+			}
+		$(this).parent().remove();
+	})
+  })
+</script>
+<!--{include control/admin/tpl/admin_footer}-->

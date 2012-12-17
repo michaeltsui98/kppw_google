@@ -1,0 +1,35 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    	<h1>{$_lang['map_api']}</h1>
+</div>
+
+<div class="box post">
+   
+<form name="frm_map" class="detail" id="frm_map" action="{BASE_URL}/index.php/admin/config_basic/save" method="post">
+  <input type="hidden" name="type" value="map">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+ <tr>
+        <th scope="row" width="140">Baidu Maps API{$_lang['zh_mh']}</th>
+        <td>
+        	<input type="text" name="baidu_api" id="baidu_api" value="{$config_arr['baidu_api']}" class="txt" style="width:300px;" msgArea="span_baidu"
+			limit="required:true;len:2-200" title="&nbsp;&nbsp;&nbsp;&nbsp;{$_lang['enter_baidu_map_api_key']}" msg="&nbsp;&nbsp;&nbsp;&nbsp;{$_lang['enter_baidu_map_api_key']}"/> 
+		<span id="span_baidu"></span>&nbsp;&nbsp;{$_lang['baidu_map_description']}
+		</td>
+    </tr>
+
+<tr>
+<th scope="row">&nbsp;</th>
+		<td>
+			<div class="clearfix padt10">
+        		 <button class="positive primary pill button" type="submit" id="sbt_edit" name='sbt_edit' value="{$_lang['submit']}" onclick="return checkForm(document.getElementById('frm_map'))"><span class="check icon"></span>{$_lang['submit']}</button>
+        		  <button class="pill button" type="button" onclick="history.go(-1);" value="{$_lang['return']}"><span class="uparrow icon"></span>{$_lang['return']}</button>
+			</div>
+		</td>
+	</tr>
+	
+	 </form>
+</table>
+ 
+</div>
+ 
+<!--{include control/admin/tpl/admin_footer}-->

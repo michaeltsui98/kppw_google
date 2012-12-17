@@ -1,0 +1,84 @@
+<!--{include control/admin/tpl/admin_header}-->
+ <div class="page_title">
+    	<h1>{$model_info['model_name']}{$_lang['manage']}</h1>
+        <div class="tool">
+       
+			<a href="{$base_uri}" class="here" >{$_lang['order_list']}</a>
+		 
+        </div>
+</div>
+<!--页头结束-->
+<div class="box search p_relative" id="detail">
+<form action="{$base_uri}" method="get">
+<input type="hidden" name="type" value="{$type}"> 		
+<table class="detail"  cellspacing="0" cellpadding="0">    		
+	<tbody>
+		<tr>
+            <th>查询字段
+               <select name="slt_fields">
+               	<option></option>
+               	{loop $query_fields $k $v}
+               	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+				{/loop} 
+               </select>
+			 <select name="slt_cond">
+			 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+				<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+				<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+				<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+			 </select>
+             <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+			 <select name="page_size">
+    			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+    			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+    			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+			</select>
+			 <input type="submit" value="{$_lang['search']}">
+			 </td>
+        </tr>  			
+		</tbody>
+</table>
+</form>    
+</div>
+<!--search end-->
+<div class="box list">
+{if $list_arr}
+<table cellpadding="0" cellspacing="0">
+	<tr>
+    <th width="8%"><a href="javascript:;" onclick="submitSort('{$uri}','order_id','{$ord_tag}')">ID{if $_GET['f']=='order_id'}{$ord_char}{/if}</a></th>
+    <th width="30%">订单名称</th>
+	<th width="10%">订单状态</th>
+    <th width="10%"><a href="javascript:;" onclick="submitSort('{$uri}','order_amount','{$ord_tag}')">{$_lang['cash']}{if $_GET['f']=='order_amount'}{$ord_char}{/if}</a></th>
+	<th width="5%">数量</th>
+	<th width="10%">购买人</th>
+ 	<th width="10%"><a href="javascript:;" onclick="submitSort('{$uri}','order_time','{$ord_tag}')">{$_lang['time']}{if $_GET['f']=='order_time'}{$ord_char}{/if}</a></th>
+     
+  </tr>
+    <tbody>
+    {loop $list_arr $v}
+	  <tr class="item">
+ 		<td class="td25">{$v['order_id']}</td>
+    	<td class="td28">{$v['order_name']}</td>
+		<td>{$order_status[$v['order_status']]}</td>
+		<td>{c:$v['order_amount']}</td>
+		<td>{$v['num']}</td>
+		<td>{$v['order_username']}</td>
+		<td>{date('Y-m-d',$v['order_time'])}</td>
+	  </tr>
+    {/loop}
+	</tbody>
+    <tfoot>
+        <tr>
+            <td colspan="9">
+                <div class="page">
+                    {$pages['page']}
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+{else}
+<div class='t_c'>{$_lang['no_data']}</div>
+{/if}
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

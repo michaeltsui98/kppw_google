@@ -6,7 +6,7 @@
    2012-10-12
  */
 
-class Keke_user_auth extends Keke_user{
+class Keke_user_auth {
 	
 	/**
 	 * 获取用户认证记录

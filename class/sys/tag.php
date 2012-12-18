@@ -45,8 +45,8 @@ class Sys_tag {
 		$tag_arr = Arr::get_arr_by_key($this->tag, 'tagname');
 		$tag_info = $tag_arr[$tag_name];
 		if($tag_info['tag_type']=='art_info'){
-			echo $tag_info['tag_code'];
-			die;
+			return $tag_info['tag_code'];
+			
 		}
 		call_user_func(array(__CLASS__,$tag_info['tag_type']),$tag_info);
 		
@@ -62,7 +62,7 @@ class Sys_tag {
 	}
 	/**
 	 * 广告位数据调用
-	 * @param unknown_type $target_name
+	 * @param string $target_name
 	 */
 	public function ad_tag($target_name){
 	   
@@ -70,9 +70,9 @@ class Sys_tag {
 	    $arr = Arr::get_arr_by_key($this->target, 'name');
 	    $target_info = $arr[$target_name];    
 	    if($target_info['tag_code']){
-	    	$this->slide_ad($target_info);
+	    	return $this->slide_ad($target_info);
 	    }else{
-	    	$this->sing_ad($target_info);
+	    	return $this->sing_ad($target_info);
 	    }
 		
 	}
@@ -80,7 +80,26 @@ class Sys_tag {
 	 * 普通广告位
 	 */
 	public function sing_ad($target_info){
-		
+		$ad_num = $target_info['ad_num'];
+		$ads = DB::select()->from('witkey_ad')
+		->where("target_id='$ad_num'")->limit(0, $ad_num)->execute();
+		$string = '';
+		for($i=0;$i<$ad_num;$i++){
+			switch ($ads[$i]['ad_type']){
+				case 'image':
+					$string .= "<a href='" . $ads[$i] ['ad_url'] . "' target='_blank'><img src='" . $ads[$i] ['ad_file']
+					. "' width='".$ads[$i] ['width']."' height='".$ads[$i] ['height']."'></a>";
+				break;
+				case 'falsh':
+					$string.=keke_file_class::flash_codeout($ads[$i] ['ad_url'], $ads[$i] ['width'], $ads[$i] ['height']);
+				break;
+				case 'text':
+				case 'code':	
+					$string .= $ads[$i] ['ad_content'];
+				break;
+			}
+		}
+		return $string;
 	}
 	/**
 	 * 幻灯广告位
@@ -89,102 +108,6 @@ class Sys_tag {
 		$datalist = DB::select()->from('witkey_ad')->where('target_id='.$target_info['target_id'])
 		->order("listorder asc")->cached('99999')->execute();
 		return Keke_tpl::parse_code($target_info['tag_code'], $target_info['target_id'],'ad');
-	}
-	
-	
-	/**
-	 * 显示指定位置的广告
-	 * @param $code 广告位置代码
-	 * @param $do	     当前路由DO
-	 * @param $is_slide  图片标准名称
-	 */
-	static function ad_show($code, $do = 'index',$is_slide=null) {
-		global $_lang,$_K;
-		$ad_target = Database::instance()->get_one_row ( sprintf ( " select * from %switkey_ad_target where code='%s' and INSTR(targets,'%s') and is_allow=1", TABLEPRE, $code, $do ),3600*24);
-		if ($ad_target) {
-			if($is_slide){
-			    return self::adgroup($is_slide,$ad_target ['ad_num']);
-			}
-			$pos_config = unserialize ( $ad_target ['position'] ); //位置配置数组
-			
-			/** 获取指定条数广告*/
-			$sql = " select a.ad_id,a.ad_name,a.ad_file,a.ad_content,a.ad_url,a.width,a.height,
-			a.ad_type,a.ad_position,a.on_time from %switkey_ad a left join %switkey_ad_target b on a.target_id=b.target_id 
-			where b.code='%s' and a.is_allow='1' order by a.ad_id desc limit 0,%d";
-			$ad_arr = dbfactory::query ( sprintf ( $sql, TABLEPRE, TABLEPRE, $code, $ad_target ['ad_num'] ),true,$_K['timespan'] );
-			
-			$ad_list = Keke::get_arr_by_key($ad_arr,'ad_position'); 
-			 
-
-			$ad_str = "";
-			foreach ( $pos_config as $k => $v ) {
-				$pos = explode ( "*", $v ); //宽高定位
-				if ($ad_list [$k]) {
-					$ad_info = $ad_list [$k];
-					$ad_str .= "<div class='adv w" . $ad_info ['width'] . "xh" . $ad_info ['height'] . " ad_" . $k. "'>";
-					switch ($ad_info ['ad_type']) {
-						case "flash" :
-							$ad_str.=keke_file_class::flash_codeout($ad_info ['ad_url'], $ad_info ['width'], $ad_info ['height']);
-							break;
-						case "text" :
-						case "code" :
-							$ad_str .= Keke::k_stripslashes($ad_info ['ad_content']);
-							break;
-						case "image" :
-							$ad_str .= "<a href='" . $ad_info ['ad_url'] . "' target='_blank'><img src='" . $ad_info ['ad_file']
-									 . "' width='".$ad_info ['width']."' height='".$ad_info ['height']."'></a>";
-							break;
-					}
-					self::update_ad($ad_info);
-				} else {
-					$ad_str .= "<div class='adv w" . $pos [0] . "xh" . $pos [1] . " ad_" . $k . "'>";
-					$ad_str .= "<a href='index.php?do=article&view=article_info&art_id=13' target='_blank'><p class='t_c'>".$_lang['ad_leasing']."</p><p class='t_c'>" . $pos [0] . "x" . $pos [1] . $_lang['pixels']. "  </p></a>";
-				}
-				$ad_str .= "</div>";
-				$k=='top' and $ad_str.="<div class='clear mb_10'></div>";
-			}
-			echo $ad_str;
-		}
-		
-	}
- 
-	
- 
-	
-	/**
-	 * 单广告
-	 * @param int $adid
-	 */
-	/* static function ad($adid) {
-		
-		$ad_arr = self::init_ad();
-		$ad_info = $ad_arr [$adid];
-		if ($ad_info ['ad_type'] == 1) {
-			$adstr = '<embed src="' . $ad_info ['ad_file'] . '" quality="high" width="' . $ad_info ['width'] . '" height="' . $ad_info ['height'] . '" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash"></embed>';
-		} elseif ($ad_info ['ad_type'] == 3) {
-			$adstr = htmlspecialchars_decode ( $ad_info ['ad_content'] );
-		} else {
-			$adstr = '<img src="' . $ad_info ['ad_file'] . '" ';
-			$adstr .= $ad_info ['width'] ? "width={$ad_info['width']} " : '';
-			$adstr .= $ad_info ['height'] ? "height={$ad_info['height']} " : '';
-			$adstr .= '>';
-			if ($ad_info ['ad_url']) {
-				$adstr = '<a target="_blank" href="' . $ad_info ['ad_url'] . '">' . $adstr . '</a>';
-			}
-		}
-		echo $adstr;
-	
-	} */
-	/**
-	 * 广告组，一般用于幻灯片调用
-	 */
-	static function adgroup($adname,$ad_limit_num) {
-		global $_K;
-		//$datalist = Keke::get_ad ( $adname,$ad_limit_num );
-		$tag_arr = self::get_tag(0);
-		$tag_info = $tag_arr [$adname];
-	
-		require Keke_tpl::parse_code ( htmlspecialchars_decode ( $tag_info ['tag_code'] ), $tag_info ['tag_id'] );
 	}
 
 }//end

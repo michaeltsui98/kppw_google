@@ -16,7 +16,7 @@ class Sys_tag {
 	/**
 	 * @var 广告位
 	 */
-	public $target = array();
+	public static $target = array();
 	
 	private static $_instance = NULL;
 	
@@ -64,22 +64,22 @@ class Sys_tag {
 	 * 广告位数据调用
 	 * @param string $target_name
 	 */
-	public function ad_tag($target_name){
-	   
-		$this->target = DB::select()->from('witkey_ad_target')->where("is_allow=1")->cached(3600*24)->execute();
-	    $arr = Arr::get_arr_by_key($this->target, 'name');
+	public static function ad_tag($target_name){
+	     
+		self::$target = DB::select()->from('witkey_ad_target')->where("is_allow=1")->cached(3600*24)->execute();
+	    $arr = Arr::get_arr_by_key(self::$target, 'name');
 	    $target_info = $arr[$target_name];    
 	    if($target_info['tag_code']){
-	    	return $this->slide_ad($target_info);
+	    	echo  self::slide_ad($target_info);
 	    }else{
-	    	return $this->sing_ad($target_info);
+	    	echo  self::sing_ad($target_info);
 	    }
 		
 	}
 	/**
 	 * 普通广告位
 	 */
-	public function sing_ad($target_info){
+	public static  function sing_ad($target_info){
 		$ad_num = $target_info['ad_num'];
 		$ads = DB::select()->from('witkey_ad')
 		->where("target_id='$ad_num'")->limit(0, $ad_num)->execute();
@@ -104,7 +104,7 @@ class Sys_tag {
 	/**
 	 * 幻灯广告位
 	 */
-	public function slide_ad($target_info){
+	public static  function slide_ad($target_info){
 		$datalist = DB::select()->from('witkey_ad')->where('target_id='.$target_info['target_id'])
 		->order("listorder asc")->cached('99999')->execute();
 		return Keke_tpl::parse_code($target_info['tag_code'], $target_info['target_id'],'ad');

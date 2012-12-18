@@ -12,7 +12,7 @@ class Sys_tag {
 	/**
 	 * @var 标签数组
 	 */
-	public $tag = array();
+	public static $tag = array();
 	/**
 	 * @var 广告位
 	 */
@@ -35,27 +35,26 @@ class Sys_tag {
 	 * 初始化标签数组
 	 */
 	protected function __construct(){
-		$this->tag = DB::select()->from('witkey_tag')->cached(9999)->execute();
+		self::$tag = DB::select()->from('witkey_tag')->cached(9999)->execute();
 	}
 	 /**
 	  * 解析标签 
 	  * @param string $tag_name
 	  */
 	public function readtag($tag_name){
-		$tag_arr = Arr::get_arr_by_key($this->tag, 'tagname');
+		$tag_arr = Arr::get_arr_by_key(self::$tag, 'tagname');
 		$tag_info = $tag_arr[$tag_name];
 		if($tag_info['tag_type']=='art_info'){
-			return $tag_info['tag_code'];
-			
+			echo  $tag_info['tag_code'];
+			return;
 		}
 		call_user_func(array(__CLASS__,$tag_info['tag_type']),$tag_info);
-		
 	}
 	/**
 	 * 文章列表
 	 * @param array $tag_info
 	 */
-	public function art_list($tag_info){
+	public static function art_list($tag_info){
 	     $datalist = DB::select()->from('witkey_article')->where($tag_info['tag_cond'])->cached($tag_info['cache_time'])->execute();	
 	     require Keke_tpl::parse_code ( htmlspecialchars_decode ( $tag_info ['tag_code'] ), $tag_info ['tag_id'] );
 	     
@@ -70,7 +69,7 @@ class Sys_tag {
 	    $arr = Arr::get_arr_by_key(self::$target, 'name');
 	    $target_info = $arr[$target_name];    
 	    if($target_info['tag_code']){
-	    	echo  self::slide_ad($target_info);
+	    	 self::slide_ad($target_info);
 	    }else{
 	    	echo  self::sing_ad($target_info);
 	    }
@@ -82,7 +81,7 @@ class Sys_tag {
 	public static  function sing_ad($target_info){
 		$ad_num = $target_info['ad_num'];
 		$ads = DB::select()->from('witkey_ad')
-		->where("target_id='$ad_num'")->limit(0, $ad_num)->execute();
+		->where("target_id={$target_info['target_id']}")->limit(0, $ad_num)->execute();
 		$string = '';
 		for($i=0;$i<$ad_num;$i++){
 			switch ($ads[$i]['ad_type']){
@@ -107,7 +106,7 @@ class Sys_tag {
 	public static  function slide_ad($target_info){
 		$datalist = DB::select()->from('witkey_ad')->where('target_id='.$target_info['target_id'])
 		->order("listorder asc")->cached('99999')->execute();
-		return Keke_tpl::parse_code($target_info['tag_code'], $target_info['target_id'],'ad');
+		require Keke_tpl::parse_code($target_info['tag_code'], $target_info['target_id'],'ad');
 	}
 
 }//end

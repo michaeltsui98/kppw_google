@@ -93,7 +93,8 @@
 		</div>
 		</div>
   </div>     
-  {/if} 
+  {/if}
+   
 <div class="grid_14 mb_10">
    <div class="box default">
      <div class="inner">
@@ -102,7 +103,7 @@
          <div id="slides">
           <!--图片内容区域 start-->
               <div class="slides_container">
-                   <!--{ad_show(HOME_TOP_SLIDE,1)}-->
+                   {ad_tag(首页_顶部幻灯广告)}
               </div>
           <!--图片内容区域 end-->
           <!--左右翻页箭头 start-->
@@ -169,29 +170,7 @@
                        <div class="clear"></div>
        </header>
 	   <div id="slider" class="box_detail">
-        <!--注册用户 start-->
-         <ul>
-            <li><p>{$_lang['register_user_number']}</p><p><strong class="num goup" >{$register}</strong></p></li>
- 
-        <!--任务统计 end-->
-       <!--认证统计 start-->
-
-             <li><p>{$_lang['auth_statistics_number']}</p><p><strong class="num goup" >{$all_auth}</strong></p></li>
-
-        <!--认证统计 end-->
-        <!--任务统计 start-->
-		 {if Keke::$_task_open}
-            <li><p>{$_lang['task_order_money']}</p><p><strong class="num godown" >{$task_in}</strong></p></li>
-            <li><p>{$_lang['task_number']}</p><p><strong class="num goup" >{$task_count}</strong></p></li>
-         {/if}
-        <!--任务统计 end-->
-       <!--商城统计 start-->
-          {if Keke::$_shop_open}
-             <li><p>{$_lang['shop_order_money']} </p><p><strong class="num  godown " >{$service_in}</strong></p></li>
-             <li><p>{$_lang['goods_number']} </p><p><strong class="num godown " >{$service_count}</strong></p></li>
-		  {/if}
-          </ul>
-        <!--商城统计 end-->
+         {tag(热门活动)}
       </div>
       <!--网站统计 end-->
 	  </div>
@@ -313,7 +292,18 @@
 	  				<h2 class="title">{$_lang['hot_activity']}</h2>
 	  			</header>
 	  			<article class="box_detail clearfix">
-	  				 {tag 热门活动}
+	  				 {tag(热门活动)}
+					 {tag(default)}
+					 {ad_tag(全局_顶部通栏广告)}
+					 {cutstr(全局_顶部通栏广告,5)}
+					 {avatar(1,big)}
+					 {avatar(1,small)}
+					 {avatar(1,small)}
+					 {avatar(1,small)}
+					 {avatar(1,small)}
+					 {avatar(1,small)}
+					 {avatar(1,small)}
+					 {avatar(1,small)}
 				</article>
 				</div>
 	  		</div>
@@ -323,9 +313,7 @@
      </div>
      
      <div class="clear"></div>
-	 {ad_tag(首页_中部一栏广告)}
-	  {ad_tag(首页_中部二栏广告)}
-	   {ad_tag(首页_中部三栏广告)}
+ 
      {if Keke::$_task_open}
  			 
       <div class="grid_24 mb_10">

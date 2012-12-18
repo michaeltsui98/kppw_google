@@ -57,14 +57,6 @@ class Keke_tpl {
 		//标签调用
 		$template = preg_replace ( '/\{tag\((.+?)\)\}/ie', "Keke_tpl::readtag(\"'\\1'\")", $template );
 		
-		/* //广告调用
-		$template = preg_replace ( '/\{showad\((.+?)\)\}/ie', "Keke_tpl::showad('\\1')", $template );
-		
-		//多广告调用
-		$template = preg_replace ( '/\{showads\((.+?)\)\}/ie', "Keke_tpl::showads('\\1')", $template ); */
-		
-		//预设广告调用
-		//$template = preg_replace ( '/\{ad_show\((.+?),(.+?)\)\}/ie', "Keke_tpl::ad_show('\\1','\\2')", $template );
 		//广告调用
 		$template = preg_replace ( '/\{ad_tag\((.+?)\)\}/ie', "Keke_tpl::ad_tag('\\1')", $template );
 		
@@ -106,13 +98,20 @@ class Keke_tpl {
 		$template = "<?php global \$_K,\$_lang; Keke_tpl::checkrefresh('$tpl', '{$_K['timestamp']}' );?>$template<?php Keke_tpl::ob_out();?>";
 		
 		//替换
-		empty ( $_K ['block_search'] ) or $template = str_replace ( $_K ['block_search'], $_K ['block_replace'], $template );
-		$template = str_replace("<?=", "<?php echo ", $template);
+		if(Keke_valid::not_empty($_K['block_search'])){ 
+			$arr = array_combine(array_values($_K ['block_search']),array_values($_K['block_replace']));
+			$template = strtr($template, $arr);
+		}
+		 
+		
+
+		$template = strtr($template, array('<?='=>'<?php echo '));
+		
 		return $template;
 	}
 	
 	static function addquote($var) {
-		$var =  str_replace ( "\\\"", "\"", preg_replace ( '/\[([a-zA-Z0-9_\-\.\x7f-\xff]+)\]/s', "['\\1']", $var ) );
+		$var =  strtr (preg_replace ( '/\[([a-zA-Z0-9_\-\.\x7f-\xff]+)\]/s', "['\\1']", $var ),"\\\"", "\"");
 		return $var;
 	}
 	/**
@@ -140,7 +139,7 @@ class Keke_tpl {
 	}
 	static function striptagquotes($expr) {
 		$expr = preg_replace ( '/\<\?\=(\\\$.+?)\?\>/s', "\\1", $expr );
-		$expr = str_replace ( "\\\"", "\"", preg_replace ( '/\[\'([a-zA-Z0-9_\-\.\x7f-\xff]+)\'\]/s', "[\\1]", $expr ) );
+		$expr = strtr (preg_replace ( '/\[\'([a-zA-Z0-9_\-\.\x7f-\xff]+)\'\]/s', "[\\1]", $expr ),"\\\"", "\"" );
 		return $expr;
 	}
 	
@@ -152,7 +151,12 @@ class Keke_tpl {
 		$_K ['block_replace'] [$_K ['i']] = "<?php " . Keke_tpl::stripvtags ( $php ) . " ?>";
 		return $search;
 	}
-	
+	/**
+	 * 日期标签
+	 * @param string $parameter 格式
+	 * @param int $value 
+	 * @return string
+	 */
 	static function datetags($parameter, $value) {
 		global $_K;
 		$_K ['i'] ++;
@@ -162,39 +166,43 @@ class Keke_tpl {
 		return $search;
 	}
 	
-	//广告调用
-	/* static function ad($adid) {
-		global $_K;
-		$content = '<!--{eval Sys_tag::ad(' . $adid . ')}-->';
-		return $content;
-	} */
-	
 	/**
-	 * 调用广告位
+	 * 广告/位标签
 	 * @param $target 广告位置名称
 	 */
 	static function ad_tag($target_name) {
-		$content = '<!--{eval Sys_tag::ad_tag(\'' . $target_name . '\')}-->';
-		return $content;
-	}
-	
-	/* static function runwidget($widgetname) {
 		global $_K;
-		$content = '<!--{eval $widgetname = \'' . $widgetname . '\'; include(S_ROOT.\'widget/run.php\')}-->';
-		return $content;
-	} */
-	
-	//广告群调用
-	/* static function showads($adname) {
-		$content = '<!--{eval Sys_tag::adgroup(' . $adname . ')}-->';
-		return $content;
-	} */
+		$_K ['i'] ++;
+		$search = "<!--AD_TAG_{$_K['i']}-->";
+		$_K ['block_search'] [$_K ['i']] = $search;
+		$_K ['block_replace'] [$_K ['i']] = "<?php Sys_tag::ad_tag('$target_name') ?>";
+		return $search;
+
+	}
+	/**
+	 * 数据标签
+	 * @param string $name
+	 * @return string
+	 */
+	static function readtag($name) {
+		global $_K;
+		$_K ['i'] ++;
+		$search = "<!--READ_TAG_{$_K['i']}-->";
+		$_K ['block_search'] [$_K ['i']] = $search;
+		$_K ['block_replace'] [$_K ['i']] = "<?php Sys_tag::factory()->readtag($name) ?>";
+		return $search;
+	}
 	
 	/**
 	 * 头像调用
 	 */
 	static function avatar($uid, $size) {
-		return '<!--{eval echo "<img class=pic_'.$size.' src=".Keke_user::instance()->get_avatar('.$uid.','.$size.')." >"}-->';
+		global $_K;
+		$_K ['i'] ++;
+		$search = "<!--READ_TAG_{$_K['i']}-->";
+		$_K ['block_search'] [$_K ['i']] = $search;
+		$_K ['block_replace'] [$_K ['i']] = "<?php echo \"<img class=pic_$size src=\". Keke_user::instance()->get_avatar($uid,'$size').'>'?>";
+		return $search;
 	}
 	/**
 	 * 文字裁剪
@@ -203,66 +211,54 @@ class Keke_tpl {
 	 * @return string
 	 */
 	static function cutstr($string,$length){
-		return '<!--{eval echo Keke::cutstr('.$string.','.$length.')}-->';
+		global $_K;
+		$_K ['i'] ++;
+		$search = "<!--CUTSTR_TAG_{$_K['i']}-->";
+		$_K ['block_search'] [$_K ['i']] = $search;
+		$_K ['block_replace'] [$_K ['i']] = "<?php echo  Keke::cutstr($string,'$length') ?>";
+		return $search;
 	}
+	
 	static function stripvtags($expr, $statement = '') {
 		$res = preg_replace ( "/\<\?\=(\\\$.+?)\?\>/s", "\\1", $expr );
-		$expr = str_replace ( "\\\"", "\"", $res );
-		$statement = str_replace ( "\\\"", "\"", $statement );
-		return $expr . $statement;
+		$expr = strtr($res.$statement,array("\\\""=>"\""));
+		return $expr ;
 	}
 	
 	static function readtemplate($name) {
 		global $_K;
-		
 		$tpl = Keke_tpl::tpl_exists ( $name );
 		$tplfile = S_ROOT . './' . $tpl . '.htm';
-		
 		$sub_tpls [] = $tpl;
 		
 		if (! file_exists ( $tplfile )) {
-			$tplfile = str_replace ( '/' . $_K ['template'] . '/', '/default/', $tplfile );
+			$tplfile = strtr ( $tplfile,'/' . $_K ['template'] . '/', '/default/');
 		}
 		$content = trim ( Keke_tpl::sreadfile ( $tplfile ) );
 		return $content;
 	}
 	
-	static function readtag($name) {
-		global $kekezu; 	
-		$content = '<!--{eval Sys_tag::readtag(' . $name . ')}-->';
-		return $content;
-	
-	}
-	
-	/* static function loadfeed($name) {
-		$content = '<!--{eval Keke_loaddata::readfeed(' . $name . ')}-->';
-		return $content;
-	
-	} */
-	
 	//获取文件内容
 	static function sreadfile($filename) {
-		$content = '';
+		
 		if (function_exists ( 'file_get_contents' )) {
-			@$content = file_get_contents ( $filename );
-		} else {
-			if (@$fp = fopen ( $filename, 'r' )) {
-				@$content = fread ( $fp, filesize ( $filename ) );
-				@fclose ( $fp );
-			}
+			return  file_get_contents ( $filename );
+		} elseif ($fp = fopen ( $filename, 'r' )) {
+			 	$content = fread ( $fp, filesize ( $filename ) );
+				fclose ( $fp );
+				return $content;
 		}
-		return $content;
+		
 	}
-	
 	//写入文件
 	static function swritefile($filename, $writetext, $openmod = 'w') {
-		if (@$fp = fopen ( $filename, $openmod )) {
+		if(function_exists('file_put_contents')){
+			return file_put_contents($filename, $writetext,LOCK_EX);
+		}elseif($fp = fopen ( $filename, $openmod )) {
 			flock ( $fp, 2 );
 			fwrite ( $fp, $writetext );
 			fclose ( $fp );
 			return true;
-		} else {
-			return false;
 		}
 	}
 	//判断字符串$haystack中是否存在字符$needle 返回第一次出现的位置   三个等号 判断绝对相等  uican 2009-12-03
@@ -272,7 +268,11 @@ class Keke_tpl {
 	
 	static function tpl_exists($tplname) {
 		global $_K;
-		is_file ( S_ROOT . "tpl/" . $_K ['template'] . "/" . $tplname . ".htm" ) and $tpl = "tpl/{$_K['template']}/$tplname" or $tpl = $tplname;
+		if(file_exists( S_ROOT . "tpl/" . $_K ['template'] . "/" . $tplname . ".htm" )){
+			$tpl = "tpl/{$_K['template']}/$tplname";
+		}else{
+			$tpl = $tplname;
+		}
 		return $tpl;
 	}
 	
@@ -280,7 +280,7 @@ class Keke_tpl {
 		global $_K;
 		
 		$tpl = Keke_tpl::tpl_exists ( $name );
-		$objfile = S_ROOT . 'data/tpl_c/' . str_replace ( '/', '_', $tpl ) . '.php';
+		$objfile = S_ROOT . 'data/tpl_c/' . strtr ( $tpl,'/', '_') . '.php';
 		if(! file_exists ( $objfile ) or ! TPL_CACHE){
 			Keke_tpl::parse_template ( $tpl );
 		}
@@ -300,7 +300,7 @@ class Keke_tpl {
 		global $_K;
 		if ($tpl) {
 			$tplfile = S_ROOT . './' . $tpl . '.htm';
-			(! file_exists ( $tplfile )) and $tplfile = str_replace ( '/' . $_K ['template'] . '/', '/default/', $tplfile );
+			(! file_exists ( $tplfile )) and $tplfile = strtr ( $tplfile,'/' . $_K ['template'] . '/', '/default/');
 			$submktime = filemtime ( $tplfile );
 			($submktime > $mktime) and Keke_tpl::parse_template ( $tpl );
 		}

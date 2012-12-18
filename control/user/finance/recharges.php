@@ -33,7 +33,7 @@ class Control_user_finance_recharges extends Control_user{
 		//查询状态转换
 		$_GET['txt_condition'] =  $status_arr[$_GET['txt_condition']];
 		
-		$count = intval($_GET['count']);
+	 
 		$this->_default_ord_field = 'pay_time';
 		$base_uri = BASE_URL.'/index.php/user/finance_recharges	';
 		extract($this->get_url($base_uri));
@@ -41,7 +41,7 @@ class Control_user_finance_recharges extends Control_user{
 		//收件	条件
 		$where .= ' and a.uid = '.$_SESSION['uid'];
 		
-		$data_info = Model::sql_grid($sql,$where,$uri,$order,$group_by,$page,$count,$_GET['page_size'],null);
+		$data_info = Model::sql_grid($sql,$where,$uri,$order,$group_by);
 		
 		$data_list = $data_info['data'];
 		//显示分页的页数

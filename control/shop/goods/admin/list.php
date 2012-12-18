@@ -143,9 +143,9 @@ class Control_shop_goods_admin_list extends Control_admin_shop_list{
     	extract($this->get_url($buri));
     	$where .= " and a.obj_id = '$sid'";
     	$group = " GROUP BY b.order_id";
-    	$count = intval($_GET['count']);
+    	 
     
-    	$data = Model::sql_grid($sql,$where,$uri,$order,$group,$page,$count,$_GET['page_size']);
+    	$data = Model::sql_grid($sql,$where,$uri,$order,$group);
     	$list_arr = $data['data'];
     	$pages = $data['pages'];
     	$order_status = Control_shop_goods_base::get_order_status();

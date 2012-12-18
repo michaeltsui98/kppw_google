@@ -79,20 +79,31 @@ abstract class Model {
 	}
 /**
  * 获取网格数据
- * @param String $fields  字段
- * @param String  $wh   只支持字串
- * @param String $uri  跳转url
- * @param String $order  排序字串
- * @param int $page   当前页数
- * @param int $count 总页数，防止分时再次查询
- * @param Int $page_size  当前页的条数
- * @param string $ajax_dom  ajax div 标签 id 
+ * @param String $fields  字段  必须
+ * @param String  $wh   只支持字串 必须
+ * @param String $uri  跳转url 必须
+ * @param String $order  排序字串 必须
+ * @param int $page   当前页数 可选
+ * @param Int $page_size  当前页的条数  可选
+ * @param string $ajax_dom  ajax div 标签 id  可选 
  * @return array(data,pages)
  */
-	function get_grid($fields ,$wh = '1=1', $uri=NULL, $order = null,$page=1, $count=NULL,$page_size = 10, $ajax_dom = null) {
+	function get_grid($fields ,$wh = '1=1', $uri=NULL, $order = null,$page=1, $page_size = 10, $ajax_dom = null) {
 		
-		$page or $page = 1;
-		$page_size or $page_size = 10;
+		//$page or $page = 1;
+		//$page_size or $page_size = 10;
+		if(isset($_GET['page'])){
+			$page = (int)$_GET['page'];
+		}else{
+			$page = 1;
+		}
+		if(isset($_GET['page_size'])){
+			$page_size = (int)$_GET['page_size'];
+		}else{
+			$page_size = 10;
+		}
+		
+		
 		$page_obj = new Page();
 		if ($ajax_dom) {
 			$page_obj->setAjax ( '1' );
@@ -103,6 +114,9 @@ abstract class Model {
 			$where = $wh;
 		}else{
 			$where = ' 1=1 ';
+		}
+		if(isset($_GET['count'])){
+			$count = (int)$_GET['count'];
 		}
 		//统计表的总记录数,如果count有值不用再次查询，确保分页只有一次查询
 		if(!$count){
@@ -122,20 +136,29 @@ abstract class Model {
 	}
 	/**
 	 * 多表分页处理
-	 * @param string $sql
-	 * @param string $wh
-	 * @param string $uri
-	 * @param string $order
-	 * @param int $page
-	 * @param int $count
-	 * @param int $page_size
-	 * @param bool $ajax_dom
-	 * @return multitype:NULL Ambigous <array(page,where), string>
+	 * @param string $sql  必须
+	 * @param string $wh 必须
+	 * @param string $uri 必须
+	 * @param string $order 必须
+	 * @param string $group_by 可选
+	 * @param int $page 可选
+	 * @param int $page_size 可选
+	 * @param bool $ajax_dom 可选
+	 * @return array(data,pages)
 	 */
-	public static function sql_grid($sql ,$wh = '1=1', $uri=NULL, $order = null,$group_by = null,$page=1, $count=NULL,$page_size = 10, $ajax_dom = null) {
+	public static function sql_grid($sql ,$wh = '1=1', $uri=NULL, $order = null,$group_by = null,$page=1, $page_size = 10, $ajax_dom = null) {
 	
-		$page or $page = 1;
-		$page_size or $page_size = 10;
+		if(isset($_GET['page'])){
+			$page = (int)$_GET['page'];
+		}else{
+			$page = 1;
+		}
+		if(isset($_GET['page_size'])){
+			$page_size = (int)$_GET['page_size'];
+		}else{
+			$page_size = 10;
+		}
+		
 		$page_obj = new Page();
 		if ($ajax_dom) {
 			$page_obj->setAjax ( '1' );
@@ -147,6 +170,9 @@ abstract class Model {
 			$where .= $wh;
 		}else{
 			$where .= ' 1=1 ';
+		}
+		if(isset($_GET['count'])){
+			$count = $_GET['count'];
 		}
 		//统计表的总记录数,如果count有值不用再次查询，确保分页只有一次查询
 		if(!$count){

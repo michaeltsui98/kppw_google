@@ -165,8 +165,8 @@ class Control_task_sreward_admin_list extends Control_admin_task_list{
         extract($this->get_url($base_uri.'/work?task_id='.$this->_task_id));
         
         //获取列表分页的相关数据,参数$where,$uri,$order,$page来自于get_url方法
-//      $data_info = Model::factory('witkey_task')->get_grid($fields,$where,$uri,$order,$page,$count,$_GET['page_size']);
-        $data_info = Model::sql_grid($sql,"d.task_id=".$task_id,$uri,$order,"GROUP BY a.work_id",$page,$count,$_GET['page_size']);
+
+        $data_info = Model::sql_grid($sql,"d.task_id=".$task_id,$uri,$order,"GROUP BY a.work_id");
         //列表数据
         $list_arr = $data_info['data'];
         //分页数据

@@ -24,8 +24,7 @@ class Control_admin_finance_recharge extends Control_admin {
 		// 要查询的字段,在模板中显示用的
 		
 		$query_fields = array ('rid' => $_lang ['id'], 'username' => $_lang ['username'], 'bank' => '银行' );
-		// 总记录数,分页用的，你不定义，数据库就是多查一次的。为了少个Sql语句，你必须要写的，亲!
-		$count = intval ( $_GET ['count'] );
+		
 		// finance本来是一个目录，由于没有定义tool为目录的路由,所以这个控制层的文件来finance_recharge
 		// So这里不能写为finance/recharge
 		$base_uri = BASE_URL . "/index.php/admin/finance_recharge";
@@ -36,7 +35,7 @@ class Control_admin_finance_recharge extends Control_admin {
 		// 这里要口水一下，get_url就是处理查询的条件
 		extract ( $this->get_url ( $base_uri ) );
 		// 获取列表分页的相关数据,参数$where,$uri,$order,$page来自于get_url方法
-		$data_info = Model::sql_grid($sql,$where,$uri,$order,$group_by,$page,$count,$_GET['page_size'],null);
+		$data_info = Model::sql_grid($sql,$where,$uri,$order,$group_by);
 		//$data_info = Model::factory ( 'witkey_recharge' )->get_grid ( $fields, $where, $uri, $order, $page, $count, $_GET ['page_size'] );
 		// 列表数据
 		$list_arr = $data_info ['data'];

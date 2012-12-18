@@ -167,7 +167,7 @@ class Control_task_dtender_admin_list extends Control_admin_task_list{
         
         //获取列表分页的相关数据,参数$where,$uri,$order,$page来自于get_url方法
 
-        $data_info = Model::sql_grid($sql,"d.task_id=".$task_id,$uri,$order,"GROUP BY a.bid_id",$page,$count,$_GET['page_size']);
+        $data_info = Model::sql_grid($sql,"d.task_id=".$task_id,$uri,$order,"GROUP BY a.bid_id");
         //列表数据
         $list_arr = $data_info['data'];
         //分页数据

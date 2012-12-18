@@ -66,8 +66,7 @@ class Control_user_buyer_mark extends Control_user{
 		
 		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
 		
-		// 总记录数,分页用的
-		$count = intval ( $_GET ['count'] );
+		 
 		 
 		$base_uri = PHP_URL . "/user/buyer_mark";
 		if($status !==NULL AND $status > 0){
@@ -89,7 +88,7 @@ class Control_user_buyer_mark extends Control_user{
 		$this->_uri = $uri;
 		$this->_ord_tag = $ord_tag;
 		$this->_ord_char = $ord_char;
-		return Model::sql_grid($sql,$where,$uri,$order,$group,$page,$count,$_GET['page_size']);
+		return Model::sql_grid($sql,$where,$uri,$order,$group);
 	}
 	
 }

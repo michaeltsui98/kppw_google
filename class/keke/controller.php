@@ -124,7 +124,7 @@ abstract class Keke_Controller {
 		//页数
 		$_GET['page'] and $page = $_GET['page'] or $page = 1;
 	    //将页数加到uri上去
-	    //$query_uri .= 'page='.$page;
+	    $query_uri .= 'page='.$page;
 		//排序的uri,f表示要排序的字段
 		if($_GET['f']){
 			$query_uri .= '&f='.$_GET['f'].'&ord='.$_GET['ord'];

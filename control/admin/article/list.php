@@ -37,7 +37,7 @@ class Control_admin_article_list extends Control_admin {
 		$uri .= "&type=$type";
 		
 		//获取列表分页的相关数据,参数$where,$uri,$order,$page来自于get_url方法
-		$data_info = Model::factory('witkey_article')->get_grid($fields,$where,$uri,$order,$page,$count,$_GET['page_size']);
+		$data_info = Model::factory('witkey_article')->get_grid($fields,$where,$uri,$order);
 		//列表数据
 		$list_arr = $data_info['data'];
 		//分页数据

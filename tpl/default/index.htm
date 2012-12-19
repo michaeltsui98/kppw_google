@@ -149,9 +149,7 @@
         <article class="box_detail hidden" id="div_plac_3">
           
         </article>
-      <!-- <article class="box_detail hidden" id="div_plac_4">
-          
-       </article>-->
+      
        <!--公告detail内容 end-->                    
         
       </div>
@@ -297,7 +295,7 @@
 					 {ad_tag(全局_顶部通栏广告)}
 					 {cutstr(全局_顶部通栏广告,5)}
 					 {avatar(1,big)}
-					 {avatar(1,small)}
+					 
 					 {avatar(1,small)}
 					 {avatar(1,small)}
 					 {avatar(1,small)}
@@ -314,7 +312,7 @@
      
      <div class="clear"></div>
  
-     {if Keke::$_task_open}
+     
  			 
       <div class="grid_24 mb_10">
         <div class="box model blue">
@@ -353,43 +351,14 @@
            <article class="box_detail clearfix">
              <!--列表 start-->
                <ul class="tops clearfix">
-                 {loop $task_recomm_3 $v}
-					<li class="grid_8 alpha omega">
-                      <!--单条内容 start-->
-                       <div class="item">
-                         <!--任务金额 start-->
-                           <strong class="font14 money cc00">
-                            	{if !$v['task_cash_coverage']}
-									{c:$v['task_cash']}
-								{else}
-									{c:$cash_coverage[$v['task_cash_coverage']]['start_cove']}-{c:$cash_coverage[$v['task_cash_coverage']]['end_cove']}
-								{/if}
-						  </strong>
-                         <!--任务金额 end-->
-                         <!--任务标题 start-->
-                         <h2 class="task_title"><a href="index.php?do=task&task_id={$v['task_id']}" title="{$v['task_title']}" target="_blank">{$v['task_title']}</a></h2>
-                         <!--任务标题 end-->
-                         <!--任务发布者 start-->
-                         <div class="publisher"><a href="<!--{eval echo Keke::build_space_url($v['uid']);}-->" title="{$v['username']}" target="_blank">{$v['username']}</a></div>
-                         <!--任务发布者 end-->
-                         <!--任务模型 start-->
-                         <div class="task_mode">{$mode_list[$v['model_id']]['model_name']}</div>
-                         <!--任务模型 end-->
-                         <!--任务统计 start-->
-                         <div class="task_status"> 
-                           <ul>
-                              <li title="{$_lang['view']}{$v['view_num']}"><a href="index.php?do=task&task_id={$v['task_id']}"><div class="icon16 cursor-arrow">{$_lang['view']}</div>{$v['view_num']}</a></li>
-                              <li title="{$_lang['favorit']} {$v['focus_num']}"><a href="index.php?do=task&task_id={$v['task_id']}"><div class="icon16 star-fav">{$_lang['favorit']}</div>{$v['focus_num']}</a></li>
-                              <li title="{$_lang['submit_work']}{$v['work_num']}"><a href="index.php?do=task&task_id={$v['task_id']}"><div class="icon16 spechbubble-2">{$_lang['submit_work']}</div>{$v['work_num']}</a></li>
-                           </ul>
-                        </div>
-                        <!--任务统计 end-->
-                      </div>
-                    <!--单条内容 end-->
-                   </li>
-                   <li class="line"></li>
-				{/loop}
+               		{ad_tag(首页_google广告)}
+                  {avatar(1,small)}
+				  
+				  {ad_tag(首页_中部三栏广告)}
+				  
+				  
                </ul>
+			  
                <!--列表 end-->
            <div class="clear"></div>
          </article>
@@ -440,9 +409,9 @@
    </div>
   </div>
  </div>
-  {/if}
+ 
   {if Keke::$_shop_open}
- 		 <!--{ad_show(HOME_CENTAL_TWO,首页_中部二栏广告)}-->
+ 		 {ad_tag(首页_中部二栏广告)}
   	<div class="grid_24 mb_10">
        <div class="box model purple orange_shop">
        <!--商城内容 start-->
@@ -559,7 +528,7 @@
   </div>
   {/if}
   <!--首页_中部三栏广告 start-->
-  	<!--{ad_show(HOME_CENTAL_THREE,首页_中部三栏广告)}-->
+  	
   <!--首页_中部三栏广告 end-->
   
   

@@ -13,7 +13,7 @@ define ( 'GZIP', TRUE );
 define ( "IS_REWRITE", 0 );
 define ( 'IMGDIR', 'resource/img/' );
 define ( 'KEKE_DEBUG', 1 );
-define ( "TPL_CACHE", 1);
+define ( "TPL_CACHE", 0);
 define ( 'IS_CACHE', 0 );
 define ( 'CACHE_TYPE', 'file' );
 define ( 'COOKIE_DOMAIN', '' );

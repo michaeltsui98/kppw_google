@@ -23,8 +23,6 @@ class Keke_tpl {
 		$tplfile = S_ROOT . './' . $tpl . '.htm';
 		$objfile = S_ROOT . './data/tpl_c/' . str_replace ( '/', '_', $tpl ) . '.php';
 		//read
-		
-
 		if (! file_exists ( $tplfile )) {
 			$tpl = str_replace ( '/' . $_K ['template'] . '/', '/default/', $tpl );
 			$tplfile = S_ROOT . './' . $tpl . '.htm';

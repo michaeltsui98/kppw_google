@@ -81,16 +81,24 @@ class Sys_tag {
 	public static  function sing_ad($target_info){
 		$ad_num = $target_info['ad_num'];
 		$ads = DB::select()->from('witkey_ad')
-		->where("target_id={$target_info['target_id']}")->limit(0, $ad_num)->execute();
+		->where("target_id={$target_info['target_id']}")->limit(0, $ad_num)
+		->order("listorder asc")->execute();
 		$string = '';
+		
 		for($i=0;$i<$ad_num;$i++){
+			if(Keke_valid::not_empty($ads[$i] ['width'])===FALSE OR $ads[$i] ['width']==0){
+				$ads[$i] ['width'] = 'auto';
+			}
+			if(Keke_valid::not_empty($ads[$i] ['height'])===FALSE OR $ads[$i] ['height']==0){
+				$ads[$i] ['height']= 'auto';
+			}
 			switch ($ads[$i]['ad_type']){
 				case 'image':
-					$string .= "<a href='" . $ads[$i] ['ad_url'] . "' target='_blank'><img src='" . $ads[$i] ['ad_file']
-					. "' width='".$ads[$i] ['width']."' height='".$ads[$i] ['height']."'></a>";
+					$string .= "<a href='" . $ads[$i] ['ad_url'] . "' target='_blank'><img src='" .BASE_URL.'/'.$ads[$i] ['ad_file']. "'
+							 width='".$ads[$i] ['width']."' height='".$ads[$i] ['height']."'></a>";
 				break;
 				case 'falsh':
-					$string.=keke_file_class::flash_codeout($ads[$i] ['ad_url'], $ads[$i] ['width'], $ads[$i] ['height']);
+					$string.=keke_file_class::flash_codeout(BASE_URL.'/'.$ads[$i] ['ad_url'], $ads[$i] ['width'], $ads[$i] ['height']);
 				break;
 				case 'text':
 				case 'code':	

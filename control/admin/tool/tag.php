@@ -103,22 +103,20 @@ class Control_admin_tool_tag extends Control_admin{
 			Keke::show_msg('提交成功','admin/tool_tag/add','success');
 		}
 	}
+	function get_tag($tag){
+		return  "{tag($tag)}";
+	}
+	
+	function get_remote_tag($tag_name){
+		global $_K;
+		return "<script src='".$_K['website_url'].PHP_URL."/tag/?t=$tag_name'></script>";
+	}
+	
 	/**
 	 * 标签预览
 	 */
 	function action_preview(){
-		$tagid = $_GET['tag_id'];
-		
-		$taglist =Keke_loaddata::get_tag(1);
-		$tag_info = $taglist[$tagid];
-		if($tag_info['tag_type']==9){
-			//预览广告
-			Keke_loaddata::preview_addgroup($tag_info['tagname'],$tag_info['loadcount']);
-		}elseif($tag_info['tag_type']==5){
-			//预览自定义代码 
-			Keke_loaddata::previewtag($tag_info);
-		}
-		 
+		Sys_tag::factory()->readtag($_GET['tag_name']);		 
 	}
 	
 }

@@ -35,6 +35,7 @@ class Control_admin_user_group extends Control_admin{
 		
 		}
 		$grouprole_arr = explode ( ',', $groupinfo_arr ['group_roles'] );
+		//var_dump($menus_arr['menu']['user'][0]['items']);die;
 		require keke_tpl::template("control/admin/tpl/user/group_add");
 	}
 	function action_save(){
@@ -43,7 +44,7 @@ class Control_admin_user_group extends Control_admin{
 		//防止跨域提交
 		keke::formcheck($_POST['formhash']);
 		//获取选中的多选条件的group_id，为数组
-		$group_roles = $_POST['chb_resource'];
+		$group_roles = $_POST['ckb_resource'];
 		//将数组转化为字符串
 		
 		$group_roles = implode(",", (array)$group_roles);
@@ -62,11 +63,13 @@ class Control_admin_user_group extends Control_admin{
 		if ($_POST['hdn_gid']){
 			//编辑情况下提交，更新
 			Model::factory('witkey_member_group')->setData($array)->setWhere('group_id = '.$_POST['hdn_gid'])->update();
-			Keke::show_msg('编辑成功','admin/user_group/add?group_id='.$_POST['hdn_gid'],'success');
+			 
+			$this->request->redirect('admin/user_group/add?group_id='.$_POST['hdn_gid']);
 		}else{
 			//添加情况下提交，直接插入
 			Model::factory('witkey_member_group')->setData($array)->create();
-			Keke::show_msg('提交成功','admin/user_group/add','success');
+			 
+			$this->request->redirect('admin/user_group/add');
 		}
 	}
 	/*

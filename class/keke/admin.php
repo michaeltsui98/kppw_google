@@ -12,34 +12,37 @@ class Keke_admin {
 	}
 	static function get_admin_menu() {
 		global $_lang,$_K;
-		$menuset_arr = Cache::instance()->get('admin_menu');
+		$menuset_arr = Cache::instance()->get('keke_admin_menu');
 		
 		if (! $menuset_arr) {
-			$resource_obj = new Keke_witkey_resource();
-			$resource_obj->setWhere ( "1=1 order by listorder asc" );
-			$resource_arr = $resource_obj->query();
-			$resource_submenu_obj = new Keke_witkey_resource_submenu();
-			$resource_submenu_obj->setWhere ( "1=1 order by listorder" );
-			$resource_sub_arr = $resource_submenu_obj->query ();
+			//二级菜单
+			$resource_sub_arr = DB::select()->from('witkey_resource_submenu')->order('listorder asc')->execute();
+			
+			//三级菜单
+			$resource_arr = DB::select()->from('witkey_resource')->order('listorder asc')->execute(); 
+			
 			
 			$temp_arr = array ();
 			$temp_arr2 = array ();
 			$resource_set_arr = array ();
 			$submenu_set_arr = array ();
+			
 			foreach ( $resource_arr as $r_tp ) {
 				$resource_set_arr [$r_tp ['resource_id']] = $r_tp;
 				$temp_arr [$r_tp ['submenu_id']] [] = $r_tp;
 			}
 			
+			
 			foreach ( $resource_sub_arr as $r_tp ) {
 				$submenu_set_arr [$r_tp ['submenu_id']] = $r_tp;
-				$temp_arr2 [$r_tp ['menu_name']] [] = array ('name' => $r_tp ['submenu_name'], 'items' => $temp_arr [$r_tp ['submenu_id']] );
+				$temp_arr2 [$r_tp ['menu_name']] [] = array (
+						'name' => $r_tp ['submenu_name'],
+						 'items' => $temp_arr [$r_tp ['submenu_id']] );
 			}
 			
 			$resource_arr = $temp_arr2;
 			$menuset_arr = array ( 'menu' => $resource_arr, 'submenu' => $submenu_set_arr, 'resource' => $resource_set_arr );
-			
-            Cache::instance()->set('admin_menu', $menuset_arr,999999);
+			Cache::instance()->set('keke_admin_menu', $menuset_arr,999999);
 		}
 		return $menuset_arr;
 	}

@@ -50,7 +50,7 @@
         		<th align="left">{$_lang['tag_name']}</th>
            		<th>{$_lang['internal_calling_code']}</th>
                 <th>{$_lang['js_calling_code']}</th>
-				<th><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">{$_lang['time']}{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>
+				
                 <th width="160">{$_lang['operate']}</th>
                
             </tr>
@@ -59,16 +59,16 @@
                 	<td><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['tag_id']}">{$v['tag_id']}</td>
                     <td>{$v['tagname']}</td>
                     <td>
-                        <input type="text" class="txt" value="<!--{eval echo '<!--{tag '.$v['tagname'].'}-';}-->->" size="30" onfocus="setCopy(this.value,'点击复制')">
+                        <input type="text" class="txt" value="<!--{eval echo $this->get_tag($v['tagname'])}-->" size="30" onfocus="setCopy(this.value,'点击复制')">
                     </td>
                     <td>
-                        <input type="text" class="txt" value="<script src='{$_K['siteurl']}/js.php?op=tag&tag_id=$v['tag_id']'></script>"  size="60" onfocus="setCopy(this.value,'点击复制')">
+                        <input type="text" class="txt" value="<!--{eval echo $this->get_remote_tag($v['tagname'])}-->"  size="100" onfocus="setCopy(this.value,'点击复制')">
                     </td>
-					<td>{date('Y-m-d',$v['on_time'])}</td>
+					
                     <td colspan="3">
-                        <a href="{$base_uri}/preview?&tag_id={$v['tag_id']}" target="_blank" class="button dbl_target">
+                        <a href="{$base_uri}/preview?tag_name=$v['tagname']" target="_blank" class="button">
                         <span class="book icon"></span>{$_lang['view']}</a>
-                        <a href="{$add_uri}?tag_id=$v['tag_id']" class="button">
+                        <a href="{$add_uri}?tag_id={$v['tag_id']}" class="button dbl_target">
                         <span class="pen icon"></span>{$_lang['edit']}</a>
                         <a href="{$del_uri}?tag_id=$v['tag_id']" onclick="return cdel(this)"  class="button"><span class="trash icon"></span>{$_lang['delete']}</a>
                     </td>

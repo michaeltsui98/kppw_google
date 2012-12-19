@@ -19,21 +19,24 @@
 						limit="required:true" 
 						msg="{$_lang['group_name_can_not_null']}" 
 						msgArea="txt_groupname_msg" 
-						title="{$_lang['please_input_right_group_name']}" class="txt"  style=" width:260px;"/><b style="color:red">*</b><span id="txt_groupname_msg"></span></td>
+						title="{$_lang['please_input_right_group_name']}" class="txt"  style=" width:260px;"/>
+						<b style="color:red">*</b><span id="txt_groupname_msg"></span></td>
 				       </tr>
 					   <tr>
 					  	<th scope="row">{$_lang['rights']}{$_lang['zh_mh']}</th>
 						<td>
-							  {loop $menus_arr['menu'] $k $v}
+						{loop $menus_arr['menu'] $k $v}
 							<b>{$menu_arr[$k]}</b><br>
 						  <div style="display:block;width:100%">
 							{loop $v $vv}
-							<dl><dt>$vv['name']:</dt>
+							<dl> 
 							  <dd>
 								<ul>
 								{loop $vv['items']  $static}
 								<label>
-								<input type="checkbox" {if in_array($static['static_id'],$grouprole_arr)}checked="checked"{/if} name="chb_static[]" value="{$static['static_id']}">{$static['static_name']}
+								<input type="checkbox" 
+								{if in_array($static['resource_id'],$grouprole_arr)}checked="checked"{/if}
+								 name="ckb_resource[]" value="{$static['resource_id']}">{$static['resource_name']}
 								</label>
 								{/loop}
 								</ul>

@@ -7,12 +7,9 @@
         </div>
 </div> 
 
-<div class="box post">
-    <div class="tabcon"></div>
-	<div class="title">
-		<h2>{if $link_id}{$_lang['edit']}{else}{$_lang['add']}{/if}{$_lang['link']}</h2>
-	</div>	
-	<div class="detail">
+<div class="box post detail">
+    
+	 
 <form method="post" action="{BASE_URL}/index.php/admin/link/save" id="frm_link_edit" enctype="multipart/form-data">
         <input type="hidden" name="hdn_link_id" value="{$link_info['link_id']}">
 		<input type="hidden" name="formhash" value="{FORMHASH}" />
@@ -88,7 +85,7 @@
         </table>
     
 </form>
- </div>
+ 
  </div>
 <script type="text/javascript">
   

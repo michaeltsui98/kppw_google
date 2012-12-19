@@ -223,7 +223,8 @@ var L = {
 		   //login.htm
 		    password_not_empty:'用户密码不能为空',
 		    //admin_index.htm
-		    clear_success:'清除成功'
+		    clear_success:'清除成功',
+		    no_check:'无没有选择'
 		    
 			
 };

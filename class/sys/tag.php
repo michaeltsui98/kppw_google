@@ -1,6 +1,6 @@
 <?php defined('IN_KEKE') or die('access deined');
 
-Keke_lang::load_lang_class('keke_loaddata_class');
+ 
 /**
  * 模板标签数据调用
  * @author Michael
@@ -43,12 +43,15 @@ class Sys_tag {
 	  */
 	public function readtag($tag_name){
 		$tag_arr = Arr::get_arr_by_key(self::$tag, 'tagname');
-		$tag_info = $tag_arr[$tag_name];
-		if($tag_info['tag_type']=='art_info'){
-			echo  $tag_info['tag_code'];
-			return;
-		}
+		 
+		$tag_info = $tag_arr[trim($tag_name)];
+		
 		call_user_func(array(__CLASS__,$tag_info['tag_type']),$tag_info);
+	}
+	
+	public static function art_info($tag_info){
+		echo  $tag_info['tag_code'];
+		return ;
 	}
 	/**
 	 * 文章列表

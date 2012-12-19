@@ -101,16 +101,14 @@ function batch_act(obj){
 			},
 			success: function(data){
 				location.href= location.href;
-
 			},
 			complete:function(){
-				$(tips).children().html('提交成功!');
-				clear_tips();
+				$(tips).children().html('').removeClass('tips_info');
 			}
 			});
 		}).follow(obj);
 	}else{
-		d.alert("{$_lang['has_none_being_choose']}");
+		d.alert(L.no_check);
 	}
 	return false;  
 }

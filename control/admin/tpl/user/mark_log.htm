@@ -42,13 +42,13 @@
 		  		<table class="detail" cellpadding="0" cellspacing="0">
 		          <tr>
 		          	<th width="15"><input type="checkbox" onclick="checkall();" id="checkbox" name="checkbox"/></th>
-		            <th><a href="javascript:;" onclick="submitSort('{$uri}','mark_id',{$ord_tag})">{$_lang['id']}{if $_GET['f']=='mark_id'}{$ord_char}{/if}</a></th>
+		            <th><a href="javascript:;" onclick="submitSort('{$uri}','mark_id','{$ord_tag}')">{$_lang['id']}{if $_GET['f']=='mark_id'}{$ord_char}{/if}</a></th>
 					<th width="15%">{$_lang['belong_model']}</th>
 					<th>{$_lang['from']}</th>
 					<th>{$_lang['to_user']}</th>
 					<th>{$_lang['evaluation']}</th>
 					<th>{$_lang['ability_credit']}</th>
-					<th><a href="javascript:;" onclick="submitSort('{$uri}','mark_time',{$ord_tag})">{$_lang['time']}{if $_GET['f']=='mark_time'}{$ord_char}{/if}</a></th>
+					<th><a href="javascript:;" onclick="submitSort('{$uri}','mark_time','{$ord_tag}')">{$_lang['time']}{if $_GET['f']=='mark_time'}{$ord_char}{/if}</a></th>
 					<th>{$_lang['operate']}</th>
 		          </tr>
 				{loop $list_arr $v}

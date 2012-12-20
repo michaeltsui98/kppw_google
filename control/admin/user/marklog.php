@@ -10,7 +10,7 @@ class Control_admin_user_marklog extends Control_admin{
 	function action_index(){
 		global $_K,$_lang;
 		//要查询的字段
-		$fields = '`mark_id`,`model_code`,`mark_type`,`by_username`,`username`,`mark_status`,`mark_value`,`mark_time`';
+		$fields = '`mark_id`,`model_code`,`origin_id`,`mark_type`,`by_username`,`username`,`mark_status`,`mark_value`,`mark_time`';
 		//搜索使用到的字段
 		$query_fields = array('mark_id'=>$_lang['id'],'username'=>$_lang['name'],'mark_time'=>$_lang['time']);
 		//基本uri
@@ -35,6 +35,7 @@ class Control_admin_user_marklog extends Control_admin{
 		$model_list = keke::$_model_list;
 		//通过model_code获取model_type的值
 		$model_list2 = Keke::get_arr_by_key($model_list,'model_code');
+		var_dump($model_list2);
 		require keke_tpl::template('control/admin/tpl/user/mark_log');
 	}
 	/**

@@ -3,7 +3,7 @@
 警告: 修改该文件必须保存为无ROM头的文件,也就是去掉文件头签名
 如果使用记事本改的话可能会出现获取数据乱码的问题
 */
-global $kekezu;
+ 
 //设置获取数据的编码. 支持UTF-8 GBK GB2312
 //需要 iconv或mb_convert_encoding 函数支持
 //UTF-8 不可写成UTF8

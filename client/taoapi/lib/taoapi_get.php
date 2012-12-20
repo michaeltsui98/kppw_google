@@ -84,6 +84,25 @@ class taoapi_get {
 					 'page_size'=>$params ['page_size']
 		);
 	}
+	
+	/**
+	 *搜索商品信息(taobao.items.get)
+	 */
+	private function items_search2() {
+		$params = $this->_params;
+		$params ['fields'] or $params ['fields'] ='iid,detail_url,num_iid,title,nick,type,cid,seller_cids,props,input_pids,input_str,desc,pic_url,num,valid_thru,list_time,delist_time,stuff_status,location,price,post_fee,express_fee,ems_fee,has_discount,freight_payer,has_invoice,has_warranty,has_showcase,modified,increment,auto_repost,approve_status,postage_id,product_id,auction_point,property_alias,itemimg,propimg,sku,outer_id,is_virtural,is_taobao,is_ex,video';
+		return array ('fields' => $params ['fields'],
+				'q' => $params ['q'],
+				'cid' => $params ['cid'],
+				'nicks'=>trim($params['nicks']),
+				'props' => $params ['props'],
+				'product_id' => $params ['product_id'],
+				'page_no'=>$params ['page_no'],
+				'page_size'=>$params ['page_size']
+		);
+	}
+	
+	
 	/**
 	 *根据卖家昵称和商品ID列表获取SKU信息(taobao.item.skus.get)
 	 */
@@ -354,7 +373,7 @@ class taoapi_get {
 	 * 接口名称数组
 	 */
 	public static function get_interface($inter) {
-		$inters = array ('areas' => 'taobao.areas.get', 'item' => 'taobao.item.get', 'item_skus' => 'taobao.item.skus.get', 'itemcats' => 'taobao.itemcats.get', 'itemcats_v2' => 'taobao.itemcats.get.v2', 'itemprops' => 'taobao.itemprops.get', 'itempropvalues' => 'taobao.itempropvalues.get', 'items' => 'taobao.items.get', 'items_search' => 'taobao.items.search', 'logistics' => 'taobao.logistics.companies.get', 'orders' => 'taobao.orders.get', 'product' => 'taobao.product.get', 'products' => 'taobao.products.get', 'products_search' => 'taobao.products.search', 'cats_list' => 'taobao.sellercats.list.get', 'shop' => 'taobao.shop.get', 'shopcats' => 'taobao.shopcats.list.get', 'sns_user' => 'taobao.sns.user.get', 'trades' => 'taobao.trades.get', 'user' => 'taobao.user.get', 'users' => 'taobao.users.get', 'taobaoke_caturl' => 'taobao.taobaoke.caturl.get', 'taobaoke_items_convert' => 'taobao.taobaoke.items.convert', 'taobaoke_items_detail' => 'taobao.taobaoke.items.detail.get', 'taobaoke_items' => 'taobao.taobaoke.items.get', 'taobaoke_listurl' => 'taobao.taobaoke.listurl.get', 'taobaoke_report' => 'taobao.taobaoke.report.get', 'taobaoke_shops_convert' => 'taobao.taobaoke.shops.convert' );
+		$inters = array ('areas' => 'taobao.areas.get', 'item' => 'taobao.item.get', 'item_skus' => 'taobao.item.skus.get', 'itemcats' => 'taobao.itemcats.get', 'itemcats_v2' => 'taobao.itemcats.get.v2', 'itemprops' => 'taobao.itemprops.get', 'itempropvalues' => 'taobao.itempropvalues.get', 'items' => 'taobao.items.get', 'items_search' => 'taobao.items.search', 'logistics' => 'taobao.logistics.companies.get', 'orders' => 'taobao.orders.get', 'product' => 'taobao.product.get', 'products' => 'taobao.products.get', 'products_search' => 'taobao.products.search', 'cats_list' => 'taobao.sellercats.list.get', 'shop' => 'taobao.shop.get', 'shopcats' => 'taobao.shopcats.list.get', 'sns_user' => 'taobao.sns.user.get', 'trades' => 'taobao.trades.get', 'user' => 'taobao.user.get', 'users' => 'taobao.users.get', 'taobaoke_caturl' => 'taobao.taobaoke.caturl.get', 'taobaoke_items_convert' => 'taobao.taobaoke.items.convert', 'taobaoke_items_detail' => 'taobao.taobaoke.items.detail.get', 'taobaoke_items' => 'taobao.taobaoke.items.get', 'taobaoke_listurl' => 'taobao.taobaoke.listurl.get', 'taobaoke_report' => 'taobao.taobaoke.report.get', 'taobaoke_shops_convert' => 'taobao.taobaoke.shops.convert','items_search2'=>'taobao.items.search' );
 		return $inters [$inter];
 	}
 

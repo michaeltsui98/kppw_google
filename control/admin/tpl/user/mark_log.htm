@@ -59,9 +59,9 @@
 		            <td width="12%">
 		            	¡¶{$model_type_arr[$v['model_code']]}¡·
 						{if $model_list2[$v[model_code]]['model_type']=='task'}
-							<a href="{$_K['siteurl']}/index.php?do=task&task_id={$v['origin_id']}&page={$page}" target="_blank">{$_lang['view_task']}</a>
+							<a href="{PHP_URL}/task/{$v['origin_id']}" target="_blank">{$_lang['view_task']}</a>
 						{else}
-							<a href="{$_K['siteurl']}/index.php?do=service&sid={$v['origin_id']}&page={$page}" target="_blank">{$_lang['view_service']}</a>
+							<a href="{PHP_URL}/service/{$v['origin_id']}" target="_blank">{$_lang['view_service']}</a>
 						{/if}
 					</td>
 					<td>{if $v['mark_type']==1}Íþ¿Í{else}¹ÍÖ÷{/if} {$v['by_username']}</td>

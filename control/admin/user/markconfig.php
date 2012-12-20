@@ -8,27 +8,24 @@
  */
 class Control_admin_user_markconfig extends Control_admin{
 	function action_index(){
-		global $_K,$_lang;
-		//读取mark_config表的数据
-		$list_arr = db::select()->from('witkey_mark_config')->execute();
-		//读取model表的数据，直接模板读取，
-		Keke::init_model();
-		$model_arr = Keke::$_model_list;
-		//model_arr数组重组 
-		$model_arr = Keke::get_arr_by_key($model_arr,'model_code');
+		
+		$sql = "SELECT a.*,b.model_name FROM `:keke_witkey_mark_config` a left join :keke_witkey_model b\n".
+				"on a.obj = b.model_code order by a.mark_config_id asc";
+		$list_arr = DB::query($sql)->tablepre(':keke_')->execute();
+		
 		require keke_tpl::template('control/admin/tpl/user/mark_config');
 	}
 	function action_edit(){
-		global $_K,$_lang;
+		
 		$mark_config_id = $_GET['mark_config_id'];
-		$where .='mark_config_id='.$mark_config_id;
-		//读取mark_config指定mark_config_id表的数据
-		$list_arr = db::select()->from('witkey_mark_config')->where($where)->get_one()->execute();
-		//读取model表的数据，直接模板读取，
-		Keke::init_model();
-		$model_arr = Keke::$_model_list;
-		//model_arr数组重构
-		$model_arr = Keke::get_arr_by_key($model_arr,'model_code');
+		
+		$where = ' a.mark_config_id='.$mark_config_id;
+		
+		$sql = "SELECT a.*,b.model_name FROM `:keke_witkey_mark_config` a left join :keke_witkey_model b\n".
+				"on a.obj = b.model_code where  :where order by a.mark_config_id asc";
+		
+		$list_arr = DB::query($sql)->tablepre(':keke_')->tablepre(':where',$where)->get_one()->execute();
+		
 		require keke_tpl::template('control/admin/tpl/user/mark_config_edit');
 	}
 	function action_save(){

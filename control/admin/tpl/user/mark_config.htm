@@ -4,7 +4,6 @@
 </div>
 <div class="box tip clearfix p_relative" id="man_tips">
     	<div class="control"><a title={$_lang['close']} href="javascript:void(0);"><b>¡Á</b></a></div>
-        <div class="title"><h2>{$_lang['tips']}</h2></div>
         <div class="detail pad10">
             <ul>
             	<li>{$_lang['mark_tips']}</li>
@@ -27,11 +26,11 @@
 				{loop $list_arr $k $v}
 		        <tr class="item">
 		            <td>{$v['mark_config_id']}</td>
-		            <td>{$model_arr[$v['obj']]['model_name']}</td>
+		            <td>{$v['model_name']}</td>
 					<td>{$v['good']}%</td>
-		            <td>{$v["normal"]}%</td>
-					<td>{$v["bad"]}%</td>
-					<td>{if $v["type"]==1}$_lang['witkey']{else}$_lang['employer']{/if}</td>
+		            <td>{$v['normal']}%</td>
+					<td>{$v['bad']}%</td>
+					<td>{if $v['type']==1}$_lang['witkey']{else}$_lang['employer']{/if}</td>
 					<td>
 						<a class="button dbl_target" href="{BASE_URL}/index.php/admin/user_markconfig/edit?mark_config_id={$v['mark_config_id']}"><span class="pen icon"></span>{$_lang['edit']}</a>
 						<a class="button" href="{BASE_URL}/index.php/admin/user_markconfig/del?mark_config_id={$v['mark_config_id']}" onclick="return cdel(this);"><span class="trash icon"></span>{$_lang['delete']}</a>

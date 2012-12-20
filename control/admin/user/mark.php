@@ -9,8 +9,9 @@
 class Control_admin_user_mark extends Control_admin{
 	
 	function action_index(){
-		global $_K,$_lang;
+		 
 		$mark_rule = Db::select()->from('witkey_mark_rule')->execute();
+		 
 		require Keke_tpl::template('control/admin/tpl/user/mark');
 	}
 	/**
@@ -18,7 +19,7 @@ class Control_admin_user_mark extends Control_admin{
 	 * 如果存在mark_rule_id则为编辑
 	 */
 	function action_add(){
-		global $_K,$_lang;
+		 
 		$mark_rule_id = $_GET['mark_rule_id'];
 		if ($mark_rule_id){
 			$where .= 'mark_rule_id='.$mark_rule_id;

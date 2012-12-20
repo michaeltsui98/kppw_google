@@ -23,12 +23,12 @@
 				{loop $mark_rule $v}
 		        <tr class="item">
 		            <td>{$v['mark_rule_id']}</td>
-		            <td>{$v['g_value']}</td>
-					<td>{$v['m_value']}</td>
-		            <td>{$v["g_title"]}</td>
-					<td>{$v["m_title"]}</td>
-					<td>{if $v["g_ico"]}<a href="{BASE_URL}/{$v["g_ico"]}" target="_blank"><img src="{BASE_URL}/{$v["g_ico"]}" /></a>{else}{$_lang['picture_not_upload']}{/if}</td>
-					<td>{if $v["m_ico"]}<a href="{BASE_URL}/{$v["m_ico"]}" target="_blank"><img src="{BASE_URL}/{$v["m_ico"]}" /></a>{else}{$_lang['picture_not_upload']}{/if}</td>
+		            <td>{$v['buyer_value']}</td>
+					<td>{$v['seller_value']}</td>
+		            <td>{$v['g_title']}</td>
+					<td>{$v['m_title']}</td>
+					<td>{if $v['g_ico']}<a href="{BASE_URL}/{$v['g_ico']}" target="_blank"><img src="{BASE_URL}/{$v['g_ico']}" /></a>{else}{$_lang['picture_not_upload']}{/if}</td>
+					<td>{if $v['m_ico']}<a href="{BASE_URL}/{$v['m_ico']}" target="_blank"><img src="{BASE_URL}/{$v['m_ico']}" /></a>{else}{$_lang['picture_not_upload']}{/if}</td>
 					<td>
 						<a class="button dbl_target" href="{BASE_URL}/index.php/admin/user_mark/add?mark_rule_id={$v['mark_rule_id']}"><span class="pen icon"></span>{$_lang['edit']}</a>
 						<a class="button" href="{BASE_URL}/index.php/admin/user_mark/del?mark_rule_id={$v['mark_rule_id']}" onclick="return cdel(this);"><span class="trash icon"></span>{$_lang['delete']}</a>

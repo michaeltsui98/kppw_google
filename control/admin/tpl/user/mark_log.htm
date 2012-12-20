@@ -65,10 +65,10 @@
 						{/if}
 					</td>
 					<td>{if $v['mark_type']==1}Íþ¿Í{else}¹ÍÖ÷{/if} {$v['by_username']}</td>
-		            <td>{$v["username"]}</td>
-					<td>{if $v["mark_status"]==0}$_lang['to_be_evaluated']{elseif  $v["mark_status"]==1}$_lang['good_value']{elseif  $v["mark_status"]==2}$_lang['middle_value']{else}$_lang['bad_value']{/if}</td>
+		            <td>{$v['username']}</td>
+					<td>{if $v['mark_status']==0}$_lang['to_be_evaluated']{elseif  $v['mark_status']==1}$_lang['good_value']{elseif  $v['mark_status']==2}$_lang['middle_value']{else}$_lang['bad_value']{/if}</td>
 					<td>{$v['mark_value']}</td>
-					<td>{if $v['mark_time']}<!--{eval echo date('Y-m-d',$v['mark_time']);}-->{/if}</td>
+					<td>{if $v['mark_time']}{date('Y-m-d',$v['mark_time'])}{/if}</td>
 					<td>
 						<a class="button" href="{BASE_URL}/index.php/admin/user_marklog/del?mark_id={$v['mark_id']}" onclick="return cdel(this);"><span class="trash icon"></span>{$_lang['delete']}</a>
 					</td>

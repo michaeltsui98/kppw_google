@@ -65,9 +65,7 @@ class Control_user_buyer_mark extends Control_user{
 				"on a.origin_id =  d.sid and e.model_type = 'service'\n";
 		
 		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
-		
-		 
-		 
+
 		$base_uri = PHP_URL . "/user/buyer_mark";
 		if($status !==NULL AND $status > 0){
 			$base_uri .= '/?status='.$status;

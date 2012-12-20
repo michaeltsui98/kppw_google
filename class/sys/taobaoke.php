@@ -8,7 +8,7 @@ class Sys_taobaoke {
 		$data = $taoapi->send ();
 		$status = 1;
 		$data ['code'] && $status = 0;
-		kekezu::echojson ( '', $status, $data );
+		Keke::echojson ( '', $status, $data );
 	}
 	public static function get_user_info($nick, $oauth = false) {
 		$taoapi = new taoapi_get ( 'user', array (
@@ -20,7 +20,7 @@ class Sys_taobaoke {
 		if ($oauth) {
 			return $data;
 		}
-		kekezu::echojson ( '', $status, $data );
+		Keke::echojson ( '', $status, $data );
 	}
 	public static function get_item_info($num_iid) {
 		$taoapi = new taoapi_get ( 'item', array (
@@ -29,7 +29,7 @@ class Sys_taobaoke {
 		$data = $taoapi->send ();
 		$status = 1;
 		$data ['code'] && $status = 0;
-		kekezu::echojson ( '', $status, $data );
+		Keke::echojson ( '', $status, $data );
 	}
 	public static function get_items_info($nicks, $page_no = '1', $page_size = '6') {
 		$taoapi = new taoapi_get ( 'items_search2', array (

@@ -279,11 +279,11 @@ class Keke extends Keke_core {
 		$_POST = Keke::k_stripslashes($_POST);
 		$_COOKIE = Keke::k_stripslashes($_COOKIE);
 			 
+		
+		$this->init_config ();
 		Keke::init_session ();
 		$this->init_lang ();
 		$this->init_curr();
-		$this->init_config ();
-		
 		Keke::$_cache_obj = Cache::instance ();
 		 
 	
@@ -427,6 +427,7 @@ class Keke extends Keke_core {
 			Keke::$_currency = Keke::$_sys_config ['currency'];
 			$_SESSION ['currency'] = Keke::$_sys_config ['currency'];
 		}
+		 
 		Keke::$_curr_list = Keke_lang::get_curr_list ();
 	}
 	/**

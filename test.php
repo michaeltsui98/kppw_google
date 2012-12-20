@@ -2,8 +2,9 @@
 
 include 'app_boot.php';
 //$res  =  DB::query("call p2()")->execute();
- 
-die;
+$v['price'] = "22.5";
+echo Curren::output($v['price']);
+
 
 
 

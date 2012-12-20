@@ -10,6 +10,9 @@ abstract  class Control_user extends Controller{
 	protected $uid ;
 	protected $username;
 	protected $group_id;
+	protected $_uri ;
+	protected $_ord_tag;
+	protected $_ord_char;
     /**
      * 一级导航菜单
      */

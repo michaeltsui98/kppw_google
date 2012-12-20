@@ -52,6 +52,7 @@ class Curren {
 			$v = self::convert ( $v,$dec );
 		}
 		$dec>-1 and $dec = intval($dec) or $dec = $data ['decimal_places'];
+		
 		if($simple){
 			return Keke::k_round($v,$dec);
 		}else{
@@ -103,7 +104,7 @@ class Curren {
 		isset($dec) and $dec = intval($dec) or $dec = -1;
 		$search = "<!--CURR_TAG_{$_K['i']}-->";
 		$_K ['block_search'] [$_K ['i']] = $search;
-		$_K ['block_replace'] [$_K ['i']] = "<?php  echo Curren::output(floatval({$v}),{$dec});  ?>";
+		$_K ['block_replace'] [$_K ['i']] = "<?php  echo Curren::output({$v},{$dec});  ?>";
 		return $search;
 	}
 	/**

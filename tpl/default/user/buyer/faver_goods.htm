@@ -21,28 +21,35 @@
 		                <div class="box_detail">
 
 		                	<div class="toolbar">
-		                		<div class="actions">
-		                			<input type="button" value="全选">
-		                		</div>
-		                		<div class="actions">
-		                			<input type="button" value="删除">
-		                		</div>
-		                		<div class="actions">
-		                			<input type="search" placeholder="请输入关键字"><input type="button" value="搜索">
-		                		</div>
-		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
-					            </div>
+		                		<form class="detail" action="{USER_URL}/buyer_faver" method="get" id="frm_user_search">
+										<table cellspacing="0" cellpadding="0">
+											<tbody>
+											<tr>
+										    <td> 条件
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											 <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											 </select>
+										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											 <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											</select>
+											 <input type="submit" value="{$_lang['search']}">
+											 </td>
+										</tr>
+										</tbody>
+										</table>
+								</form>
 		                	</div>
 
 		                	<!--date_table数据表格 start-->
@@ -57,76 +64,31 @@
 		                            </tr>
 		                            </thead>
 		                            <tbody>
+		                             {if $list_arr}
+		                            {loop $list_arr $k $v}	
 		                            <tr>
-		                            	<td><input type="checkbox"></td>
+		                            	<td><input type="checkbox" value="$v['fid']"></td>
 		                              <td>
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">网页设计作业 学生网页成品 html静态 dw网页作业制作 暑假</a>
+		                              	<img class="item_pic" src="{BASE_URL}/{$v['pic']}">
+		                              	<a href="{PHP_URL}/service/{$v['sid']}" target="_blank">{$v['title']}</a>
 		                              	<div class="item_action">
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
+		                              		<a href="{USER_URL}/buyer_faver/del/{$v['fid']}">删除</a>
+		                              		<a href="{PHP_URL}/service/{$v['sid']}">查看</a>
 		                              	</div>
 		                              </td>
 		                              <td>
-		                              	<span class="money">￥300.00</span>
+		                              	<span class="money">{c:$v['price']}</span>
 		                              </td>
-		                              <td>
-		                              	个
-		                              </td>
+		                              <td>{$v['unite_price']}</td>
 		                            </tr>
-		                            <tr>
-		                            	<td><input type="checkbox"></td>
-		                              <td>
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">DIV+CSS切图-PSD图片转html-静态网页制作-专业、快速</a> 
-		                              	<div class="item_action">
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-		                              <td>
-		                              	<span class="money">￥300.00</span>
-		                              </td>
-		                              <td>
-		                              	次
-		                              </td>
-		                            </tr>
-		                            
-		                            <tr>
-		                            	<td><input type="checkbox"></td>
-		                              <td>
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">2000余套网站模板,纯DIV+CSS网页模板(含PSD),精美HTML模板</a>
-		                              	<div class="item_action">
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-		                              <td>
-		                              	<span class="money">￥300.00</span>
-		                              </td>
-		                              <td>
-		                              	天
-		                              </td>
-		                            </tr>
-		                            <tr>
-		                            	<td><input type="checkbox"></td>
-		                              <td>
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">2000余套网站模板,纯DIV+CSS网页模板(含PSD),精美HTML模板</a>
-		                              	<div class="item_action">
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-
-		                              <td>
-		                              	<span class="money">￥300.00</span>
-		                              </td>
-		                              <td>
-		                              	3小时
-		                              </td>
-		                            </tr>
+		                           {/loop}
+									{else}
+									<tfoot>
+				                            <tr>
+					                            <td colspan="4" class="t_c">暂无记录</td>
+					                        </tr>
+				                    </tfoot>
+									{/if}
 		                            </tbody>
 		                            
 		                          </table>

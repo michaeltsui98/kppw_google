@@ -32,10 +32,10 @@
 		                				<dl>
 				                			<dt>
 				                			<input type="hidden" name="formhash" value="{FORMHASH}">
-					                			<input type="radio" name="pay_id" value="{$v['pay_id']}" id="{$v['payment']}" 
+					                			<input type="radio" name="pay_id" value="{$v['pay_id']}" id="{$v['pay_id']}" 
 												{if $i==1} checked="checked" {/if}>
 												
-												<label for="{$v['payment']}" style="cursor:pointer;">
+												<label for="{$v['pay_id']}" style="cursor:pointer;">
 												   {if file_exists(S_ROOT."/static/img/bank/".$bank_pic[$v['payment']].".gif")}
 													<img src="{BASE_URL}/static/img/bank/{$bank_pic[$v['payment']]}.gif"/>
 												   {else}

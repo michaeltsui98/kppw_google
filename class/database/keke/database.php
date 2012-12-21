@@ -4,7 +4,7 @@ abstract class Keke_database {
 	const INSERT = 2;
 	const UPDATE = 3;
 	const DELETE = 4;
-	public static $default = 'mysqli';
+	//public static $default = 'mysql';
 	public static $instances = array ();
 	/**
 	 *
@@ -15,7 +15,7 @@ abstract class Keke_database {
 	 */
 	public static function instance($name = null, $config = null) {
 		if ($name === null) {
-			$name = Database::$default;
+			$name = DBTYPE;
 		}
 		if (isset ( Database::$instances [$name] )) {
 			return Database::$instances [$name];

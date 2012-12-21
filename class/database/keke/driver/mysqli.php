@@ -40,7 +40,7 @@ final class Keke_driver_mysqli extends Keke_database {
 	 */
 	public function dbconnection() {
 		if (! $this->_link = mysqli_connect ( $this->_dbhost, $this->_dbuser, $this->_dbpass)) {
-			exit ( 'connect mysql server fail!' );
+			exit (mysqli_connect_errno().mysqli_connect_error() );
 		}
 		if ($this->version () > '4.1') {
 			$this->_dbcharset and $serverset = "character_set_connection={$this->_dbcharset}, character_set_results={$this->_dbcharset}, character_set_client=binary";

@@ -6,12 +6,10 @@
    2012-10-19
  */
 
-class Control_task_sreward_release extends Control_task_task{
+class Control_task_sreward_pub extends Control_task_task{
      
-    function before(){
-    	parent::before();
-        $this->_tpl = 'control/task/sreward/tpl/';	
-    }
+     private $_tpl = 'control/task/sreward/tpl/';	
+     
     
 	function action_index(){
 		Keke::init_model();

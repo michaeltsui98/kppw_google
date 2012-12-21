@@ -6,9 +6,6 @@
  *
  */
 class Control_task_task extends Controller {
-    /**
-     * @var Ä£°åÂ·¾¶
-     */
-	private $_tpl;
+    
 	
 }

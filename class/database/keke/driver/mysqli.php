@@ -232,14 +232,16 @@ final class Keke_driver_mysqli extends Keke_database {
 	 * @see keke_Database::execute()
 	 */
 	public function execute($sql, $is_nubuffer = 0) {
-		! is_resource ( $this->_link ) and $this->dbconnection ();
+		is_resource ( $this->_link ) or $this->dbconnection ();
 		
-		$is_nubuffer == 1 and $query_type = "mysqli_multi_query" or $query_type = "mysqli_query";
-		//var_dump($sql);
-		//self::$_query_list[] = $sql;
-		//var_dump(self::$_query_list);
-		array_push ( self::$_query_list, $sql );
-		$this->_last_query_id = $query_type ($this->_link, $sql  ) or $this->halt ( mysqli_error (), $sql );
+		if($is_nubuffer == 1){
+			$query_type = "mysqli_multi_query";
+		} else{
+			$query_type = "mysqli_query";
+		}  
+		 
+		self::$_query_list[]= $sql;
+		$this->_last_query_id = $query_type ( $this->_link,$sql ) or $this->halt ( mysqli_error ($this->_link), $sql );
 		$this->_query_num ++;
 		return $this->_last_query_id;
 	}

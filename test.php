@@ -1,11 +1,13 @@
 <?php define ( "IN_KEKE", TRUE );
 
 include 'app_boot.php';
- 
 
-Database::instance()
+$sql = "select * from keke_witkey_ad; select count(*) from keke_witkey_ad_target;";
 
+$res = Database::instance()->execute($sql,1);
+$s = Database::instance()->get_query_list();
 
+var_dump($res,$s);
 
 
 

@@ -5,7 +5,7 @@
  * @version 2.2 2012-12-20
  *
  */
-class Control_task_base extends Controller {
+class Control_task_task extends Controller {
     /**
      * @var Ä£°åÂ·¾¶
      */

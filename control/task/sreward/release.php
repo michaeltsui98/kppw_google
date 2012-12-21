@@ -6,7 +6,7 @@
    2012-10-19
  */
 
-class Control_task_sreward_release extends Control_task_base{
+class Control_task_sreward_release extends Control_task_task{
      
     function before(){
     	parent::before();

@@ -19,8 +19,12 @@ class Control_task_sreward_cron extends Sys_task_cron {
         $this->hp_to_end();	
      }
      
-     function jg_to_xg(){}
-     function xg_to_gs(){}
+     function jg_to_xg(){
+     	
+     }
+     function xg_to_gs(){
+     	
+     }
      function gs_to_jf(){
      	
      }

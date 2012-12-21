@@ -30,6 +30,8 @@ class Control_user_buyer_faver extends Control_user{
 		
 		$uri = $this->_uri;
 		
+		$del_uri = USER_URL.'/buyer_faver/del';
+		
 		$ord_tag = $this->_ord_tag;
 		
 		$ord_char = $this->_ord_char;
@@ -51,6 +53,8 @@ class Control_user_buyer_faver extends Control_user{
 		
 		$uri = $this->_uri;
 		
+		$del_uri = USER_URL.'/buyer_faver/del';
+		
 		$ord_tag = $this->_ord_tag;
 		
 		$ord_char = $this->_ord_char;
@@ -62,8 +66,18 @@ class Control_user_buyer_faver extends Control_user{
 		
 		require Keke_tpl::template('user/buyer/faver_task');
 	}
-	
-	
+	/**
+	 * 删除
+	 */
+	function action_del(){
+		if(isset($_GET['id'])){
+			$where = 'fid='.$_GET['id'];
+		}
+		if(isset($_GET['ids'])){
+			$where = 'fid in ('. $_GET['ids'].')';
+		}
+		DB::delete('witkey_favorite')->where($where)->execute();
+	}
 	/**
 	 *	用户收藏商品数据
 	 * @return array
@@ -74,7 +88,7 @@ class Control_user_buyer_faver extends Control_user{
 				"FROM `:keke_witkey_favorite` a \n".
 				"left JOIN :keke_witkey_model b \n".
 				"on a.obj_type = b.model_code and b.model_type = 'shop'\n".
-				"left join :keke_witkey_service c \n".
+				" join :keke_witkey_service c \n".
 				"on b.model_id = c.model_id and c.sid = a.origin_id\n";
 	
 		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
@@ -86,12 +100,12 @@ class Control_user_buyer_faver extends Control_user{
 	
 		extract ( $this->get_url ( $base_uri ) );
 	
-		$where .= "  and a.uid = $this->uid ";
+		$where .= "  and a.uid = $this->uid and b.model_type='shop'";
 			
 		$this->_uri = $uri;
 		$this->_ord_tag = $ord_tag;
 		$this->_ord_char = $ord_char;
-		var_dump($sql,$where);
+		 
 		return (array)Model::sql_grid($sql,$where,$uri,$order,$group);
 	}
 	/**
@@ -100,13 +114,15 @@ class Control_user_buyer_faver extends Control_user{
 	 */
 	function favor_task(){
 		$sql = "SELECT a.fid,a.origin_id, b.model_code,\n".
-				"c.task_title ,c.task_status,\n".
+				"c.task_title ,c.task_status,c.task_id,d.status,\n".
 				"c.task_cash \n".
 				"FROM `:keke_witkey_favorite` a \n".
 				"left JOIN :keke_witkey_model b \n".
-				"on a.obj_type = b.model_code\n".
-				"left join :keke_witkey_task c \n".
-				"on b.model_id = c.model_id and b.model_type = 'task'\n";
+				"on a.obj_type = b.model_code and b.model_type = 'task'\n".
+				"join :keke_witkey_task c \n".
+				"on  c.task_id = a.origin_id  and  b.model_id = c.model_id  \n".
+				"LEFT JOIN :keke_witkey_status d\n".
+				"on c.task_status = d.sid and b.model_code = d.model_code and d.stype='task'";
 	
 		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
 	

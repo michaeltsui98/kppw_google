@@ -35,7 +35,8 @@ class Control_login extends Control_front {
 		
 		$login_obj = Keke_user_login::instance ();
 		$login_obj->set_username ( $account )->set_pwd($pwd)->set_remember_me($remember);
-	 	//µÇÂ¼
+		
+		//µÇÂ¼
 		$res = $login_obj->login ($type);
 		 
 		$uri = 'login';

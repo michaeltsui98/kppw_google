@@ -67,13 +67,13 @@
 		                             {if $list_arr}
 		                            {loop $list_arr $k $v}	
 		                            <tr>
-		                            	<td><input type="checkbox" value="$v['fid']"></td>
+		                            	<td><input type="checkbox" value="$v['fid']" name="ckb[]"></td>
 		                              <td>
 		                              	<img class="item_pic" src="{BASE_URL}/{$v['pic']}">
-		                              	<a href="{PHP_URL}/service/{$v['sid']}" target="_blank">{$v['title']}</a>
+		                              	<a href="{PHP_URL}/service/{$v['origin_id']}" target="_blank">{$v['title']}</a>
 		                              	<div class="item_action">
-		                              		<a href="{USER_URL}/buyer_faver/del/{$v['fid']}">删除</a>
-		                              		<a href="{PHP_URL}/service/{$v['sid']}">查看</a>
+		                              		<a href="{USER_URL}/buyer_faver/del/?id={$v['fid']}" onclick="return kdel(this,'',rm)">删除</a>
+											<a href="{PHP_URL}/service/{$v['origin_id']}">查看</a>
 		                              	</div>
 		                              </td>
 		                              <td>
@@ -82,7 +82,7 @@
 		                              <td>{$v['unite_price']}</td>
 		                            </tr>
 		                           {/loop}
-									{else}
+								   {else}
 									<tfoot>
 				                            <tr>
 					                            <td colspan="4" class="t_c">暂无记录</td>
@@ -97,23 +97,13 @@
 
 			               	<div class="toolbar bottom">
 		                		<div class="actions">
-		                			<input type="button" value="全选">
+		                			<input type="button" value="全选" onclick="check_all();">
 		                		</div>
 		                		<div class="actions">
-		                			<input type="button" value="删除">
+		                			<input type="button" value="删除" onclick="return batch_del(this);">
 		                		</div>
 		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
+					                {$pages['page']}
 					            </div>
 		                	</div>
 
@@ -125,4 +115,10 @@
     	</article>
     </div>
     <!--content end-->
+<script>
+	function rm(o){
+		 $(o).parents('tr').remove();
+		
+	}
+</script>	
 <!--{include user/footer}-->

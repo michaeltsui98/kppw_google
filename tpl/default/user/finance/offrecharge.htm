@@ -36,7 +36,11 @@
 												{if $i==1} checked="checked" {/if}>
 												
 												<label for="{$v['payment']}" style="cursor:pointer;">
+												   {if file_exists(S_ROOT."/static/img/bank/".$bank_pic[$v['payment']].".gif")}
 													<img src="{BASE_URL}/static/img/bank/{$bank_pic[$v['payment']]}.gif"/>
+												   {else}
+												 	<img src="{BASE_URL}/payment/{$v['payment']}/{$v['payment']}.gif" height="21" />
+												    {/if}
 												</label>
 											</dt>
 				                			<dd>

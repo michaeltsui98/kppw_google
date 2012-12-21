@@ -21,28 +21,35 @@
 		                <div class="box_detail">
 
 		                	<div class="toolbar">
-		                		<div class="actions">
-		                			<input type="button" value="全选">
-		                		</div>
-		                		<div class="actions">
-		                			<input type="button" value="删除">
-		                		</div>
-		                		<div class="actions">
-		                			<input type="search" placeholder="请输入关键字"><input type="button" value="搜索">
-		                		</div>
-		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
-					            </div>
+		                		 <form class="detail" action="{USER_URL}/buyer_faver/task" method="get" id="frm_user_search">
+										<table cellspacing="0" cellpadding="0">
+											<tbody>
+											<tr>
+										    <td> 条件
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											 <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											 </select>
+										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											 <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											</select>
+											 <input type="submit" value="{$_lang['search']}">
+											 </td>
+										</tr>
+										</tbody>
+										</table>
+								</form>
 		                	</div>
 
 		                	<!--date_table数据表格 start-->
@@ -57,50 +64,28 @@
 		                            </tr>
 		                            </thead>
 		                            <tbody>
+		                            {if $list_arr}
+		                            {loop $list_arr $k $v}	
 		                            <tr>
-		                              <td><input type="checkbox"></td>
+		                              <td><input type="checkbox" value="$v['fid']" name="ckb[]"></td>
 		                              <td>
-		                              	<a href="#" class="title">武汉理工大学接待中心大楼外立面设计加急!</a>
+		                              	<a href="{PHP_URL}/task/{$v['origin_id']}" class="title">{$v['task_title']}</a>
 		                              	<div class="item_action">
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
+		                              		<a href="{USER_URL}/buyer_faver/del/?id={$v['fid']}" onclick="return kdel(this,'',rm)">删除</a>
+											<a href="{PHP_URL}/task/{$v['origin_id']}">查看</a>
 		                              	</div>
 		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>进行中</td>
-
+		                              <td><span class="money">{c:$v['task_cash']}</span></td>
+		                              <td>{$v['status']}</td>
 		                            </tr>
-		                            <tr>
-		                              <td><input type="checkbox"></td>
-		                              <td>
-		                              	<a href="#" class="title">维科天猫旗舰店推广第一期:旺旺/QQ群不限,2元一稿</a>
-		                              	<div class="item_action">
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>
-		                              	<p>已结束</p>
-		                              	<p>任务失败退款</p>
-		                              </td>
-
-		                            </tr>
-		                            <tr>
-		                              <td><input type="checkbox"></td>
-		                              <td>
-		                              	<a href="#" class="title">饰品主题连锁店系列装修风格效果图征集</a>
-		                              	<div class="item_action">
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>
-		                              	<p>已结束</p>
-		                              	<p>圆满完成</p>
-		                              </td>
-		                            </tr>
+		                             {/loop}
+								   {else}
+									<tfoot>
+				                            <tr>
+					                            <td colspan="4" class="t_c">暂无记录</td>
+					                        </tr>
+				                    </tfoot>
+									{/if}
 		                            </tbody>
 		                            
 		                          </table>
@@ -109,23 +94,13 @@
 
 			               	<div class="toolbar bottom">
 		                		<div class="actions">
-		                			<input type="button" value="全选">
+		                			<input type="button" value="全选" onclick="check_all();">
 		                		</div>
 		                		<div class="actions">
-		                			<input type="button" value="删除">
+		                			<input type="button" value="删除" onclick="return batch_del(this);">
 		                		</div>
 		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
+					                {$pages['page']}
 					            </div>
 		                	</div>
 

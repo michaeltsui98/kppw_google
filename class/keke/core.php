@@ -279,10 +279,11 @@ class Keke extends Keke_core {
 		$_POST = Keke::k_stripslashes($_POST);
 		$_COOKIE = Keke::k_stripslashes($_COOKIE);
 			 
-		
-		$this->init_config ();
-		Keke::init_session ();
 		$this->init_lang ();
+		Keke::init_session ();
+		$this->init_config ();
+		
+		
 		$this->init_curr();
 		Keke::$_cache_obj = Cache::instance ();
 		 

@@ -672,7 +672,7 @@ class Keke_base {
 			} elseif ($return_json == true) {
 				return false;
 			} elseif ($_K ['inajax']) {
-				echo Request::current()->referrer();die;
+				//echo Request::current()->referrer();die;
 				Keke::show_msg ( $_lang ['repeat_form_submit'], $_SERVER ['HTTP_REFERER'],  'error' );
 			} else {
 				Keke::show_msg ( $_lang ['illegal_or_repeat_submit'], Request::current()->referrer(),   'error' );

@@ -1,9 +1,9 @@
 <?php define ( "IN_KEKE", TRUE );
 
 include 'app_boot.php';
-//$res  =  DB::query("call p2()")->execute();
-$v['price'] = "22.5";
-echo Curren::output($v['price']);
+ 
+
+Database::instance()
 
 
 

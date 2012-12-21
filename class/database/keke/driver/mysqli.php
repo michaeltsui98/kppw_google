@@ -46,7 +46,9 @@ final class Keke_driver_mysqli extends Keke_database {
 			$this->_dbcharset and $serverset = "character_set_connection={$this->_dbcharset}, character_set_results={$this->_dbcharset}, character_set_client=binary";
 			$this->version () > '5.0.1' and $serverset .= ((empty ( $serverset ) ? '' : ',') . 'sql_mode=\'\'');
 			$serverset and mysqli_query ($this->_link, "SET $serverset" );
-		}
+		} 
+// 		$this->_link = new mysqli($this->_dbhost,$this->_dbuser,$this->_dbpass,$this->_dbname);
+		
 		mysqli_select_db ( $this->_link,$this->_dbname ) or $this->halt ( 'select database:' . $this->_dbname . ' fail!' );
 		return $this->_link;
 	}
@@ -276,7 +278,7 @@ final class Keke_driver_mysqli extends Keke_database {
 	}
 	public function escape($value) {
 		$this->_link or $this->dbconnection ();
-		if (($value = mysqli_real_escape_string ( ( string ) $value, $this->_link )) === FALSE) {
+		if (($value = mysqli_real_escape_string (  $this->_link,( string ) $value )) === FALSE) {
 			throw new Keke_exception ( ':error', array (':error' => mysqli_error ( $this->_link ) ), mysqli_errno ( $this->_link ) );
 		}
 		return "'$value'";

@@ -4,7 +4,7 @@ abstract class Keke_database {
 	const INSERT = 2;
 	const UPDATE = 3;
 	const DELETE = 4;
-	public static $default = 'mysql';
+	public static $default = 'mysqli';
 	public static $instances = array ();
 	/**
 	 *

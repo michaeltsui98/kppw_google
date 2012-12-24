@@ -1,9 +1,9 @@
 <!--{include control/admin/tpl/admin_header}--> 
 <div class="page_title">
-    <h1>{$_lang['ads_manage']}</h1>
+    <h1>广告管理</h1>
     <div class="tool">
-        <a href="{BASE_URL}/index.php/admin/tool_ad" >{$_lang['advertising']}</a>
-        <a href="{BASE_URL}/index.php/admin/tool_ad/adlist"  class="here" >{$_lang['ads_list']}</a>
+        <a href="{BASE_URL}/index.php/admin/tool_ad" class="here">广告列表</a>
+        <a href="{BASE_URL}/index.php/admin/tool_ad/add?target_id={$target_id}">添加广告</a>
     </div>
 </div>
     <!--页头结束-->
@@ -46,47 +46,38 @@
               <table cellpadding="0" cellspacing="0">
                 <tbody>
                   <tr>
-                    <th width="20%">{$_lang['ads_title']}</th>
-					<th width="15%">{$_lang['location']}</th>
-                    <th width="15%">{$_lang['start_time']}</th>
-                    <th width="15%">{$_lang['end_time']}</th>
-					<th width="15%"><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">编辑时间{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>
-					<th width="10%">是否可用</th>
-                    <th>{$_lang['operate']}</th>
+                    <th width="5%"><a href="javascript:;" onclick="submitSort('{$uri}','ad_id',{$ord_tag})">ID{if $_GET['f']=='ad_id'}{$ord_char}{/if}</a></th>					
+					<th width="15%">广告位</th>
+                    <th width="15%">广告名</th>
+					<th width="15%">内容</th>
+					<th width="5%">排序</th>
+					<th width="10%">到期时间</th>
+					<th width="5%">宽度</th>
+					<th width="5%">高度</th>
+					<th width="10%">类型</th>
+                    <th>操作</th>
                   </tr>
-                  {loop $list_arr $v}
+                  {loop $ad_list $v}
                   <tr class="item">
-                    <td class="td28">{$v['ad_name']}</td>
-                    <td>{$targets_arr[$v['target_id']]['name']}</td><!-- 投放范围 -->
-				    <td>{if $v['start_time']}<!--{date('Y-m-d',$v['start_time'])}-->{else}永久有效{/if}</td> <!-- 起始时间 -->
-                    <td>{if $v['end_time']}<!--{date('Y-m-d',$v['end_time'])}-->{else}永久有效{/if}</td>
-					<td><!--{eval echo date('Y-m-d',$v['on_time']);}--></td>
-                    <td>{if $v['is_allow']==1}<span style="color:green">{$_lang['available']}</span>{else}<span style="color:red">{$_lang['not_available']}</span>{/if}</td><!-- 是否可用 -->
-                    <td>
-						 
-						<a href="{BASE_URL}/index.php/admin/tool_ad/add?ad_id=$v['ad_id']" class="button dbl_target"><span class="pen icon"></span>{$_lang['edit']}</a>
-						 
+                    <td class="td28">{$v['ad_id']}</td>
+                    <td>{$targets[$v['target_id']]['name']}</td>
+				    <td>{$v['ad_name']}</td>
+                    <td><!--{eval $this->out($v);}--> </td>
+                    <td>{$v['listorder']}</td>
+				    <td>{if $v['end_time']!=0}{date('Y-m-d',$v['end_time'])}{else}永久有效{/if}</td>
+				    <td>{$v['width']}</td>
+                    <td>{$v['height']}</td>
+					<td>{$v['ad_type']}</td>
+					<td>
+						<a href="{$add_uri}?ad_id={$v[ad_id]}">编辑</a>
+						<a href="{$del_uri}?ad_id={$v[ad_id]}" onclick="return cdel(this);">删除</a>
 					</td>
                   </tr>
                   {/loop}
-                  <tr>
-                    <td colspan="7">
-	                    <div class="clearfix">
-	                        <input type="hidden" name="sbt_action" class="sbt_action"/>
-							<select class="ps vm" id="ad_target_id">
-								<option value="">{$_lang['please_choose']}</option>
-                            	{loop $targets_arr $key $v}
-									<option {if $target_id==$v['target_id']||$key==1}selected="selected"{/if} value="{$v['target_id']}">{$v['name']}</option>
-								{/loop}
-							</select>
-							<a href="#" id="add_ad" class="button" onclick="return setlinks();"><span class="check icon"></span>{$_lang['add_ad']}</a>
-	                    </div>
-                    </td>
-                  </tr>
                 </tbody>
                 <tfoot>
                   <tr>
-                  <td colspan="9">
+                  <td colspan="11">
               		<div class="page">{$pages['page']}</div>    
                   </td>
                   </tr>
@@ -94,27 +85,5 @@
               </table>
         	</form>
 </div>
-<script type="text/javascript">
-	function setlinks(){
-		var target_id=document.getElementById("ad_target_id");
-		var alink=document.getElementById("add_ad");
-		if(target_id.value!=""){
-			alink.href="{BASE_URL}/index.php/admin/tool_ad/add?target_id="+target_id.value;
-			return true;
-		}
-		return false;
-	}
-	function sync_select(){
-		var cat=document.getElementById("catid");
-		var target=document.getElementById("ad_target_id");
-		if(cat.value!=""){
-			var i=cat.selectedIndex;
-			target.options['i'].selected=true;
-		}
-	}
-	function update_order(n_id,n_value){
-		$.get("{BASE_URL}/index.php/admin/tool_adlist?action=u_order",{u_id:n_id,u_value:n_value});
-	}
-</script>
  	<!--主体结束-->
 <!--{include control/admin/tpl/admin_footer}-->

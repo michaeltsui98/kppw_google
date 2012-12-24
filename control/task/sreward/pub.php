@@ -22,6 +22,7 @@ class Control_task_sreward_pub extends Control_task_task{
 	}
 	
 	function action_step2(){
+		//var_dump($_POST);die;
 		require Keke_tpl::template($this->_tpl.'release2');
 	}
 	function action_step3(){

@@ -11,7 +11,6 @@ abstract  class Control_front extends Controller{
 	function before(){
 		parent::before();
 		$this->check_web_close();
-	    Keke_user_login::instance()->auto_login();
 	}
 	/**
 	 * еп╤омЬу╬йг╥Я╧ь╠у

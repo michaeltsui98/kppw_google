@@ -2,31 +2,31 @@
 /**
  * 单赏任务交易处理类
  * @author Michael
- * @version 2.2
-   2012-10-19
+ * @version 3.0
+   2012-12-24
  */
 
 class Control_task_sreward_trade extends Sys_task_trade{
-    
-	/**
-	 * @return 返回单人悬赏任务状态
-	 */
-	public static function get_task_status() {
-		global $_lang;
-		return array ("0" => $_lang ['task_no_pay'], "1" => $_lang ['task_wait_audit'], "2" => $_lang ['task_vote_choose'], "3" => $_lang ['task_choose_work'], "4" => $_lang ['task_vote'], "5" => $_lang ['task_gs'], "6" => "交付", "7" => $_lang ['freeze'], "8" => $_lang ['task_over'], "9" => $_lang ['fail'], "10" => $_lang ['task_audit_fail'], "11" => $_lang ['arbitrate'], '13' => $_lang ['agreement_frozen'] );
+
+	
+	public function task_pub(){
+		
 	}
 	
 	/**
-	 * @return 返回单人悬赏稿件状态
+	 * @return 任务状态 array($task_status=>array('scode'=>'wait','status'=>'待付款'))
 	 */
-	public static function get_work_status() {
-		global $_lang;
-		return array ('0' => $_lang ['wait_choose'], '4' => $_lang ['task_bid'], '5' => $_lang ['task_in'], '7' => $_lang ['task_out'], '8' => $_lang ['task_can_not_choose_bid'] );
+	public static function task_status() {
+		$arr = DB::select()->from('witkey_status')->where("stype='task' and model_code ='sreward'")->cached(9999)->execute();
+		return Arr::get_arr_by_key($arr, 'sid');
 	}
+	
 	/**
-	 * @return 返回任务英文状态
+	 * @return 稿件状态
 	 */
-	public static function get_task_union_status() {
-		return array ('0' => "wait", '1' => "audit", '2' => "sub", '3' => "choose", '4' => "vote", '5' => "notice", '6' => 'deliver', '7' => "freeze", '8' => "end", '9' => "failure", '10' => "audit_fail", '11' => "arbitrate" );
+	public static function work_status() {
+		$arr = DB::select()->from('witkey_status')->where("stype='work' and model_code ='sreward'")->cached(9999)->execute();
+		return Arr::get_arr_by_key($arr, 'sid');
 	}
+
 }

@@ -1,8 +1,8 @@
-<!--{if $_K['inajax']}-->
+{if $_K['inajax']}
      <!--{if !isset($_K['ajaxmenu'])}-->
-		<h3 class="flb"><em>{$title}</em><span><a href="javascript:;" class="flbc" onClick="hideWindow('{$_GET['handlekey']}');" title="close">{$_lang['close']}</a></span></h3>
+		<h3 class="flb"><em>{$title}</em><span><a href="javascript:;" class="flbc" onClick="hideWindow("{$_GET['handlekey']}");" title="close">{$_lang['close']}</a></span></h3>
 	<!--{/if}-->
-<!--{else}-->
+{else}
 	<!--{include header_top}-->
         <!--tool_E-->
 	 <nav class="nav">
@@ -29,4 +29,4 @@
         </div>
     </nav>
     <div class="clear"></div>
-<!--{/if}-->
+{/if}

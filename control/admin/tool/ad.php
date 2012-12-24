@@ -1,190 +1,187 @@
-<?php
-defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
 /**
  * 后台广告位管理
+ * 
  * @copyright keke-tech
- * @author hr
- * @version v 2.1
- * @date 2011-12-21 下午05:58:43
- * @encoding GBK
+ * @author 刀客
+ * @version v 3.0
+ *          @date 2012-12-24 下午09:58:43
+ *          @encoding GBK
  */
-
-class Control_admin_tool_ad extends Control_admin{
-	/**
-	 * 广告位列表
-	 */
-	function action_index(){
-		//加载全局变量，语言包
-		global $_K,$_lang;
-		//要显示的字段，即sql中要查询的字段
-		$fields ='`target_id`,`name`,`ad_num`,`code`,`sample_pic`';
-		//页面的uri
-		$base_uri = BASE_URL."/index.php/admin/tool_ad";
-		//删除uri，del是固定的
-		$del_uri = $base_uri."/del";
-		//不需要分页，page_size设置大
-		$page_size = 100;
-		//获取witkey_ad_target表的信息
-		$data_info = Model::factory('witkey_ad_target')->get_grid($fields,$where,$uri,$order,$page,$count,$page_size);
-		//列表数据
-		$list_arr = $data_info['data'];
-		//var_dump(Database::instance()->get_query_list());
-		//获取target_id和已经在广告中占有的条数
-		$target_ad_num = Keke::get_table_data('target_id, count(*) as num', 'witkey_ad', 'target_id is not null', '', 'target_id', '', 'target_id', null);
-		while ((list($key, $value) = each($list_arr))!=null){
-			$target_ad_arr[$key] = $target_ad_num[$key]['num'] ? $target_ad_num[$key]['num'] : '0';
-		}
-		require Keke_tpl::template('control/admin/tpl/tool/ad');
-	}
+class Control_admin_tool_ad extends Control_admin {
 	/**
 	 * 广告列表
 	 */
-	function action_adlist() {
-		// 定义全局变量，加载模板和语言包
-		global $_K, $_lang;
-		// 需要查询的字段
-		$fields = '`ad_id`,`ad_name`,`target_id`,`ad_type`,`start_time`,`end_time`,`on_time`,`is_allow`';
-		// 在搜索中要显示的字段
-		$query_fields = array (
-				'ad_name' => $_lang ['name'],
-				'on_time' => $_lang ['time']
-		);
-		// 页面uri
-		$base_uri = BASE_URL . '/index.php/admin/tool_ad/adlist';
-		// 添加uri
-		$add_uri = $base_uri . '/add';
-		// 总记录数,分页用的，你不定义，数据库就是多查一次的。为了少个Sql语句，你必须要写的，亲!
-		$count = intval ( $_GET ['count'] );
-		// 默认按照'on_time'排序
-		$this->_default_ord_field = 'on_time';
-		// get_url就是处理查询的条件
+	function action_index() { 
+		$fields = '`ad_id`,`target_id`,`ad_type`,`ad_name`,`ad_file`,`ad_content`,`ad_url`,`end_time`,`listorder`,`width`,`height`';		
+		$query_fields = array (	'ad_id' => '广告ID',	'ad_name' => '广告名称'); 
+ 	
+		$base_uri = BASE_URL . "/index.php/admin/tool_ad";
+		// 删除uri，del是固定的
+		$del_uri = $base_uri . "/del";
+		$add_uri = $base_uri . "/add";
+		// 修改广告位状态的URI
+		$change_uri = $base_uri . "/changestates";
+		// 不需要分页，page_size设置大
+		$page_size = $_GET ['page_size'];
+		
+		$targets = DB::select('target_id,name')->from('witkey_ad_target')->cached(60000,'keke_adtarget_list')->execute();
+		
+		$targets = Arr::get_arr_by_key($targets, 'target_id');
+		
+		$this->_default_ord_field = 'ad_id';
+		
 		extract ( $this->get_url ( $base_uri ) );
-		$target_id = $_GET ['target_id'];
-		if ($target_id) {
-			$where .= "and target_id =$target_id";
+		
+	    //如果用户是从广告位页面跳转过来的，则指定查询条件
+		if(isset($_GET['target_id'])){
+			$target_id = $_GET['target_id'];
+			$where .= " and target_id = {$_GET['target_id']}";
 		}
-		// 获取列表分页的相关数据,参数$where,$uri,$order,$page来自于get_url方法
 		$data_info = Model::factory ( 'witkey_ad' )->get_grid ( $fields, $where, $uri, $order, $page, $count, $_GET ['page_size'] );
 		// 列表数据
-		$list_arr = $data_info ['data'];
+		$ad_list = $data_info ['data'];
+		
 		// 分页数据
 		$pages = $data_info ['pages'];
-		// 获取ad_target表中name
-		//$targets_arr = Keke::get_table_data ( '*', 'witkey_ad_target', '', '', '', '', 'target_id' );
-		$targets_arr =  DB::select()->from('witkey_ad_target')->execute();
 		
-		$targets_arr = Keke::get_arr_by_key($targets_arr,'target_id');
 		require Keke_tpl::template ( 'control/admin/tpl/tool/ad_list' );
 	}
 	/**
-	 * 广告添加
-	 */
+	*添加、修改广告
+	*/
 	function action_add() {
-		// 始始化全局变量，语言包变量
-		global $_K, $_lang;
-		// 获取ad_id,编辑状态下会有值
+		$targets = DB::select('target_id,name')->from('witkey_ad_target')->execute();
+		$target_id=$_GET['target_id'];
+		$targets = Arr::get_arr_by_key($targets, 'target_id');
+		$type = $_GET ['type'];
 		$ad_id = $_GET ['ad_id'];
-		// 获取广告位ID，用来半段广告位的广告数
-		$target_id = $_GET ['target_id'];
-		// 将广告位表ad_target表的数据读出来
-		$target_arr = DB::select ()->from ( 'witkey_ad_target' )->where ( 'target_id=' . intval ( $target_id ) )->execute ();
-		// 将ad_target表对应的target_id对应的信息读出来
-		$target_arr = $target_arr ['0'];
-		// 允许广告数
-		$ad_num = $target_arr ['ad_num'];
-		// 现在广告位已经有了的广告数
-		$have_ad_num = Dbfactory::get_count ( sprintf ( "select count(*) count from %switkey_ad where target_id = %d", TABLEPRE, $target_id ) );
-		// 进行广告总数和已有广告的判断，添加需要判断，编辑不需要判断
-		if ($have_ad_num >= $ad_num and ! $ad_id) {
-			Keke::show_msg ( $_lang ['ads_num_over'], 'admin/tool_ad/adlist', 'warning' );
-		}
-		// 如果存在获取的ad_id，则为编辑方式
-		if ($ad_id) {
-			// 显示的标题为编辑，更改的语言包
-			$page_tips = $_lang ['edit'];
-			// 通过ad_id将ad表中的数据读出来
-			$ad_data = DB::select ()->from ( 'witkey_ad' )->where ( 'ad_id=' . $ad_id )->get_one ()->execute ();
-		} else {
-			// 显示的是添加，
-			$page_tips = $_lang ['add'];
-		}
-	
+		// 如果有值，就进入编辑状态
+		$ad_info = DB::select ()->from ( 'witkey_ad' )->where ( "ad_id = '$ad_id'" )->get_one ()->execute ();
+		
 		require Keke_tpl::template ( 'control/admin/tpl/tool/ad_add' );
 	}
+ 
 	/**
-	 * 保存模板上提交到的数据到数据库中
-	 * 这个acton 是通用的，不要随便定义这个名称
+	 * 保存广告信息
 	 */
 	function action_save() {
+		
 		$_POST = Keke_tpl::chars ( $_POST );
 		// 防止跨域提交，你懂的
 		Keke::formcheck ( $_POST ['formhash'] );
-		// 类型flash/text/imag/code
-		$type = 'ad_type_' . $_POST ['ad_type'];
-		// 确认广告的模式是什么，file/code/image/flash
-		switch ($_POST ['ad_type']) {
-			case "image" :
-				if ($_FILES ['ad_type_image_file'] ['name']) {
-					$file_path = keke_file_class::upload_file ( 'ad_type_image_file', '', 1, 'ad/' ); // 上传文件
-				} else {
-					$file_path = $_POST ['ad_type_image_path'];
-				}
+		// var_dump($_POST);die;
+		$type = $_POST ['type'];
+		// 这里怎么说呢，定义生成sql 的字段=>值 的数组，你不懂，就是你太二了.
+		$array = array (
+				'ad_type' => $_POST ['rad_ad_type'],
+				'ad_name' => $_POST ['txt_ad_name'],
+				'ad_url' => $_POST ['txt_ad_url'],
+				'end_time' => strtotime($_POST ['txt_ad_end_time']),
+				'listorder' => $_POST ['txt_ad_listorder'],
+				'width' => $_POST ['txt_ad_width'],
+				'height' => $_POST ['txt_ad_width'],
+				'target_id' => $_POST['sel_target_id'],
+				'ad_file'=>"",
+				'ad_content'=>""
+		);
+		//判断广告类型
+		switch ($array['ad_type']){
+			case 'code':
+				$array['ad_content']=$_POST['code_ad_content'];
 				break;
-			case "file" :
-				if ($_FILES ['ad_type_flash_file'] ['name']) {
-					if ($_POST ['flash_method'] == 'url') {
-						$file_path = $_POST ['ad_type_flash_url'];
-					}
-					if ($_POST ['flash_method'] == 'file') {
-						$file_path = keke_file_class::upload_file ( 'ad_type_flash_file', '', 1, 'ad/' ); // 上传文件
-					}
+			case 'text':
+				$array['ad_content']=$_POST['txt_ad_content'];
+				break;
+			case 'image':
+				$array['ad_file']=$_POST['hdn_img_ad_file'];
+				break;
+			case 'flash':
+				if ($_POST['flash_method']=='url'){
+					$array['ad_file']=$_POST['flaurl_ad_fil'];
+				}elseif ($_POST['flash_method']=='file'){
+					$array['ad_file']=$_POST['flafil_ad_fil'];
 				}
 				break;
 		}
-		// 要填入数据的信息，在数组中有解释
-		$width = $_POST [$type . '_width'];
-		$height = $_POST [$type . '_height'];
-		$url = $_POST [$type . '_url'];
-		$content = $_POST [$type . '_content'];
-		// 插入数据库的字段
-		$array = array (
-				// 广告的名称
-				'ad_name' => $_POST ['ad_name'],
-				// 开始和结束时间
-				'start_time' => strtotime ( $_POST ['start_time'] ),
-				'end_time' => strtotime ( $_POST ['end_time'] ),
-				// 文件的路径，添加image和flash中存在
-				'ad_file' => $file_path,
-				// 广告类型
-				'ad_type' => $_POST ['ad_type'],
-				// 在添加image时的图片的高和宽
-				'width' => $width,
-				'height' => $height,
-				// 添加image时图片映射的地址
-				'ad_url' => $url,
-				// 添加file和code时文本的内容
-				'ad_content' => $content,
-				// 排序
-				'listorder' => $_POST ['listorder'],
-				// 是否可用
-				'is_allow' => $_POST ['rdn_is_allow'],
-				// 广告添加或者编辑之后的时间
-				'on_time' => time ()
-		);
-		// 判断传过来的值有没有ad_id(主键)的值，有为编辑模式，没有为添加，值都会保存，
+		
+		Cache::instance()->del('keke_adtarget_list');
+		
+ 		//如果有广告ID值，就update数据表
 		if ($_POST ['hdn_ad_id']) {
+			$ad_id = $_POST ['hdn_ad_id'];
 			Model::factory ( 'witkey_ad' )->setData ( $array )->setWhere ( "ad_id = '{$_POST['hdn_ad_id']}'" )->update ();
-			// 编辑完了之后跳转到编辑页面，通过ad_id来判断，传递的参数会在下次判断为编辑模式
-			Keke::show_msg ( '提交成功', 'admin/tool_ad/add?ad_id=' . $_POST ['hdn_ad_id'], 'success' );
+			// 执行完了，要给一个提示，这里没有对执行的结果做判断，是想偷下懒，如果执行失败的话，肯定给会报红的。亲!
+			Keke::show_msg ( '提交成功', "admin/tool_ad/add?ad_id=$ad_id" );
 		} else {
 			// 这也当然就是添加(insert)到数据库中
 			Model::factory ( 'witkey_ad' )->setData ( $array )->create ();
-			// 系统提示添加之后页面跳转到添加页面，可以继续添加
-			Keke::show_msg ( '提交成功', 'admin/tool_ad/add', 'success' );
+			$this->request->redirect ( 'admin/tool_ad' );
 		}
 	}
-	
-	
-	
+	/**
+	 * 删除广告
+	 */
+	function action_del() {
+		$page = $_GET [page];
+		$page_size = $_GET [page_size];
+		
+		// 删除单条,这里的case_id 是在模板上的请求连接中有的
+		if ($_GET ['ad_id']) {
+			$where = 'ad_id = ' . $_GET ['ad_id'];
+			// 删除多条,这里的条件统一为ids哟，亲
+		} elseif ($_GET ['ids']) {
+			$where = 'ad_id in (' . $_GET ['ids'] . ')';
+		}
+	 
+		echo Model::factory ( 'witkey_ad' )->setWhere ( $where )->del ();
+	}
+	/**
+	 * 根据广告类型在前台显示相应的广告类容
+	 */
+	function out($ad_info){
+		switch ($ad_info['ad_type']){
+			case'image':
+				echo "<img width='50' height='25' src=".BASE_URL.'/'.$ad_info['ad_file'].">";
+				break;
+			case 'text':
+				echo "<a href={$ad_info['ad_url']}>{$ad_info['ad_content']}</a>";
+				break;
+			case 'flash':
+				echo keke_file_class::flash_codeout($ad_info['ad_file'],50,25);
+				break;	
+			case 'code':
+				echo "$ad_info[ad_content]";
+				break;	
+		}
+	}
+	/**
+	 * ajax删除AD图片
+	 */
+	static function action_del_img(){
+		//如果pk有值，则删除文件表中的art_pic
+		if($_GET['pk']){
+			Dbfactory::execute(" update ".TABLEPRE."witkey_ad set ad_file ='' where ad_id = ".intval($_GET['pk']));
+		}
+		//没有fid就查下fid,没有fid不能删除文件,出于安全考量
+		if(!intval($_GET['fid'])){
+			$fid = Dbfactory::get_count(" select file_id from ".TABLEPRE."witkey_file where save_name = '.{$_GET['filepath']}.'");
+		}else{
+			$fid = $_GET['fid'];
+		}
+		//删除文件
+		keke_file_class::del_att_file($fid, $_GET['filepath']);
+		Keke::echojson ( '', '1' );
+	}
+	/**
+	 * 查询广告位剩余广告数
+	 */
+	function action_get_targetnum(){
+		$target_id = intval($_GET['target_id']);
+		$adtarget_info= DB::select ()->from ( 'witkey_ad_target' )->where ( "target_id = $target_id" )->get_one()->execute ();
+		$ad_info=Dbfactory::query("select count(*) from ".TABLEPRE."witkey_ad where target_id = $target_id");
+		$adtarget_num=$adtarget_info['ad_num']-$ad_info[0]['count(*)'];
+		echo "$adtarget_num";
+	}
 }
- 
+	

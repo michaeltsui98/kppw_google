@@ -1,0 +1,98 @@
+<!--{include control/admin/tpl/admin_header}--> 
+<link href="{$_K['siteurl']}/static/css/base.css" rel="stylesheet">
+<div class="page_title">
+    <h1>广告位管理</h1>
+    <div class="tool">
+        <a href="{BASE_URL}/index.php/admin/tool_adtarget" class="here">广告位</a>
+        <a href="{BASE_URL}/index.php/admin/tool_adtarget/add">添加广告位</a>
+    </div>
+</div>
+    <!--页头结束-->
+    <!--提示结束-->
+<div class="box search p_relative">
+		    <form class="detail" id="detail" action="{BASE_URL}/index.php/admin/tool_adtarget" method="get" name="s" id="sl">
+                 <table class="detail"  cellspacing="0" cellpadding="0">    		
+				<tbody>
+					<tr>
+		                <th>查询字段
+		                   <select name="slt_fields">
+		                   	<option></option>
+		                   	{loop $query_fields $k $v}
+		                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+							{/loop} 
+		                   </select>
+						 <select name="slt_cond">
+						 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+							<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+							<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+							<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+						 </select>
+		                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+						 <select name="page_size">
+                			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+                			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+                			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+            			</select>
+						 <input type="submit" value="{$_lang['search']}">
+						 </td>
+	                </tr>  			
+           		</tbody>
+			</table>
+            </form>
+</div>
+    <!--搜索结束-->
+	
+    <div class="box list">
+        	<form class="detail" action="" id='frm_list' method="post">
+        	 
+              <table cellpadding="0" cellspacing="0">
+                <tbody>
+                	
+                  <tr>
+                    <th width="5%"><a href="javascript:;" onclick="submitSort('{$uri}','a.target_id',{$ord_tag})">ID{if $_GET['f']=='a.target_id'}{$ord_char}{/if}</a></th>
+                    <th width="30%">广告位标签</th>
+					<th width="5%">广告数量</th>
+                    <th width="5%">已投放数量</th>
+                    
+                    <th width="5%">广告位状态</th>
+					<th width="20%">广告位描述</th>
+					
+                    <th width="20%">操作</th>
+                  </tr>
+                  {loop $adtarget_list $k $v}
+                  <tr class="item">
+                  	<td>{$v['target_id']}</td>
+                    <td >
+                    {if $v['is_allow']==0}$v['target_id']{else}
+					<input type="text" class="txt" size="60" onfocus="setCopy(this.value,'点击复制')" value="<!--{eval echo $this->get_tag($v['name'])}-->">
+					{/if}</td>
+					<td>{$v['ad_num']}</td>
+					<td>{$v['ad_count']}</td>
+                    <td>{if $v['is_allow']==0}<font color="red">禁用</font>{else}<font color="green">启用</font>{/if}</td>
+ 					<td>{$v['description']}</td>
+                    <td>
+
+                    	<a href="{$add_uri}?target_id={$v['target_id']}">编辑</a>
+                    	<a href="{BASE_URL}/index.php/admin/tool_ad?target_id={$v['target_id']}">管理</a>
+						<a href="{$change_uri}?target_id=$v['target_id']&status={if $v['is_allow']==1}0{else}1{/if}" 
+						onclick="return js_submit(this)">{if $v['is_allow']==1}禁用{else}启用{/if}</a>
+						<a href="{$del_uri}?target_id={$v['target_id']}"  onclick="return cdel(this);" class="button"><span class="trash icon"></span>{$_lang['delete']}</a>                    		
+                    
+                    </td>
+                  </tr>
+                  {/loop}
+                  
+                </tbody>
+                <tfoot>
+                  <tr>
+                  <td colspan="9">
+              		<div class="page">{$pages['page']}</div>    
+                  </td>
+                  </tr>
+                </tfoot>
+              </table>
+        	</form>
+</div>
+
+ 	<!--主体结束-->
+<!--{include control/admin/tpl/admin_footer}-->

@@ -1,0 +1,86 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+    <h1>广告位</h1>
+    <div class="tool">
+        <a href="{BASE_URL}/index.php/admin/tool_adtarget">广告位列表</a>
+        <a href="{BASE_URL}/index.php/admin/tool_adtarget/add" class="here">{if $ad_target_info[target_id]}编辑广告位{else}添加广告位{/if}</a>
+    </div>
+</div>
+<div class="box post">
+ 
+<form method="post" action="{BASE_URL}/index.php/admin/tool_adtarget/save"  name="frm_ad_target_edit" onsubmit="return checkForm(this)">
+    <input type="hidden" name="formhash" value="{FORMHASH}">
+	<input type="hidden" name="hdn_target_id" value="{$ad_target_info['target_id']}">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <th scope="row" width="130"> 广告位名称</th><td>
+                <input type="text" value="{$ad_target_info[name]}" name="txt_ad_name" class="txt" style=" width:260px;" 
+				limit="required:true;len:1-50" 
+				msg="广告位名称不能为空" 
+				title="广告位标题用于区分不同的广告位"
+				msgArea="ad_name_msg"/>
+                <span id="ad_name_msg"></span></td>
+        </tr> 
+        <tr>
+            <th scope="row" width="130">存放广告数</th><td>
+                <input type="text" value="$ad_target_info['ad_num']"  name="txt_ad_num" class="txt" 
+				limit="required:true;type:int" 
+				title="存放广告数是指广告位最多能存放的广告数"
+				msg="存放广告数只能为数字"
+				msgArea="ad_num_msg"/>
+                <span id="ad_num_msg"></span></td>
+        </tr>
+        <tr>
+            <th scope="row" width="130">状态</th><td>
+                <input type="checkbox" name="ckb_ad_is_allow" {if $ad_target_info['is_allow']==1} checked {/if}/>启用
+				</td>
+        </tr>
+        <tr>
+            <th scope="row" width="130">是否为幻灯片</th><td>
+                <input type="checkbox" name="ckb_tag_code" onclick="is_slide(this)" {if $ad_target_info['tag_code']} checked {/if}/>是
+				</td>
+        </tr>
+		<tbody id="tag_code" style="display:{if !$ad_target_info['tag_code']} none; {/if}">
+			<tr>
+			<th>标签代码</th>
+			<td>
+				<textarea name="txa_ad_tag_code" rows="5" cols="80" limit="required:true"
+					title="如果广告类型为幻灯片，则必须要有模板标签"
+					msgArea="ad_tag_code_msg"
+					msg="模板标签不能为空">
+					{$ad_target_info['tag_code']}
+				</textarea>
+				<span id="ad_tag_code_msg"></span>
+			</td>
+			</tr>
+		</tbody>
+		<tr>
+			<th>广告位描述</th>
+			<td>
+				<input type="text" name="txt_ad_description" value="{$ad_target_info['description']}" class="txt" style="width:260px;"
+				limit="required:true"
+				title="广告位描述是对广告位的一些说明"
+				msg="广告位描述不能为空 "
+				msgArea="ad_description_msg" />
+				<span id="ad_description_msg"></span>		
+			</td>
+		</tr>
+		<tr>
+			<th></th>
+			<td><button name="sbt_edit" type="submit">提交</button></td>
+		</tr>
+    </table>
+</form>
+ 
+</div>
+<script>
+function is_slide(o){
+	if(o.checked){
+		$("#tag_code").show();
+	}else{
+		$("#tag_code").hide();
+	}
+}
+</script>
+
+<!--{include control/admin/tpl/admin_footer}-->

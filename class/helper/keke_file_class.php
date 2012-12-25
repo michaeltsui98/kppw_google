@@ -527,7 +527,7 @@ class keke_file_class {
 	/**
 	 * 通用文件上传
 	 * $folder 自定义上传的文件夹名字 '/data/uploads/sys/'.$folder,这个参数在 后台广告添加页面用到
-	 * @param $ext 扩展名 
+	 * @param $ext 扩展名  "doc|swf|xls"
 	 * @param $isr 是否随机
 	 * @param $folder 指定的上传目录，目录存放地址data/uploads/sys/下
 	 * @return string 文件地址
@@ -618,6 +618,6 @@ class keke_file_class {
 		$str .= ' <embed src="' . $src . '" quality="high" width="' . $width . '" height="' . $height . '" ';
 		$str .= ' pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"';
 		$str .= ' type="application/x-shockwave-flash" wmode="transparent"/></embed></object>';
-		return Keke::k_stripslashes ( $str );
+		return  $str ;
 	}
 }

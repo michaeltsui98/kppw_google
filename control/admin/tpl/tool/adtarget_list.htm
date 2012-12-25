@@ -63,7 +63,8 @@
                   <tr class="item">
                   	<td>{$v['target_id']}</td>
                     <td >
-                    {if $v['is_allow']==0}$v['target_id']{else}
+                    {if $v['is_allow']==0}$v['name']
+					{else}
 					<input type="text" class="txt" size="60" onfocus="setCopy(this.value,'µã»÷¸´ÖÆ')" value="<!--{eval echo $this->get_tag($v['name'])}-->">
 					{/if}</td>
 					<td>{$v['ad_num']}</td>

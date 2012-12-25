@@ -126,6 +126,15 @@
            		</div>
 			</td>
             </tr>
+			<tr>
+				<th>链接地址</th>
+				<td><input type="text" value="{$ad_info['ad_url']}" name="txt_ad_url" class="txt" style=" width:260px;"
+				limit="type:url"
+				msg="链接地址输入有误"
+				title="链接地址只能为URL"
+				msgArea="ad_url_msg" />
+				<span id="ad_url_msg"></span></td>
+			</tr>
 			</tbody> 
 		<tr>
 			<th>宽度</th><td><input type="text" class="txt" value="{if $ad_info['width']}$ad_info['width']{else}0{/if}" name="txt_ad_width"  id="ad_width"

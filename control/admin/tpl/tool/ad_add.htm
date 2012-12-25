@@ -1,6 +1,6 @@
 <!--{include control/admin/tpl/admin_header}-->
 <div class="page_title">
-    <h1>{$_lang['ads']}{$page_tips}</h1>
+   <h1>广告管理</h1>
     <div class="tool">
         <a href="{BASE_URL}/index.php/admin/tool_ad">{$_lang['ads_list']}</a>
         <a href="{BASE_URL}/index.php/admin/tool_ad/add" class="here">{if $ad_info['ad_id']}编辑广告{else}添加广告{/if}</a>
@@ -9,9 +9,9 @@
 <div class="box post">
  
 <form method="post" action="{BASE_URL}/index.php/admin/tool_ad/save"  enctype="multipart/form-data" id="form1">
-    <input type="hidden" name="formhash" value="{FORMHASH}">
-    <input type="hidden" name="adtarget_num" id="adtarget_num">
-	<input type="hidden" name="hdn_ad_id" id="hdn_ad_id" value="{$ad_info['ad_id']}">
+   <input type="hidden" name="formhash" value="{FORMHASH}">
+   <input type="hidden" name="adtarget_num" id="adtarget_num" value="">
+   <input type="hidden" name="hdn_ad_id" id="hdn_ad_id" value="{$ad_info['ad_id']}">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
         <tr>
             <th scope="row" width="130">广告名称</th><td>
@@ -110,16 +110,16 @@
             </tr>
 			</tbody> 
 		<tr>
-			<th>宽度</th><td><input type="text" class="txt" value="{$ad_info[width]}" name="txt_ad_width"  id="ad_width"
-			 limit="required:true;type:int" 
+			<th>宽度</th><td><input type="text" class="txt" value="{if $ad_info['width']}$ad_info['width']{else}0{/if}" name="txt_ad_width"  id="ad_width"
+			 limit="type:int" 
 			 msg="宽度输入有误" 
 			 title="宽度只能为整数"
 			 msgArea="ad_width_msg"/>
 			 <span id="ad_width_msg"></span></td> 
 		</tr>
 		<tr>
-			 <th>高度</th><td><input type="text" class="txt" value="{$ad_info[height]}" name="txt_ad_height"  id="ad_height"
-			 limit="required:true;type:int" 
+			 <th>高度</th><td><input type="text" class="txt" value="{if $ad_info['height']}$ad_info['height']{else}0{/if}" name="txt_ad_height"  id="ad_height"
+			 limit="type:int" 
 			 msg="高度输入有误" 
 			 title="高度只能为整数"
 			 msgArea="ad_height_msg"/>
@@ -128,7 +128,7 @@
 		<tr>
 			<th>链接地址</th>
 			<td><input type="text" value="{$ad_info['ad_url']}" name="txt_ad_url" class="txt" style=" width:260px;"
-			limit="required:true;type:url"
+			limit="type:url"
 			msg="链接地址输入有误"
 			title="链接地址只能为URL"
 			msgArea="ad_url_msg" />
@@ -241,7 +241,7 @@ function set_target(obj){
 //初始化广告剩余数
 $(function(){
 	set_target($("#sel_target_id").val());
-	});
+});
 
 </script>
 	 

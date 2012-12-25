@@ -163,10 +163,14 @@ final class Keke_driver_mysql extends Keke_database {
 		if(empty($setsqlarr)){
 			throw new Keke_exception('update setsqlarr is emtpy!,please check!');
 		}
+		$keys = array_map(array($this,'quote_field'),array_keys($setsqlarr));
+		$values = array_map(array($this,'quote_string'),array_values($setsqlarr));
+		$setsqlarr = array_combine($keys, $values);
+		$setsql = NULL;
 		foreach ( $setsqlarr as $k => $v ) {
-			$fileds [] = $this->quote_field ( $k ) . '=' . $this->quote_string ( $v );
+			$setsql .=  $k . '=' .  $v .',';
 		}
-		$setsql = implode ( ',', $fileds );
+		$setsql = trim($setsql,',');
 		$where = "";
 		if (empty ( $wheresqlarr )) {
 			$where = 1;

@@ -83,7 +83,7 @@ class Control_admin_tool_adtarget extends Control_admin{
 		$array['is_allow'] = intval((bool)$_POST['ckb_ad_is_allow']);
 		
 		if((bool)$_POST['ckb_tag_code']===TRUE){
-			$array['tag_code']=$_POST['txa_ad_tag_code'];
+			$array['tag_code']=htmlspecialchars_decode($_POST['txa_ad_tag_code'],3);
 		}else{
 			$array['tag_code']=NULL;
 		} 

@@ -74,7 +74,7 @@ class Keke_db_update extends Keke_db_query {
 		
 		$this->_sql = $query;
 		$query = $this->compile($db);
-		
+		//var_dump($query);die;
 		$this->reset();
 		return $db->query($query,$this->_type);
 		

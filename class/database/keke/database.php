@@ -148,7 +148,7 @@ abstract class Keke_database {
 		} elseif ($value === FALSE) {
 			return "'0'";
 		}elseif (is_string($value)) {
-			return sprintf("'%s'",$value);
+			return $this->escape(sprintf("%s",$value));
 		}  elseif (is_array ( $value )) {
 			return    array_map(array($this, 'escape'), $value);
 		} elseif (is_int ( $value )) {

@@ -3,24 +3,16 @@
 define ( 'IN_KEKE', TRUE );
 include 'app_boot.php';
 
-$e = -1;
-$err = array(
-		'-1'=>'用户名或密码错误',
-		'-2'=>'余额不足',
-		'-3'=>'号码太长，不能超过1000条一次提交',
-		'-4'=>'无合法号码',
-		'-5'=>'内容包含不合法文字',
-		'-6'=>'内容太长',
-		'-7'=>'内容为空',
-		'-8'=>'定时时间格式不对',
-		'-9'=>'修改密码失败',
-		'-10'=>'用户当前不能发送短信',
-		'-11'=>'Action参数不正确',
-		'-100'=>'系统错误'
-); 
- 
-$message = array(':e'=>$e,':err'=>$err[$e]);
-Keke::$_log->add(Log::WARNING,"错误码::e,详细::err", $message)->write();
+$values = array("tag_code"=>"{loop \$datalist \$k \$v}
+<li><img src=\"{BASE_URL}/\$v['ad_file']\">\$v['ad_name']</li>
+{/loop}");
+$value = array("{loop \$datalist \$k \$v}
+<li><img src=\"{BASE_URL}/\$v['ad_file']\">\$v['ad_name']</li>
+{/loop}");
+$where = "target_id = 26";
+//DB::update('witkey_ad_target')->set(array('tag_code'))->value($value)->where($where)->execute();
+
+Model::factory('witkey_ad_target')->setData($values)->setWhere($where)->update();
 
 die;
  

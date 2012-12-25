@@ -1,6 +1,6 @@
 <!--{include control/admin/tpl/admin_header}-->
 <div class="page_title">
-    <h1>广告位</h1>
+    <h1>广告位管理</h1>
     <div class="tool">
         <a href="{BASE_URL}/index.php/admin/tool_adtarget">广告位列表</a>
         <a href="{BASE_URL}/index.php/admin/tool_adtarget/add" class="here">{if $ad_target_info[target_id]}编辑广告位{else}添加广告位{/if}</a>
@@ -58,7 +58,7 @@
 			<th>广告位描述</th>
 			<td>
 				<input type="text" name="txt_ad_description" value="{$ad_target_info['description']}" class="txt" style="width:260px;"
-				limit="required:true"
+				 
 				title="广告位描述是对广告位的一些说明"
 				msg="广告位描述不能为空 "
 				msgArea="ad_description_msg" />

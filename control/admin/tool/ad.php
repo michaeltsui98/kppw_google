@@ -4,9 +4,8 @@
  * 
  * @copyright keke-tech
  * @author µ¶¿Í
- * @version v 3.0
- * @date 2012-12-24 ÏÂÎç09:58:43
- * @encoding GBK
+ * @version 3.0
+
  */
 class Control_admin_tool_ad extends Control_admin {
 	/**

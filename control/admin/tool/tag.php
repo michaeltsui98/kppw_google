@@ -92,7 +92,7 @@ class Control_admin_tool_tag extends Control_admin{
 				'cache_time' => $_POST['txt_cache_time'],
 				'on_time'=>time(),
 		);
-		//这是个隐藏字段，也就是主键的值，这个主键有值，就是要编辑(update)数据到数据库
+		Cache::instance()->del('keke_witkey_tag');
 		if($_POST['hdn_tag_id']){
 			Model::factory('witkey_tag')->setData($array)->setWhere("tag_id = '{$_POST['hdn_tag_id']}'")->update();
 			//执行完了，要给一个提示，这里没有对执行的结果做判断，是想偷下懒，如果执行失败的话，肯定给会报红的。亲!

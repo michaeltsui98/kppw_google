@@ -24,10 +24,10 @@ class Control_admin_tool_ad extends Control_admin {
 		// 不需要分页，page_size设置大
 		$page_size = $_GET ['page_size'];
 		
-		$targets = DB::select('target_id,name')->from('witkey_ad_target')->cached(60000,'keke_adtarget_list')->execute();
+		$targets = DB::select('target_id,name')->from('witkey_ad_target')->execute();
 		
 		$targets = Arr::get_arr_by_key($targets, 'target_id');
-		
+		 
 		$this->_default_ord_field = 'ad_id';
 		
 		extract ( $this->get_url ( $base_uri ) );
@@ -65,13 +65,11 @@ class Control_admin_tool_ad extends Control_admin {
 	 * 保存广告信息
 	 */
 	function action_save() {
-		
-		$_POST = Keke_tpl::chars ( $_POST );
-		// 防止跨域提交，你懂的
 		Keke::formcheck ( $_POST ['formhash'] );
-		// var_dump($_POST);die;
+		$_POST = Keke_tpl::chars ( $_POST );
+		 
 		$type = $_POST ['type'];
-		// 这里怎么说呢，定义生成sql 的字段=>值 的数组，你不懂，就是你太二了.
+		
 		$array = array (
 				'ad_type' => $_POST ['rad_ad_type'],
 				'ad_name' => $_POST ['txt_ad_name'],
@@ -84,36 +82,28 @@ class Control_admin_tool_ad extends Control_admin {
 				'ad_file'=>"",
 				'ad_content'=>""
 		);
-		//判断广告类型
+		
 		switch ($array['ad_type']){
 			case 'code':
-				$array['ad_content']=$_POST['code_ad_content'];
-				break;
 			case 'text':
-				$array['ad_content']=$_POST['txt_ad_content'];
+				$array['ad_content']=htmlspecialchars_decode($_POST['txt_ad_content'],3);
 				break;
 			case 'image':
 				$array['ad_file']=$_POST['hdn_img_ad_file'];
 				break;
 			case 'flash':
 				if ($_POST['flash_method']=='url'){
-					$array['ad_file']=$_POST['flaurl_ad_fil'];
+					$array['ad_file']=$_POST['flash_url'];
 				}elseif ($_POST['flash_method']=='file'){
-					$array['ad_file']=$_POST['flafil_ad_fil'];
+					$array['ad_file']=keke_file_class::upload_file('flash_file','swf|flv');
 				}
 				break;
 		}
-		
-		Cache::instance()->del('keke_adtarget_list');
-		
- 		//如果有广告ID值，就update数据表
 		if ($_POST ['hdn_ad_id']) {
 			$ad_id = $_POST ['hdn_ad_id'];
 			Model::factory ( 'witkey_ad' )->setData ( $array )->setWhere ( "ad_id = '{$_POST['hdn_ad_id']}'" )->update ();
-			// 执行完了，要给一个提示，这里没有对执行的结果做判断，是想偷下懒，如果执行失败的话，肯定给会报红的。亲!
-			Keke::show_msg ( '提交成功', "admin/tool_ad/add?ad_id=$ad_id" );
+			$this->request->redirect ( "admin/tool_ad/add?ad_id=$ad_id" );
 		} else {
-			// 这也当然就是添加(insert)到数据库中
 			Model::factory ( 'witkey_ad' )->setData ( $array )->create ();
 			$this->request->redirect ( 'admin/tool_ad' );
 		}
@@ -122,17 +112,16 @@ class Control_admin_tool_ad extends Control_admin {
 	 * 删除广告
 	 */
 	function action_del() {
-		$page = $_GET [page];
-		$page_size = $_GET [page_size];
 		
-		// 删除单条,这里的case_id 是在模板上的请求连接中有的
+		
 		if ($_GET ['ad_id']) {
 			$where = 'ad_id = ' . $_GET ['ad_id'];
-			// 删除多条,这里的条件统一为ids哟，亲
-		} elseif ($_GET ['ids']) {
-			$where = 'ad_id in (' . $_GET ['ids'] . ')';
 		}
-	 
+		$ad_file =S_ROOT.DB::select('ad_file')->from('witkey_ad')->where($where)->get_count()->execute();
+	    if(is_file($ad_file)){
+	    	unlink($ad_file);
+	    }
+		
 		echo Model::factory ( 'witkey_ad' )->setWhere ( $where )->del ();
 	}
 	/**
@@ -144,13 +133,13 @@ class Control_admin_tool_ad extends Control_admin {
 				echo "<img width='50' height='25' src=".BASE_URL.'/'.$ad_info['ad_file'].">";
 				break;
 			case 'text':
-				echo "<a href={$ad_info['ad_url']}>{$ad_info['ad_content']}</a>";
+				echo "<a href={$ad_info['ad_url']}>txt_code</a>";
 				break;
 			case 'flash':
-				echo keke_file_class::flash_codeout($ad_info['ad_file'],50,25);
+				echo keke_file_class::flash_codeout(BASE_URL.'/'.$ad_info['ad_file'],50,25);
 				break;	
 			case 'code':
-				echo "$ad_info[ad_content]";
+				echo 'script code';
 				break;	
 		}
 	}

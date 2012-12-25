@@ -35,7 +35,7 @@ class Sys_tag {
 	 * 初始化标签数组
 	 */
 	protected function __construct(){
-		self::$tag = DB::select()->from('witkey_tag')->cached(9999)->execute();
+		self::$tag = DB::select()->from('witkey_tag')->cached(9999,'keke_witkey_tag')->execute();
 	}
 	 /**
 	  * 解析标签 
@@ -68,9 +68,12 @@ class Sys_tag {
 	 */
 	public static function ad_tag($target_name){
 	     
-		self::$target = DB::select()->from('witkey_ad_target')->where("is_allow=1")->cached(3600*24)->execute();
+		self::$target = DB::select()->from('witkey_ad_target')->where("is_allow=1")->cached(3600*24,'keke_witkey_ad_target')->execute();
 	    $arr = Arr::get_arr_by_key(self::$target, 'name');
-	    $target_info = $arr[$target_name];    
+	    $target_info = $arr[$target_name];
+	    if(Keke_valid::not_empty($target_info)===FALSE){
+	    	throw new Keke_exception('ad target info is emtpy or not exists');
+	    }    
 	    if($target_info['tag_code']){
 	    	 self::slide_ad($target_info);
 	    }else{
@@ -100,8 +103,8 @@ class Sys_tag {
 					$string .= "<a href='" . $ads[$i] ['ad_url'] . "' target='_blank'><img src='" .BASE_URL.'/'.$ads[$i] ['ad_file']. "'
 							 width='".$ads[$i] ['width']."' height='".$ads[$i] ['height']."'></a>";
 				break;
-				case 'falsh':
-					$string.=keke_file_class::flash_codeout(BASE_URL.'/'.$ads[$i] ['ad_url'], $ads[$i] ['width'], $ads[$i] ['height']);
+				case 'flash':
+					$string.=keke_file_class::flash_codeout(BASE_URL.'/'.$ads[$i] ['ad_file'], $ads[$i] ['width'], $ads[$i] ['height']);
 				break;
 				case 'text':
 				case 'code':	

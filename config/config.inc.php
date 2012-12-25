@@ -6,7 +6,7 @@ define ( 'DBUSER', 'kppw');
 define ( 'DBPASS', '123456');
 define ( 'DBCHARSET', 'gbk' );
 define ( 'CHARSET', 'gbk' );
-define ( 'DBTYPE', 'mysql' );
+define ( 'DBTYPE', 'mysqli' );
 define ( 'TABLEPRE', 'keke_');
 define ( 'ENCODE_KEY', 'keke' );
 define ( 'GZIP', TRUE );

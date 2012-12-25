@@ -72,7 +72,7 @@
                     <td>{if $v['is_allow']==0}<font color="red">禁用</font>{else}<font color="green">启用</font>{/if}</td>
  					<td>{$v['description']}</td>
                     <td>
-
+						<a href="{$pre_uri}?target_name={$v['name']}" target="_blank">广告预览</a>
                     	<a href="{$add_uri}?target_id={$v['target_id']}">编辑</a>
                     	<a href="{BASE_URL}/index.php/admin/tool_ad?target_id={$v['target_id']}">管理</a>
 						<a href="{$change_uri}?target_id=$v['target_id']&status={if $v['is_allow']==1}0{else}1{/if}" 

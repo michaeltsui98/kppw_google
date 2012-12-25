@@ -4,9 +4,8 @@ defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
  * 后台广告位管理
  * @copyright keke-tech
  * @author 刀客
- * @version v 3.0
- * @date 2012-12-21 下午05:58:43
- * @encoding GBK
+ * @version 3.0
+ * 2012-12-21 下午05:58:43
  */
 
 class Control_admin_tool_adtarget extends Control_admin{
@@ -23,6 +22,7 @@ class Control_admin_tool_adtarget extends Control_admin{
 		//删除uri，del是固定的
 		$del_uri = $base_uri."/del";
 		$add_uri = $base_uri."/add";
+		$pre_uri = $base_uri.'/pre';
 		//修改广告位状态的URI
 		$change_uri=$base_uri."/changestatus";
 		//不需要分页，page_size设置大
@@ -83,11 +83,11 @@ class Control_admin_tool_adtarget extends Control_admin{
 		$array['is_allow'] = intval((bool)$_POST['ckb_ad_is_allow']);
 		
 		if((bool)$_POST['ckb_tag_code']===TRUE){
-			$array['tag_code']=$_POST['txa_ad_tag_code'];
+			$array['tag_code']=htmlspecialchars_decode($_POST['txa_ad_tag_code'],3);
 		}else{
 			$array['tag_code']=NULL;
 		} 
-		 
+		Cache::instance()->del('keke_witkey_ad_target'); 
 		if($_POST['hdn_target_id']){
 			$target_id=$_POST['hdn_target_id'];
 			Model::factory('witkey_ad_target')->setData($array)->setWhere("target_id = '{$_POST['hdn_target_id']}'")->update();
@@ -103,9 +103,23 @@ class Control_admin_tool_adtarget extends Control_admin{
 	 */
 	function action_del(){
 		
+		$ad_arr = DB::select('ad_file')->from('witkey_ad')->where("target_id = {$_GET['target_id']}")->execute();
+		foreach ($ad_arr as $v){
+			if(is_file($f = S_ROOT.$v['ad_file'])){
+				unlink($f);
+			}
+		}
+		
 		$sql = "DELETE a.*,b.* FROM `:keke_witkey_ad_target` a \n".
-			   "join :keke_witkey_ad b on  a.target_id  = b.target_id where a.target_id = ".(int)$_GET['target_id'];
+			   "left join :keke_witkey_ad b on  a.target_id  = b.target_id where a.target_id = ".(int)$_GET['target_id'];
 		echo DB::query($sql,Database::DELETE)->tablepre(':keke_')->execute();
+		
+	}
+	/**
+	 * 广告预览
+	 */
+	function action_pre(){
+		Sys_tag::ad_tag($_GET['target_name']);
 	}
 	
 	function get_tag($name){

@@ -218,7 +218,6 @@ class Keke_db_query {
 		// 生成sql语句
 		$sql = $this->compile ( $db );
 		
-		
 		if ($this->_lifetime !== NULL and $this->_type === Database::SELECT) {
 			// 使用数据库实例与sql作为缓存的键名
 			$cache_key = Cache::instance()->generate_id( $sql)->get_id();

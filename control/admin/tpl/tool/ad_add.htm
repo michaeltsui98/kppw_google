@@ -118,11 +118,11 @@
             <tr><th>{$_lang['flash_address']}</th>
 			<td>
             	<div id="flash_way">
-            		<input type="radio" id="flash_url" name="flash_method" value="url">url
-            		<input type="radio" id="flash_file" name="flash_method" value="file">{$_lang['file']}
+            		<input type="radio" id="flash_url" name="flash_method" {if strpos($ad_info['ad_file'],'http')!==false}checked{/if} value="url">url
+            		<input type="radio" id="flash_file" name="flash_method" {if strpos($ad_info['ad_file'],'http')===false}checked{/if} value="file">{$_lang['file']}
             		<br/>
-            		<input type="text" size="60" id="ad_type_falsh_url" name="flaurl_ad_fil" value="{$ad_data['ad_file']}" class="txt" style="display:none;" /> 
-           			<input type="file" name="flafil_ad_fil" id="ad_type_flash_file" style="display:none;" value="{$ad_data['ad_file']}"  onchange="isExtName(this,1)" ext=".jpg,.png,.gif,.jpeg,.bmp" />
+            		<input type="text" size="60" id="ad_type_falsh_url" name="flash_url" value="{$ad_info['ad_file']}" class="txt" {if strpos($ad_info['ad_file'],'http')===false}style="display:none;"{/if}  /> 
+           			<input type="file" name="flash_file" id="ad_type_flash_file"  value="{$ad_info['ad_file']}"  onchange="isExtName(this,1)" ext=".swf,.flv" {if strpos($ad_info['ad_file'],'http')!==false}style="display:none;"{/if}/>
            		</div>
 			</td>
             </tr>
@@ -191,7 +191,7 @@
 	})	 
 	function checkform(){
 		var adtarget_num=document.getElementById('adtarget_num');
-		if(adtarget_num.value<=0){
+		if(adtarget_num.value<=0 && "{$ad_info['ad_id']}"=='' ){
 			art.dialog.alert("当前广告位已经被占满，无法继续添加");
 			return flase;				
 		}
@@ -211,9 +211,9 @@
 			art.dialog.alert("{$_lang['file_format_error']}");
 			return false;
 		}else{
-			var art_id = "$ad_info[ad_id]";
+			var obj_id = "$ad_info[ad_id]";
         $.ajaxFileUpload({
-            url: '{BASE_URL}/index.php/ajax/upload?file_name='+id+'&file_type=att&obj_type=ad&obj_id='+art_id,
+            url: '{BASE_URL}/index.php/ajax/upload?file_name='+id+'&file_type=att&obj_type=ad&obj_id='+obj_id,
             fileElementId: id,
             dataType: 'json',
             success: function(json){ 

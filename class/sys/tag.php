@@ -35,7 +35,7 @@ class Sys_tag {
 	 * 初始化标签数组
 	 */
 	protected function __construct(){
-		self::$tag = DB::select()->from('witkey_tag')->cached(9999)->execute();
+		self::$tag = DB::select()->from('witkey_tag')->cached(9999,'keke_witkey_tag')->execute();
 	}
 	 /**
 	  * 解析标签 

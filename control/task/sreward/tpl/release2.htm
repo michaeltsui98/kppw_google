@@ -1,24 +1,18 @@
-<a href="{BASE_URL}/index.php/task/sreward_release">发布的第一步</a>
-<a href="{BASE_URL}/index.php/task/sreward_release/step2">发布的第二步</a>
-<a href="{BASE_URL}/index.php/task/sreward_release/step3">发布的第三步</a>
-<a href="{BASE_URL}/index.php/task/sreward_release/step4">发布的第四步</a> 
-
-
+<a href="{BASE_URL}/pub/index/sreward">发布的第一步</a>
+<a href="{BASE_URL}/index.php/task/sreward_pub/step2">发布的第二步</a>
+<a href="{BASE_URL}/index.php/task/sreward_pub/step3">发布的第三步</a>
+ 
 <form action="{PHP_URL}/task/sreward_pub/step3" method="post" >
 	
-	<p>任务标题:<input type="text" name="task_cash"></p>
+	<p>任务标题:<input type="text" name="task_title" value="{$task_info['task_title']}"></p>
 	
-	<p>任务需求:<input type="text" name="task_" ></p>
+	<p>任务需求:<input type="text" name="task_desc" value="{$task_info['task_desc']}"></p>
 	
-	<p>任务附件:<input type="text" name="task_" ></p>
+	<p>任务附件:<input type="text" name="task_file" value="{$task_info['task_file']}"></p>
 	
-	<p>任务行业:<input type="text" name="task_" ></p>
+	<p>任务行业:<input type="text" name="task_indus"value="{$task_info['task_indus']}" ></p>
 	
-	<p>任务要求:<input type="text" name="task_" ></p>
+	<p>联系方式:<input type="text" name="task_contact"value="{$task_info['task_contact']}" ></p>
 	
-	<p>联系方式:<input type="text" name="task_" ></p>
-	
-	<p>任务要求:<input type="text" name="task_" ></p>
-	
-	<p><input type="submit" value="continue" /></p>
+	<p><input type="submit" /></p>
 </form>

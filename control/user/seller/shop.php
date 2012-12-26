@@ -18,6 +18,9 @@ class Control_user_seller_shop extends Control_user{
      */
 	protected static $_left = 'shop';
 	
+	/**
+	 * 店铺开通，店铺设置
+	 */
 	function action_index(){
 		global $_K,$_lang;
 		//是否认证
@@ -26,20 +29,54 @@ class Control_user_seller_shop extends Control_user{
 		
 		require Keke_tpl::template('user/seller/shop');
 	}
+	/**
+	 * 案例列表
+	 */
 	function action_case(){
 	
 	
 	
 		require Keke_tpl::template('user/seller/shop_case');
 	}
+	/**
+	 * 案例编辑，添加
+	 */
+	function action_case_add(){
+		require Keke_tpl::template('user/seller/shop_case_add');
+	}
+	/**
+	 * 案例数据保存
+	 */
+	function action_case_save(){
+		
+	}
+	/**
+	 * 成员列表
+	 */
 	function action_member(){
-	
 	
 	
 		require Keke_tpl::template('user/seller/shop_member');
 	}
+	/**
+	 * 成员编辑添加
+	 */
+	function action_member_add(){
+		
+		require Keke_tpl::template('user/seller/shop_member_add');
+	}
+	/**
+	 * 成员数据保存
+	 */
+	function action_member_save(){
+		
+	}
+	
+	/**
+	 *  店铺数据保存 
+	 */
 	function action_save(){
-		var_dump($_POST);
+		
 	}
 	/**
 	 *  判断用户类型

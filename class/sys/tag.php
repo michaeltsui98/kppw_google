@@ -72,7 +72,8 @@ class Sys_tag {
 	    $arr = Arr::get_arr_by_key(self::$target, 'name');
 	    $target_info = $arr[$target_name];
 	    if(Keke_valid::not_empty($target_info)===FALSE){
-	    	throw new Keke_exception('ad target info is emtpy or not exists');
+	    	//throw new Keke_exception('ad target info is emtpy or not exists');
+	    	return FALSE;
 	    }    
 	    if($target_info['tag_code']){
 	    	 self::slide_ad($target_info);

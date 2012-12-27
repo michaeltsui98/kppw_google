@@ -444,6 +444,7 @@ class Keke extends Keke_core {
 				Keke::$_shop_open = (Keke::$_shop_open or $v ['model_status']);
 			}
 		}
+		return Keke::$_model_list;
 		//Keke::nav_filter ();
 	}
 	/**

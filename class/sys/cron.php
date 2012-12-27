@@ -42,8 +42,7 @@ abstract class Sys_cron {
 		if(!$cron['filename']){
 			return TRUE;
 		}
-			 /* $class = new $cron['filename'];
-			 $class ->batch_run(); */
+			 
 		call_user_func($cron['filename'] .'::batch_run');
 		
 		self::set_next_time($cron);

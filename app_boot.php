@@ -22,6 +22,15 @@ isset($_GET['ajaxmenu']) and $_K['ajaxmenu'] = $_GET['ajaxmenu'];
  
 unset ( $uid, $username);
 
+Route::set('task', '(<controller>(/<id>))',
+array(
+'controller'=>'(task|service)',
+'id' => '\d+',
+))
+->defaults(array(
+'controller'=>'task',
+'action' => 'index'
+));
 
 //支持子目录的路由
 Route::set('sections', '<directory>(/<controller>(/<action>(/<id>)))',
@@ -33,6 +42,7 @@ array(
 		'action'     => 'index',
 		));
 
+		
 
  Route::set('default', '(<controller>(/<action>(/<id>(/<ids>))))',array
 ('ids'=>'.*'))
@@ -41,7 +51,7 @@ array(
 'action'     => 'index',
 )); 
 if(!Route::cache()){
-	Route::cache(TRUE);
+	//Route::cache(TRUE);
 }   
 
  

@@ -43,9 +43,9 @@
 	<tr>
 		<th scope="row" width="200" class="t_r">{$_lang['task_automate_choose']}{$_lang['zh_mh']}</th> 
 		 <td>
-			<label for="end_action_1"><input type="radio"  {if $model_info['end_action'] =='refund'||!$model_info['end_action']}checked{/if} name="conf[end_action]" id="end_action_1" value="refund">{$_lang['close']}</label>
-			<label for="end_action_3"><input type="radio" {if $model_info['end_action'] =='split' }checked{/if} name="conf[end_action]" id="end_action_2" value="split">{$_lang['open']}</label>
-			<label id="slt" style="display:none"><input type="text" name="conf[witkey_num]" value="{$model_info['witkey_num']}" id="witkey_num" limit="type:int;between:1-" msg="{$_lang['task_automate_choose_msg']}" title="{$_lang['task_automate_choose_title']}" class="txt">{$_lang['task_automate_choose_notice']}</label>
+			<label for="auto_bid_1"><input type="radio"  {if $model_info['auto_bid'] =='no'||!$model_info['auto_bid']}checked{/if} name="conf[auto_bid]" id="auto_bid_1" value="no">{$_lang['close']}</label>
+			<label for="auto_bid_3"><input type="radio" {if $model_info['auto_bid'] =='yes' }checked{/if} name="conf[auto_bid]" id="auto_bid_2" value="yes">{$_lang['open']}</label>
+			<label id="slt" {if $model_info['auto_bid'] =='no'}style="display:none"{/if}><input type="text" name="conf[witkey_num]" value="{$model_info['witkey_num']}" id="witkey_num" limit="type:int;between:1-" msg="{$_lang['task_automate_choose_msg']}" title="{$_lang['task_automate_choose_title']}" class="txt">{$_lang['task_automate_choose_notice']}</label>
 		 </td>
 	</tr>
     <tr>
@@ -181,16 +181,16 @@
  </div>
 <script type="text/javascript">
 $(function(){
-	if($("#end_action_1").attr("checked")==true){
+	if($("#auto_bid_1").attr("checked")==true){
 		$("#slt").hide();
 	}
-	if($("#end_action_2").attr("checked")==true){
+	if($("#auto_bid_2").attr("checked")==true){
 		 $("#slt").show();
 	 }
-	$("#end_action_1").click(function(){
+	$("#auto_bid_1").click(function(){
 		$("#slt").hide();
 	})
-	$("#end_action_2").click(function(){
+	$("#auto_bid_2").click(function(){
 		  $("#slt").show();
 	})
 	

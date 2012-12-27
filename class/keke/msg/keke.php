@@ -64,9 +64,9 @@ class Keke_msg_keke extends Keke_msg {
 	 */
 	function send() {
 		
-		(bool)$this->_tpl_info['send_msg'] and $this->send_msg();
-		(bool)$this->_tpl_info['send_sms'] and $this->send_sms();
-		(bool)$this->_tpl_info['send_mail'] and $this->send_mail();
+		(bool)$this->_tpl_info['send_msg']  and $this->send_msg();
+		((bool)$this->_tpl_info['send_sms'] and Keke_valid::phone($this->_userinfo['mobile'],11)) and $this->send_sms();
+		((bool)$this->_tpl_info['send_mail'] and Keke_valid::email($this->_userinfo['email'])) and $this->send_mail();
 		return TRUE;
 	}
 	/**
@@ -106,7 +106,7 @@ class Keke_msg_keke extends Keke_msg {
 		if($content===NULL){
 			 $content = strtr($this->_tpl_info['sms_tpl'],self::$_var);
 		}
-		return Keke_sms::instance()->send($mobile, $content);
+		register_shutdown_function(array(Keke_sms::instance(),'send'),$mobile, $content);
 	}
 	/**
 	 * ·¢ËÍÓÊ¼þ
@@ -121,8 +121,8 @@ class Keke_msg_keke extends Keke_msg {
 		if($title===NULL){
 			$title = $this->_tpl_info['desc'];
 		}
-		
-		return Keke::send_mail($email, $title, $content);
+		register_shutdown_function(array(Keke,'send_mail'),$email,$title,$content);
+		 
 		
 	}
 }

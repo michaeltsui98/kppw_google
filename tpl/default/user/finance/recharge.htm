@@ -62,6 +62,7 @@
 	                			<input type="text" name="amount"  placeholder="请输入充值金额" 
 								limit="required:true;type:float;between:{$recharge_min}-" 
 									msg="充值金额最少为{$recharge_min}元" 
+									value="{$_GET['cash']}"
 									 >
 								<span class="right_tip">元</span>
 								 

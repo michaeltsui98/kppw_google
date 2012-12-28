@@ -19,9 +19,7 @@ class Control_user_buyer_index extends Control_user{
 	 */
 	protected static $_left = 'index';
 	function action_index(){
-		global $_K,$_lang;
-		 
-		 
+			 
 		
 		require Keke_tpl::template('user/buyer/index');
 	}

@@ -61,7 +61,7 @@
     	<a href="{BASE_URL}/index.php/task/{$v['task_id']}" target="_blank"><!--{eval echo Keke::cutstr($v['task_title'],40)}--></a>
 		{if $v['is_top']==1}<font color="red">[{$_lang['recommend']}]</font>{/if}
 	</td>
-    <td>{$task_status[$v['task_status']]}</td>
+    <td>{$task_status[$v['task_status']]['status']}</td>
     <td><!--{eval echo Date::date_span($v['start_time'])}--></td>
     <td>{c:$v['task_cash']}</td>
 	<td>{$v['work_num']}</td>

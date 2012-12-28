@@ -128,7 +128,7 @@ class Control_task_sreward_pub extends Control_task_task{
 		//任务发布通知
 		$this->task_msg($task_info);
 		
-		if($this->_need_pay){
+		if(Keke_valid::not_empty($this->_need_pay)){
 			//待付款任务生成付款订单
 			$order_id = $this->task_order($task_info);
 			Keke::show_msg('用户余额不足,请先充值',"user/finance_recharge?order_id=$order_id&cash=$this->_need_pay",'error');
@@ -157,7 +157,7 @@ class Control_task_sreward_pub extends Control_task_task{
 		$profit_rate = (int)$model_conf['task_rate'];
 		$fail_rate = (int)$model_conf['task_fail_rate'];
 		$auto_bid = $model_conf['auto_bid']=='yes'?1:0;
-		$real_cash = $task_info['task_cash']*((int)$profit_rate/100);
+		$real_cash = $task_info['task_cash']*(1-(int)$profit_rate/100);
 		$sub_time = (int)$task_info['sub_time']*3600*24+SYS_START_TIME;
 		//审核线
 		$audit_cash = (float)$model_conf['audit_cash'];
@@ -179,6 +179,7 @@ class Control_task_sreward_pub extends Control_task_task{
 		->set_obj('task', $task_id)->cash_out($task_info['task_cash']);
 		
 		$status = 0;
+		
 		if($ispay<0){
 			$this->_need_pay = abs($ispay);
 		}else{
@@ -244,15 +245,12 @@ class Control_task_sreward_pub extends Control_task_task{
 	 * @param array $task_info
 	 */
 	function task_order($task_info){
-		if($this->_need_pay){
-			return Sys_order::create_order(1, '', '', $task_info['task_title'], $task_info['task_cash'], '','wait');
-		}
-		return FALSE;
+		 
+		$order = array('order_name'=>$task_info['task_title'],'order_amount'=>(float)$task_info['task_cash']);
+		$item = array('name'=>$task_info['task_title'],'obj_type'=>'task','obj_id'=>$this->_task_id,'model_id'=>1,
+					  'price'=>(float)$task_info['task_cash'],'num'=>1);
+		return Sys_order::getinstance()->create_order($order,$item);
+ 		 
 	}
-	
-	/**
-	 * 任务发布推广,任务中标推广，在任务结束的时候再处理
-	 */
-	
-	
+ 
 }

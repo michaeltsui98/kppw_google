@@ -43,16 +43,15 @@ array(
 		));
 
 		
-
- Route::set('default', '(<controller>(/<action>(/<id>(/<ids>))))',array
+Route::set('default', '(<controller>(/<action>(/<id>(/<ids>))))',array
 ('ids'=>'.*'))
 ->defaults(array(
 'controller' => 'index',
 'action'     => 'index',
 )); 
-if(!Route::cache()){
-	//Route::cache(TRUE);
-}   
+
+Route::cache(TRUE);
+   
 
  
 //ªı±“¡–±Ì

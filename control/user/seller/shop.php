@@ -28,7 +28,7 @@ class Control_user_seller_shop extends Control_user{
 		$member_uri=USER_URL."/seller_shop/member";
 					
 		$is_auth = $this->get_is_auth();
-// 		var_dump($is_auth);die;
+
 		$shop_arr = DB::select()->from('witkey_shop')->where('uid = '.$_SESSION['uid'])->get_one()->execute();		
 		
 		require Keke_tpl::template('user/seller/shop');
@@ -141,7 +141,12 @@ class Control_user_seller_shop extends Control_user{
 		$member_id = $_GET ['member_id'];
 		$shop_arr= DB::select ('shop_id')->from ( 'witkey_shop' )->where ( "uid = '$this->uid'" )->get_one ()->execute ();
 		$member_info = DB::select ()->from ( 'witkey_shop_member' )->where ( "member_id = '$member_id'" )->get_one ()->execute ();
-		
+		//获取职位名称
+		$inc_job=Control_user_account_detail::$inc_job;
+		//获取年份
+		$year = Date::get_year();
+		list($s_year,$n_year) = explode(',', $member_info['entry_age']);
+		$eduction=array('博士','硕士','本科','大专','高中','初中','小学');
 		require Keke_tpl::template('user/seller/shop_member_add');
 	}
 	/**
@@ -154,17 +159,18 @@ class Control_user_seller_shop extends Control_user{
 				'shop_id'=>$_POST['hdn_shop_id'],
 				'truename'=>$_POST['txt_truename'],
 				'member_pic'=>keke_file_class::upload_file('fil_member_pic','jpg|gif|png|jpeg'),
-				'member_job'=>$_POST['txt_member_job'],
+				'member_job'=>$_POST['sel_member_job'],
 				'member_desc'=>$_POST['txa_member_desc'],
-				'top_eduction'=>$_POST['txt_top_eduction'],
+				'top_eduction'=>$_POST['sel_top_eduction'],
 				'school'=>$_POST['txt_school'],				
 				);
+		$array['entry_age']=$_POST['sel_left_entry_age'].",".$_POST['sel_right_entry_age'];
+
 		if($_POST ['hdn_member_id']) {
 			$member_id=$_POST ['hdn_member_id'];
 			Model::factory ( 'witkey_shop_member' )->setData ( $array )->setWhere ( "member_id = '$member_id'" )->update ();
 			$this->request->redirect ( "/user/seller_shop/member_add?member_id=$member_id" );
 		} else {
-			$array['entry_age']=time();
 			Model::factory ( 'witkey_shop_member' )->setData ( $array )->create ();
 			$this->request->redirect ( '/user/seller_shop/member' );
 		}
@@ -207,4 +213,6 @@ class Control_user_seller_shop extends Control_user{
 			return (bool)$info['realname'];
 		}
 	}
+	
+	
 }

@@ -40,26 +40,24 @@
 	                			<div class="detail">
 	                				<input type="file" name="fil_member_pic">
 	                				<p>成员图片,推荐大小150X150。支持.jpg,.gif,.png,.jpeg格式。</p>
-	                				<p><img class="pic_larger" src="{BASE_URL}/{$member_info['member_pic']}" alt="{$member_info['truename']}"></p>
+	                				<p><img class="pic_larger" width="150" src="{BASE_URL}/{$member_info['member_pic']}" alt="{$member_info['truename']}"></p>
 	                			</div>
 	                		</div>
 							<div class="form_row">
 	                			<label class="form_label">职位：</label>
-	                			<input type="text" name="txt_member_job" value="{$member_info['member_job']}"
-								limit="required:true;len:2-20"
-								title="职位长度为2到20个字符"
-								msg="职位输入有误"
-								msgArea="msg_member_job"/>
-								<span id="msg_member_job"></span>
+	                			<select name="sel_member_job">
+	                				{loop $inc_job $v}
+	                				<option value="$v" {if $v==$member_info['member_job']} selected {/if} >$v</option>
+									{/loop}
+								</select>
 	                		</div>
 	                		<div class="form_row">
 	                			<label class="form_label">学历：</label>
-	                			<input type="text" name="txt_top_eduction" value="{$member_info['top_eduction']}"
-								limit="required:true;len:2-20"
-								title="学历长度为2到20个字符"
-								msg="学历输入有误"
-								msgArea="msg_top_eduction"/>
-								<span id="msg_top_eduction"></span>
+	                			<select name="sel_top_eduction">
+	                				{loop $eduction $v}
+										<option value="$v" {if $v==$member_info['top_eduction']} selected {/if}>$v</option>
+									{/loop}
+								</select>
 	                		</div>
 	                		<div class="form_row">
 	                			<label class="form_label">毕业学校：</label>
@@ -70,28 +68,37 @@
 								msgArea="msg_school"/>
 								<span id="msg_school"></span>
 	                		</div>
-							<!--
+							
 	                		<div class="form_row">
 	                			<label class="form_label">工作时间：</label>
-	                			<input type="text" name="txt_entry_age" value="{$member_info['entry_age']}" readonly
-								limit="required:true;len:2-20"
-								title="工作时间按年计算"
-								msg="工作时间输入有误"
-								msgArea="msg_entry_age"/>年
+	                			<select name="sel_left_entry_age" id="sel_left_entry_age">
+	                				{loop $year $v}
+										<option value="$v" {if $s_year == $v}selected{/if}>$v</option>
+									{/loop}
+								</select>-
+								<select name="sel_right_entry_age"
+								limit="required:true;bigger:sel_left_entry_age"
+								title="结束时间必须大于开始时间"
+								msg="工作时间有误"
+								msgArea="msg_entry_entry_age">
+	                				{loop $year $v}
+										<option value="$v" {if $e_year == $v}selected{/if}>$v</option>
+									{/loop}
+								</select>
 								<span id="msg_entry_age"></span>
 	                		</div>
-							-->
+						
 							
 	                		<div class="form_row">
 	                			<label class="form_label">介绍：</label>
-	                			<textarea name="txa_member_desc" id="" cols="60" rows="5"
+	                			<textarea name="txa_member_desc" cols="60" rows="5"
 								limit="required:true"
 								title="介绍不能为空"
 								msg="介绍输入有误"
 								msgArea="msg_member_desc">{$member_info['member_desc']}</textarea>
 								<span id="msg_member_desc"></span>
 	                		</div>
-
+							
 	                		<div class="form_line">
 	                			<hr>
 	                		</div>

@@ -23,9 +23,9 @@ class AlipaySubmit {
 	function __construct($alipay_config){
 		$this->alipay_config = $alipay_config;
 	}
-    function AlipaySubmit($alipay_config) {
+    /* function AlipaySubmit($alipay_config) {
     	$this->__construct($alipay_config);
-    }
+    } */
 	
 	/**
 	 * 生成签名结果
@@ -102,7 +102,9 @@ class AlipaySubmit {
         }
 
 		//submit按钮控件请不要含有name属性
-        $sHtml = $sHtml."<input type='submit' value='".$button_name."'></form>";
+        //$sHtml = $sHtml."<input type='submit' value='".$button_name."'></form>";
+        $sHtml = $sHtml."<input type='submit' style='display:none;' value='".$button_name."'></form>";
+        $sHtml = $sHtml.$button_name;
 		
 		$sHtml = $sHtml."<script>document.forms['alipaysubmit'].submit();</script>";
 		

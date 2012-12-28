@@ -61,7 +61,10 @@ class Control_register extends Control_front{
 				Control_login::user_bind($_POST['type']);
 			}
 		}
-		Keke::show_msg($msg,'register',$t);
+		if(($uri = Cookie::get('last_page'))==NULL){
+			$uri = 'index';
+		}
+		Keke::show_msg($msg,$uri,$t);
 	}
 	/**
 	 * oauth зЂВс

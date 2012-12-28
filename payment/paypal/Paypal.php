@@ -76,7 +76,8 @@ class Paypal extends Sys_payment{
 		foreach ($this->fields as $key=>$val){
 			$sHtml .= "<input type='hidden' name='" . $key . "' value='" . $val . "'/>";
 		}
-		$sHtml = $sHtml . "<input type='submit'  value='$btn_name'/>";
+		$sHtml = $sHtml."<input type='submit' style='display:none;' value='".$btn_name."'></form>";
+		$sHtml = $sHtml.$btn_name;
 		$sHtml .= "<script>document.forms[\"paypalsubmit\"].submit();</script>";
 		return $sHtml;
 	}

@@ -34,7 +34,7 @@ abstract class Sys_payment {
 	}
 	
 	public function __construct($name){
-	   $pay_arr = DB::select()->from('witkey_pay_api')->execute();
+	   $pay_arr = DB::select()->from('witkey_pay_api')->where("type='online'")->execute();
 	   $payment_arr = Arr::get_arr_by_key($pay_arr,'payment');
 	   $this->_pay_config = $payment_arr[$name];
 	}

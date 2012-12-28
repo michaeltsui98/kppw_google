@@ -70,6 +70,9 @@ class Control_login extends Control_front {
 	 */
 	function action_logout(){
 		$res = Keke_user_login::instance()->logout();
+		if(strpos($res, 'http')===FALSE){
+			$res = NULL;
+		}
 		$refer = $this->request->referrer();
 		Cookie::set('last_page', $refer);
 		Keke::show_msg('³É¹¦ÍË³ö'.$res,$refer,'success');

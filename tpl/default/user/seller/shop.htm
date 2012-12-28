@@ -22,25 +22,36 @@
 			                </nav>
 		                {/if}
 		                <div class="box_detail">
-		               		{if !$is_auth}<!--是否通过认证-->
+		               		{if !$is_auth and $this->group_id==3}<!--是否通过认证-->
 			                	<div class="form_tip info">
 			                		<span class="icon"></span>
 			                		<div class="detail">
+			                		<p>开店铺需要进行企业认证，您还没有企业认证</p>
+			                		<p><a href="{USER_URL}/account_auth/enter">立即企业认证</a></p>
+			                		</div>
+			                	</div>
+							{elseif !$is_auth }
+								<div class="form_tip info">
+			                		<span class="icon"></span>
+			                		<div class="detail">
 			                		<p>开店铺需要进行实名认证，您还没有实名认证</p>
-			                		<p><a href="#">立即实名认证</a></p>
+			                		<p><a href="{USER_URL}/account_auth/enter">立即实名认证</a></p>
 			                		</div>
 			                	</div>
 		                	{else}
 		                	
-								<form action="{USER_URL}/seller_shop/save" name="shop_frm" id="shop_frm" method="post">
-				                	<div class="form_row">
+								<form action="{USER_URL}/seller_shop/save" name="shop_frm" id="shop_frm" onsubmit="return checkForm(this)" method="post">
+				                	<input type="hidden" name="hdn_shop_id" value="{$shop_arr['shop_id']}">
+									<div class="form_row">
 			                			<label class="form_label">店铺名称：</label>
-			                			<input type="text" size="60" name="shop_name" value="{$data_arr['shop_name']}">
+			                			<input type="text" size="60" name="shop_name" value="{$shop_arr['shop_name']}" limit="required:true" msg='名称不能为空'>
 			                		</div>
 		
 			                		<div class="form_row">
 			                			<label class="form_label">店铺介绍：</label>
-			                			<textarea id="shop_desc" cols="75" rows="15" name="shop_desc" >{$data_arr['shop_desc']}</textarea>
+			                			<textarea id="shop_desc" cols="75" rows="15" 
+										class="xheditor {urlBase:'{BASE_URL}/',tools:'simple',skin:'nostyle',html5Upload:false,emotMark:false,upImgUrl:'../ajax/upload?file_type=att'}"
+										 name="shop_desc"  >{$shop_arr['shop_desc']}</textarea>
 			                		</div>
 		
 			                		<div class="form_line">
@@ -60,4 +71,7 @@
     	</article>
     </div>
     <!--content end-->
+<script>
+	In('edit','valid');
+</script>	
 <!--{include user/footer}-->

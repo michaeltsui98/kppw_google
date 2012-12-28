@@ -28,7 +28,8 @@ class Control_user_seller_shop extends Control_user{
 		$member_uri=USER_URL."/seller_shop/member";
 					
 		$is_auth = $this->get_is_auth();
-		$data_arr = DB::select()->from('witkey_shop')->where('uid = '.$_SESSION['uid'])->get_one()->execute();		
+// 		var_dump($is_auth);die;
+		$shop_arr = DB::select()->from('witkey_shop')->where('uid = '.$_SESSION['uid'])->get_one()->execute();		
 		
 		require Keke_tpl::template('user/seller/shop');
 	}
@@ -42,6 +43,9 @@ class Control_user_seller_shop extends Control_user{
 		
 		$query_fields = array (	'case_id' => '店铺ID',	'case_name' => '店铺名称');
 		$this->_default_ord_field='case_id';
+		
+		$base_uri = USER_URL.'/seller_shop/case';
+		
 		extract ( $this->get_url ( $base_uri ) );
 		
 		$data_info = Model::factory ( 'witkey_shop_case' )->get_grid ( $fields, $where, $uri, $order, $page, $count, $_GET ['page_size'] );
@@ -117,6 +121,9 @@ class Control_user_seller_shop extends Control_user{
 		$query_fields = array (	'member_id' => '成员ID',	'truename' => '成员名称');
 		
 		$this->_default_ord_field='member_id';
+		
+		$base_uri = USER_URL.'/seller_shop/member';
+		
 		extract ( $this->get_url ( $base_uri ) );
 		
 		$data_info = Model::factory ( 'witkey_shop_member' )->get_grid ( $fields, $where, $uri, $order, $page, $count, $_GET ['page_size'] );
@@ -141,7 +148,7 @@ class Control_user_seller_shop extends Control_user{
 	 * 成员数据保存
 	 */
 	function action_member_save(){
-		KeKe::formcheck($_POST['formhash']);
+		Keke::formcheck($_POST['formhash']);
 		$_POST = Keke_tpl::chars ( $_POST );
 		$array=array(
 				'shop_id'=>$_POST['hdn_shop_id'],
@@ -175,26 +182,29 @@ class Control_user_seller_shop extends Control_user{
 	 *  店铺数据保存 
 	 */
 	function action_save(){
-		
+		$_POST = Keke_tpl::chars($_POST);
+		$arr = array('shop_name'=>$_POST['shop_name'],'shop_desc'=>$_POST['shop_desc'],
+				'uid'=>$this->uid,'username'=>$this->username,'shop_type'=>$this->group_id==3?2:1
+				);
+		if($_POST['hdn_shop_id']){
+			DB::update('witkey_shop')->set(array_keys($arr))->value(array_values($arr))->where("shop_id = '{$_POST['hdn_shop_id']}'")->execute();
+		}else{
+			DB::insert('witkey_shop')->set(array_keys($arr))->value(array_values($arr))->execute();
+		}
+		Keke::show_msg('提交成功','user/seller_shop');
 	}
 	
-	/**
-	 *  判断用户类型
-	 * @return 
-	 */
-	function get_user_type(){
-		return DB::select('user_type')->from('witkey_space')->where("uid = ".$_SESSION['uid'])->get_count()->execute();
-	}
 	/**
 	 * 判断是否通过认证
 	 * @return 
 	 */
 	function get_is_auth(){
-		if($this->get_user_type() == 1){
-			$auth_type = 'realname';
-		}else {
-			$auth_type = 'enterprise';
+		$info = DB::select()->from('witkey_member_auth')->where("uid = ".$_SESSION['uid'])->get_one()->execute();
+		
+		if($this->group_id==3){
+			return (bool)$info['enterprise'];
+		}else{
+			return (bool)$info['realname'];
 		}
-		return DB::select($auth_type)->from('witkey_member_auth')->where("uid = ".$_SESSION['uid'])->get_count()->execute();
 	}
 }

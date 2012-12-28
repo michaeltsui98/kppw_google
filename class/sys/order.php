@@ -5,6 +5,44 @@ Keke_lang::load_lang_class ( 'keke_order_class' );
  * 订单处理
  */
 class Sys_order {
+	
+	private static $instance;
+	
+	public static function getinstance(){
+		if(Keke_valid::not_empty(self::$instance)){
+			return self::$instance;
+		}
+		return self::$instance = new self();
+	}
+	/**
+	 * 添加订单
+	 * $order_status   wait,ok,fail,close 
+	 * @param array $order  key(order_name,order_amount,order_body,order_status,seller_uid,seller_name)
+	 * @param array $item  key(order_id,name,obj_type,obj_id,price,num,model_id)
+	 */
+	public function create_order($order,$item=NULL){
+		
+		$order['order_time'] = (int)SYS_START_TIME;
+		$order['order_uid'] = $_SESSION['uid'];
+		$order['order_username'] = $_SESSION['username'];
+		$order['order_status'] = 'wait';
+
+		$order_id = DB::insert('witkey_order')->set(array_keys($order))->value(array_values($order))->execute();
+		
+		if(Keke_valid::not_empty($item)){
+			$item['order_id'] = $order_id;
+			$this->add_itme($item);
+		}
+		return $order_id;	
+	}
+	/**
+	 * 添加订单项
+	 * @param array $item 
+	 */
+	public function add_itme($item){
+		return DB::insert('witkey_order_detail')->set(array_keys($item))->value(array_values($item))->execute();	
+	}
+	
 	/**
 	 * 获取指定订单+详细信息
 	 * @param int $order_id 订单编号
@@ -34,50 +72,6 @@ class Sys_order {
 	public static function get_order_detail($order_id) {
 		$sql = "select * from %switkey_order_detail where order_id = '%d'";
 		return Dbfactory::query ( sprintf ( $sql, TABLEPRE, $order_id ) );
-	}
-	
-	/**
-	 * 交易订单生成
-	 * @param int $model_id 模型ID
-	 * @param string $order_name 订单名,有多项是用#分隔
-	 * @param float $order_amount 订单总金额
-	 * @param string $order_body   订单备注
-	 * @param string $order_status   wait,ok,fail,close 默认为wait
-	 */
-	public static function create_order($model_id, $seller_uid, $seller_username, $order_name, $order_amount, $order_body, $order_status = 'wait') {
-		$order_obj = new Keke_witkey_order ();
-		$order_obj->setModel_id ( $model_id );
-		$order_obj->setOrder_name ( $order_name );
-		$order_obj->setOrder_uid ( $_SESSION['uid'] );
-		$order_obj->setOrder_username ( $_SESSION['username'] );
-		$order_obj->setSeller_uid ( $seller_uid );
-		$order_obj->setSeller_username ( $seller_username );
-		$order_obj->setOrder_body ( $order_body );
-		$order_obj->setOrder_amount ( $order_amount );
-		$order_obj->setOrder_status ( $order_status );
-		$order_obj->setOrder_time ( SYS_START_TIME );
-		return $order_obj->create ();
-	}
- 
-	/**
-	 * 产生订单详细记录
-	 * @param int $order_id   所属订单编号
-	 * @param string $detail_name 详细名称
-	 * @param string $obj_type 对象类型
-	 * @param int $obj_id  对象编号
-	 * @param float $price   单价
-	 * @param int $num    数量 默认为1
-	 */
-	public static function create_order_detail($order_id, $detail_name, $obj_type, $obj_id, $price, $num = '1') {
-		$detail_obj = new Keke_witkey_order_detail ();
-		$detail_obj->_detail_id = null;
-		$detail_obj->setOrder_id ( $order_id );
-		$detail_obj->setDetail_name ( $detail_name );
-		$detail_obj->setObj_id ( $obj_id );
-		$detail_obj->setObj_type ( $obj_type );
-		$detail_obj->setPrice ( $price );
-		$detail_obj->setNum ( $num );
-		return $detail_obj->create ();
 	}
 	/**
 	 * 订单删除

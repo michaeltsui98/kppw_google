@@ -10,8 +10,9 @@ class Control_task_sreward_trade extends Sys_task_trade{
 
 	
 	public function task_pub(){
-		
+					
 	}
+	
 	
 	/**
 	 * @return ÈÎÎñ×´Ì¬ array($task_status=>array('scode'=>'wait','status'=>'´ý¸¶¿î'))

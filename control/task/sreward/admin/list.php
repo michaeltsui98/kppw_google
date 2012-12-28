@@ -44,7 +44,8 @@ class Control_task_sreward_admin_list extends Control_admin_task_list{
     	//分页数据
     	$pages = $data_info['pages'];
     	
-    	$task_status = Control_task_sreward_trade::get_task_status();
+    	$task_status = Control_task_sreward_trade::task_status();
+    	
      	require Keke_tpl::template('control/task/'.$this->_model_code.'/tpl/admin/list');
     }
     /**
@@ -60,7 +61,7 @@ class Control_task_sreward_admin_list extends Control_admin_task_list{
         $process_arr = Control_admin_task_list::can_operate($task_info['task_status']);
         $indus_option_arr = Sys_indus::get_indus_tree($task_info['indus_id']);
         //单赏任务状态
-        $status_arr = Control_task_sreward_tread::get_task_status();
+        $status_arr = Control_task_sreward_trade::task_status();
         //获取任务的增值项
         $payitem_list = Sys_payitem::get_task_payitem($this->_task_id);
         
@@ -171,7 +172,7 @@ class Control_task_sreward_admin_list extends Control_admin_task_list{
         $list_arr = $data_info['data'];
         //分页数据
         $pages = $data_info['pages'];
-        $satus_arr = Control_task_sreward_task::get_work_status();
+        $satus_arr = Control_task_sreward_trade::work_status();
 	 
     	require Keke_tpl::template('control/task/'.$this->_model_code.'/tpl/admin/task_work');
     }

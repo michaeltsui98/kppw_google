@@ -998,7 +998,7 @@ function ele_valid(obj){
 		}
 	}).focus(function(){
 		$("#" + msgArea).addClass('msg').removeClass('msg_ok').removeClass('msg_tips').removeClass('msg_error');
-		$("#" + msgArea).html('');
+		$("#" + msgArea).html(tips);
 		return false;
 	})
 }

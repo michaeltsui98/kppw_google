@@ -19,32 +19,77 @@
 								</ul>
 		                </nav>
 		                <div class="box_detail">
-
-		                	<div class="form_row">
+							<form action="{$member_save_uri}" method="post" name="form_member" id="form_member" onsubmit="return checkForm(this)" enctype="multipart/form-data">
+							<input type="hidden" name="formhash" value="{FORMHASH}">
+							<input type="hidden" name="hdn_shop_id" value="{$shop_arr['shop_id']}">
+							<input type="hidden" name="hdn_member_id" value="{$member_info['member_id']}">
+							<div class="form_row">
 	                			<label class="form_label">姓名：</label>
-	                			<input type="text">
-	                		</div>
+	                			<input type="text" name="txt_truename" value="{$member_info['truename']}"
+								limit="required:true;len:2-20"
+								title="姓名的长度为2到20个字符"
+								msg="姓名输入有误"
+								msgArea="msg_truename" />
+	                			<span id="msg_truename"></span>
+							</div>
 
 
 	                		<div class="form_row float_row">
 	                			<label class="form_label">头像：</label>
 
 	                			<div class="detail">
-	                				<input type="file">
+	                				<input type="file" name="fil_member_pic">
 	                				<p>成员图片,推荐大小150X150。支持.jpg,.gif,.png,.jpeg格式。</p>
-	                				<p><img class="pic_larger" src="{BASE_URL}/{SKIN_PATH}/ui/images/l_avatar.png" alt="avatar"></p>
+	                				<p><img class="pic_larger" src="{BASE_URL}/{$member_info['member_pic']}" alt="{$member_info['truename']}"></p>
 	                			</div>
 	                		</div>
-
-	                		<div class="form_row">
+							<div class="form_row">
 	                			<label class="form_label">职位：</label>
-	                			<input type="text">
+	                			<input type="text" name="txt_member_job" value="{$member_info['member_job']}"
+								limit="required:true;len:2-20"
+								title="职位长度为2到20个字符"
+								msg="职位输入有误"
+								msgArea="msg_member_job"/>
+								<span id="msg_member_job"></span>
 	                		</div>
-
-
+	                		<div class="form_row">
+	                			<label class="form_label">学历：</label>
+	                			<input type="text" name="txt_top_eduction" value="{$member_info['top_eduction']}"
+								limit="required:true;len:2-20"
+								title="学历长度为2到20个字符"
+								msg="学历输入有误"
+								msgArea="msg_top_eduction"/>
+								<span id="msg_top_eduction"></span>
+	                		</div>
+	                		<div class="form_row">
+	                			<label class="form_label">毕业学校：</label>
+	                			<input type="text" name="txt_school" value="{$member_info['school']}"
+								limit="required:true;len:2-20"
+								title="毕业学校长度为4到30个字符"
+								msg="毕业学校输入有误"
+								msgArea="msg_school"/>
+								<span id="msg_school"></span>
+	                		</div>
+							<!--
+	                		<div class="form_row">
+	                			<label class="form_label">工作时间：</label>
+	                			<input type="text" name="txt_entry_age" value="{$member_info['entry_age']}" readonly
+								limit="required:true;len:2-20"
+								title="工作时间按年计算"
+								msg="工作时间输入有误"
+								msgArea="msg_entry_age"/>年
+								<span id="msg_entry_age"></span>
+	                		</div>
+							-->
+							
 	                		<div class="form_row">
 	                			<label class="form_label">介绍：</label>
-	                			<textarea name="" id="" cols="60" rows="5"></textarea>
+	                			<textarea name="txa_member_desc" id="" cols="60" rows="5"
+								limit="required:true"
+								title="介绍不能为空"
+								msg="介绍输入有误"
+								msgArea="msg_member_desc">{$member_info['member_desc']}</textarea>
+								<span id="msg_member_desc"></span>
 	                		</div>
 
 	                		<div class="form_line">
@@ -52,10 +97,9 @@
 	                		</div>
 
 	                		<div class="form_footer">
-	                			<input type="submit" value="提交">
+	                			<input type="submit" value="提交" >
 	                		</div>
-
- 
+							</form>
 		                </div>
 		            </div>
 		        </div>
@@ -63,4 +107,7 @@
     	</article>
     </div>
     <!--content end-->
+	<script type="text/jscript">
+		In('valid');
+	</script>
 <!--{include user/footer}-->

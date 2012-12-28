@@ -20,25 +20,38 @@
 		                </nav>
 		                <div class="box_detail">
  		                	<div class="toolbar">
-		                		<div class="actions">
-		                			<input type="submit" value="添加案例">
-		                		</div>
-		                		<div class="actions">
-		                			<input type="search" placeholder="请输入标题关键字"><input type="button" value="搜索标题">
-		                		</div>
-		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
-					            </div>
+		                		<form class="detail" action="{$case_uri}" method="get" id="frm_user_search">
+										<table cellspacing="0" cellpadding="0">
+											<tbody>
+											<tr>
+										    <td> 条件
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											 <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											 </select>
+										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											 <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											</select>
+											 <input type="submit" value="{$_lang['search']}">
+											 <a href = "{$case_add_uri}" class="submit">添加案例</a>
+											 
+											 </td>
+										</tr>
+										</tbody>
+										</table>
+								</form>
+		                	 
 		                	</div>
 
 		                	<!--date_table数据表格 start-->
@@ -51,70 +64,26 @@
 		                            </tr>
 		                            </thead>
 		                            <tbody>
-		                            <tr>
-		                              <td>
-		                              	<img class="pic_larger mt_5" src="http://img01.taobaocdn.com/tps/i4/T14x_UXmdiXXclNAI0-130-225.jpg" alt="欧莱雅">
-		                              </td>
-		                              <td>
-		                              	<a href="#" class="title">欧莱雅 买金致精华液 送金致精华液</a> 
-		                              	网页设计
-		                              	<p class="ws_break">
-		                              		秋去冬来，年终将至。为感谢并回馈广大新老用户对123RF中国的支持与鼓励，123RF联手站酷网于2012年11月5日至2012年12月31日共同在线举行123RF中国年终巨惠活动。所有参与123RF中国点数购图交易的用户在满足活动规则的情况下均会得到123RF中国的一份诚挚谢礼。
-		                              	</p>
-		                              	<div class="item_action">
-		                              		<a href="#">编辑</a>
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-		                              
-		                              
-
-		                            </tr>
-		                            <tr>
-		                            	<td>
-		                            		<img class="pic_larger mt_5" src="http://drmcmm.baidu.com/media/id=rHcvPH6vrH6&gp=401&time=nHndnWDLnWn4n0.gif" alt="">
-		                            	</td>
-		                              <td>
-		                              	<a href="#" class="title">123RF中国年终钜惠三部曲</a>
-		                              	网页设计
-		                              	<p class="ws_break">
-		                              		秋去冬来，年终将至。为感谢并回馈广大新老用户对123RF中国的支持与鼓励，123RF联手站酷网于2012年11月5日至2012年12月31日共同在线举行123RF中国年终巨惠活动。所有参与123RF中国点数购图交易的用户在满足活动规则的情况下均会得到123RF中国的一份诚挚谢礼。
-		                              	</p>
-		                              	<div class="item_action">
-		                              		<a href="#">编辑</a>
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-		                              
-		                              
-
-		                            </tr>
-		                            <tr>
-		                              <td>
-		                              	<img class="pic_larger mt_5" src="http://drmcmm.baidu.com/media/id=rH04nHDvnj6&gp=401&time=nHndnHm3njDsP6.jpg" alt="">
-		                              </td>
-		                              <td>
-		                              	<a href="#" class="title">#框不住　网易邮箱首页设计大赛</a>
-		                              	网页设计
-		                              	<p class="ws_break">
-		                              		
-
-本次大赛的评委由中国美术学院设计艺术学院教授、网易艺术顾问连放，《南方都市报》视觉总监、摄影家王景春，艺术家、四川美术学院教授、
-
-中国当代艺术研究院艺术总监叶永青，网络热门卡通形象阿狸的原创者、互联网知名动漫画家徐瀚和网易邮箱-LOFTER联合评审小组共同组成。
-
-		                              	</p>
-		                              	<div class="item_action">
-		                              		<a href="#">编辑</a>
-		                              		<a href="#">删除</a>
-		                              		<a href="#">查看</a>
-		                              	</div>
-		                              </td>
-		                              
-		                              
-		                            </tr>
+		                            	{loop $shop_case_list $v}
+										<tr>
+		                            	  <td>
+		                              		<img width="50px" height="50px" class="pic_larger mt_5" src="{BASE_URL}/{$v['case_pic']}" alt="{$v['case_name']}">
+		                              	  </td>
+		                            	  <td>
+		                              		<a href="#" class="title">{$v['case_name']}</a> 
+		                              		<p class="ws_break">{cutstr($v['case_desc'],200)}</p>
+		                              		<div class="item_action">
+		                              			<a href="{$case_add_uri}?case_id={$v['case_id']}">编辑</a>
+		                              			<a href="{$case_del_uri}?case_id={$v['case_id']}" onclick="return kdel(this,'',rm)">删除</a>
+		                              			{if $v['case_type']=="1"}
+												<a href="#">查看</a>
+												{elseif $v['case_type']=="2"}
+												<a href="{$v['case_url']}">查看</a>
+												{/if}
+		                              		</div>
+		                             	 </td>                             
+		                           	   </tr>
+									   {/loop}
 		                            </tbody>
 		                            
 		                          </table>
@@ -123,29 +92,23 @@
 
 			               	<div class="toolbar bottom">
 		                		<div class="actions">
-		                			<input type="submit" value="添加案例">
+		                			<a href = "{$case_add_uri}" class="submit">添加案例</a>
 		                		</div>
 		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
+					                <p>{$pages['page']}</p>
 					            </div>
 		                	</div>
-
-
 		                </div>
 		            </div>
 		        </div>
     		</div>
     	</article>
     </div>
+<script>
+	function rm(o){
+		 $(o).parents('tr').remove();
+		
+	}
+</script>	
     <!--content end-->
 <!--{include user/footer}-->

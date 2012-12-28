@@ -1,12 +1,16 @@
 <?php defined('IN_KEKE') or die('access denied');
-
+Keke_lang::load_lang_class ( 'sys_finance' );
 /**
+ *  使用例子
+ *   Sys_finance::get_instance($uid)->set_action('pub_task')
+ *	 ->set_mem(array(':model_name'=>'sreward',':task_id'=>$task_id,':task_title'=>$task_info['task_title']))
+ *	 ->set_obj('task', $task_id)->cash_out($task_info['task_cash']);
+ *  先设置对谁，再设置收支类目，再设置类目的内容参数，再设置收支对象类型与ID，再设置收支的费用
  * @example 财务结算
-  * @author Michael
+ * @author Michael
  * @version 3.0 2012-11-27
  *
  */
-Keke_lang::load_lang_class ( 'sys_finance' );
 class Sys_finance {
 	 
 	/**
@@ -33,6 +37,14 @@ class Sys_finance {
 	 * @var 收支事由
 	 */
 	private $_mem;
+	/**
+	 * @var 对象类型
+	 */
+	private $_obj_type=NULL;
+	/**
+	 * @var 对象ID
+	 */
+	private $_obj_id=NULL;
 	
 	public static $instance;
 	
@@ -59,6 +71,16 @@ class Sys_finance {
 		return $this;
 	}
 	/**
+	 * 设置对象类型 
+	 * @param string $obj_type
+	 * @param int $obj_id
+	 */
+	function set_obj($obj_type,$obj_id){
+		$this->_obj_type = $obj_type;
+		$this->_obj_id = $obj_id;
+		return $this;
+	}
+	/**
 	 * 威客用户支出的计算处理
 	 * @param float $cash
 	 * @param float $profit
@@ -66,7 +88,13 @@ class Sys_finance {
 	 * @param int $obj_id
 	 * @return boolean  (false 余额不足)
 	 */
-	public function cash_out( $cash, $profit = 0,$obj_type=NULL, $obj_id = null) {
+	public function cash_out( $cash, $profit = 0,$obj_type=NULL, $obj_id = NULL) {
+		if($obj_type===NULL){
+			$obj_type = $this->_obj_type;
+		}
+		if($obj_id===NULL){
+			$obj_id = $this->_obj_id;
+		}
 		$user_info = $this->_uinfo;
 		$res = false;
 		$sys_config = Keke::$_sys_config;
@@ -78,18 +106,19 @@ class Sys_finance {
 		$fo->setSite_profit ( $profit );
 		$fo->setUid ( $user_info ['uid'] );
 		$fo->setUsername ( $user_info ['username'] );
-		$action = $this->_action;
-		$fo->setFina_mem ( $this->_mem );
 		$user_balance = $user_info ['balance'];
 		$user_credit = $user_info ['credit'];
 		$credit_allow =  (int)$sys_config ['credit_is_allow'] + 0;
+		
+		$action = $this->_action;
 		if ($cash && $action) {
 			try {
 				// 判断积分是否开启
 				$credit_allow == 2 and $user_credit = 0;
 				// 是否有钱付款
 				if ($user_balance + $user_credit < $cash) {
-					return false;
+					//负数，表示还差多少钱
+					return (float)(($user_balance+$user_credit)-$cash);
 				}
 				$where = "uid ='{$user_info['uid']}'";
 				// 提现判断,代金券不能用提现
@@ -119,6 +148,7 @@ class Sys_finance {
 					}
 				}
 				$fo->setFina_time ( SYS_START_TIME );
+				$fo->setFina_mem ( $this->_mem );
 				return (int) $fo->create ();
 			} catch ( Exception $e ) {
 				throw new Keke_exception( $e );
@@ -137,6 +167,12 @@ class Sys_finance {
 	 * @return int 
 	 */
 	public function cash_in( $cash, $credit = 0,$profit = 0, $obj_type = null, $obj_id = null) {
+		if($obj_type===NULL){
+			$obj_type = $this->_obj_type;
+		}
+		if($obj_id===NULL){
+			$obj_id = $this->_obj_id;
+		}
 		$user_info = $this->_uinfo;
 	 	$fo = new Keke_witkey_finance ;
 		$fo->setFina_action ( $this->_action );

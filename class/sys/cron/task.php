@@ -5,7 +5,7 @@
  * @version 3.0 2012-12-07
  */
 
-abstract  class Sys_task_cron {
+abstract  class Sys_cron_task {
     
 	/**
 	 * @var Ä¬ÈÏÎªµ¥ÉÍ
@@ -63,7 +63,7 @@ abstract  class Sys_task_cron {
 		$models = DB::select('model_code')->from('witkey_model')->where($where)->execute();
 		//Keke::$_log->add(log::DEBUG, __CLASS__.'function: '.__FUNCTION__)->write();
 		foreach ($models as $v){
-			Sys_task_cron::factory($v['model_code'])->run();
+			Sys_cron_task::factory($v['model_code'])->run();
 		}
 	}
 }//end

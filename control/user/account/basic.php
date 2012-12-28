@@ -137,9 +137,8 @@ class Control_user_account_basic extends Control_user{
 		
 		$mail = explode('@', $email);
 		$mail_url = 'http://mail.'.$mail[1];
-		 
-		register_shutdown_function(array(Keke_msg::instance(),'send_mail'),$email,$title,$body);
 		
+		Keke_msg::instance()->send_mail($email,$title,$body);
 		$this->request->redirect($mail_url);
 	}
 	

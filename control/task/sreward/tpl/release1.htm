@@ -1,12 +1,13 @@
 
 <h1>单人悬赏第一步</h1>
 
-<form action="{PHP_URL}/task/sreward_pub/step2" method="post" >
+<form action="{PHP_URL}/task/sreward_pub/step2" method="post"  onsubmit="return checkForm(this)">
 	
-	<p>任务金额:<input type="text" name="task_cash"></p>
+	<p>任务金额:<input type="text" name="task_cash" value="{$task_info['task_cash']}" limit="required:true"></p>
 	
-	<p>任务周期:<input type="text" name="sub_time" ></p>
+	<p>任务周期:<input type="text" name="sub_time" value="{$task_info['sub_time']}" limit="required:true"></p>
 	
-	<p><input type="submit" value="continue" /></p>
+	<p><input type="submit"/></p>
 </form>
 
+ 

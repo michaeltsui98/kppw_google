@@ -26,7 +26,7 @@ class Control_user_account_detail extends Control_user{
 		$inc_indus = self::$inc_indus;
 		$inc_job = self::$inc_job;
 		
-		$year = $this->get_year();
+		$year =Date::get_year();
 		
 		require Keke_tpl::template('user/account/work_list');
 	}
@@ -125,7 +125,7 @@ class Control_user_account_detail extends Control_user{
 	function action_skill(){
 		$where = "uid = $this->uid";
 		$certs = DB::select()->from('witkey_member_cert')->where($where)->execute();
-		$year = $this->get_year();
+		$year = Date::get_year();
 	    //global $_K;
 	    //$_K['is_rewrite']=1;
 	    

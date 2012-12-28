@@ -5,7 +5,7 @@
  * @version 3.0 
  *
  */
-class Control_task_sreward_cron extends Sys_task_cron {
+class Control_task_sreward_cron extends Sys_cron_task {
      /**
       * Ö´ÐÐ
       */

@@ -50,7 +50,9 @@ class Chinabank extends Sys_payment {
 		foreach ($this->_config as $key=>$val){
 			$sHtml .= "<input type='hidden' name='" . $key . "' value='" . $val . "'/>";
 		}
-		$sHtml = $sHtml . "<input type='submit'  value='$btn_name'/>";
+		 
+		$sHtml = $sHtml."<input type='submit' style='display:none;' value='".$btn_name."'></form>";
+		$sHtml = $sHtml.$btn_name;
 		$sHtml .= "<script>document.forms[\"E_FORM\"].submit();</script>";
 		return $sHtml;
 	}

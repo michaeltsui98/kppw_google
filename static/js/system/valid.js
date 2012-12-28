@@ -219,7 +219,7 @@ function validElement(ele){
 			msgSpan.innerHTML = '<span>'+errMsg+'</span>';
 		}else{
 			//showDialog(errMsg,'alert','tips');
-			 if(typeof(eval("art.dialog"))=="function"){
+			 if(typeof art == 'function'){
 				 art.dialog.alert(errMsg);
 			 }else{
 				 alert(errMsg);
@@ -998,7 +998,7 @@ function ele_valid(obj){
 		}
 	}).focus(function(){
 		$("#" + msgArea).addClass('msg').removeClass('msg_ok').removeClass('msg_tips').removeClass('msg_error');
-		$("#" + msgArea).html('');
+		$("#" + msgArea).html(tips);
 		return false;
 	})
 }

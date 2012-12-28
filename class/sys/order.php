@@ -1,14 +1,10 @@
 <?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+
+Keke_lang::load_lang_class ( 'keke_order_class' );
 /**
  * 订单处理
  */
-Keke_lang::load_lang_class ( 'keke_order_class' );
 class Sys_order {
-	
-	
-	
-	
-	
 	/**
 	 * 获取指定订单+详细信息
 	 * @param int $order_id 订单编号
@@ -46,15 +42,14 @@ class Sys_order {
 	 * @param string $order_name 订单名,有多项是用#分隔
 	 * @param float $order_amount 订单总金额
 	 * @param string $order_body   订单备注
-	 * @param string $order_status   wait,ok,fail,close 默认为ok
+	 * @param string $order_status   wait,ok,fail,close 默认为wait
 	 */
-	public static function create_order($model_id, $seller_uid, $seller_username, $order_name, $order_amount, $order_body, $order_status = 'ok') {
-		global $uid, $username;
+	public static function create_order($model_id, $seller_uid, $seller_username, $order_name, $order_amount, $order_body, $order_status = 'wait') {
 		$order_obj = new Keke_witkey_order ();
 		$order_obj->setModel_id ( $model_id );
 		$order_obj->setOrder_name ( $order_name );
-		$order_obj->setOrder_uid ( $uid );
-		$order_obj->setOrder_username ( $username );
+		$order_obj->setOrder_uid ( $_SESSION['uid'] );
+		$order_obj->setOrder_username ( $_SESSION['username'] );
 		$order_obj->setSeller_uid ( $seller_uid );
 		$order_obj->setSeller_username ( $seller_username );
 		$order_obj->setOrder_body ( $order_body );
@@ -63,49 +58,7 @@ class Sys_order {
 		$order_obj->setOrder_time ( SYS_START_TIME );
 		return $order_obj->create ();
 	}
-	/**
-	 * 用户余额充值订单生个
-	 * @param string $order_type 充值类型 online_charge offline_charge
-	 * @param string $pay_type  支付类型 alipay 中国工商银行
-	 * @param float $money  金额
-	 * @param int $obj_id   对象编号 任务付款、商品付款时使用
-	 * @param string $order_status 充值状态 默认 wait   （wait,ok,fail,close）
-	 * @return $order_id
-	 */
-	public static function create_user_charge_order($order_type, $pay_type, $money, $obj_id = null, $pay_info = '', $order_status = 'wait', $uid = '', $username = '') {
-		global $user_info;
-		$uid or $uid = $user_info ['uid'];
-		$username or $username = $user_info ['username'];
-		$sql = "select order_id,order_status from %switkey_order_charge where uid='%d' and pay_type='%s'";
-		$obj_id and $sql .= " and obj_id='$obj_id'";
-		$order_info = dbfactory::get_one ( sprintf ( $sql, TABLEPRE, $uid, $pay_type ) );
-		$status = $order_info ['order_status'];
-		$order_id = $order_info ['order_id'];
-		
-		if ($obj_id) { //是任务、商品付款
-			$order_id and ($status == 'wait' and $update = true);
-		} else {
-			$order_id and ($status == 'wait' and $update = true or $create = true);
-		}
-		$order_id or $create = true; //需创建
-		$update and dbfactory::execute ( sprintf ( " update %switkey_order_charge set pay_money='%.2f',pay_time='%s' where order_id='%d'", TABLEPRE, $money, time (), $order_id ) );
-		if ($create) {
-			$order_obj = new Keke_witkey_order_charge ();
-			$order_obj->_order_id = null;
-			$order_obj->setOrder_type ( $order_type );
-			$order_obj->setUid ( $uid );
-			$pay_info = Keke::unescape ( $pay_info );
-			$order_obj->setPay_info ( $pay_info );
-			$order_obj->setPay_type ( $pay_type );
-			$order_obj->setObj_id ( $obj_id );
-			$order_obj->setUsername ( $username );
-			$order_obj->setPay_money ( $money );
-			$order_obj->setPay_time ( time () );
-			$order_obj->setOrder_status ( $order_status );
-			$order_id = $order_obj->create_keke_witkey_order_charge ();
-		}
-		return $order_id;
-	}
+ 
 	/**
 	 * 产生订单详细记录
 	 * @param int $order_id   所属订单编号
@@ -117,7 +70,6 @@ class Sys_order {
 	 */
 	public static function create_order_detail($order_id, $detail_name, $obj_type, $obj_id, $price, $num = '1') {
 		$detail_obj = new Keke_witkey_order_detail ();
-		
 		$detail_obj->_detail_id = null;
 		$detail_obj->setOrder_id ( $order_id );
 		$detail_obj->setDetail_name ( $detail_name );
@@ -130,11 +82,12 @@ class Sys_order {
 	/**
 	 * 订单删除
 	 */
-	public static function del_order($order_id, $url = '', $output = 'normal') {
-		global $_lang;
-		$res = dbfactory::execute ( sprintf ( " delete from %switkey_order where order_id='%d'", TABLEPRE, $order_id ) );
-		$res *= dbfactory::execute ( sprintf ( " delete from %switkey_order_detail where order_id = '%d'", TABLEPRE, $order_id ) );
-		$res and Keke::keke_show_msg ( $url, $_lang['order_delete_success'], "", $output ) or Keke::keke_show_msg ( $url, $_lang['order_delete_fail'], "error", $output );
+	public static function del_order($order_id) {
+		 $sql = "DELETE a.*,b.* FROM `:keke_witkey_order` a \n".
+				"LEFT JOIN :keke_witkey_order_detail b \n".
+				"on a.order_id = b.order_id \n".
+				"where a.order_id = '$order_id' ";
+		 return (bool)DB::query($sql,Database::DELETE)->tablepre(':keke_')->execute();
 	}
 	/**
 	 * 更新订单状态
@@ -156,14 +109,6 @@ class Sys_order {
 		} else {
 			return true;
 		}
-	}
- 
-	/**
-	 * 更新财务记录的订单号
-	 * 
-	 */
-	public static function update_fina_order($fina_id, $order_id) {
-		return dbfactory::execute ( sprintf ( " update %switkey_finance set order_id = '%d' where fina_id = '%d'", TABLEPRE, $order_id, $fina_id ) );
 	}
 	
 	/**

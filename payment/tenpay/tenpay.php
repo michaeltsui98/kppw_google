@@ -116,8 +116,8 @@ class Tenpay extends Sys_payment {
 		foreach($params as $k => $v) {
 			$sHtml.= "<input type=\"hidden\" name=\"{$k}\" value=\"{$v}\" />\n";
 		}
-		$sHtml = $sHtml."<input type='submit' value='".$btn_name."'></form>";
-		
+		$sHtml = $sHtml."<input type='submit' style='display:none;' value='".$btn_name."'></form>";
+		$sHtml = $sHtml.$btn_name;
 		$sHtml = $sHtml."<script>document.forms['tenpaysubmit'].submit();</script>";
 		return $sHtml;
 		

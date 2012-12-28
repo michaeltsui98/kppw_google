@@ -620,5 +620,18 @@ class Date {
 		}
 		return $result;
 	}
+	
+	/**
+	 * 最近的20年
+	 * @return  array
+	 */
+	public static function get_year(){
+		$y = date('Y',(int)SYS_START_TIME);
+		$o = array();
+		for($i=0;$i<=20;$i++){
+			$o[] = ($y-$i);
+		}
+		return $o;
+	}
 
 } // End date

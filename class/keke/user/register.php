@@ -73,6 +73,9 @@ abstract class Keke_user_register {
 		
 		$values = array($uid,$username,$this->_email,time(),Keke::get_ip(),time(),$status,1,1);
 		
+		//生成认证记录表
+		DB::insert('witkey_member_auth')->set(array('uid'))->value(array($uid))->execute();
+		
 		return (int)DB::insert('witkey_space')->set($columns)->value($values)->execute();
 	}
 	/**

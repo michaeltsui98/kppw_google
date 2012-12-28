@@ -9,7 +9,7 @@
  *         
  */
 class Yeepay extends Sys_payment {
-	private $_debug = 1;
+	private $_debug = 0;
 	private $_reqUrl;
 	private $_config = array ();
 	function __construct() {
@@ -107,8 +107,9 @@ class Yeepay extends Sys_payment {
 		foreach ( $params as $k => $v ) {
 			$sHtml .= "<input type=\"hidden\" name=\"{$k}\" value=\"{$v}\" />\n";
 		}
-		$sHtml = $sHtml . "<input type='submit' value='" . $btn_name . "'></form>";
 		 
+		$sHtml = $sHtml."<input type='submit' style='display:none;' value='".$btn_name."'></form>";
+		$sHtml = $sHtml.$btn_name;
 		$sHtml .="<script>document.forms['yeepaysubmit'].submit();</script>";
 		return $sHtml;
 	}

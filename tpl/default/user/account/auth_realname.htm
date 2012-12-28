@@ -14,13 +14,10 @@
 		                <nav class="box_nav">
 								<ul id="test_ul" class="clearfix">
 									<li class="selected"><a href="{USER_URL}/account_auth">实名认证</a></li>
-								 
-									<li><a href="{USER_URL}/account_auth/enter">企业认证</a></li>
 								</ul>
 		                </nav>
 						<form action="{USER_URL}/account_auth/real_save" method="post" enctype="multipart/form-data">
 							<input type="hidden" value="{FORMHASH}" id="formhash" >
-						
 		                <div class="box_detail">
 							{if empty($auth_info) OR $_GET['ac']=='reset'}
 		                	<div class="form_row">

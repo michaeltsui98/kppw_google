@@ -19,52 +19,71 @@
 								</ul>
 		                </nav>
 		                <div class="box_detail">
-
+							<form action="{$case_save_uri}" method="post" name="form_case" id="form_case" enctype="multipart/form-data" onsubmit="return checkForm(this)">
+							<input type="hidden" name="formhash" value="{FORMHASH}">
+							<input type="hidden" name="hdn_shop_id" value="{$shop_arr['shop_id']}">
+							<input type="hidden" name="hdn_case_id" value="{$case_info['case_id']}">
 		                	<div class="form_row">
 	                			<label class="form_label">行业：</label>
-	                			<select name="" id="">
-	                				<option value="1">设计</option>
+	                			<select name="sel_indus" id="sel_indus">
+	                				 {loop $indus_arr $v}
+									 $v
+									 {/loop}
 	                			</select>
 	                		</div>
 
-	                		<div class="form_row">
-	                			<label class="form_label">案例类型：</label>
-	                			<input type="radio" name="casetype" id="insite"><label for="insite">站内案例</label>
-	                			<input type="radio" name="casetype" id="outsite"><label for="outsite">站外案例</label>
+	                		<div class="form_row" id="case_type">
+	                			<label class="form_label" >案例类型：</label>
+	                			<input type="radio" name="rad_casetype" id="insite" value="1" {if $case_info['case_type'] == "1" or $case_info['case_type']== "" } checked {/if}><label for="insite">站内案例</label>
+	                			<input type="radio" name="rad_casetype" id="outsite" value="2" {if $case_info['case_type'] == "2" } checked {/if}><label for="outsite">站外案例</label>
 	                		</div>
 
-							<div class="form_row" rel="insite">
+							<div class="form_row" rel="insite" id="service_list" >
 	                			<label class="form_label">服务列表：</label>
-	                			<select name="" id="">
-	                				<option value="1">发布的任务列表</option>
+	                			<select name="sel_service" id="sel_service">
+	                				{loop $service_arr $v}
+										<option value="{$v['sid']}@#{$v['title']}" {if $v['title'] == $case_info['case_name']} selected {/if}>{$v['title']}</option>
+									{/loop}
 	                			</select>
 	                		</div>
-
-	                		<div class="form_row" rel="outsite">
+	                		<div class="form_row" rel="outsite" id="service_name"  >
 	                			<label class="form_label">案例名称：</label>
-	                			<input type="text">
+	                			<input type="text" value="{$case_info['case_name']}"
+								limit="required:true"
+								title="案例名称不能为空"
+								msg="案例名称输入有误"
+								msgArea="msg_service_name">
+								<span id="msg_service_name"></span>
 	                		</div>
-
-	                		<div class="form_row" rel="outsite">
+	                		<div class="form_row" rel="outsite" id="service_link" >
 	                			<label class="form_label">站外链接：</label>
-	                			<input type="url">
+	                			<input type="text" name="txt_url" value="$case_info['case_url']"
+								limit="required:true;type:url"
+								title="请输入正确的URL"
+								msg="URL输入有误"
+								msgArea="msg_service_link">
+								<span id="msg_service_link"></span>
 	                		</div>
-
-
+							
 	                		<div class="form_row float_row">
-	                			<label class="form_label">图片：</label>
+	                			<label class="form_label">头像：</label>
 
 	                			<div class="detail">
-	                				<input type="file">
-	                				<p>展示图片,推荐150X150,支持.jpg,.gif,.png,.jpeg格式</p>
-	                				<p><img class="pic_larger" src="{BASE_URL}/{SKIN_PATH}/ui/images/l_avatar.png" alt="avatar"></p>
+	                				<input type="file" name="fil_pic">
+	                				<p>成员图片,推荐大小150X150。支持.jpg,.gif,.png,.jpeg格式。</p>
+	                				<p><img class="pic_larger" src="{BASE_URL}/{$case_info['case_pic']}" alt="{$case_info['case_name']}"></p>
 	                			</div>
 	                		</div>
 
 	                		<div class="form_row">
 	                			<label class="form_label">描述：</label>
-	                			<textarea name="" id="" cols="60" rows="5"></textarea>
-	                		</div>
+	                			<textarea name="txa_desc" id="txa_desc" cols="60" rows="5"
+								limit="required:true"
+								title="描述不能为空"
+								msg="描述输入有误"
+								msgArea="msg_desc">{$case_info['case_desc']}</textarea>
+	                			<span id="msg_desc"></span>
+							</div>
 
 	                		<div class="form_line">
 	                			<hr>
@@ -73,7 +92,7 @@
 	                		<div class="form_footer">
 	                			<input type="submit" value="提交">
 	                		</div>
-
+							</form>
 		                </div>
 		            </div>
 		        </div>
@@ -81,4 +100,29 @@
     	</article>
     </div>
     <!--content end-->
+<script type="text/javascript">
+In('valid');
+	//案例类型
+$(function(){
+	$("#case_type :radio").click(function(){
+         	var v=$(this).val();
+         	 case_type(v);       			
+        });
+   var type = "$case_info['case_type']";
+   case_type(type);
+})
+function case_type(type){
+		$("#service_name").hide();
+ 		$("#service_link").hide();
+		$("#service_list").hide();
+ 	if(type=="2"){
+		$("#service_name").show();
+ 		$("#service_link").show();
+ 	}else{
+		$("#service_list").show();
+	}         			
+        
+}	
+</script>
+ 
 <!--{include user/footer}-->

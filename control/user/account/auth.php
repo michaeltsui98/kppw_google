@@ -26,10 +26,10 @@ class Control_user_account_auth extends Control_user{
 		
 		
 		$gid = DB::select('group_id')->from('witkey_space')->where("uid= $this->uid")->get_count()->execute();
-		if($gid==2){
-			require Keke_tpl::template('user/account/auth_realname');
-		}else{
+		if($gid==3){
 			$this->action_enter();
+		}else{
+			require Keke_tpl::template('user/account/auth_realname');
 		}
 	}
 	function action_real_save(){
@@ -103,10 +103,9 @@ class Control_user_account_auth extends Control_user{
 				"VALUES\n".
 				"('$this->uid','$this->username','$company','$licen_num','$licen_pic','$start_time',0,'$legal','$url','$id_code','$id_pic','$pic')";
 		
-		
-		
-		
 		DB::query($sql,Database::UPDATE)->tablepre(':keke_')->execute();
+		
+		
 		Keke::show_msg('提交成功','user/account_auth/enter');
 	}
 	/**

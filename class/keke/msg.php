@@ -1,5 +1,8 @@
 <?php defined ( "IN_KEKE" ) or die ( "Access Denied" );
 /**
+ * 使用例子
+ * Keke_msg::instance()->to_user($_SESSION['uid'])->set_tpl($msg_type)->set_var($arr)->send();
+ * $msg_type 为模板名称，$arr 模板中要替换的变量 
  * keke短信抽象类
  * @author Michael
  * 2012-10-08

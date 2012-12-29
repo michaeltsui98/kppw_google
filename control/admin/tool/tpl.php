@@ -29,7 +29,7 @@ class Control_admin_tool_tpl extends Control_admin{
 		global  $_K,$_lang;
 		$tplname = $_GET['tplname'];
 		$filepath = S_ROOT.'./tpl/'.$tplname;
-		$file_obj = new keke_file_class();
+		$file_obj = new File();
 		
 		$tpllist = $file_obj->get_dir_file_info($filepath,true,true);
 		arsort($tpllist);
@@ -47,7 +47,7 @@ class Control_admin_tool_tpl extends Control_admin{
 		}
 		//模板配置文件存在
 		if (file_exists ( S_ROOT . "./tpl/$txt_newtplpath/modinfo.txt" )) {
-			$modinfo = keke_file_class::read_file ( S_ROOT . "./tpl/$txt_newtplpath/modinfo.txt" );
+			$modinfo = File::read_file ( S_ROOT . "./tpl/$txt_newtplpath/modinfo.txt" );
 			$mods = explode ( ';', $modinfo );
 			$modinfo = array ();
 			//将modinfo.txt 的内容转换为数组

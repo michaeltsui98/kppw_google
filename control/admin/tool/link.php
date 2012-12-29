@@ -80,7 +80,7 @@ class Control_admin_tool_link extends Control_admin {
 			$link_pic = $_POST['txt_link_pic'];
 		}elseif(!empty($_FILES['fle_link_pic']['name'])){
 			//上传文件用的，这个对新手来说好使,要就是简单
-			$link_pic = keke_file_class::upload_file('fle_link_pic');
+			$link_pic = File::upload_file('fle_link_pic');
 		}
 		//这里怎么说呢，定义生成sql 的字段=>值 的数组，你不懂，就是你太二了.
 		$array = array('link_name'=>$_POST['txt_link_name'],

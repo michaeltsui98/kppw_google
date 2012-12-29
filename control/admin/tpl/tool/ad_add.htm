@@ -76,7 +76,7 @@
 				<td>							
 					<input type="file" id="image_ad_file" class="file" name="image_ad_file"  size="50" ext=".jpg,.png,.gif,.jpeg,.bmp"/>
 					<input type="button" id="btn_updata" onclick="pic_upload('image_ad_file');" value="ÉÏ´«" />
-					<input type="hidden" id="fid" value="<!--{eval echo keke_file_class::get_fid($ad_info['ad_file'])}-->"/>
+					<input type="hidden" id="fid" value="<!--{eval echo File::get_fid($ad_info['ad_file'])}-->"/>
 					
                 	<input type="hidden" name="hdn_img_ad_file"  value="ad_info['ad_file']" id="hdn_img_ad_file" />
 				

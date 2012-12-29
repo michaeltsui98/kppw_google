@@ -39,8 +39,8 @@ abstract  class Control_user extends Controller{
      * 买家导航
      */
     protected static $_buyer_nav = array(
-    		'index'=>array('我发的任务','buyer_index'),
-    		'goods'=>array('我买的商品','buyer_goods'),
+    		//'index'=>array('我发的任务','buyer_index'),
+    		'shop'=>array('我买的商品','buyer_goods'),
     		'faver'=>array('我的收藏','buyer_faver'),
     		'mark'=>array('评价管理','buyer_mark'),
     		);

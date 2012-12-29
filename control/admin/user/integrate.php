@@ -24,7 +24,7 @@ class Control_admin_user_integrate extends Control_admin{
 		//引用配置文件
 		require  S_ROOT.'config/config_ucenter.php';
 		//读取配置文件的内容
-		$config_ucenter = keke_file_class::read_file(S_ROOT."config/config_ucenter.php");
+		$config_ucenter = File::read_file(S_ROOT."config/config_ucenter.php");
 		if(!$_POST){
 			require  Keke_tpl::template ( 'control/admin/tpl/user/integrate_uc');
 			die;
@@ -39,7 +39,7 @@ class Control_admin_user_integrate extends Control_admin{
 			$config_ucenter = preg_replace("/define\('$k',\s*'.*?'\);".PHP_EOL."/i", "define('$k', '$v');".PHP_EOL, $config_ucenter);
 		}
 		//写内容
-		keke_file_class::write_file(S_ROOT."config/config_ucenter.php",$config_ucenter);
+		File::write_file(S_ROOT."config/config_ucenter.php",$config_ucenter);
 		//uc_server 的地址
 		$bbserver = 'http://'.preg_replace("/\:\d+/", '', $_SERVER['HTTP_HOST']).($_SERVER['SERVER_PORT'] && $_SERVER['SERVER_PORT'] != 80 ? ':'.$_SERVER['SERVER_PORT'] : '');
 		//ucenter的地址
@@ -112,11 +112,11 @@ class Control_admin_user_integrate extends Control_admin{
 		}
 	    //添加成功后，要写uckey,与uc_appid
 		$ucconfig_info = explode('|', $ucconfig);
-		$config_ucenter = keke_file_class::read_file(S_ROOT."config/config_ucenter.php");
+		$config_ucenter = File::read_file(S_ROOT."config/config_ucenter.php");
 		$config_ucenter = preg_replace("/define\('UC_KEY',\s*'.*?'\);/s", "define('UC_KEY', '".$ucconfig_info[0]."');", $config_ucenter);
 		$config_ucenter = preg_replace("/define\('UC_APPID',\s*'*.*?'*\);/s", "define('UC_APPID', ".$ucconfig_info[1].");", $config_ucenter);
 		//写uc的配置文件
-		keke_file_class::write_file(S_ROOT."config/config_ucenter.php",$config_ucenter);
+		File::write_file(S_ROOT."config/config_ucenter.php",$config_ucenter);
 	    //更新数据库
 	    DB::update('witkey_config')->set(array('v'))->value(array('2'))
 	    ->where("k='user_intergration'")->execute();
@@ -138,12 +138,12 @@ class Control_admin_user_integrate extends Control_admin{
 			die();
 		}
 		Keke::formcheck($_POST['formhash']);
-		$config_ucenter = keke_file_class::read_file(S_ROOT."config/config_pw.php");
+		$config_ucenter = File::read_file(S_ROOT."config/config_pw.php");
 		$settingnew = $_POST['settingnew'];
 		foreach ($settingnew as $k=>$v){
 			$config_ucenter = preg_replace("/define\('$k',\s*'.*?'\);".PHP_EOL."/i", "define('$k', '$v');".PHP_EOL, $config_ucenter);
 		}
-		keke_file_class::write_file(S_ROOT."./config/config_pw.php",$config_ucenter);
+		File::write_file(S_ROOT."./config/config_pw.php",$config_ucenter);
 	    
 		DB::update('witkey_config')->set(array('v'))->value(array('3'))->where("k='user_intergration'")->execute();
 	

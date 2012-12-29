@@ -54,7 +54,7 @@ class Control_admin_article_case extends Control_admin {
 		 
 	    if(!empty($_FILES['fle_case_img']['name'])){
 			//上传文件用的，这个对新手来说好使,要就是简单
-			$case_img = keke_file_class::upload_file('fle_case_img');
+			$case_img = File::upload_file('fle_case_img');
 		}
 		//这里怎么说呢，定义生成sql 的字段=>值 的数组，你不懂，就是你太二了.
 		$array = array('case_title'=>$_POST['txt_task_title'],

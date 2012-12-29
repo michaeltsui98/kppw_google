@@ -1,6 +1,6 @@
 <?php
 
-class keke_file_class {
+class File {
 	
 	public static function read_file($file) {
 		if (! file_exists ( $file )) {
@@ -414,11 +414,11 @@ class keke_file_class {
 	 * ¸½¼þÏÂÔØ
 	 */
 	static function file_down($file_name, $file_path) {
-		Keke_lang::load_lang_class ( 'keke_file_class' );
-		global $_lang;
+		//Keke_lang::load_lang_class ( 'keke_file_class' );
+		//global $_lang;
 		$filename = S_ROOT . $file_path;
 		if (! file_exists ( $filename ) || strrpos ( $filename, ".php" ) !== false) {
-			Keke::show_msg ( $_lang ['file_not_exist'], $_SERVER ['HTTP_REFERER'], "3" );
+			Keke::show_msg ( 'file_not_exist', $_SERVER ['HTTP_REFERER'], "3" );
 		}
 		
 		$downfilename = str_replace(' ','%20',$file_name);
@@ -619,5 +619,17 @@ class keke_file_class {
 		$str .= ' pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"';
 		$str .= ' type="application/x-shockwave-flash" wmode="transparent"/></embed></object>';
 		return  $str ;
+	}
+	/**
+	 * for flash upload file type
+	 * @return string  (*.jpg;*.doc)
+	 */
+	static function flash_upload_ext(){
+		$file_type = explode('|', UPLOAD_ALLOWEXT);
+		$ext = '';
+		foreach ($file_type as $v){
+			$ext .= '*.'.$v.';';
+		}
+		return $ext = rtrim($ext,';');
 	}
 }

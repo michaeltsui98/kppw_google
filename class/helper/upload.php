@@ -207,7 +207,7 @@ class Upload {
 	 */
 	function fileFilter($path,$ext){
 	
-		if(keke_file_class::get_file_type($path,$this->ext)==$ext){
+		if(File::get_file_type($path,$this->ext)==$ext){
 			return true;
 		}else{
 			return false;

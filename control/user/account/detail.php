@@ -138,7 +138,7 @@ class Control_user_account_detail extends Control_user{
 		$cid = $_POST['cid'];
 		$name = $_POST['name'];
 		$year = $_POST['year'];
-		$res = (array)keke_file_class::upload_file('pic');
+		$res = (array)File::upload_file('pic');
 		$pics = array();
 	 
 		foreach ($_FILES['pic']['name'] as $k=>$v){

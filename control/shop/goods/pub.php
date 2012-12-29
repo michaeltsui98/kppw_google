@@ -6,6 +6,6 @@
    2012-10-19
  */
 
-class Control_shop_goods_release extends Controller{
+class Control_shop_goods_pub extends Controller{
     
 }

@@ -155,7 +155,7 @@ class Sys_upload {
 		
 	    $filename = $this->_file_name;
 	    
-		$filepath = keke_file_class::upload_file ( $filename, $ext, 1 );
+		$filepath = File::upload_file ( $filename, $ext, 1 );
 		
 		if (! filepath) {
 			return false;
@@ -186,10 +186,12 @@ class Sys_upload {
 	function save_db($filepath){
 		$filename = $this->_file_name;
 		//存放到数据库
+		$real_file = $_FILES [$filename] ['name'];
+		($this->_flash&&CHARSET == 'gbk') AND $real_file = Keke::utftogbk ( $_FILES [$filename] ['name'] );
 		$file_obj = new Keke_witkey_file ();
 		$file_obj->setUid ( $this->_uid );
 		$file_obj->setUsername ( $this->_username );
-		$file_obj->setFile_name ( $_FILES [$filename] ['name'] );
+		$file_obj->setFile_name ( $real_file );
 		$file_obj->setSave_name ( $filepath );
 		$file_obj->setObj_id ( intval ( $this->_obj_id ) );
 		$file_obj->setObj_type ( $this->_obj_type );

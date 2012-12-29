@@ -19,9 +19,13 @@ class Control_user_buyer_mark extends Control_user{
 	 */
 	protected static $_left = 'mark';
 	public  static $_mark = array(1=>'∫√∆¿',2=>'÷–∆¿',3=>'≤Ó∆¿');
-	protected $_uri ;
+/* 	protected $_uri ;
 	protected $_ord_tag;
-	protected $_ord_char;
+	protected $_ord_char; */
+	
+	function before(){
+		Control_user_buyer_index::init_nav();
+	}
 	
 	function action_index(){
 		

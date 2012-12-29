@@ -6,7 +6,7 @@
    2012-10-19
  */
 
-class Control_shop_goods_base extends Control_shop_base{
+class Control_shop_goods_trade extends Control_shop_base{
     
 	/**
 	 * ÉÌÆ·×´Ì¬

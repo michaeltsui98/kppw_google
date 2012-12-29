@@ -16,7 +16,7 @@ require (S_ROOT . 'class/keke/core.php');
 isset($_GET['inajax']) and $_K['inajax']= $_GET['inajax'];
 isset($_GET['ajaxmenu']) and $_K['ajaxmenu'] = $_GET['ajaxmenu'];
  
-unset ( $uid, $username);
+//unset ( $uid, $username);
 
 Route::set('task', '(<controller>(/<id>))',
 array(

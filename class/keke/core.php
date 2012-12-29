@@ -435,7 +435,7 @@ class Keke extends Keke_core {
 	 * 初始化任务model,按需加载
 	 */
 	static public function init_model() {
-		$model_arr = db::select ( '*' )->from ( 'witkey_model' )->order("listorder asc")->cached (3600,'keke_model')->execute ();
+		$model_arr = db::select ()->from ( 'witkey_model' )->order("listorder asc")->cached (3600,'keke_model')->execute ();
 		Keke::$_model_list = Keke::get_arr_by_key ( $model_arr, 'model_id' );
 		foreach ( Keke::$_model_list as $v ) {
 			if ($v ['model_type'] == 'task') {

@@ -1,12 +1,12 @@
 <?php  defined ( "IN_KEKE" ) or die ( "Access Denied" );
 /**
- * 用户中心-买家-我买的商品
+ * 用户中心任务列表与编辑
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-19
  */
 
-class Control_user_buyer_goods extends Control_user{
+class Control_shop_goods_user extends Control_user{
     
 	
 	/**
@@ -14,23 +14,24 @@ class Control_user_buyer_goods extends Control_user{
 	 */
 	protected static $_default = 'buyer';
 	/**
-	 *
 	 * @var 二级菜单选中项,空值不做选择
 	 */
 	protected static $_left = 'goods';
 	
-	function before(){
-		Control_user_buyer_index::init_nav();
-	}
 	
 	function action_index(){
-		global $_K,$_lang;
-		 
-		 
 		
-		require Keke_tpl::template('user/buyer/goods');
+		
+		require Keke_tpl::template('control/shop/goods/tpl/user/shop_list');
 	}
+	
+	
 	function action_edit(){
-		require Keke_tpl::template('user/buyer/goods_eidt');
+		
+		require Keke_tpl::template('control/shop/goods/tpl/user/shop_edit');
 	}
+	
+	
+	
+	
 }

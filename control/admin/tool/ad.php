@@ -95,7 +95,7 @@ class Control_admin_tool_ad extends Control_admin {
 				if ($_POST['flash_method']=='url'){
 					$array['ad_file']=$_POST['flash_url'];
 				}elseif ($_POST['flash_method']=='file'){
-					$array['ad_file']=keke_file_class::upload_file('flash_file','swf|flv');
+					$array['ad_file']=File::upload_file('flash_file','swf|flv');
 				}
 				break;
 		}
@@ -136,7 +136,7 @@ class Control_admin_tool_ad extends Control_admin {
 				echo "<a href={$ad_info['ad_url']}>txt_code</a>";
 				break;
 			case 'flash':
-				echo keke_file_class::flash_codeout(BASE_URL.'/'.$ad_info['ad_file'],50,25);
+				echo File::flash_codeout(BASE_URL.'/'.$ad_info['ad_file'],50,25);
 				break;	
 			case 'code':
 				echo 'script code';
@@ -158,7 +158,7 @@ class Control_admin_tool_ad extends Control_admin {
 			$fid = $_GET['fid'];
 		}
 		//É¾³ýÎÄ¼þ
-		keke_file_class::del_att_file($fid, $_GET['filepath']);
+		File::del_att_file($fid, $_GET['filepath']);
 		Keke::echojson ( '', '1' );
 	}
 	/**

@@ -24,8 +24,8 @@ class Control_admin_user_mark extends Control_admin{
 		if ($mark_rule_id){
 			$where .= 'mark_rule_id='.$mark_rule_id;
 			$mark_rule_arr = Db::select()->from('witkey_mark_rule')->where($where)->get_One()->execute();
-			$g_fid = keke_file_class::get_fid($mark_rule_arr['g_ico']);
-			$m_fid = keke_file_class::get_fid($mark_rule_arr['m_ico']);
+			$g_fid = File::get_fid($mark_rule_arr['g_ico']);
+			$m_fid = File::get_fid($mark_rule_arr['m_ico']);
 		}
 		
 		require Keke_tpl::template('control/admin/tpl/user/mark_add');
@@ -66,7 +66,7 @@ class Control_admin_user_mark extends Control_admin{
 		}
 		
 		//É¾³ýÎÄ¼þ
-		keke_file_class::del_att_file($fid, $_GET['filepath']);
+		File::del_att_file($fid, $_GET['filepath']);
 		Keke::echojson ( '', '1' );
 	}
 	/**

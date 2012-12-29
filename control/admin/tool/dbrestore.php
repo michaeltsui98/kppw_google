@@ -16,7 +16,7 @@ class Control_admin_tool_dbrestore extends Control_admin{
 		$this->_sql_path = S_ROOT . 'data/backup/';
 		
 		foreach (glob($this->_sql_path.'*.sql') as $v){
-			$this->_file_arr[] = keke_file_class::get_file_info($v);
+			$this->_file_arr[] = File::get_file_info($v);
 		}
  	}
 	function action_index(){
@@ -52,7 +52,7 @@ class Control_admin_tool_dbrestore extends Control_admin{
 	function action_del(){
 		global  $_lang;
 		//获取backup目录下的文件列表
-		$file_arr = keke_file_class::get_dir_file_info ( $this->_sql_path );
+		$file_arr = File::get_dir_file_info ( $this->_sql_path );
 		//删除sql备份文件
 		$res = @unlink ($this->_sql_path.$file_arr[$_GET['restore_name']]['name']);
 		if ($res) {

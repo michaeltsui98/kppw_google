@@ -406,7 +406,7 @@ class Keke_Response implements Keke_HTTP_Response {
 			if ( ! isset($mime))
 			{
 				// Guess the mime using the file extension
-				$mime = keke_file_class::get_mime_by_extension($download);
+				$mime = File::get_mime_by_extension($download);
 				 
 			}
 
@@ -442,7 +442,7 @@ class Keke_Response implements Keke_HTTP_Response {
 			if ( ! isset($mime))
 			{
 				// Get the mime type
-				$mime = keke_file_class::get_mime_by_extension($filename);
+				$mime = File::get_mime_by_extension($filename);
 			}
 
 			// Open the file for reading

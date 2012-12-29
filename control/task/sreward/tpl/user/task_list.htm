@@ -1,0 +1,132 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/buyer/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 title="我的任务" class="title">我的任务</h2>
+		                    </div>
+		                </header>
+		                <nav class="box_nav">
+								<ul id="test_ul" class="clearfix">
+									<li class="selected"><a href="#">未付款</a></li>
+									<li><a href="#">进行中</a></li>
+									<li><a href="#">公示中</a></li>
+									<li><a href="#">交付中</a></li>
+									<li><a href="#">已结束</a></li>
+									<li><a href="#">待互评</a></li>
+								</ul>
+		                </nav>
+		                <div class="box_detail">
+
+		                	<div class="toolbar">
+		                		<form class="detail" action="{PHP_URL}/task/sreward_user" method="get" id="frm_user_search">
+										<table cellspacing="0" cellpadding="0">
+											<tbody>
+											<tr>
+										    <td> 条件
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											 <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											 </select>
+										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											 <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											</select>
+											 <input type="submit" value="{$_lang['search']}">
+											 </td>
+										</tr>
+										</tbody>
+										</table>
+								</form>
+		                	</div>
+
+		                	<!--date_table数据表格 start-->
+		                    <div class="data_list">
+		                        <table  class="data_table">
+		                            <thead>
+		                            <tr>
+		                              <th scope="col">任务标题</th>
+		                              <th scope="col">任务金额</th>
+		                              <th scope="col">投稿数</th>
+		                              <th scope="col">状态</th>
+		                              <th scope="col">中标服务商</th>
+		                              <th scope="col">发布时间</th>
+		                            </tr>
+		                            </thead>
+		                            <tbody>
+		                            {if $list_arr}
+		                            {loop $list_arr $v}
+									<tr>
+		                              <td>
+		                              	<a href="{PHP_URL}/task/{$v['task_id']}" target="_blank" class="title">$v['task_title']</a>
+		                              	<div class="item_action">
+		                              		<a href="{PHP_URL}/task/sreward_user/edit?task_id={$v['task_id']}">编辑</a>
+											{if $v['task_status']=="待付款"}
+		                              		<a href="{PHP_URL}/task/sreward_user/del?task_id={$v['task_id']}" onclick="return kdel(this,'',rm)">删除</a>
+		                              		{/if}
+		                              	</div>
+		                              </td>
+		                              <td><span class="money">{c:$v['task_cash']}</span></td>
+		                              <td>$v['work_num']</td>
+		                              <td>
+		                              	$v['task_status']<br/>
+										{if $v['task_status']=='待付款'}<a href="#">付款</a>
+										{elseif $v['task_status']=='交付中'}<a href="#">提醒交付</a>
+										{elseif $v['task_status']=='公示中'}<a href="#">确认验收</a>
+										{elseif $v['task_status']=='结束'}<a href="#">互评</a>
+										{/if}
+									  </td>
+		                              <td>$v['wusername']</td>
+		                              <td>{date('Y-m-d',$v['start_time'])}</td>
+									</tr>
+									{/loop}
+									 {else}
+									<tfoot>
+				                            <tr>
+					                            <td colspan="4" class="t_c">暂无记录</td>
+					                        </tr>
+				                    </tfoot>
+									{/if}
+		                            </tbody>
+		                            
+		                          </table>
+		                    </div>
+			               	<!--data_table数据表格 end-->
+
+			               	<div class="toolbar bottom">
+		                		
+		                		<div class="page">
+					                 {$pages['page']}
+					            </div>
+		                	</div>
+
+
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+<script>
+	function rm(o){
+		 $(o).parents('tr').remove();
+		
+	}
+</script>
+    <!--content end-->
+<!--{include user/footer}-->

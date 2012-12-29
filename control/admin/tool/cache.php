@@ -28,7 +28,7 @@ class Control_admin_tool_cache extends Controller{
 		$cache_path = S_ROOT.'data/cache/';
 		$tpl_path = S_ROOT.'data/tpl_c/';
 		
-		$file_obj = new keke_file_class;
+		$file_obj = new File;
 		$msg = '';
 		// Çå³ýÊý¾Ý»º´æ
 		 

@@ -18,6 +18,9 @@ class Control_user_buyer_faver extends Control_user{
 	 * @var 二级菜单选中项,空值不做选择
 	 */
 	protected static $_left = 'faver';
+	function before(){
+		Control_user_buyer_index::init_nav();
+	}
 	
 	/**
 	 * 服务

@@ -5,7 +5,7 @@ class Control_admin_main extends Control_admin {
 	function action_index(){
 		global $_lang,$_K;
 		 
-		$file_obj = new keke_file_class ();
+		$file_obj = new File ();
 		$file_size = $file_obj->getdirsize ( S_ROOT . '/data/uploads' );
 		$file_size = intval ( $file_size / 1024 / 1024 ); // 获取当前附件大小
 		

@@ -46,7 +46,7 @@ class Control_ajax_upload extends Controller{
 		//文件路径 
 		$filepath = $_GET['filepath'];
 		//执行删除 
-		$res = keke_file_class::del_att_file($fid,$filepath,$size);
+		$res = File::del_att_file($fid,$filepath,$size);
 		$res and Keke::echojson ( '', 1 ) or Keke::echojson ( '', '0' );
 	}
 	

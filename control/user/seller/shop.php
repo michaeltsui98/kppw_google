@@ -86,7 +86,7 @@ class Control_user_seller_shop extends Control_user{
 				'case_desc'=>$_POST['txa_desc'],
 				'case_url'=>$_POST['txt_url'],
 				'shop_id'=>$_POST['hdn_shop_id'],
-				'case_pic'=>keke_file_class::upload_file('fil_pic','jpg|gif|png|jpeg'),
+				'case_pic'=>File::upload_file('fil_pic','jpg|gif|png|jpeg'),
 				);
 		$arr=explode('@#',$_POST['sel_service']);
 		$array['service_id']=$arr[0];
@@ -158,7 +158,7 @@ class Control_user_seller_shop extends Control_user{
 		$array=array(
 				'shop_id'=>$_POST['hdn_shop_id'],
 				'truename'=>$_POST['txt_truename'],
-				'member_pic'=>keke_file_class::upload_file('fil_member_pic','jpg|gif|png|jpeg'),
+				'member_pic'=>File::upload_file('fil_member_pic','jpg|gif|png|jpeg'),
 				'member_job'=>$_POST['sel_member_job'],
 				'member_desc'=>$_POST['txa_member_desc'],
 				'top_eduction'=>$_POST['sel_top_eduction'],

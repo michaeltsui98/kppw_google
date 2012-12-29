@@ -105,7 +105,7 @@ class Sys_tag {
 							 width='".$ads[$i] ['width']."' height='".$ads[$i] ['height']."'></a>";
 				break;
 				case 'flash':
-					$string.=keke_file_class::flash_codeout(BASE_URL.'/'.$ads[$i] ['ad_file'], $ads[$i] ['width'], $ads[$i] ['height']);
+					$string.=File::flash_codeout(BASE_URL.'/'.$ads[$i] ['ad_file'], $ads[$i] ['width'], $ads[$i] ['height']);
 				break;
 				case 'text':
 				case 'code':	

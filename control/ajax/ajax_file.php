@@ -16,10 +16,10 @@
 			}
 			break;
 		case "download":
-			keke_file_class::file_down($file_name, $file_path);
+			File::file_down($file_name, $file_path);
 			break;
 		case "delete":
-			$res = keke_file_class::del_att_file($file_id, $filepath);
+			$res = File::del_att_file($file_id, $filepath);
 			$res and Keke::echojson ( '', '1' ) or Keke::echojson ( '', '0' );
 			die ();
 			break;
@@ -30,7 +30,7 @@
 			}
 			$fid = intval($fid);//file_id
 			$size = Keke::escape($size);//图片的不同尺寸
-			$res = keke_file_class::del_att_file($fid,$filepath,$size);
+			$res = File::del_att_file($fid,$filepath,$size);
 			$res and Keke::echojson ( '', 1 ) or Keke::echojson ( '', '0' );
 			die ();
 		case "goods_filedown"://店铺文件下载

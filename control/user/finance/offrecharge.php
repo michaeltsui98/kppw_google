@@ -48,7 +48,7 @@ class Control_user_finance_offrecharge extends Control_user{
 	function action_save(){
 		Keke::formcheck($_POST['formhash']);
 		$_POST = Keke_tpl::chars($_POST);//·Àsql×¢Èë
-		$cert_pic = keke_file_class::upload_file('cert_pic');
+		$cert_pic = File::upload_file('cert_pic');
 		$array = array(
 				 
 				'uid'=>$_SESSION['uid'],

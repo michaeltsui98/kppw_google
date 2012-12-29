@@ -107,7 +107,7 @@ class Control_admin_article_list extends Control_admin {
 			$fid = $_GET['fid'];
 		}
 		//É¾³ýÎÄ¼þ
-		keke_file_class::del_att_file($fid, $_GET['filepath']);
+		File::del_att_file($fid, $_GET['filepath']);
 		Keke::echojson ( '', '1' );
 	}
 	/**

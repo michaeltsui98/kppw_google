@@ -43,10 +43,10 @@ class Control_user_account_auth extends Control_user{
 			Keke::show_msg('这个身份证已经认证过了','user/account_auth','error');
 		}
 		//正面图片
-		$id_pic = keke_file_class::upload_file('id_pic');
+		$id_pic = File::upload_file('id_pic');
 		 
 		//反面图片
-		$pic = keke_file_class::upload_file('pic');
+		$pic = File::upload_file('pic');
 		
 		$sql = "replace into `:keke_witkey_auth_realname`\n".
 				"(uid,username,realname,id_code,pic,id_pic,start_time,auth_status) \n".
@@ -90,13 +90,13 @@ class Control_user_account_auth extends Control_user{
 		}
 		$licen_num = $_POST['licen_num'];
 		$company = $_POST['company'];
-		$licen_pic = keke_file_class::upload_file('licen_pic');
+		$licen_pic = File::upload_file('licen_pic');
 		$start_time = SYS_START_TIME;
 		$legal = $_POST['legal'];
 		$url = $_POST['url'];
 		$id_code = $_POST['id_code'];
-		$id_pic = keke_file_class::upload_file('id_pic');
-		$pic = keke_file_class::upload_file('pic');
+		$id_pic = File::upload_file('id_pic');
+		$pic = File::upload_file('pic');
 
 		$sql ="replace into  `:keke_witkey_auth_enterprise` \n".
 				"(uid,username,company,licen_num,licen_pic,start_time,auth_status,legal,url,id_code,id_pic,pic)\n".

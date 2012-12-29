@@ -48,7 +48,7 @@ function uploadify(paramReg,contrReg){
 	var exts      = paramReg.exts;//文件类型限制
 	var method    = paramReg.m?paramReg.m:'post';//上传方式
 	var limit     = paramReg.limit?paramReg.limit:1;//上传个数限制
-	var qlimit    = paramReg.qlimit?paramReg.qlimit:999;
+	var qlimit    = paramReg.qlimit?paramReg.qlimit:1;
 	var text      = paramReg.text?paramReg.text:L.upload_file;//按钮文字
 	
 	var task_id   =	parseInt(contrReg.task_id)+0;
@@ -97,7 +97,6 @@ function uploadify(paramReg,contrReg){
 				return false;
 			}else{
 				json.filename  = fname;
-				//typeof(uploadResponse)=='function'&&uploadResponse(json);
 				uploadify.fn(json);
 				 
 			}

@@ -25,7 +25,7 @@ class Keke_user_keke extends Keke_user {
 		// 删除用户头象
 		$home_dir = Keke_user_avatar::get_home ( $uid );
 		// 删除这个目录下的文件
-		keke_file_class::delete_files ( $home_dir, TRUE );
+		File::delete_files ( $home_dir, TRUE );
 	}
 	/**
 	 * 上传头象的flash

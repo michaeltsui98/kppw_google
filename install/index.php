@@ -17,7 +17,7 @@
   	require_once KEKE_ROOT.'class/keke/base.php';
   	require_once KEKE_ROOT.'class/keke/tpl.php';
   	require_once KEKE_ROOT.'class/keke/lang.php';
-  	require_once KEKE_ROOT.'class//helper/keke_file_class.php';
+  	require_once KEKE_ROOT.'class//helper/File.php';
   	require_once KEKE_ROOT.'config/keke_version.php';//版本信息
   	require_once KEKE_ROOT.'config/config.inc.php';//配置信息
   	require_once INSTALL_ROOT.'install_function.php';//func
@@ -201,7 +201,7 @@
   			}
   			$db->query("update `{$tablepre}witkey_config` set v = '$weburl' where k='website_url'");
   			
-  			$file_obj = new keke_file_class();
+  			$file_obj = new File();
   			$file_obj->delete_files($data_cache_path);
   			$file_obj->delete_files($tpl_cache_path);
   			

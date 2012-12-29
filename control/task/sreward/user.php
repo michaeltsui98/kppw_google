@@ -26,9 +26,10 @@ class Control_task_sreward_user extends Control_user{
 	 * 我发布的任务
 	 */
 	function action_index(){
+		
 		$model_name = Keke::$_model_list[1]['model_name'];
 		
-		$query_fields = array ('a.task_id' => '任务ID', 'a.task_title' => '任务名称');
+		$query_fields = array ('a.task_id' => '任务ID', 'a.task_title' => '任务标题');
 		
 		$data = $this->pub_task($_GET['status']);
 		
@@ -73,6 +74,7 @@ class Control_task_sreward_user extends Control_user{
 		$edit_uri = $base_uri."/edit";
 		
 		extract ( $this->get_url ( $base_uri ) );
+		
 		$status and $where .= " and  c.scode = '$status' ";
 		
 		$where .= "  and a.uid = $this->uid  and a.model_id = '1'";

@@ -1,6 +1,6 @@
 <?php
 
-class DBbackup {
+class dbbackup {
 	
 	static function run_backup() {
 		global $_lang;

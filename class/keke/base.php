@@ -242,7 +242,7 @@ class Keke_base {
 		if ($array) {
 			foreach ( $array as $v ) {
 				$pt = $v [$pid];
-				$list = @$tree [$pt] ? $tree [$pt] : array ();
+				$list = $tree [$pt] ? $tree [$pt] : array ();
 				array_push ( $list, $v );
 				$tree [$pt] = $list;
 			}

@@ -29,7 +29,9 @@ class Control_user_buyer_index extends Control_user{
 		
 		$this->action_task();
 	}
-	
+	/**
+	 * 转到指定任务的控制器中
+	 */
 	function action_task(){
 		if(!isset($_GET['t'])){
 			$_GET['t'] = 'sreward';
@@ -39,6 +41,9 @@ class Control_user_buyer_index extends Control_user{
 		$obj->action_index();
 	}
 	
+	/**
+	 * 转到指定商城的控制器
+	 */
 	function action_shop(){
 		if(!isset($_GET['t'])){
 			$_GET['t'] = 'goods';

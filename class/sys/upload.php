@@ -11,7 +11,7 @@ class Sys_upload {
 	private $_img_height;
 	private $_upload_type;
 	private $_task_id;
-	private $_work_id;
+	private $_pid;
 	private $_obj_type;
 	private $_obj_id;
 	private $_uid;
@@ -47,9 +47,9 @@ class Sys_upload {
 		 
 		//限制task_id 的值，因为query_string不太安全 
 		if(in_array($url_data['task_id'],array('ad','auth','mark','tools')) or intval($url_data['task_id'])>0){
-			$this->_task_id = $url_data ['task_id'];
+			$this->_task_id = (int)$url_data ['task_id'];
 		}
-		$url_data ['work_id'] and $this->_work_id = $url_data ['work_id'];
+		$url_data ['pid'] and $this->_work_id = $url_data ['pid'];
 		$url_data ['obj_id'] and $this->_obj_id = $url_data ['obj_id'];
 		$url_data ['obj_type'] and $this->_obj_type = $url_data ['obj_type'];
 		$url_data ['flash'] and $this->_flash = 1;
@@ -193,6 +193,7 @@ class Sys_upload {
 		$file_obj->setUsername ( $this->_username );
 		$file_obj->setFile_name ( $real_file );
 		$file_obj->setSave_name ( $filepath );
+		$file_obj->setPid($this->_pid); 
 		$file_obj->setObj_id ( intval ( $this->_obj_id ) );
 		$file_obj->setObj_type ( $this->_obj_type );
 		$file_obj->setOn_time ( SYS_START_TIME );

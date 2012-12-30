@@ -108,6 +108,7 @@ class Control_task_sreward_pub extends Control_task_task{
 		if(Keke_user_login::instance()->logged_in()===FALSE){
 			Cookie::set('last_page', $this->request->uri());
 			$this->request->redirect('login');
+			exit();
 		}
 		$this->before();
 		
@@ -236,8 +237,10 @@ class Control_task_sreward_pub extends Control_task_task{
 			$arr['{投稿结束时间}'] = date('Y-m-d',((int)$task_info['sub_time']*3600*24)+SYS_START_TIME);
 			$arr['{选稿结束时间}'] = date('Y-m-d',(((int)$task_info['sub_time']+(int)$this->_conf['choose_time'])*3600*24)+SYS_START_TIME);
 		}
-		
+		//生送短信
 		Keke_msg::instance()->to_user($_SESSION['uid'])->set_tpl($msg_type)->set_var($arr)->send();
+		//生成动态
+		//Sys_feed::set_feed($feed_arr, $uid, $username);
 		
 	}
 	/**

@@ -632,4 +632,20 @@ class File {
 		}
 		return $ext = rtrim($ext,';');
 	}
+	/**
+	 * delete file or file record by task_id
+	 * @param int $task_id
+	 * @param int $uid
+	 * @return bool
+	 */
+	public static function  del_file_by_task($task_id,$uid){
+		$where = "obj_id = '$task_id' and obj_type = 'task' and uid = '$uid'  or (pid = '$task_id' and obj_type = 'work')";
+		$arr = DB::select('save_name')->from('witkey_file')->where($where)->execute();
+		foreach ($arr as $v){
+			if(is_file(S_ROOT.$v['save_name'])){
+				unlink(S_ROOT.$v['save_name']);
+			}
+		}
+		return (bool)DB::delete('witkey_file')->where($where)->execute();
+	}
 }

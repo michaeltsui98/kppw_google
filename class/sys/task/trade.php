@@ -29,10 +29,7 @@ abstract class Sys_task_trade {
 		self::$_instance[$name] = new $class;
 		return self::$_instance[$name];
 	}
- 	/**
- 	 * 发布任务
- 	 */
-	abstract public function task_pub();
+ 
 	/**
 	 * 设置任务信息
 	 * @param array $arr

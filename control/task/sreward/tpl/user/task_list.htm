@@ -8,17 +8,18 @@
 		            <div class="inner clearfix">
 		                <header class="box_header">
 		                    <div class="box_title">
-		                        <h2 title="我的任务" class="title">我的任务</h2>
+		                        <h2  class="title">我的{$model_name}任务</h2>
 		                    </div>
 		                </header>
 		                <nav class="box_nav">
 								<ul id="test_ul" class="clearfix">
-									<li class="selected"><a href="#">未付款</a></li>
-									<li><a href="#">进行中</a></li>
-									<li><a href="#">公示中</a></li>
-									<li><a href="#">交付中</a></li>
-									<li><a href="#">已结束</a></li>
-									<li><a href="#">待互评</a></li>
+									<li {if $_GET['status'] == 'wait'} class="selected" {/if}><a href="{$uri}&status=wait">待付款</a></li>
+									<li {if $_GET['status'] == 'tg'} class="selected" {/if}><a href="{$uri}&status=tg">选稿中</a></li>
+									<li {if $_GET['status'] == 'xg'} class="selected" {/if}><a href="{$uri}&status=xg">选搞中</a></li>
+									<li {if $_GET['status'] == 'gs'} class="selected" {/if}><a href="{$uri}&status=gs">公示中</a></li>
+									<li {if $_GET['status'] == 'jf'} class="selected" {/if}><a href="{$uri}&status=jf">交付中</a></li>
+									<li {if $_GET['status'] == 'end'} class="selected" {/if}><a href="{$uri}&status=end">已结束</a></li>
+									<li {if $_GET['status'] == 'hp'} class="selected" {/if}><a href="{$uri}&status=hp">待互评</a></li>
 								</ul>
 		                </nav>
 		                <div class="box_detail">
@@ -98,7 +99,7 @@
 									 {else}
 									<tfoot>
 				                            <tr>
-					                            <td colspan="4" class="t_c">暂无记录</td>
+					                            <td colspan="6" class="t_c">暂无记录</td>
 					                        </tr>
 				                    </tfoot>
 									{/if}

@@ -14,11 +14,20 @@ abstract class Control_admin_task_list extends Control_admin{
 	 */
 	protected  $_task_id ;
 	protected  $_base_uri;
-	
+	/**
+	 * @var 任务模型配置
+	 */
+	protected  $_conf;
 	function __construct($request, $response){
 		parent::__construct($request, $response);
 		$this->_task_id = intval($_GET['task_id']);
 		$this->_base_uri  = BASE_URL."/index.php/task/".$this->_model_code."_admin_list";
+		
+		$model_list = Keke::init_model();
+		 
+		$model_info = $model_list[$this->_model_id];
+		 
+		$this->_conf = $model_conf = unserialize($model_info['config']);
 	}
  
     /**
@@ -81,18 +90,39 @@ abstract class Control_admin_task_list extends Control_admin{
     	//获取任务住处
     	$task_info =  $this->get_task_info();
     	//改变任务状态，及任务的产发布时间与结束时间
-    	$end_time = $task_info['end_time'] + (time()-$task_info['start_time']);
+    	$sub_time = $task_info['sub_time'] + (time()-$task_info['start_time']);
     	$where = "task_id = $this->_task_id ";
-    	DB::update('witkey_task')->set(array('task_status','start_time','end_time'))->value(array(2,time(),$end_time))->where($where)->execute();
+    	
+    	DB::update('witkey_task')
+    	->set(array('task_status','start_time','sub_time'))
+    	->value(array(2,time(),$sub_time))
+    	->where($where)->execute();
+    	
     	//更新任务增值服务的结束时间
     	DB::update('witkey_payitem_record')
     	->set(array('end_time'))
     	->value(array('use_num*24*3600+'.time()))
     	->where("obj_type='task' and obj_id = '$this->_task_id'")->execute();
+    	//发送信息
+    	$this->task_msg($task_info);
     	//生成推送feed
-    	$feed_arr = array ("feed_username" => array ("content" =>$task_info['username'], "url" => "index.php?do=space&member_id={$task_info['uid']}" ), "action" => array ("content" => $_lang['pub_task'], "url" => "" ), "event" => array ("content" => "{$task_info['task_title']}", "url" => "index.php/task/{$task_info['task_id']}" ) );
-    	Sys_feed::set_feed($feed_arr, $task_info['uid'], $task_info['username'],'pub_task',$this->_task_id);
+    	Control_task_task::pub_feed($task_info);
+     
     }
+    /**
+     * 任务通知
+     */
+    function task_msg($task_info){
+    	
+    	$arr = array('{任务编号}'=>$task_info['task_id'],'{任务标题}'=>$task_info['task_title']);
+    	$arr['{开始时间}'] = date('Y-m-d',SYS_START_TIME);
+    	$arr['{任务状态}'] = "投稿中";
+    	$arr['{投稿结束时间}'] = date('Y-m-d',((int)$task_info['sub_time']*3600*24)+SYS_START_TIME);
+    	$arr['{选稿结束时间}'] = date('Y-m-d',(((int)$task_info['sub_time']+(int)$this->_conf['choose_time'])*3600*24)+SYS_START_TIME);
+    	//生送短信
+    	Keke_msg::instance()->to_user($task_info['uid'])->set_tpl('task_pub')->set_var($arr)->send();
+    }
+    
     /**
      * 不通过审核
      * 状态状态1->10 审核失败
@@ -102,12 +132,16 @@ abstract class Control_admin_task_list extends Control_admin{
     	$this->set_status(10);
     	$task_info = $this->get_task_info();
     	//退还任务赏金
-    	Keke::init_model();
-    	$model_name = Keke::$_model_list[$task_info['model_id']]['model_name'];
-    	$data = array($model_name,$task_info['task_title']);
-    	Sys_finance::init_mem('task_fail', $data);
+    	
+    	$data = array($this->_conf['model_name'],$task_info['task_title']);
     	//只退还赏金，其它费用不退
-    	Sys_finance::cash_in ( $task_info ['uid'], $task_info ['task_cash'], 0, 'task_fail', 'admin', 'task', $task_info ['task_id'] );
+    	
+    	Sys_finance::get_instance($task_info['uid'])
+    	->set_action('task_fail')
+    	->set_mem($data)
+    	->set_obj('task', $task_info['task_id'])
+    	->cash_in($task_info['task_cash']);
+    	
     }
     
     
@@ -196,14 +230,22 @@ abstract class Control_admin_task_list extends Control_admin{
     	if($task_id===NULL){
     		$task_id = $this->_task_id;
     	}
-    	$where = "task_id = '$task_id'";
-    	DB::delete('witkey_task_bid')->where($where)->execute();
-    	DB::delete('witkey_task_work')->where($where)->execute();
-    	DB::delete('witkey_comment')->where(" obj_id = '$task_id' and obj_type='task'")->execute();
-    	//任务的附件
-    	self::del_files_by_task($task_id);
+    	$task_info = $this->get_task_info($task_id);
     	
-     	return (int)DB::delete('witkey_task')->where($where)->execute();
+    	$sql = "delete a.*,b.*,c.*,d.* \n".
+				"FROM keke_witkey_task a \n".
+				"left JOIN  keke_witkey_task_work b\n".
+				"on a.task_id = b.task_id \n".
+				"left join keke_witkey_task_bid c\n".
+				"on a.task_id = c.task_id\n".
+				"left join keke_witkey_comment d\n".
+				"on a.task_id = d.obj_id and d.obj_type = 'task'\n".
+				"where a.task_id = '$task_id' and a.uid = '{$task_info['uid']}'";
+		//任务的附件
+        
+    	File::del_file_by_task($task_id, $task_info['uid']);
+    	
+     	return (int)DB::query($sql,Database::DELETE)->tablepre(':keke_')->execute();
     }
     /**
      * 删除任务+稿件的附件，+记录

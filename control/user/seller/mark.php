@@ -24,7 +24,7 @@ class Control_user_seller_mark extends Control_user{
 	protected $_ord_char;
 	
 	function action_index(){
-		
+		Control_user_seller_index::init_nav();
 		
 		//查询字段
 		$query_fields = array ('by_uid' => 'UID', 'by_username' => '用户名');

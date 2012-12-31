@@ -185,7 +185,7 @@ class Control_admin_config_msg extends Control_admin{
     	if(!$_POST['hdn_tpl_id']){
     		Keke::show_msg($_lang['submit_fail'],'admin/config_msg/tpl_add?tpl_id='.$_POST['hdn_tpl_id'],'warning');
     	} 
-    	$_POST = Keke_tpl::chars($_POST);
+    	//$_POST = Keke_tpl::chars($_POST);
     	//是否有发类型
     	if($_POST['ckb']){
     		$send_sms = $_POST['ckb']['send_sms'];

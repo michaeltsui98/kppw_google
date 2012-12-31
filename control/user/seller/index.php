@@ -37,14 +37,30 @@ class Control_user_seller_index extends Control_user{
 	}
 	
 	function action_shop(){
-	     
+		if(!isset($_GET['t'])){
+			$_GET['t'] = 'goods';
+		}
+		$class = "Control_shop_{$_GET['t']}_user";
+		$obj =  new $class($this->request, $this->response);
+		$obj->action_seller();
 	}
+	function action_pub(){
+		if(!isset($_GET['t'])){
+			$_GET['t'] = 'goods';
+		}
+		$class = "Control_shop_{$_GET['t']}_user";
+		$obj =  new $class($this->request, $this->response);
+		$obj->action_pub();
+	}
+	
 	
 	static function init_nav(){
  		Keke::init_model();
 		foreach (Keke::$_model_list as $k=>$v){
 			if($v['model_status']==1 AND $v['model_type']=='shop'){
-				$model[$v['model_code']] = array('我卖的'.$v['model_name'],'seller_index/shop?s='.$v['model_code']);
+				$model[$v['model_code']] = array($v['model_name'].'订单','seller_index/shop?t='.$v['model_code']);
+				$code = $v['model_code'].'pub';
+				$model[$code] = array('我发布的'.$v['model_name'],'seller_index/pub?t='.$v['model_code']);
 			}elseif($v['model_status']==1 AND $v['model_type']=='task'){
 				$model[$v['model_code']] = array('我参与的'.$v['model_name'],'seller_index/task?t='.$v['model_code']);
 			}

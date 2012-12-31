@@ -19,7 +19,7 @@ class Control_user_seller_order extends Control_user{
 	protected static $_left = 'order';
 	
 	function action_index(){
-		
+		Control_user_seller_index::init_nav();
 		
 		
 		require Keke_tpl::template('user/seller/order');

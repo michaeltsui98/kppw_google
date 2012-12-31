@@ -228,10 +228,15 @@ class Control_task_sreward_user extends Control_user{
 	 * 删除任务
 	 */
 	function action_del(){
-		$sql = "delete a.*,b.*  FROM :keke_witkey_task a \n".
-		"left JOIN  :keke_witkey_task_work b\n".
-		"on a.task_id = b.task_id \n".
-		"where a.task_id = '{$_GET['task_id']}' and a.uid = $this->uid";
+		$sql = "delete a.*,b.*,c.*,d.* \n".
+				"FROM keke_witkey_task a \n".
+				"left JOIN  keke_witkey_task_work b\n".
+				"on a.task_id = b.task_id \n".
+				"left join keke_witkey_task_bid c\n".
+				"on a.task_id = c.task_id\n".
+				"left join keke_witkey_comment d\n".
+				"on a.task_id = d.obj_id and d.obj_type = 'task'\n".
+				"where a.task_id = '{$_GET['task_id']}' and a.uid = $this->uid";
 		//删除任务与稿件
 		DB::query($sql,Database::DELETE)->tablepre(':keke_')->execute();
 		//删除任务与稿件的附件
@@ -260,6 +265,7 @@ class Control_task_sreward_user extends Control_user{
 	function action_seller(){
 		self::$_default = 'seller';
 		self::$_left = 'sreward';
+		Control_user_seller_index::init_nav();
 		$query_fields = array ('a.task_id' => '任务ID', 'b.task_title' => '任务标题');
 		
 		$sql="SELECT a.work_id, a.work_time,a.work_status,\n".
@@ -299,9 +305,10 @@ class Control_task_sreward_user extends Control_user{
 		$group_by=" GROUP BY a.task_id ";
 				
 		$data=Model::sql_grid($sql,$where,$uri,$order,$group_by);
+		
 		$work_list=$data['data'];
 		$pages=$data['pages'];
-		//var_dump($data);
+		//var_dump($work_list);
 		require Keke_tpl::template('control/task/sreward/tpl/user/task_seller');
 	}
 	function action_wk_confirm(){

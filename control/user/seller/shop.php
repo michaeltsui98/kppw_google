@@ -18,6 +18,10 @@ class Control_user_seller_shop extends Control_user{
      */
 	protected static $_left = 'shop';
 	
+	function before(){
+		parent::before();
+		Control_user_seller_index::init_nav();
+	}
 	/**
 	 * µêÆÌ¿ªÍ¨£¬µêÆÌÉèÖÃ
 	 */

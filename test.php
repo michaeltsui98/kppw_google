@@ -3,9 +3,9 @@
 include 'app_boot.php';
 
 
-$arr = Sys_task_trade::instance()->task_status();
 
-var_dump($arr);
+
+var_dump($_K);
 
 
 die;

@@ -182,7 +182,7 @@ class Keke extends Keke_core {
 	public static $_safe_mode ;
 	public static $_magic_quote;
 	public static $_log;
-	public static $_index_file = '';
+	public static $_index_file = 'index.php';
 	public static $_sys_config;
 	public static $_uid;
 	public static $_username;
@@ -287,9 +287,10 @@ class Keke extends Keke_core {
 		$this->init_curr();
 		Keke::$_cache_obj = Cache::instance ();
 		 
-	
+		//die('ccccc');
 		self::$_log = log::instance()->attach(new keke_log_file());
 		$this->init_user();
+		
 	}
 	/**
 	 * 初始化配置信息
@@ -488,6 +489,7 @@ class Keke extends Keke_core {
 		
 	}
 	function init_out_put() {
+		
 		 ob_start();
 	}
 	/**

@@ -8,4 +8,6 @@ Sys_feed::get_instance()->set_user(5, 'test4')
 
 ->to_feed();
 
+echo 1;
+
 

@@ -24,8 +24,8 @@ final class Keke_cache_win extends Keke_cache {
 		if($expire===NULL){
 			$expire = Cache::DEFAULT_CACHE_LIFE_TIME;
 		}
-		wincache_ucache_set($this->_sanitize_id($id),$value,$expire);
-		return apc_store($id,$value,$expire);
+		return wincache_ucache_set($this->_sanitize_id($id),$value,$expire);
+		
 	}
 	
 	public function add($id,$val){

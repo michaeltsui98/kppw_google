@@ -51,15 +51,16 @@ function uploadify(paramReg,contrReg){
 	var qlimit    = paramReg.qlimit?paramReg.qlimit:1;
 	var text      = paramReg.text?paramReg.text:L.upload_file;//°´Å¥ÎÄ×Ö
 	
-	var task_id   =	parseInt(contrReg.task_id)+0;
-	var work_id   = parseInt(contrReg.work_id)+0;
+	//var task_id   =	parseInt(contrReg.task_id)+0;
+	//var work_id   = parseInt(contrReg.work_id)+0;
 	var obj_id    = parseInt(contrReg.obj_id)+0;
+	var pid   = parseInt(contrReg.pid)+0;
 	var pre       = contrReg.mode=='back'?'../../':'';
 	var fileType  = contrReg.fileType?contrReg.fileType:'att';
 	var objType   = contrReg.objType?contrReg.objType:'task';
 		swf		  = pre+swf;
 		deleter   = pre+deleter;
-		uploader  = pre+uploader+'&file_name='+file+'&file_type='+fileType+'&obj_type='+objType+'&task_id='+task_id+'&work_id='+work_id+'&obj_id='+obj_id+'&PHPSESSID='+xyq;
+		uploader  = pre+uploader+'&file_name='+file+'&file_type='+fileType+'&obj_type='+objType+'&pid='+pid+'&obj_id='+obj_id+'&PHPSESSID='+xyq;
 		
 		uploadify.auto			  =	auto;
 		uploadify.debug			  =	debug;

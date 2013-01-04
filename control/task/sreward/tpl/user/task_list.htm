@@ -13,13 +13,12 @@
 		                </header>
 		                <nav class="box_nav">
 								<ul id="test_ul" class="clearfix">
-									<li {if $_GET['status'] == 'wait'} class="selected" {/if}><a href="{$uri}&status=wait">待付款</a></li>
-									<li {if $_GET['status'] == 'tg'} class="selected" {/if}><a href="{$uri}&status=tg">选稿中</a></li>
-									<li {if $_GET['status'] == 'xg'} class="selected" {/if}><a href="{$uri}&status=xg">选搞中</a></li>
-									<li {if $_GET['status'] == 'gs'} class="selected" {/if}><a href="{$uri}&status=gs">公示中</a></li>
-									<li {if $_GET['status'] == 'jf'} class="selected" {/if}><a href="{$uri}&status=jf">交付中</a></li>
-									<li {if $_GET['status'] == 'end'} class="selected" {/if}><a href="{$uri}&status=end">已结束</a></li>
-									<li {if $_GET['status'] == 'hp'} class="selected" {/if}><a href="{$uri}&status=hp">待互评</a></li>
+									<li {if $_GET['status'] == 'wait'} class="selected" {/if}><a href="{$base_uri}?status=wait">待付款</a></li>
+									<li {if $_GET['status'] == 'xg'} class="selected" {/if}><a href="{$base_uri}?status=xg">待选搞</a></li>
+									<li {if $_GET['status'] == 'gs'} class="selected" {/if}><a href="{$base_uri}?status=gs">公示中</a></li>
+									<li {if $_GET['status'] == 'jf'} class="selected" {/if}><a href="{$base_uri}?status=jf">待验收</a></li>
+									<li {if $_GET['status'] == 'end'} class="selected" {/if}><a href="{$base_uri}?status=end">已结束</a></li>
+									<li {if $_GET['status'] == 'hp'} class="selected" {/if}><a href="{$base_uri}?status=hp">待互评</a></li>
 								</ul>
 		                </nav>
 		                <div class="box_detail">
@@ -86,13 +85,9 @@
 		                              <td>$v['work_num']</td>
 		                              <td>
 		                              	$v['task_status']<br/>
-										{if $v['task_status']=='待付款'}<a href="#">付款</a>
-										{elseif $v['task_status']=='交付中'}<a href="#">提醒交付</a>
-										{elseif $v['task_status']=='公示中'}<a href="#">确认验收</a>
-										{elseif $v['task_status']=='结束'}<a href="#">互评</a>
-										{/if}
+										<!--{eval echo $this->pub_task_status($v);}-->
 									  </td>
-		                              <td>$v['wusername']</td>
+		                              <td><!--{eval echo $this->pub_task_bid($v);}--></td>
 		                              <td>{date('Y-m-d',$v['start_time'])}</td>
 									</tr>
 									{/loop}

@@ -10,6 +10,7 @@ error_reporting(E_ALL|E_STRICT);
 date_default_timezone_set ( 'PRC' );
 define ( "S_ROOT", dirname ( __FILE__ ).DIRECTORY_SEPARATOR);
 ini_set('unserialize_callback_func', 'spl_autoload_call');
+
 require (S_ROOT . 'class/keke/core.php');
 
 

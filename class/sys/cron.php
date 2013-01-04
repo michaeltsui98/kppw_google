@@ -31,6 +31,7 @@ abstract class Sys_cron {
 			return TRUE;
 		}
 		
+		self::set_next_time($cron);
 		
 		
 		ignore_user_abort ( TRUE );
@@ -45,7 +46,7 @@ abstract class Sys_cron {
 			 
 		call_user_func($cron['filename'] .'::batch_run');
 		
-		self::set_next_time($cron);
+		
 	}
 	
 	/**

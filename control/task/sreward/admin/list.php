@@ -11,7 +11,9 @@ class Control_task_sreward_admin_list extends Control_admin_task_list{
 	 * @var 模型代码
 	 */
 	public  $_model_code   = 'sreward';
- 
+    
+	public $_model_id = '1';
+	
 	/**
 	 * 任务列表页
 	 */
@@ -52,7 +54,7 @@ class Control_task_sreward_admin_list extends Control_admin_task_list{
      * 任务编辑
      */
     public function action_add(){
-    	global  $_K ,$_lang;
+    	
     	$task_id = $this->_task_id;
     	 //获取任务信息
         $task_info = $this->get_task_info();

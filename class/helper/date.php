@@ -606,7 +606,7 @@ class Date {
 	 */
 	public static function date_span($timestamp) {
 		global $_lang;
-		$time = SYS_START_TIME - $timestamp;
+		$time = (int)SYS_START_TIME - $timestamp;
 		if ($time > 24 * 3600) {
 			$result = intval ( $time / (24 * 3600) ) . $_lang ['day_before'];
 		} elseif ($time > 3600) {

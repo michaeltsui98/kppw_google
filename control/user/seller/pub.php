@@ -6,7 +6,7 @@
    2012-10-25
  */
 
-class Control_user_seller_goods extends Control_user{
+class Control_user_seller_pub extends Control_user{
     
 	/**
 	 * @var 一级菜单选中项
@@ -16,16 +16,15 @@ class Control_user_seller_goods extends Control_user{
      * 
      * @var 二级菜单选中项,空值不做选择
      */
-	protected static $_left = 'goods';
+	protected static $_left = 'pub';
 	
 	function action_index(){
+		Control_user_seller_index::init_nav();
 		
-		
-		
-		require Keke_tpl::template('user/seller/goods');
+		require Keke_tpl::template('user/seller/pub');
 	}
 	function action_edit(){
 		
-		require Keke_tpl::template('user/seller/goods_edit');
+		require Keke_tpl::template('user/seller/pub_edit');
 	}
 }

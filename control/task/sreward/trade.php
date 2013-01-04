@@ -9,9 +9,6 @@
 class Control_task_sreward_trade extends Sys_task_trade{
 
 	
-	public function task_pub(){
-					
-	}
 	
 	
 	/**

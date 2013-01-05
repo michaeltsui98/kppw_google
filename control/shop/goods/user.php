@@ -21,7 +21,7 @@ class Control_shop_goods_user extends Control_user{
  	/**
 	 * 我买的商品订单信息
 	 */
-  	function action_index(){
+  	function action_buyer(){
   		self::$_default = 'buyer';
 		Control_user_buyer_index::init_nav();
 	
@@ -37,6 +37,7 @@ class Control_shop_goods_user extends Control_user{
 		require Keke_tpl::template('control/shop/goods/tpl/user/seller');
 	}
 	
+	
 	/**
 	 * 发布的商品列表
 	 */
@@ -45,6 +46,8 @@ class Control_shop_goods_user extends Control_user{
 		 
 		require Keke_tpl::template('control/shop/goods/tpl/user/pub');
 	}
+	
+	
 	/**
 	 * 商品编辑 
 	 */

@@ -108,9 +108,9 @@ class Control_admin_user_add extends Control_admin{
 	function get_info($uid,$user_type){
 		$sql = " select balance,credit,uid,username from %switkey_space where ";
 		
-		if($user_type==1){
+		if($user_type=='1'){
 			$sql.=" uid='%d'";
-		} else 
+		} elseif($user_type=='0')
 			{
 				$sql.=" username='%s'";
 			}

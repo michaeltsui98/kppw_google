@@ -78,9 +78,9 @@ class Control_index extends Control_front{
 		/**
 		 * Ê×Ò³feed
 		*/
-		$feed_list = Dbfactory::query ( "select uid,username,title,feed_time from " . TABLEPRE . "witkey_feed order by feed_time desc limit 0,4", 1, 3600 );
-		$mode_list = Keke::$_model_list;
-		$cash_coverage = Sys_misc::get_cash_cove('',true) ;
+		//$feed_list = Dbfactory::query ( "select uid,username,title,feed_time from " . TABLEPRE . "witkey_feed order by feed_time desc limit 0,4", 1, 3600 );
+		//$mode_list = Keke::$_model_list;
+		//$cash_coverage = Sys_misc::get_cash_cove('',true) ;
 		/**
 		 * ÐÂÎÅ
 		*/

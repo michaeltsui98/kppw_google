@@ -4,7 +4,7 @@
  */
 class Control_admin_user_add extends Control_admin{
 	function action_index(){
-		global $_K,$_lang;
+		
 		$uid = $_GET['uid'];
 		if ($uid){
 			$where .= ' uid='.$uid;
@@ -18,17 +18,17 @@ class Control_admin_user_add extends Control_admin{
 		require Keke_tpl::template('control/admin/tpl/user/add');
 	}
 	/**
-	 * 验证用户名
+	 * 添加用户验证用户名
 	 */
-	function action_checkusername(){
+ 	function action_checkusername(){
 		$check_username = $_GET['check_username'];
 		if (isset ( $check_username ) && ! empty ( $check_username )) {
 			$res =  Keke_user_register::instance()->check_username ( $check_username );
 			CHARSET == 'gbk' and $res = Keke::gbktoutf(Keke_user_register::$_status[$res]);
 			echo  $res;
-// 			die ();
+
 		}
-	}
+	} 
 	function action_save(){
 		$_POST = Keke_tpl::chars($_POST);
 		//防止跨域提交
@@ -89,12 +89,16 @@ class Control_admin_user_add extends Control_admin{
 		}
 		require Keke_tpl::template('control/admin/tpl/user/add_charge');
 	}
+	/**
+	 * 用户充值，验证用户名 
+	 */
 	function action_check(){
 		global $_K,$_lang;
 		if($_GET['check_uid']){
 			//对传过来的check_uid进行转码
 			CHARSET=='gbk' and $check_uid = Keke::utftogbk($_GET['check_uid']);
-			$info = $this->get_info($check_uid);
+			$user_type=$_GET['check_type'];
+			$info = $this->get_info($check_uid,$user_type);
 			$info and Keke::echojson('',1,$info) or Keke::echojson($_lang['none_exists_uid_or_username'],0);
 			die();
 		}
@@ -104,14 +108,7 @@ class Control_admin_user_add extends Control_admin{
 	 * @param int $uid
 	 * @return array
 	 */
-	function get_info($uid){
-		$sql = " select balance,credit,uid,username from %switkey_space where ";
-		if(is_numeric($uid)){
-			$sql.=" uid='%d'";
-		} else 
-			{
-				$sql.=" username='%s'";
-			}
-		return  Dbfactory::get_one(sprintf($sql,TABLEPRE,$uid));
+	function get_info($uid,$user_type){
+		return Keke_user::instance()->get_user_info($uid,'balance,credit,uid,username',(int)$user_type);
 	}
 }

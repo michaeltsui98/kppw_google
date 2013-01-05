@@ -50,7 +50,7 @@ class Control_user_buyer_index extends Control_user{
 		}
 		$class = "Control_shop_{$_GET['t']}_user";
 		$obj =  new $class($this->request, $this->response);
-		$obj->action_index();
+		$obj->action_buyer();
 	}
 	
 	static function init_nav(){

@@ -44,6 +44,7 @@ class Control_user_seller_index extends Control_user{
 		$obj =  new $class($this->request, $this->response);
 		$obj->action_seller();
 	}
+	
 	function action_pub(){
 		if(!isset($_GET['t'])){
 			$_GET['t'] = 'goods';

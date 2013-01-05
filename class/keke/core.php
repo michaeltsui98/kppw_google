@@ -182,7 +182,7 @@ class Keke extends Keke_core {
 	public static $_safe_mode ;
 	public static $_magic_quote;
 	public static $_log;
-	public static $_index_file = 'index.php';
+	public static $_index_file = '';
 	public static $_sys_config;
 	public static $_uid;
 	public static $_username;

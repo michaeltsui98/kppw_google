@@ -94,7 +94,8 @@ class Control_admin_user_add extends Control_admin{
 		if($_GET['check_uid']){
 			//对传过来的check_uid进行转码
 			CHARSET=='gbk' and $check_uid = Keke::utftogbk($_GET['check_uid']);
-			$info = $this->get_info($check_uid);
+			$user_type=$_GET['check_type'];
+			$info = $this->get_info($check_uid,$user_type);
 			$info and Keke::echojson('',1,$info) or Keke::echojson($_lang['none_exists_uid_or_username'],0);
 			die();
 		}
@@ -104,9 +105,10 @@ class Control_admin_user_add extends Control_admin{
 	 * @param int $uid
 	 * @return array
 	 */
-	function get_info($uid){
+	function get_info($uid,$user_type){
 		$sql = " select balance,credit,uid,username from %switkey_space where ";
-		if(is_numeric($uid)){
+		
+		if($user_type==1){
 			$sql.=" uid='%d'";
 		} else 
 			{

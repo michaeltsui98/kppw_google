@@ -18,6 +18,10 @@
                       <tr>
                         <th scope="row" width='100'>{$_lang['uid']}{$_lang['zh_mh']}</th>
                         <td>
+                        	<select name="uid_type" id="uid_type">
+                        		<option value="1">UID</option>
+                        		<option value="0">ÓÃ»§Ãû</option>
+                        	</select>
                        		<input type="text" class="txt" style=" width:260px;" name="user"
 								id="txt_user" title="{$_lang['please_input_limit']}"
 								limit="required:true" msgArea="txt_user_msg"
@@ -91,13 +95,14 @@
  <script type="text/javascript">
  	function validUser(){
 		var v   = $("#txt_user").val();
+		
 		if(v<1||$("#txt_user_msg").hasClass('valid_error')){
 			art.dialog.tips("{$_lang['username_uid_can_not_null']}",1.5);
 			$("#man_tips").hide('slow');
 			$("#valid").val(0);
 		}else{
 			var url = "{BASE_URL}/index.php/admin/user_add/check";
-			$.getJSON(url,{check_uid:v},function(json){
+			$.getJSON(url,{check_uid:v,check_type:$("#uid_type").val()},function(json){
 				if(json.status==1){
 					$("#ucash").html("{$_lang['usefull_balance']}"+json.data.balance+"{$_lang['yuan']}");
 					$("#ucredit").html("{$_lang['usefull']}{CREDIT_NAME}£º"+json.data.credit);

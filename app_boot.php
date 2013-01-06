@@ -13,11 +13,11 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
 
 require (S_ROOT . 'class/keke/core.php');
 
+Keke::init(array('index_file'=>''));
 
 isset($_GET['inajax']) and $_K['inajax']= $_GET['inajax'];
 isset($_GET['ajaxmenu']) and $_K['ajaxmenu'] = $_GET['ajaxmenu'];
  
-//unset ( $uid, $username);
 
 Route::set('task', '(<controller>(/<id>))',
 array(

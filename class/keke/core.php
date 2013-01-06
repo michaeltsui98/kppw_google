@@ -24,7 +24,8 @@ class Keke_core extends Keke_base {
 	 *@param $time 跳转页显示时间，默认为3秒        
 	 */
 	static function show_msg( $content = "", $url = "",  $type = 'success',$title = NULL,$time = 3) {
-		global $_K, $basic_config, $username, $uid, $nav_list, $_lang;
+		global $_lang;
+		
 		$r = $_REQUEST;
 		//$msgtype = $type;
 		if($title===NULL){

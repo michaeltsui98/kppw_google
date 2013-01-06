@@ -29,6 +29,15 @@ array(
 'action' => 'index'
 ));
 
+
+//js ,css 压缩
+Route::set('minify', 'min')
+->defaults(array(
+'directory' => 'minify',
+'controller' => 'index',
+'action' => 'minify'
+));
+
 //支持子目录的路由
 Route::set('sections', '<directory>(/<controller>(/<action>(/<id>)))',
 array(

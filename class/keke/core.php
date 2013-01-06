@@ -515,7 +515,7 @@ class Keke extends Keke_core {
 		$model = S_ROOT.$dir.DIRECTORY_SEPARATOR.'model'.DIRECTORY_SEPARATOR.$class_name;
 		
 		$control = S_ROOT.$file;
-		$models = array ('cache','database','image');
+		$models = array ('cache','database','image','minify');
 		$found = false;
 		if (is_file ( $class )) {
 			$found = $class;
@@ -530,8 +530,12 @@ class Keke extends Keke_core {
 		} elseif(isset($models)) {
 			foreach ( $models as $d ) {
 				$class = S_ROOT . $dir . DIRECTORY_SEPARATOR . $d.DIRECTORY_SEPARATOR.$file ;
+				$class2 = S_ROOT . $dir . DIRECTORY_SEPARATOR . $d.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.$file ;
 			 	if (is_file ( $class )) {
 					$found = $class;
+					break;
+				}elseif(is_file($class2)){
+					$found = $class2;
 					break;
 				}
 			}

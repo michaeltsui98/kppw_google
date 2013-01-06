@@ -103,7 +103,7 @@ class Keke_db_select extends Keke_db_query {
 		// Start a selection query
 		$query = 'SELECT ';
 		
-		if ($this->_query_list ['distinct'] === TRUE) {
+		if (isset($this->_query_list ['distinct'])) {
 			$query .= 'DISTINCT ';
 		}
 		

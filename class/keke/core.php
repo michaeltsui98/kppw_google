@@ -207,7 +207,7 @@ class Keke extends Keke_core {
 	public static $_weibo_list;
 	public static $_api_open;
 	public static $_lang;
-	
+	public static $_lang_list;
 	public static $_style_path;
 	public static $_weibo_attent;
 	public static $_attent_api_open;
@@ -219,27 +219,12 @@ class Keke extends Keke_core {
 	//public static $_db;
  	
 	protected static $_files = array ();
-	 
-	
-// 	private static $instance = NULL;
-	
-	/* public static function init($set=array()) {
-		
-		if (self::$instance === null) {
-			$obj = new self();
-		}
-		return $obj;
-	}
-	function __construct() {
-		$this->init_out_put ();
-		$this->_init ();
-	} */
+
 	/**
-	 * 系统初始化
-	 * 参数列表
+	 * 系统初始化 参数列表
 	 *
-	 * Type      | Setting    | Description                                    | Default Value
-	 * ----------|------------|------------------------------------------------|---------------
+	 * Type      | Setting    | Description                                    
+	 * ----------|------------|-----------------------------
 	 * `string`  | index_file | This is usually `index.php`. 
 	 * `boolean` | caching    | `FALSE`
 	 *
@@ -258,7 +243,7 @@ class Keke extends Keke_core {
 		self::init_out_put();
 		define ( 'LIB', S_ROOT . 'class' . DIRECTORY_SEPARATOR );
 		define ( 'EXT', '.php' );
-		include (S_ROOT . 'config/config.inc.php');
+		require (S_ROOT . 'config/config.inc.php');
 		
 		define ( 'KEKE_VERSION', '3.0' );
 		define ( 'KEKE_RELEASE', '2012-06-2' );
@@ -444,6 +429,7 @@ class Keke extends Keke_core {
 	//初始化语言
 	public static function init_lang() {
 		Keke::$_lang = Keke_lang::get_lang ();
+		Keke::$_lang_list = Keke_lang::$lang_list;
 	}
 	//初始化货币
 	public static function init_curr() {

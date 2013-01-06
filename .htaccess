@@ -11,5 +11,9 @@ RewriteCond %{REQUEST_URI} !^.*(\.css|\.js|\.swf|\.gif|\.png|\.jpg|\.jpeg|\.xml|
 
   
 # Rewrite all other URLs to index.php/URL
-
+#fastcgi model
 RewriteRule ^(.*)$ index.php?/$1 [PT,L]
+#isapi model
+#RewriteRule ^(.*)$ index.php/$1 [PT,L]
+
+

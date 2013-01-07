@@ -3,7 +3,7 @@
 class Control_minify_index extends Controller {
 	public function action_minify(){
     // load config
-     
+ 
     $config = array();
 	require S_ROOT.'class/minify/config/minify.php';
     //require  MINIFY_MIN_DIR.'/Minify.php';

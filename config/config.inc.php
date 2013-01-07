@@ -1,8 +1,8 @@
 <?php
 define ( 'ADMIN_UID', '1' );
-define ( 'DBHOST', 'localhost');
+define ( 'DBHOST', '192.168.1.99');
 define ( 'DBNAME', 'kppw_google');
-define ( 'DBUSER', 'root');
+define ( 'DBUSER', 'kppw');
 define ( 'DBPASS', '123456');
 define ( 'DBCHARSET', 'gbk' );
 define ( 'CHARSET', 'gbk' );

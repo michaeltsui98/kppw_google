@@ -4,7 +4,7 @@ ini_set('zlib.output_compression', '0');
 $config =  array(
   'uploaderHoursBehind' => 0,
   'serveOptions' => array(
-    'maxAge' => 1800,
+    'maxAge' => 18000,
     'bubbleCssImports' => false,
     'minApp' => array(
       'groupsOnly' => false,

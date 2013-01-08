@@ -37,7 +37,7 @@ class Control_task_mreward_user extends Control_user{
 	 */
 	function action_seller(){
 		self::$_default = 'seller';
-		self::$_left = 'mreward';
+		self::$_left = 'mrewardjoin';
 		
 		
 		require Keke_tpl::template('control/task/mreward/tpl/user/task_seller');

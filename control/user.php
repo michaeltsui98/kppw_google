@@ -48,11 +48,11 @@ abstract  class Control_user extends Controller{
      * 卖家导航
      */
     protected static $_seller_nav =array(
-    		'shop'=>array('店铺管理','seller_shop'),
+    		0=>array('shop'=>array('店铺管理'=>'seller_shop')),
     		//'index'=>array('我参与的任务','seller_index'),
     		//'order'=>array('我卖出的商品','seller_order'),
     		//'pub'=>array('我发布的商品','seller_pub'),
-    		'mark'=>array('评价管理','seller_mark'),
+    		100=>array('mark'=>array('评价管理'=>'seller_mark')),
     		);
     /**
      * 账号导航

@@ -32,7 +32,7 @@ class Control_shop_goods_user extends Control_user{
 	 * 我卖出的商品订单
 	 */
 	function action_seller(){
-			
+		self::$_left = 'goodsorder';	
 	
 		require Keke_tpl::template('control/shop/goods/tpl/user/seller');
 	}
@@ -42,7 +42,7 @@ class Control_shop_goods_user extends Control_user{
 	 * 发布的商品列表
 	 */
 	function action_pub(){
-		 self::$_left .= 'pub';
+		 self::$_left = 'goodspub';
 		 
 		require Keke_tpl::template('control/shop/goods/tpl/user/pub');
 	}
@@ -52,9 +52,14 @@ class Control_shop_goods_user extends Control_user{
 	 * 商品编辑 
 	 */
 	function action_edit(){
-		self::$_left .= 'pub';
+		self::$_left = 'goodspub';
+		
 		Control_user_seller_index::init_nav();
 		require Keke_tpl::template('control/shop/goods/tpl/user/pub_edit');
+	}
+	function action_save(){
+		
+		
 	}
 	
 	

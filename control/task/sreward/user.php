@@ -264,7 +264,7 @@ class Control_task_sreward_user extends Control_user{
 	 */
 	function action_seller(){
 		self::$_default = 'seller';
-		self::$_left = 'sreward';
+		self::$_left = 'srewardjoin';
 		Control_user_seller_index::init_nav();
 		$query_fields = array ('a.task_id' => '任务ID', 'b.task_title' => '任务标题');
 		

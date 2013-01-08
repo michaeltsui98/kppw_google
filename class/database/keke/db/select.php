@@ -98,12 +98,12 @@ class Keke_db_select extends Keke_db_query {
 	 *       	 object Database instance
 	 * @return string
 	 */
-	public function execute($db='mysql') {
+	public function execute($db=NULL) {
 		
 		// Start a selection query
 		$query = 'SELECT ';
 		
-		if ($this->_query_list ['distinct'] === TRUE) {
+		if (isset($this->_query_list ['distinct'])) {
 			$query .= 'DISTINCT ';
 		}
 		
@@ -160,7 +160,7 @@ class Keke_db_select extends Keke_db_query {
 	 * @param string $key  »º´æµÄID
 	 * @return unknown|Ambigous <number, multitype:multitype: >
 	 */
-	public function cache_data($sql,$db=null, $default = 'null') {
+	public function cache_data($sql,$db=NULL, $default = NULL) {
 		if (! is_object ( $db )) {
 			$db = Database::instance ( $db );
 		}

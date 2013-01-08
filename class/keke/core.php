@@ -24,7 +24,7 @@ class Keke_core extends Keke_base {
 	 *@param $time 跳转页显示时间，默认为3秒        
 	 */
 	static function show_msg( $content = "", $url = "",  $type = 'success',$title = NULL,$time = 3) {
-		global $_K, $basic_config, $username, $uid, $nav_list, $_lang;
+		global $_lang;
 		$r = $_REQUEST;
 		//$msgtype = $type;
 		if($title===NULL){
@@ -182,7 +182,7 @@ class Keke extends Keke_core {
 	public static $_safe_mode ;
 	public static $_magic_quote;
 	public static $_log;
-	public static $_index_file = '';
+	public static $_index_file ;
 	public static $_sys_config;
 	public static $_uid;
 	public static $_username;
@@ -198,13 +198,12 @@ class Keke extends Keke_core {
 	public static $_task_open=0;
 	//商城是否开启
 	public static $_shop_open=0; 
-	public static $_mark;
+	 
  
-	public static $_messagecount;
 	public static $_indus_p_arr;
 	public static $_indus_c_arr;
 	public static $_indus_arr;
-	public static $_prom_obj;
+	
 	public static $_weibo_list;
 	public static $_api_open;
 	public static $_lang;
@@ -215,39 +214,46 @@ class Keke extends Keke_core {
 	public static $_currency;
 	public Static $_curr_list;
 	//输出头
-	public static $_expose= true;
+	public static $_expose= TRUE;
 	public static $_content_type= 'text/html'; 
-	public static $_db;
+	//public static $_db;
  	
 	protected static $_files = array ();
-	public static $_errors = true;
-	
-	public static function get_instance() {
-		static $obj = null;
-		if ($obj === null) {
-			$obj = new self();
-		}
-		return $obj;
-	}
-	function __construct() {
-		$this->init_out_put ();
-		$this->init ();
-	}
-	
-	function init() {
+
+	/**
+	 * 系统初始化 参数列表
+	 *
+	 * Type      | Setting    | Description                                    
+	 * ----------|------------|-----------------------------
+	 * `string`  | index_file | This is usually `index.php`. 
+	 * `boolean` | caching    | `FALSE`
+	 *
+	 * @param array $set
+	 */
+	public static  function init(array $set=NULL) {
  		global  $_K;
+ 	
 		if(self::$_inited==TRUE){
 			return;
 		}
 		self::$_inited = TRUE;
+		if(isset($set['index_file'])){
+			Keke::$_index_file = rtrim($set['index_file'],'/');
+		}
+		self::init_out_put();
 		define ( 'LIB', S_ROOT . 'class' . DIRECTORY_SEPARATOR );
 		define ( 'EXT', '.php' );
-		include (S_ROOT . 'config/config.inc.php');
+		require (S_ROOT . 'config/config.inc.php');
 		
 		define ( 'KEKE_VERSION', '3.0' );
 		define ( 'KEKE_RELEASE', '2012-06-2' );
 		define ( "P_NAME", 'KPPW' );
-		if(Keke::$_caching === true){
+		
+		if (isset($set['caching'])){
+			Keke::$_caching = (bool) $set['caching'];
+		}
+		
+		if(Keke::$_caching === TRUE){
 			Keke::$_core_class = Keke::cache('loader_class');
 		}
 		
@@ -257,6 +263,7 @@ class Keke extends Keke_core {
 			set_exception_handler ( array (	'Keke_exception','handler' ) );
 			set_error_handler ( array ('Keke_core','error_handler' ) );
 		}
+		
 		register_shutdown_function ( array ('Keke_core','shutdown_handler') );
 		register_shutdown_function(array('Sys_cron','run'));
 
@@ -279,23 +286,23 @@ class Keke extends Keke_core {
 		$_POST = Keke::k_stripslashes($_POST);
 		$_COOKIE = Keke::k_stripslashes($_COOKIE);
 			 
-		$this->init_lang ();
+		self::init_lang ();
 		Keke::init_session ();
-		$this->init_config ();
+		self::init_config ();
 		
 		
-		$this->init_curr();
+		self::init_curr();
 		Keke::$_cache_obj = Cache::instance ();
 		 
-		//die('ccccc');
+	
 		self::$_log = log::instance()->attach(new keke_log_file());
-		$this->init_user();
+		self::init_user();
 		
 	}
 	/**
 	 * 初始化配置信息
 	 */
-	function init_config() {
+	public static function init_config() {
 		global $_lang, $_K;
 		$config_arr = array ();
 		if(($config_arr = Cache::instance()->get('keke_config'))==NULL){
@@ -338,17 +345,20 @@ class Keke extends Keke_core {
 		define ( "CREDIT_NAME", $config_arr ['credit_name']);
 		define ( 'FORMHASH', Keke::formhash () );
 		Keke::$_sys_config = $config_arr;
-		Keke::$_style_path = $_K ['siteurl'] . "/" . SKIN_PATH;
+		//Keke::$_style_path = $_K ['siteurl'] . "/" . SKIN_PATH;
 		$_K = $_K+Keke::$_sys_config;
+		
 		$_K['model_list'] = Keke::$_model_list;
 		$_K['nav_arr'] = Keke::$_nav_list;
-		$_K['lang_list'] = Keke::$_lang_list;
+		 
 		$_K['lang']      = Keke::$_lang;
+		
 		$_K['api_open']   = Keke::$_api_open;
 		$_K['weibo_list'] = Keke::$_weibo_list;
+		
 		$_K['attent_api_open'] = Keke::$_attent_api_open;
 		$_K['attent_list'] = Keke::$_weibo_attent;
-		$_K['style_path'] = Keke::$_style_path;
+	 
 		$_K['style_path']=SKIN_PATH;
 		if(Keke::$_index_file){
 			define('PHP_URL',BASE_URL.'/'.Keke::$_index_file);
@@ -360,14 +370,13 @@ class Keke extends Keke_core {
 	/**
 	 * 初始化用户
 	 */
-	function init_user() {
+	public static function init_user() {
 		
 		if (Keke_user_login::instance()->logged_in()) {
 			Keke::$_uid = $_SESSION ['uid'];
 			Keke::$_username = $_SESSION ['username'];
 			Keke::$_user_group = $_SESSION ['group_id'];
 		} elseif ( Cookie::get('remember_me')) {
-			//Keke::$_log->add(Log::INFO, Cookie::get('remember_me'))->write();
 			Keke_user_login::instance()->auto_login();
 		}
 	}
@@ -418,11 +427,12 @@ class Keke extends Keke_core {
 		Keke::$_attent_api_open = unserialize ( Keke::$_sys_config ['attent_api_open'] );
 	}
 	//初始化语言
-	function init_lang() {
+	public static function init_lang() {
 		Keke::$_lang = Keke_lang::get_lang ();
+		Keke::$_lang_list = Keke_lang::$lang_list;
 	}
 	//初始化货币
-	function init_curr() {
+	public static function init_curr() {
 		if ($_SESSION ['currency']) {
 			Keke::$_currency = $_SESSION ['currency'];
 		} else {
@@ -482,16 +492,10 @@ class Keke extends Keke_core {
 		$_SESSION = & $session->as_array();
 		
 	}
-	/**
-	 * 初始划计划任务
-	 */
-	public static function init_cron(){
-		
-	}
-	function init_out_put() {
-		
+
+	public static function init_out_put() {
 		 ob_start();
-	}
+	} 
 	/**
 	 * 查指定目录中的文件
 	 *
@@ -501,7 +505,7 @@ class Keke extends Keke_core {
 	public static function find_file($dir,$file,$class_name) {
 		$path = $dir . DIRECTORY_SEPARATOR . $file;
 		//有缓存，直接返回
-		if (Keke::$_caching===true and isset ( Keke::$_core_class [$path] )) {
+		if (Keke::$_caching===TRUE and isset ( Keke::$_core_class [$path] )) {
 			return Keke::$_core_class [$path];
 		}
 		$class = S_ROOT . $path ;
@@ -511,7 +515,7 @@ class Keke extends Keke_core {
 		$model = S_ROOT.$dir.DIRECTORY_SEPARATOR.'model'.DIRECTORY_SEPARATOR.$class_name;
 		
 		$control = S_ROOT.$file;
-		$models = array ('cache','database','image');
+		$models = array ('cache','database','image','minify');
 		$found = false;
 		if (is_file ( $class )) {
 			$found = $class;
@@ -526,16 +530,20 @@ class Keke extends Keke_core {
 		} elseif(isset($models)) {
 			foreach ( $models as $d ) {
 				$class = S_ROOT . $dir . DIRECTORY_SEPARATOR . $d.DIRECTORY_SEPARATOR.$file ;
+				$class2 = S_ROOT . $dir . DIRECTORY_SEPARATOR . $d.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.$file ;
 			 	if (is_file ( $class )) {
 					$found = $class;
+					break;
+				}elseif(is_file($class2)){
+					$found = $class2;
 					break;
 				}
 			}
 		}
 		 
-		if(Keke::$_caching===true){
+		if(Keke::$_caching===TRUE){
 			Keke::$_core_class[$path] = $found;
-			Keke::$_files_changed = true;
+			Keke::$_files_changed = TRUE;
 		}
 		return $found;
 	
@@ -546,7 +554,7 @@ class Keke extends Keke_core {
 					'Keke_core',
 					'autoload' 
 			) );
-			if (Keke::$_errors) {
+			if (KEKE_DEBUG) {
 				restore_error_handler ();
 				restore_exception_handler ();
 			}
@@ -577,5 +585,3 @@ class Keke extends Keke_core {
 	}
 
 }
-
-Keke::get_instance ();

@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<!--[if lt IE 7]> <html dir="ltr" lang="zh-cn" id="ie6"> <![endif]-->
+<!--[if IE 7]>    <html dir="ltr" lang="zh-cn" id="ie7"> <![endif]-->
+<!--[if IE 8]>    <html dir="ltr" lang="zh-cn" id="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--> <html dir="ltr" lang="zh-cn"> <!--<![endif]-->
+<head>
+	<meta charset="{CHARSET}">
+		<!--[if lt IE 9]>
+	<script src="{BASE_URL}/resource/js/system/html5.js"></script>
+	<![endif]-->
+	<link href="{BASE_URL}/{SKIN_PATH}/ui/style/user.css" rel="stylesheet" charset="utf-8"  >
+</head>
+<body id="user">
+	<form action="{PHP_URL}/shop/goods_user/send" name="comment_frm" method="post" target="_top" id="comment_frm" >
+		<input type="hidden" name="formhash" value="{FORMHASH}">
+		<input type="hidden" name="txt_to_username" value={$buyer_name}>
+		<input type="hidden" name="hdn_uri" value={$uri}>
+    	<div class="form_row">
+    	主题:<input type="text" name="txt_title" id="txt_title" style="width:300px"
+		limit="required:true"title=""msg=""msgArea="msg_title"/> <span id="msg_title"></span>
+    	</div>
+    	<div class="form_row">
+    	内容:<textarea name="txt_content" id="txt_content" cols="45" rows="6" class="xheditor-simple" ></textarea>
+    	</div>
+    	
+		<div class="clearfix aui_footer">
+		<div class="aui_buttons">
+			<input type="submit" value="提交" id="sbt_comment" name="sbt_comment">
+			<input type="button" value="取消" onclick="art.dialog.close();">
+		</div>
+	</form>
+<script src="{BASE_URL}/static/js/jquery.js"></script>
+ 
+<script type="text/javascript" src="{BASE_URL}/lang/cn/script/lang.js"></script>
+
+<script src="{BASE_URL}/static/js/artdialog/artDialog.js" ></script>
+<script src="{BASE_URL}/static/js/artdialog/plugins/iframeTools.js"  ></script>
+<script type="text/javascript" src="{BASE_URL}/static/js/common.js"></script>
+<script type="text/javascript" src="{BASE_URL}/static/js/system/valid.js"></script>
+
+
+<script type="text/javascript">
+
+	$(function(){
+		
+		$("#comment_frm").submit(function(){
+//			var title  = contentCheck('txt_title',5,50,0);
+			var content  = contentCheck('txt_content',10,200,0);
+			if(content){
+				if(checkForm(document.getElementById("comment_frm"))){
+					return true;
+				}
+				
+				return false;	
+			}
+			return false
+		})
+				
+	})
+</script>
+</body>
+</html>

@@ -48,7 +48,7 @@ function uploadify(paramReg,contrReg){
 	var exts      = paramReg.exts;//文件类型限制
 	var method    = paramReg.m?paramReg.m:'post';//上传方式
 	var limit     = paramReg.limit?paramReg.limit:1;//上传个数限制
-	var qlimit    = paramReg.qlimit?paramReg.qlimit:1;
+	var qlimit    = paramReg.qlimit?paramReg.qlimit:limit;
 	var text      = paramReg.text?paramReg.text:L.upload_file;//按钮文字
 	
 	//var task_id   =	parseInt(contrReg.task_id)+0;

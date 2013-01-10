@@ -1,5 +1,4 @@
-<?php
-	defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+<?php  defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
 /**
  * @copyright keke-tech
  * @author Monkey
@@ -12,9 +11,9 @@ class Control_admin_tool_feed extends Control_admin{
 		global $_K,$_lang;
 		
 		//要显示的字段,即SQl中SELECT要用到的字段
-		$fields = ' `feed_id`,`title`,`feedtype`,`username`,`feed_time` ';
+		$fields = ' `fid`,`obj_title`,`ftype`,`action`,`username`,`feed_time` ';
 		//要查询的字段,在模板中显示用的
-		$query_fields = array('feed_id'=>$_lang['id'],'username'=>$_lang['name'],'feed_time'=>$_lang['time']);
+		$query_fields = array('fid'=>$_lang['id'],'username'=>$_lang['name'],'feed_time'=>$_lang['time']);
 		//总记录数,分页用的，你不定义，数据库就是多查一次的。为了少个Sql语句，你必须要写的，亲!
 		$count = intval($_GET['count']);
 		//tool本来是一个目录，由于没有定义man为目录的路由,所以这个控制层的文件来tool_feed So这里不能写为tool/feed
@@ -45,12 +44,12 @@ class Control_admin_tool_feed extends Control_admin{
 	 *
 	 */
 	function action_del(){
-		//删除单条,这里的feed_id 是在模板上的请求连接中有的
-		if($_GET['feed_id']){
-			$where = 'feed_id = '.$_GET['feed_id'];
+		//删除单条,这里的fid 是在模板上的请求连接中有的
+		if($_GET['fid']){
+			$where = 'fid = '.$_GET['fid'];
 			//删除多条,这里的条件统一为ids哟，亲
 		}elseif($_GET['ids']){
-			$where = 'feed_id in ('.$_GET['ids'].')';
+			$where = 'fid in ('.$_GET['ids'].')';
 		}
 		//输出执行删除后的影响行数，模板上的js 根据这个值来判断是否移聊tr标签到
 		//注释中不能打单引，否则去注释的工具失效,蛋痛的工具啊!

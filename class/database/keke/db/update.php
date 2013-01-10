@@ -63,7 +63,7 @@ class Keke_db_update extends Keke_db_query {
 			$this->_value = $db->quote_string($this->_value);
 		}
 		$set_arr = array_combine($this->_set, $this->_value);
-		
+		$set_arr = array_filter($set_arr,array('Model','remove_null'));
 		foreach ($set_arr as $k=>$v){
 			$query .=  $k.'='. $v.',';
 		}

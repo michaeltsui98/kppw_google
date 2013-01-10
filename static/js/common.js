@@ -174,7 +174,12 @@ var share=function(obj,title){
 /** 检查用户是否登陆 */
 function check_user_login(url) {
 	if (isNaN(uid) || uid == 0) {
-		showDialog(L.you_not_login_now_login, 'confirm', L.login_tips, 'redirect_url()', 0);
+		if(typeof 'showDialog'=='function'){
+			showDialog(L.you_not_login_now_login, 'confirm', L.login_tips, 'redirect_url()', 0);	
+		}else if (typeof 'art' == 'function'){
+			art.dialog.alert(L.you_not_login_now_login);
+		}
+		
 		return false;
 	} else {
 		return true;
@@ -189,7 +194,7 @@ function win_confirm(url) {
 /** 用户登陆 */
 
 function login() {
-	location.href="index.php?do=login";
+	location.href= BASE_URL+"index.php/login";
 }
 
 function redirect_url(url){
@@ -244,17 +249,22 @@ function favor(pk,type,model_code,obj_uid,obj_id,obj_name,origin_id) {
  * 发送 站内信
  * 
  * @param int
- *            to_uid 接受方
+ * to_uid 接受方
  */
 function sendMessage(to_uid,to_username) {
-if(check_user_login()){
-	if (uid == to_uid) {
-		showDialog(L.can_not_give_yourself_send_message, 'error', L.operate_notice);
-				return false;
+	if(check_user_login()){
+		if (uid == to_uid) {
+			showDialog(L.can_not_give_yourself_send_message, 'error', L.operate_notice);
+			return false;
 		}
-	var url = 'index.php?do=ajax&view=message&op=send&to_uid='+ to_uid+'&to_username='+to_username;
-		showWindow('message',encodeURI(url));return false;
-}
+		var url = BASE_URL+'/index.php/ajax_msg/send?to_uid='+ to_uid+'&to_username='+to_username;
+		if(typeof 'showDialog'=='function'){
+			showWindow('message',encodeURI(url));	
+		}else if (typeof 'art' == 'function'){
+			art.dialog.open(url,{id:'send_msg',title:'发私信', width:'360px',height:'300px'},false);
+		}
+		return false;
+	}
 }
 /**
  * 交易维权 *请在外部定义basic_url参数

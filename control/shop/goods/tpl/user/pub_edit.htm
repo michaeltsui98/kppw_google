@@ -12,17 +12,20 @@
 		                    </div>
 		                </header>
 		                <div class="box_detail">
-
-		                	<div class="form_row">
+						<form action="{PHP_URL}/shop/goods_user/save" method="post" enctype="multipart/form-data" name="form_service" id="form_service" onsubmit="return checkForm(this)">
+		                <input type="hidden" name="hdn_sid" value="{$sid}">
+							<div class="form_row">
 	                			<label class="form_label">类型：</label>
-	                			<input type="radio" name="casetype" id="insite"><label for="insite">商品</label>
-	                			<input type="radio" name="casetype" id="outsite"><label for="outsite">服务</label>
+	                			<input type="radio" name="rad_type" id="insite" value="6" {if $service_info['model_id']=='6'} checked {/if}><label for="insite">商品</label>
+	                			<input type="radio" name="rad_type" id="outsite" value="7" {if $service_info['model_id']=='7'} checked {/if}><label for="outsite">服务</label>
 	                		</div>
 
 		                	<div class="form_row">
 	                			<label class="form_label">分类：</label>
-	                			<select name="" id="">
-	                				<option value="设计">设计</option>
+	                			<select name="sel_indus_id" id=""> 
+	                				{loop $indus_arr $v}
+										$v
+									{/loop}
 	                			</select>
 	                		</div>
 
@@ -30,93 +33,73 @@
 
 		                	<div class="form_row">
 	                			<label class="form_label">名称：</label>
-	                			<input type="text" size="70" value="武汉理工大学接待中心大楼外立面设计加急!">
+	                			<input type="text" name="txt_title" size="70" value="{$service_info['title']}"
+								limit="required:true;len:5-100"
+								title="名称长度为5到100个字符"
+								msg="名称输入有误"
+								msgArea="msg_title">
+								<span id="msg_title"></span>
 	                		</div>
 		                	
 		                	<div class="form_row">
 	                			<label class="form_label">售价：</label>
-	                			<input type="text" value="3000"><span class="right_tip">元</span>
+	                			<input type="text" name="txt_price" value="{$service_info['price']}"
+								limit="required:true;type:float"
+								title="售价只能为数字"
+								msg="售价输入有误"
+								msgArea="msg_price"><span class="right_tip">元</span>
+								<span id="msg_price"></span>
 	                		</div>
 
 	                		<div class="form_row">
 	                			<label class="form_label">预计完成时间：</label>
-	                			<input type="text" value="1">
-	                			<select name="" id="">
-	                				<option value="1">小时</option>
-	                				<option value="2">天</option>
-	                				<option value="3">月</option>
-	                				<option value="4">年</option>
+	                			<input type="text" name="txt_service_time" value="{$service_info['service_time']}"
+								limit="required:true;type:int"
+								title="预计完成时间只能为整数"
+								msg="预计完成时间输入有误"
+								msgArea="msg_service_time">
+	                			<select name="sel_unit_time" id="">
+	                				<option value="小时" {if $service_info['unit_time']=='小时'} selected {/if}>小时</option>
+	                				<option value="天" {if $service_info['unit_time']=='天'} selected {/if}>天</option>
+	                				<option value="月" {if $service_info['unit_time']=='月'} selected {/if}>月</option>
+	                				<option value="年" {if $service_info['unit_time']=='年'} selected {/if}>年</option>
 	                			</select>
+								<span id="msg_service_time"></span>
 	                		</div>
 
 
 	                		<div class="form_row float_row">
 	                			<label class="form_label">封面图片：</label>
 	                			<div class="detail">
-	                				<input type="file">
-	                				<p>
-										最多可添加5张图片，尺寸800x800px，每张大小不超过500k。支持格式(*.jpg;*.jpeg;*.gif;*.png;*.bmp)
-									</p>
+	                				<input type="hidden" name="file_ids" id="file_ids">
+									{if $length!=0}
+										<input type="file" class="file" name="upload" id="upload">
+									{/if}
                 					<ul class="list_pic_view">
-                						<li>
-                							<img class="pic_middle" src="{BASE_URL}/{SKIN_PATH}/ui/images/avatar.png" alt="avatar">
+                						{if $file_info[0][0]}
+										{loop $file_info $v}
+									   <li>
+									   		<img class="pic_middle" src="{BASE_URL}/{$v[0]}" alt="avatar">
                 							<p>
-                								<a href="#" title="删除">删除</a>
+                							<a href="{PHP_URL}/shop/goods_user/del_file?fid={$v[2]}&file_path={$v[0]}" onclick="return kdel(this,'',rm)">删除</a>
                 							</p>
                 						</li>
-                						<li>
-                							<img class="pic_middle" src="{BASE_URL}/{SKIN_PATH}/ui/images/avatar.png" alt="avatar">
-                							<p>
-                								<a href="#" title="删除">删除</a>
-                							</p>
-                						</li>
-                						<li>
-                							<img class="pic_middle" src="{BASE_URL}/{SKIN_PATH}/ui/images/avatar.png" alt="avatar">
-                							<p>
-                								<a href="#" title="删除">删除</a>
-                							</p>
-                						</li>
-                						<li>
-                							<img class="pic_middle" src="{BASE_URL}/{SKIN_PATH}/ui/images/avatar.png" alt="avatar">
-                							<p>
-                								<a href="#" title="删除">删除</a>
-                							</p>
-                						</li>
-                						<li>
-                							<img class="pic_middle" src="{BASE_URL}/{SKIN_PATH}/ui/images/avatar.png" alt="avatar">
-                							<p>
-                								<a href="#" title="删除">删除</a>
-                							</p>
-                						</li>
-
-                					</ul>
+										{/loop}
+										{/if}
+                 					</ul>
 
 	                			</div>
 	                		</div>
 
 		                	<div class="form_row">
 	                			<label class="form_label">描述：</label>
-	                			<textarea name="" id="" cols="70" rows="10">武汉理工大学接待中心大楼,建成于1988年9月,建筑面积6270平方,由主楼和附楼组成,其中主楼分七层,属砖混结构,附楼分四层,现需全面翻修,征集设计方案.
-
-									因城市发展,道路改造,现在大楼一楼低于路面,宾馆门厅是处于大楼二层,美食城门厅是附楼二层.
-
-									说明:1.城市的道路不可能抬高或降低,只能以现实情况来设计.
-
-									2.宾馆左边一楼可设计成商业门面等.
-
-									3.整体按星级酒店的标准设计,能符合大学接待中心的定位 有什么不明白随时电话联系13385254999
-
-									任务要求:提供正面,左侧面立面及大厅效果图    截止时间10月28日23时
-
-									这只是创意设计，如果做得好，后续其他的设计都就会有合作机会。
-	                			</textarea>
+	                			<textarea name="txa_content" id="" cols="70" rows="10"
+								limit="required:true;len:20-1000"
+								title="描述长度为20到1000个字符"
+								msg="描述输入有误"
+								msgArea="msg_content">{$service_info['content']}</textarea>
+								<span id="msg_content"></span>
 	                		</div>
-
-	                		
-
-	                		
-
-	                		
 
 	                		<div class="form_line">
 	                			<hr>
@@ -125,7 +108,7 @@
 	                		<div class="form_footer">
 	                			<input type="submit" value="提交">
 	                		</div>
-
+							</form>
 
 		                </div>
 		            </div>
@@ -133,5 +116,29 @@
     		</div>
     	</article>
     </div>
+	<script type="text/javascript">
+		$(function(){
+					uploadify({
+					auto:true,
+					size:"{$_K['max_size']}MB",
+					exts:'{$ext}',
+					file:'upload',
+					restext:'file_ids',
+					debug:true,
+					limit:parseInt("$length")}
+				,{
+					fileType:'att',
+					objType:'service',
+					obj_id:"{$service_info['sid']}"
+				});
+		})
+		function rm(o){
+		   location.href = location.href ;
+		}
+		In('valid');		
+	</script>
+<script src="{BASE_URL}/static/js/system/ajaxfileupload.js" type="text/javascript"></script>
+<script src="{BASE_URL}/static/js/uploadify/jquery.uploadify-3.1.min.js" type="text/javascript"></script>
+<link href="{BASE_URL}/static/js/uploadify/uploadify.css" rel="stylesheet">
     <!--content end-->
 <!--{include user/footer}-->

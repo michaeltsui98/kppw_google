@@ -57,12 +57,16 @@ class Control_user_buyer_index extends Control_user{
 		Keke::init_model();
 		foreach (Keke::$_model_list as $k=>$v){
 			if($v['model_status']==1 AND $v['model_type']=='shop'){
-				$model[$v['model_code']] = array('我买的'.$v['model_name'],'buyer_index/shop?t='.$v['model_code']);
+			  $model[2]=array($v['model_code']=>array('我买的'.$v['model_name']=> 'buyer_index/shop?t='.$v['model_code']));
 			}elseif($v['model_status']==1 AND $v['model_type']=='task'){
-				$model[$v['model_code']] = array('我发布的'.$v['model_name'],'buyer_index/task?t='.$v['model_code']);
+				//$model[$v['model_code']] = array('我发布的'.$v['model_name'],'buyer_index/task?t='.$v['model_code']);
+			  $t[$v['model_code']]['我发布的'.$v['model_name']]= 'buyer_index/task?t='.$v['model_code'];
 			}
+			$model[1] = $t;
 		}
 		self::$_buyer_nav = $model+self::$_buyer_nav;
+		ksort(self::$_buyer_nav);
+		//var_dump(self::$_buyer_nav);die;
 	}
 
 	

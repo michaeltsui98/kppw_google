@@ -74,7 +74,7 @@ class Control_user_seller_index extends Control_user{
 						$v['model_code'].'pub'=>array('我发布的'.$v['model_name']=>'seller_index/pub?t='.$v['model_code']),
 						);				
 			}elseif($v['model_status']==1 AND $v['model_type']=='task'){
-				$t[$v['model_code'].'join']['我参与的'.$v['model_name']]= 'seller_index/task?t='.$v['model_code'];
+				$t[$v['model_code']]['我参与的'.$v['model_name']]= 'seller_index/task?t='.$v['model_code'];
 			}
 			$model[1] = $t;
 		}

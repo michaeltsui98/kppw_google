@@ -251,21 +251,29 @@ function favor(pk,type,model_code,obj_uid,obj_id,obj_name,origin_id) {
  * @param int
  * to_uid 接受方
  */
-function sendMessage(to_uid,to_username) {
+function sendMessage(to_uid,to_username,redirect_uri) {
 	if(check_user_login()){
 		if (uid == to_uid) {
 			showDialog(L.can_not_give_yourself_send_message, 'error', L.operate_notice);
 			return false;
 		}
-		var url = BASE_URL+'/index.php/ajax_msg/send?to_uid='+ to_uid+'&to_username='+to_username;
-		if(typeof 'showDialog'=='function'){
-			showWindow('message',encodeURI(url));	
-		}else if (typeof 'art' == 'function'){
+		var url = BASE_URL+'/index.php/ajax_msg?to_uid='+ to_uid+'&to_username='+to_username+'&redirect_uri='+redirect_uri;
+		if (typeof art == 'function'){
 			art.dialog.open(url,{id:'send_msg',title:'发私信', width:'360px',height:'300px'},false);
+		}else if(typeof showDialog =='function'){
+			showWindow('message',encodeURI(url));	
 		}
 		return false;
 	}
 }
+function closeWin(){
+	if (typeof art == 'function'){
+		art.dialog.close();
+	}else if(typeof showDialog =='function'){
+		hideWindow('message');
+	}
+}
+
 /**
  * 交易维权 *请在外部定义basic_url参数
  * 
@@ -421,20 +429,20 @@ function contentCheck(contentObj,minLength,maxLength,msgType,editor){
 * @param 最大长度
 */
 function checkInner(obj,maxLength){
-var e = window.event || arguments[0];
+	var e = window.event || arguments[0];
 
-var  len   = obj.value.length;
+	var  len   = obj.value.length;
 	e.keyCode==8?len-=1:len+=1;
 	len<0?len=0:'';
 
-var Remain = Math.abs(maxLength-len);
+	var Remain = Math.abs(maxLength-len);
 
-if(maxLength>=len){
-   
-    $("#length_show").text(L.has_input_length+len+','+L.can_also_input+Remain+L.word);
-}else{
-	$("#length_show").text(L.can_input+maxLength+L.word+','+L.has_exceeded_length+Remain+L.word);
-}
+	if(maxLength>=len){
+	   
+	    $("#length_show").text(L.has_input_length+len+','+L.can_also_input+Remain+L.word);
+	}else{
+		$("#length_show").text(L.can_input+maxLength+L.word+','+L.has_exceeded_length+Remain+L.word);
+	}
 }
 
 

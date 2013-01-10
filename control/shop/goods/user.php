@@ -55,7 +55,7 @@ class Control_shop_goods_user extends Control_user{
 		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
 				
 		$base_uri = PHP_URL."/shop/goods_user/seller";
-		$open_url = PHP_URL."/shop/goods_user/comment";
+		$redirect_uri = "/shop/goods_user/seller";
 		extract ( $this->get_url ( $base_uri ) );
 		
 		$where .= " and a.seller_uid=$this->uid";
@@ -70,7 +70,26 @@ class Control_shop_goods_user extends Control_user{
 		$order_arr=$data['data'];
 		require Keke_tpl::template('control/shop/goods/tpl/user/seller');
 	}
+	function buyer_status($status,$order_id){
+		$html = "";
+		switch ($status){
+			case "wait":
+				$hmtl = "<a href='{PHP_URL}/shop/goods_user/buyer_order?a=pay&id=$order_id' onclick='return kconfirm()'>付款</a>";
+				break;
+				
+		}
+		return $html;
+	}
 	
+	function seller_status($status){
+		return "";
+	}
+	
+	function action_buyer_order(){
+		$code = $this->request->param('id');
+		call_user_func(array(Control_shop_goods_trade,$code),$this->uid,$order_info);
+		$this->refer();
+	}
 	
 	/**
 	 * 发布的商品列表
@@ -78,11 +97,11 @@ class Control_shop_goods_user extends Control_user{
 	function action_pub(){
 		 self::$_left = 'goodspub';
 		 Control_user_seller_index::init_nav();
-		 $fields = '`sid`,`pic`,`title`,`price`,`unite_price`,`sale_num`,`status`,`on_time`';
+		 $fields = '`sid`,`pic`,`title`,`price`,`unite_price`,`sale_num`,`status`,`on_time`,`model_id`';
 		 $query_fields = array('sid'=>'商品ID','title'=>'商品标题');
 		 $base_uri = PHP_URL."/shop/goods_user/pub";
 		 extract ( $this->get_url ( $base_uri ) );
-		 $where .= " and uid='$this->uid'";
+		 $where .= " and uid='$this->uid' and model_id='6'";
 		 if($_GET['status']){
 		 	$status=$_GET['status'];
 			$where .="and status =$status";
@@ -99,7 +118,7 @@ class Control_shop_goods_user extends Control_user{
 		$sid=(int)$_GET['sid'];
 		$status=(int)$_GET['status']==1?2:1;
 		DB::update('witkey_service')->set(array('status'))->value(array($status))->where("sid='$sid'")->execute();
-		$this->request->redirect ( "shop/goods_user/pub?status=$status" );
+		$this->request->redirect ( "shop/goods_user/pub?status={$_GET['status']}" );
 	}
 	/**
 	 * 删除商品
@@ -114,7 +133,7 @@ class Control_shop_goods_user extends Control_user{
 		self::$_left = 'goodspub';
 		Control_user_seller_index::init_nav();
 		$sid=$_GET['sid'];
-		$sql="select a.sid,a.model_id,a.indus_id,a.title,a.price,a.service_time,a.unit_time,a.content,\n".
+		$sql="select a.sid,a.indus_id,a.title,a.price,a.service_time,a.unit_time,a.content,\n".
 			 "GROUP_CONCAT(conv(oct(b.file_id),8,10)) file_id,GROUP_CONCAT(b.file_name) file_name,GROUP_CONCAT(b.save_name) save_name\n".
 			 "from	:keke_witkey_service a\n".
 			 "LEFT JOIN	:keke_witkey_file b\n".
@@ -143,13 +162,12 @@ class Control_shop_goods_user extends Control_user{
 		$_POST = Keke_tpl::chars ( $_POST );
 	
 		$array=array(
-				'model_id'=>$_POST['rad_type'],
-				'indus_id'=>$_POST['sel_indus_id'],
+				'indus_id'=>$_POST['slt_indus_id'],
 				'title'=>$_POST['txt_title'],
-				'content'=>$_POST['txa_content'],
+				'content'=>$_POST['txt_content'],
 				'price'=>$_POST['txt_price'],
 				'service_time'=>$_POST['txt_service_time'],
-				'unit_time'=>$_POST['sel_unit_time'],
+				'unit_time'=>$_POST['slt_unit_time'],
 		);
 		$sid = $_POST ['hdn_sid'];
 
@@ -163,21 +181,5 @@ class Control_shop_goods_user extends Control_user{
 	function action_del_file(){
 		File::del_att_file($_GET['fid'],$_GET['file_path']);
 	}
-	
-	/**
-	 *发私信
-	 */
-	function action_comment(){
-		$buyer_name=$_GET['to_send'];
-		$uri='shop/goods_user/seller';
-		require Keke_tpl::template('control/shop/goods/tpl/user/msg');
-	}
-	/**
-	 * 发私信
-	 */
- 	function action_send(){
- 		Keke_msg::instance()->send_msg($_POST['txt_to_username'],$_POST['txt_title'],$_POST['txt_content']);
- 		$this->request->redirect ( "shop/goods_user/seller");
- 	}
 	
 }

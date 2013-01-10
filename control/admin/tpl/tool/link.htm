@@ -6,56 +6,55 @@
 			<a href="{BASE_URL}/index.php/admin/tool_link/add" {if $_K['action'] == 'add'}class="here"{/if}>{if $link_id}{$_lang['link_edit']}{else}{$_lang['link_add']}{/if}</a>
         </div>
 </div> 
-<div class="box search p_relative">
-<form method="get" action="{BASE_URL}/index.php/admin/link" >
-   		 <!--{include control/admin/tpl/search}-->
+<div class="box search">
+<form method="get" action="{BASE_URL}/index.php/admin/tool_link" >
+   	<!--{include control/admin/tpl/search}-->
 </form>			
 </div>
 <div class="box list">         
-		  <table class="detail"   border="0" cellspacing="0" cellpadding="0"  >
-                <tr>
-                    <th width="80"><a href="javascript:;" onclick="submitSort('{$uri}','link_id',{$ord_tag})">ID{if $_GET['f']=='link_id'}{$ord_char}{/if}</a></th>
-                    <th width="150"><a href="javascript:;" onclick="submitSort('{$uri}','link_name',{$ord_tag})">{$_lang['link_name']}{if $_GET['f']=='link_name'}{$ord_char}{/if}</a></th>
-                    <th class="motif" width="150">{$_lang['link_url']}</th>
-                   
-                    <th width="150"><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">{$_lang['time']}{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>
-                    <th width="60">{$_lang['edit']}</th>
-                    <th width="60">{$_lang['delete']}</th>
-                </tr>
-                {loop $link_arr $key $value}
-                <tr class="item">
-                    <td>
-                        <input type="checkbox" name="ckb[]" class="checkbox" value="{$value['link_id']}"> {$value['link_id']}
-                    </td>
-                    <td>{$value['link_name']}</td>
-                    <td>
-                        <a href="{$value['link_url']}" target="_blank" >{$value['link_url']}</a>
-                    </td>
-                    
-                    <td><!--{eval echo date('Y-m-d',$value['on_time'])}--></td>
-                    <td>
-                        <a href="{$add_uri}?link_id={$value['link_id']}" class="button dbl_target"> <span class="pen icon"></span>{$_lang['edit']}</a>
-                    </td>
-                    <td>
-                       <a href="{$del_uri}?link_id={$value['link_id']}" onclick="return cdel(this);" class="button"> 
-					   <span class="trash icon"></span>{$_lang['delete']}</a>
-                    </td>
-                </tr>
-				{/loop}
+	  <table class="detail"   border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <th width="80"><a href="javascript:;" onclick="submitSort('{$uri}','link_id',{$ord_tag})">ID{if $_GET['f']=='link_id'}{$ord_char}{/if}</a></th>
+                <th width="150"><a href="javascript:;" onclick="submitSort('{$uri}','link_name',{$ord_tag})">{$_lang['link_name']}{if $_GET['f']=='link_name'}{$ord_char}{/if}</a></th>
+                <th width="150">{$_lang['link_url']}</th>
+                <th width="150"><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">{$_lang['time']}{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>
+                <th width="60">{$_lang['operate']}</th>
+            </tr>
+           
+			{loop $link_arr $key $value}
+            <tr class="item">
+                <td>
+                    <input type="checkbox" name="ckb[]" class="checkbox" value="{$value['link_id']}"> {$value['link_id']}
+                </td>
+                <td>{$value['link_name']}</td>
+                <td>
+                    <a href="{$value['link_url']}" target="_blank" >{$value['link_url']}</a>
+                </td>
+                
+                <td><!--{eval echo date('Y-m-d',$value['on_time'])}--></td>
+				
+                <td>
+                    <a href="{$add_uri}?link_id={$value['link_id']}" class="button dbl_target">{$_lang['edit']}</a>
+               
+                   <a href="{$del_uri}?link_id={$value['link_id']}" onclick="return cdel(this);" class="button"> 
+				  {$_lang['delete']}
+				  </a>
+                </td>
+            </tr>
+			{/loop}
+			
 			<tfoot>	
 				<tr >
-					    <td colspan="9">
-					    <div class="page" >{$pages}</div>
-					    <input type="checkbox" onclick="checkall(event);" id="checkbox" name="checkbox"/>
-		            	<label for="checkbox"> {$_lang['select_all']}</label>
-						<button type="submit" name="sbt_action" onclick="return batch_act(this)" value="{$_lang['mulit_delete']}" class="pill negative" >
-							<span class="trash icon"></span>{$_lang['mulit_delete']}
-						</button>
-						<a   name="sbt_add" value={$_lang['links_add']} class="pill negative button"
-					 	 href="{$base_uri}/add"><span class="check icon"></span>{$_lang['links_add']} </a>
-		            	</td>
+				    <td colspan="9">
+				    <div class="page" >{$pages}</div>
+				    <input type="checkbox" onclick="checkall(event);" id="checkbox" name="checkbox"/>
+	            	<label for="checkbox"> {$_lang['select_all']}</label>
+					<button type="submit" name="sbt_action" onclick="return batch_act(this)" value="{$_lang['mulit_delete']}" >
+						{$_lang['mulit_delete']}
+					</button>
+	            	</td>
 		        </tr>
-		 </tfoot>
-    </table>
+		 	</tfoot>
+	</table>
 </div>	
 <!--{include control/admin/tpl/admin_footer}-->

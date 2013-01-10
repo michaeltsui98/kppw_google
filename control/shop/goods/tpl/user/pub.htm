@@ -73,7 +73,7 @@
 		                              	<div class="item_action">
 		                              		<a href="{PHP_URL}/shop/goods_user/change_status?sid={$v['sid']}&status=$v['status']">{if $v['status']==1}ÉÏ¼Ü{elseif $v['status']==2}ÏÂ¼Ü{/if}</a>
 		                              		<a href="{PHP_URL}/shop/goods_user/edit?sid={$v['sid']}">±à¼­</a>
-		                              		<a href="{PHP_URL}/shop/goods_user/del?sid={$v['sid']}" onclick="return kdel(this,'',rm)">É¾³ý</a>
+		                              		<a href="{PHP_URL}/shop/goods_user/del?sid={$v['sid']}&status={$v['status']}" onclick="return kdel(this,'',rm)">É¾³ý</a>
 		                              		<a href="{PHP_URL}/goods/{$v['sid']}">²é¿´</a>
 		                              	</div>
 		                              </td>

@@ -134,11 +134,11 @@ class Dir {
         if (! Dir::$_tmp) {
             
             // use the system if we can
-            if (function_exists('sys_get_temp_dir')) { 
-                $tmp = sys_get_temp_dir();
-            } else {
+           // if (function_exists('sys_get_temp_dir')) { 
+            //    $tmp = sys_get_temp_dir();
+           // } else {
                 $tmp = Dir::_tmp();
-            }
+           // }
             
             // remove trailing separator and save
             Dir::$_tmp = rtrim($tmp, DIRECTORY_SEPARATOR);
@@ -188,10 +188,10 @@ class Dir {
         }
     
         // Windows 'windir'
-        $tmp = empty($_ENV['windir']) ? getenv('windir') : $_ENV['windir'];
-        if ($tmp) {
-            return $tmp;
-        }
+       // $tmp = empty($_ENV['windir']) ? getenv('windir') : $_ENV['windir'];
+        //if ($tmp) {
+       //     return $tmp;
+       // }
        
          
         // final fallback for Windows

@@ -2,7 +2,7 @@
 
 include 'app_boot.php';
 
- phpinfo();
+ Dir::tmp();
  
 
 die;

@@ -1,0 +1,169 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+	<h1>witkey_link</h1>
+	<div class="tool"> 
+		<a href="{BASE_URL}/index.php/admin/tool_links" {if $_K['action'] != 'add'}class="here"{/if}>{$_lang['list']}</a>
+		<a href="{BASE_URL}/index.php/admin/tool_links/add" {if $_K['action'] == 'add'}class="here"{/if}>{if $link_id}{$_lang['edit']}{else}{$_lang['add']}{/if}</a>
+	</div>
+</div>
+<div class="box post detail">
+<form method="post" action="{BASE_URL}/index.php/admin/tool_links/save" onsubmit="return checkForm(this)" id="frm_witkey_link" enctype="multipart/form-data">
+	<input type="hidden" name="hdn_link_id" value="{$info['link_id']}">
+	<input type="hidden" name="formhash" value="{FORMHASH}"/>
+	<table  border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<th width="150" scope="row">
+			连接ID
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_link_id"
+		value="{$info['link_id']}"
+		maxlength="11" limit="required:true;len:1-11"
+		msg="not_empty" msgArea="link_id_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="link_id_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			连接类型
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_link_type"
+		value="{$info['link_type']}"
+		maxlength="11" limit="required:true;len:1-11"
+		msg="not_empty" msgArea="link_type_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="link_type_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			连接名称
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_link_name"
+		value="{$info['link_name']}"
+		maxlength="100" limit="required:true;len:1-100"
+		msg="not_empty" msgArea="link_name_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="link_name_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			连接地址
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_link_url"
+		value="{$info['link_url']}"
+		maxlength="100" limit="required:true;len:1-100"
+		msg="not_empty" msgArea="link_url_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="link_url_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			连接图片
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_link_pic"
+		value="{$info['link_pic']}"
+		maxlength="100" limit="required:true;len:1-100"
+		msg="not_empty" msgArea="link_pic_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="link_pic_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			排序
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_listorder"
+		value="{$info['listorder']}"
+		maxlength="11" limit="required:true;len:1-11"
+		msg="not_empty" msgArea="listorder_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="listorder_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			状态
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_link_status"
+		value="{$info['link_status']}"
+		maxlength="11" limit="required:true;len:1-11"
+		msg="not_empty" msgArea="link_status_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="link_status_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			时间
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_on_time"
+		value="{$info['on_time']}"
+		maxlength="11" limit="required:true;len:1-11"
+		msg="not_empty" msgArea="on_time_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="on_time_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			对象类型
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_obj_type"
+		value="{$info['obj_type']}"
+		maxlength="20" limit="required:true;len:1-20"
+		msg="not_empty" msgArea="obj_type_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="obj_type_msg"></span>
+		</td>
+	</tr>
+	<tr>
+		<th width="150" scope="row">
+			对象ID
+		</th>
+		<td>
+		<input type="text" class="txt" style="width:260px;" name="txt_obj_id"
+		value="{$info['obj_id']}"
+		maxlength="11" limit="required:true;len:1-11"
+		msg="not_empty" msgArea="obj_id_msg"
+		class="input_t"/>
+		<b style="color:red">*</b>
+		<span id="obj_id_msg"></span>
+		</td>
+	</tr>
+
+	<tr>
+		<th scope="row"></th>
+		<td>
+			<button type="submit" name="sbt_edit"  value={$_lang['submit']}/>
+			{$_lang['submit']}
+			</button>
+			<button type="button" name="rst_edit" value={$_lang['return']} onclick="history.back(-1)">
+			{$_lang['return']}
+			</button>
+		</td>
+	</tr>
+	</table>
+</form>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

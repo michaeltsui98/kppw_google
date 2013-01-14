@@ -1,12 +1,83 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_currencies  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_currencies' );		 }	    
-	    		public function getCurrencies_id(){			 return self::$_data ['currencies_id']; 		}		public function getTitle(){			 return self::$_data ['title']; 		}		public function getCode(){			 return self::$_data ['code']; 		}		public function getSymbol_left(){			 return self::$_data ['symbol_left']; 		}		public function getSymbol_right(){			 return self::$_data ['symbol_right']; 		}		public function getDecimal_point(){			 return self::$_data ['decimal_point']; 		}		public function getThousands_point(){			 return self::$_data ['thousands_point']; 		}		public function getDecimal_places(){			 return self::$_data ['decimal_places']; 		}		public function getValue(){			 return self::$_data ['value']; 		}		public function getLast_updated(){			 return self::$_data ['last_updated']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setCurrencies_id($value){ 			 self::$_data ['currencies_id'] = $value;			 return $this ; 		}		public function setTitle($value){ 			 self::$_data ['title'] = $value;			 return $this ; 		}		public function setCode($value){ 			 self::$_data ['code'] = $value;			 return $this ; 		}		public function setSymbol_left($value){ 			 self::$_data ['symbol_left'] = $value;			 return $this ; 		}		public function setSymbol_right($value){ 			 self::$_data ['symbol_right'] = $value;			 return $this ; 		}		public function setDecimal_point($value){ 			 self::$_data ['decimal_point'] = $value;			 return $this ; 		}		public function setThousands_point($value){ 			 self::$_data ['thousands_point'] = $value;			 return $this ; 		}		public function setDecimal_places($value){ 			 self::$_data ['decimal_places'] = $value;			 return $this ; 		}		public function setValue($value){ 			 self::$_data ['value'] = $value;			 return $this ; 		}		public function setLast_updated($value){ 			 self::$_data ['last_updated'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_currencies  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_currencies		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['currencies_id'] )) { 						self::$_where = array ('currencies_id' => self::$_data ['currencies_id'] );						unset(self::$_data['currencies_id']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_currencies,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_currencies records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_currencies, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where currencies_id = $this->_currencies_id "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_currencies  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_currencies' );
+			self::$pk = 'currencies_id';
+		}
+		 public function getCurrencies_id(){
+			return self::$_data ['currencies_id'];
+		}
+		 public function getTitle(){
+			return self::$_data ['title'];
+		}
+		 public function getCode(){
+			return self::$_data ['code'];
+		}
+		 public function getSymbol_left(){
+			return self::$_data ['symbol_left'];
+		}
+		 public function getSymbol_right(){
+			return self::$_data ['symbol_right'];
+		}
+		 public function getDecimal_point(){
+			return self::$_data ['decimal_point'];
+		}
+		 public function getThousands_point(){
+			return self::$_data ['thousands_point'];
+		}
+		 public function getDecimal_places(){
+			return self::$_data ['decimal_places'];
+		}
+		 public function getValue(){
+			return self::$_data ['value'];
+		}
+		 public function getLast_updated(){
+			return self::$_data ['last_updated'];
+		}
+		public function setCurrencies_id($value){
+			return self::$_data ['currencies_id'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setTitle($value){
+			return self::$_data ['title'] = $value;
+			$this;
+		}
+		public function setCode($value){
+			return self::$_data ['code'] = $value;
+			$this;
+		}
+		public function setSymbol_left($value){
+			return self::$_data ['symbol_left'] = $value;
+			$this;
+		}
+		public function setSymbol_right($value){
+			return self::$_data ['symbol_right'] = $value;
+			$this;
+		}
+		public function setDecimal_point($value){
+			return self::$_data ['decimal_point'] = $value;
+			$this;
+		}
+		public function setThousands_point($value){
+			return self::$_data ['thousands_point'] = $value;
+			$this;
+		}
+		public function setDecimal_places($value){
+			return self::$_data ['decimal_places'] = $value;
+			$this;
+		}
+		public function setValue($value){
+			return self::$_data ['value'] = $value;
+			$this;
+		}
+		public function setLast_updated($value){
+			return self::$_data ['last_updated'] = $value;
+			$this;
+		}
+}

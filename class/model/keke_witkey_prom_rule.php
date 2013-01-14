@@ -1,12 +1,83 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_prom_rule  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_prom_rule' );		 }	    
-	    		public function getProm_id(){			 return self::$_data ['prom_id']; 		}		public function getProm_item(){			 return self::$_data ['prom_item']; 		}		public function getProm_code(){			 return self::$_data ['prom_code']; 		}		public function getMonth(){			 return self::$_data ['month']; 		}		public function getCash(){			 return self::$_data ['cash']; 		}		public function getCredit(){			 return self::$_data ['credit']; 		}		public function getRate(){			 return self::$_data ['rate']; 		}		public function getConfig(){			 return self::$_data ['config']; 		}		public function getIs_open(){			 return self::$_data ['is_open']; 		}		public function getType(){			 return self::$_data ['type']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setProm_id($value){ 			 self::$_data ['prom_id'] = $value;			 return $this ; 		}		public function setProm_item($value){ 			 self::$_data ['prom_item'] = $value;			 return $this ; 		}		public function setProm_code($value){ 			 self::$_data ['prom_code'] = $value;			 return $this ; 		}		public function setMonth($value){ 			 self::$_data ['month'] = $value;			 return $this ; 		}		public function setCash($value){ 			 self::$_data ['cash'] = $value;			 return $this ; 		}		public function setCredit($value){ 			 self::$_data ['credit'] = $value;			 return $this ; 		}		public function setRate($value){ 			 self::$_data ['rate'] = $value;			 return $this ; 		}		public function setConfig($value){ 			 self::$_data ['config'] = $value;			 return $this ; 		}		public function setIs_open($value){ 			 self::$_data ['is_open'] = $value;			 return $this ; 		}		public function setType($value){ 			 self::$_data ['type'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_prom_rule  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_prom_rule		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['prom_id'] )) { 						self::$_where = array ('prom_id' => self::$_data ['prom_id'] );						unset(self::$_data['prom_id']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_prom_rule,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_prom_rule records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_prom_rule, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where prom_id = $this->_prom_id "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_prom_rule  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_prom_rule' );
+			self::$pk = 'prom_id';
+		}
+		 public function getProm_id(){
+			return self::$_data ['prom_id'];
+		}
+		 public function getProm_item(){
+			return self::$_data ['prom_item'];
+		}
+		 public function getProm_code(){
+			return self::$_data ['prom_code'];
+		}
+		 public function getMonth(){
+			return self::$_data ['month'];
+		}
+		 public function getCash(){
+			return self::$_data ['cash'];
+		}
+		 public function getCredit(){
+			return self::$_data ['credit'];
+		}
+		 public function getRate(){
+			return self::$_data ['rate'];
+		}
+		 public function getConfig(){
+			return self::$_data ['config'];
+		}
+		 public function getIs_open(){
+			return self::$_data ['is_open'];
+		}
+		 public function getType(){
+			return self::$_data ['type'];
+		}
+		public function setProm_id($value){
+			return self::$_data ['prom_id'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setProm_item($value){
+			return self::$_data ['prom_item'] = $value;
+			$this;
+		}
+		public function setProm_code($value){
+			return self::$_data ['prom_code'] = $value;
+			$this;
+		}
+		public function setMonth($value){
+			return self::$_data ['month'] = $value;
+			$this;
+		}
+		public function setCash($value){
+			return self::$_data ['cash'] = $value;
+			$this;
+		}
+		public function setCredit($value){
+			return self::$_data ['credit'] = $value;
+			$this;
+		}
+		public function setRate($value){
+			return self::$_data ['rate'] = $value;
+			$this;
+		}
+		public function setConfig($value){
+			return self::$_data ['config'] = $value;
+			$this;
+		}
+		public function setIs_open($value){
+			return self::$_data ['is_open'] = $value;
+			$this;
+		}
+		public function setType($value){
+			return self::$_data ['type'] = $value;
+			$this;
+		}
+}

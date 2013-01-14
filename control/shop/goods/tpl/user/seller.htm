@@ -9,16 +9,16 @@
 		            <div class="inner clearfix">
 		                <header class="box_header">
 		                    <div class="box_title">
-		                        <h2 class="title">我买的商品</h2>
+		                        <h2 class="title">我卖的商品</h2>
 		                    </div>
 		                </header>
 		                <nav class="box_nav">
 								<ul id="test_ul" class="clearfix">
-									<li {if $status=='wait'} class="selected" {/if}><a href="$base_uri?status=wait">待付款</a></li>
-									<li {if $status=='ok'} class="selected" {/if}><a href="$base_uri?status=ok">待发货</a></li>
-									<li {if $status=='send'} class="selected" {/if}><a href="$base_uri?status=send">待确认</a></li>
-									<li {if $status=='confirm'} class="selected" {/if}><a href="$base_uri?status=confirm">待互评</a></li>
-									<li {if $status=='close'} class="selected" {/if}><a href="$base_uri?status=close">交易成功</a></li>
+									<li {if $status=='0'} class="selected" {/if}><a href="$base_uri?status=0">待付款</a></li>
+									<li {if $status=='1'} class="selected" {/if}><a href="$base_uri?status=1">待发货</a></li>
+									<li {if $status=='2'} class="selected" {/if}><a href="$base_uri?status=2">待确认</a></li>
+									<li {if $status=='3'} class="selected" {/if}><a href="$base_uri?status=3">待互评</a></li>
+									<li {if $status=='4'} class="selected" {/if}><a href="$base_uri?status=4">交易成功</a></li>
 								</ul>
 		                </nav>
 		                <div class="box_detail">
@@ -67,11 +67,12 @@
 		                            </tr>
 		                            </thead>
 		                            <tbody>
+		                            {if $order_arr}
 		                            {loop $order_arr $v}
 									<tr>
 		                              <td>
 		                              	
-		                              	<a href="{PHP_URL}/goods/">{$v['order_name']}</a>
+		                              	<a href="{PHP_URL}/goods/{$v['obj_id']}">{$v['order_name']}</a>
 		                              	<p>
 		                              		订单编号:{$v['order_id']}
 		                              		下单时间:{date('Y-m-d H:i:s',$v['order_time'])}
@@ -100,14 +101,18 @@
 										{/if}
 		                              </td>
 		                              <td>
-		                              	{$order_ststus[$v['order_status']]}
-										{if $v['order_status']==confirm}
-										<p><a href="#">互评</a></p>
-										{/if}
+		                              	{$v['goods_status']}
+										<p><!--{eval echo $this->seller_status($v['scode'],$v['order_id'])}--></p>
 		                              </td>
 		                            </tr>
 									{/loop}
-		                            
+		                            {else}
+										<tfoot>
+					                            <tr>
+						                            <td colspan="5" class="t_c">暂无记录</td>
+						                        </tr>
+					                    </tfoot>
+										{/if}
 		                            </tbody>
 		                            
 		                          </table>

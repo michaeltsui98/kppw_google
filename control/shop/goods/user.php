@@ -24,7 +24,13 @@ class Control_shop_goods_user extends Control_user{
   	function action_buyer(){
   		self::$_default = 'buyer';
 		Control_user_buyer_index::init_nav();
-	
+		$query_fields = array('a.order_id'=>'订单号','a.order_name'=>'订单名');
+		$type="buyer";
+		$status=$_GET['status'];
+		$data=$this->get_order($type,$status);
+		$data=$this->get_order('buyer',$_GET['status']);
+		$order_arr=$data['data'];
+		$pages=$data['pages'];
 		require Keke_tpl::template('control/shop/goods/tpl/user/buyer');
 	}  
 	
@@ -32,65 +38,140 @@ class Control_shop_goods_user extends Control_user{
 	 * 我卖出的商品订单
 	 */
 	function action_seller(){
-		self::$_left = 'goodsorder';	
-		
-
+		self::$_left = 'goodsorder';
 		Control_user_seller_index::init_nav();
-		
 		$query_fields = array('a.order_id'=>'订单号','a.order_name'=>'订单名');
-		
-		$base_uri = PHP_URL."/shop/goods_user/seller";
-		$sql="select a.order_id,a.order_name,a.order_time,a.order_amount,a.order_status,
-			 a.order_body,a.order_uid,a.order_username,a.seller_uid,a.seller_username,\n".
+		$type="seller";
+		$status=$_GET['status'];
+		$data=$this->get_order($type,$status);
+		$order_arr=$data['data'];
+		$pages=$data['pages'];
+		require Keke_tpl::template('control/shop/goods/tpl/user/seller');
+	}
+	/**
+	 * 订单信息
+	 * @param unknown_type $type
+	 * @param unknown_type $status
+	 * @return Ambigous <array(data,pages), multitype:Ambigous <array(page,where), string> Ambigous <object, mixed, number> >
+	 */
+	function get_order($type,$status){
+		$sql="select a.order_id,a.order_name,a.order_time,a.order_amount,a.order_status,\n".
+			 "a.order_body,a.order_uid,a.order_username,a.seller_uid,a.seller_username,\n".
 			 "b.detail_id,b.obj_type,b.obj_id,b.price,b.num,b.model_id,\n".
-			 " c.mobile,c.qq\n".
+			 "c.mobile,c.qq,\n".
+			 "d.status as goods_status,d.scode,\n".
+			 "e.mark_status\n".
 			 "from keke_witkey_order a\n".
 			 "left join keke_witkey_order_detail b\n".
-			 "on a.order_id=b.order_id and b.model_id=6\n".
+			 "on b.order_id=a.order_id and b.model_id=6\n".
 			 "left join :keke_witkey_space c\n".
-			 "on a.order_uid=c.uid\n";		
-
-		$order_ststus=Sys_order::task_order_status();
+			 "on c.uid=a.order_uid\n".
+			 "left join :keke_witkey_status d\n".
+			 "on d.sid=a.order_status and d.stype='service' and d.model_code='goods'\n".
+			 "left join :keke_witkey_mark e\n".
+			 "on e.origin_id=a.order_id and e.mark_type=':type'";
+			
+		$sql = DB::query($sql)->tablepre(':keke_')->param(':type',$type)->compile(Database::instance());
 		
-		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
-				
 		$base_uri = PHP_URL."/shop/goods_user/seller";
 		$redirect_uri = "/shop/goods_user/seller";
 		extract ( $this->get_url ( $base_uri ) );
-		
-		$where .= " and a.seller_uid=$this->uid";
-		if($_GET['status']){
-			$status=$_GET['status'];
+		//$where .=" and e.mark_type='$type'";
+		if($type=='seller'){
+			$where .= " and a.seller_uid=$this->uid ";
+		}elseif ($type=='buyer'){
+			$where .= " and a.order_uid=$this->uid ";
+		}
+		if(isset($status)){
 			$where .=" and a.order_status= '$status'";
+			if($status=='3'){
+				$where .=" and e.mark_status<'1'";
+			}
 		}
 		$this->_default_ord_field = 'a.order_id';
 		$this->_uri = $uri;
 		
-		$data =Model::sql_grid($sql,$where,$uri,$order);
-		$order_arr=$data['data'];
-		require Keke_tpl::template('control/shop/goods/tpl/user/seller');
+		return Model::sql_grid($sql,$where,$uri,$order);
+		
 	}
+	/**
+	 * 买家操作
+	 * @param unknown_type $status
+	 * @param unknown_type $order_id
+	 * @return string
+	 */
 	function buyer_status($status,$order_id){
-		$html = "";
+		$html="";
 		switch ($status){
 			case "wait":
-				$hmtl = "<a href='{PHP_URL}/shop/goods_user/buyer_order?a=pay&id=$order_id' onclick='return kconfirm()'>付款</a>";
+				$html = "<a href='".PHP_URL."/shop/goods_user/buyer_order?ac=pay&order_id=$order_id' onclick='return kconfirm(this)'>付款</a>";
 				break;
-				
+			case "confirm":
+				$html = "<a href='".PHP_URL."/shop/goods_user/buyer_order?ac=confirm&order_id=$order_id' onclick='return kconfirm(this)'>确认</a>";
+				break;
+			case "close":
+				$where="origin_id=$order_id and model_code='goods' and mark_type='buyer'";
+				$mark_info=DB::select('mark_id,mark_status')->from('witkey_mark')->where($where)->get_one()->execute();	
+				if((int)$mark_info['mark_status']<'1'){
+					$html = "<a href='".PHP_URL."/shop/goods_user/seller_order?ac=mark&order_id=$mark_info[mark_id]&mark_origin_id=$order_id&mark_type=buyer' onclick='return kconfirm(this)'>互评</a>";
+				}
+				break;				
+		}
+		
+		return $html;
+	}
+	/**
+	 * 卖家操作
+	 * @param unknown_type $status
+	 * @return string
+	 */
+	function seller_status($status,$order_id){
+		$html="";
+		switch ($status){
+			case "send":
+				$html = "<a href='".PHP_URL."/shop/goods_user/seller_order?ac=send&order_id=$order_id' onclick='return kconfirm(this)'>发货</a>";
+				break;
+			case "close":
+				$where="origin_id=$order_id and model_code='goods' and mark_type='seller'";
+				$mark_info=DB::select('mark_id,mark_status')->from('witkey_mark')->where($where)->get_one()->execute();	
+				if((int)$mark_info['mark_status']<'1'){
+					$html = "<a href='".PHP_URL."/shop/goods_user/seller_order?ac=mark&order_id=$mark_info[mark_id]&mark_origin_id=$order_id&mark_type=seller' onclick='return kconfirm(this)'>互评</a>";
+				}
+				break;
 		}
 		return $html;
 	}
 	
-	function seller_status($status){
-		return "";
-	}
-	
 	function action_buyer_order(){
-		$code = $this->request->param('id');
-		call_user_func(array(Control_shop_goods_trade,$code),$this->uid,$order_info);
+		$code = $_GET['ac'];
+		$order_id = $_GET['order_id'];
+		$sql="select a.order_id,a.order_uid,a.seller_uid,a.seller_username,a.order_id,a.order_username,\n".
+			 "b.price,b.num,b.name,b.obj_id,b.model_id,\n".
+			 "c.model_code\n".
+			 "from keke_witkey_order a\n".
+			 "left join keke_witkey_order_detail b\n".
+			 "on b.order_id=a.order_id\n".
+			 "left join keke_witkey_model c\n".
+			 "on c.model_id=b.model_id \n".
+			 "where a.order_id=:order_id";
+		$order_info = DB::query($sql)->tablepre(':keke_')->param(':order_id', $order_id)->get_one()->execute();
+		call_user_func(array(Control_shop_goods_trade,$code),$order_info);
 		$this->refer();
 	}
-	
+	function action_seller_order(){
+		$code = $_GET['ac'];
+		$order_id = $_GET['order_id'];
+		$origin_id=$_GET['mark_origin_id'];
+		$mark_type=$_GET['mark_type'];
+		call_user_func(array(Control_shop_goods_trade,$code),$order_id,$origin_id,$mark_type);
+		$this->refer();
+	}
+// 	function action_mark(){
+// 		$code = $_GET['ac'];
+// 		$mark_id = $_GET['mark_id'];
+// 		call_user_func(array(Control_shop_goods_trade,$code),$mark_id);
+// 		$this->refer();
+// 	}
 	/**
 	 * 发布的商品列表
 	 */

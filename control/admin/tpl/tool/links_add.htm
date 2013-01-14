@@ -155,12 +155,10 @@
 	<tr>
 		<th scope="row"></th>
 		<td>
-			<button type="submit" name="sbt_edit"  value={$_lang['submit']}/>
-			{$_lang['submit']}
-			</button>
-			<button type="button" name="rst_edit" value={$_lang['return']} onclick="history.back(-1)">
-			{$_lang['return']}
-			</button>
+			 
+			<input type="submit" value="{$_lang['submit']}">
+			<input type="button" value="{$_lang['return']}"onclick="to_back()">
+		 
 		</td>
 	</tr>
 	</table>

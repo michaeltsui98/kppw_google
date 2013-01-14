@@ -1,12 +1,90 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_feed  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_feed' );		 }	    
-	    		public function getFeed_id(){			 return self::$_data ['feed_id']; 		}		public function getObj_id(){			 return self::$_data ['obj_id']; 		}		public function getObj_link(){			 return self::$_data ['obj_link']; 		}		public function getFeedtype(){			 return self::$_data ['feedtype']; 		}		public function getUid(){			 return self::$_data ['uid']; 		}		public function getUsername(){			 return self::$_data ['username']; 		}		public function getIcon(){			 return self::$_data ['icon']; 		}		public function getTitle(){			 return self::$_data ['title']; 		}		public function getFeed_desc(){			 return self::$_data ['feed_desc']; 		}		public function getFeed_pic(){			 return self::$_data ['feed_pic']; 		}		public function getFeed_time(){			 return self::$_data ['feed_time']; 		}		public function getExt_data(){			 return self::$_data ['ext_data']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setFeed_id($value){ 			 self::$_data ['feed_id'] = $value;			 return $this ; 		}		public function setObj_id($value){ 			 self::$_data ['obj_id'] = $value;			 return $this ; 		}		public function setObj_link($value){ 			 self::$_data ['obj_link'] = $value;			 return $this ; 		}		public function setFeedtype($value){ 			 self::$_data ['feedtype'] = $value;			 return $this ; 		}		public function setUid($value){ 			 self::$_data ['uid'] = $value;			 return $this ; 		}		public function setUsername($value){ 			 self::$_data ['username'] = $value;			 return $this ; 		}		public function setIcon($value){ 			 self::$_data ['icon'] = $value;			 return $this ; 		}		public function setTitle($value){ 			 self::$_data ['title'] = $value;			 return $this ; 		}		public function setFeed_desc($value){ 			 self::$_data ['feed_desc'] = $value;			 return $this ; 		}		public function setFeed_pic($value){ 			 self::$_data ['feed_pic'] = $value;			 return $this ; 		}		public function setFeed_time($value){ 			 self::$_data ['feed_time'] = $value;			 return $this ; 		}		public function setExt_data($value){ 			 self::$_data ['ext_data'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_feed  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_feed		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['feed_id'] )) { 						self::$_where = array ('feed_id' => self::$_data ['feed_id'] );						unset(self::$_data['feed_id']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_feed,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_feed records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_feed, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where feed_id = $this->_feed_id "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_feed  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_feed' );
+			self::$pk = 'fid';
+		}
+		 public function getFid(){
+			return self::$_data ['fid'];
+		}
+		 public function getFtype(){
+			return self::$_data ['ftype'];
+		}
+		 public function getUid(){
+			return self::$_data ['uid'];
+		}
+		 public function getUsername(){
+			return self::$_data ['username'];
+		}
+		 public function getSpace_url(){
+			return self::$_data ['space_url'];
+		}
+		 public function getAction(){
+			return self::$_data ['action'];
+		}
+		 public function getObj_id(){
+			return self::$_data ['obj_id'];
+		}
+		 public function getObj_title(){
+			return self::$_data ['obj_title'];
+		}
+		 public function getObj_type(){
+			return self::$_data ['obj_type'];
+		}
+		 public function getObj_cash(){
+			return self::$_data ['obj_cash'];
+		}
+		 public function getFeed_time(){
+			return self::$_data ['feed_time'];
+		}
+		public function setFid($value){
+			return self::$_data ['fid'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setFtype($value){
+			return self::$_data ['ftype'] = $value;
+			$this;
+		}
+		public function setUid($value){
+			return self::$_data ['uid'] = $value;
+			$this;
+		}
+		public function setUsername($value){
+			return self::$_data ['username'] = $value;
+			$this;
+		}
+		public function setSpace_url($value){
+			return self::$_data ['space_url'] = $value;
+			$this;
+		}
+		public function setAction($value){
+			return self::$_data ['action'] = $value;
+			$this;
+		}
+		public function setObj_id($value){
+			return self::$_data ['obj_id'] = $value;
+			$this;
+		}
+		public function setObj_title($value){
+			return self::$_data ['obj_title'] = $value;
+			$this;
+		}
+		public function setObj_type($value){
+			return self::$_data ['obj_type'] = $value;
+			$this;
+		}
+		public function setObj_cash($value){
+			return self::$_data ['obj_cash'] = $value;
+			$this;
+		}
+		public function setFeed_time($value){
+			return self::$_data ['feed_time'] = $value;
+			$this;
+		}
+}

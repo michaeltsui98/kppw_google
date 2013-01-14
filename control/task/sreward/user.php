@@ -30,7 +30,6 @@ class Control_task_sreward_user extends Control_user{
 		$model_name = Keke::$_model_list[1]['model_name'];
 		
 		$query_fields = array ('a.task_id' => '任务ID', 'a.task_title' => '任务标题');
-		
 		$data = $this->pub_task($_GET['status']);
 		
 		$base_uri = PHP_URL . "/task/sreward_user";
@@ -274,18 +273,18 @@ class Control_task_sreward_user extends Control_user{
 				"d.mark_status,d.mark_id,\n".
 				"e.uid,e.username,e.mobile,e.qq,\n".
 				"f.scode task_scode\n".
-				"from keke_witkey_task_work a \n".
-				"left join keke_witkey_task b \n".
+				"from :keke_witkey_task_work a \n".
+				"left join :keke_witkey_task b \n".
 				"on a.task_id = b.task_id \n".
 				"left join keke_witkey_model m\n".
 				"on b.model_id = m.model_id \n".
-				"left join keke_witkey_mark d\n".
+				"left join :keke_witkey_mark d\n".
 				"on d.origin_id=a.task_id and d.obj_id=a.work_id and d.uid=a.uid and d.mark_type=1 \n".
-				"left join keke_witkey_status c\n".
+				"left join :keke_witkey_status c\n".
 				"on a.work_status = c.sid and c.model_code = m.model_code and c.stype = 'work'\n".
-				"left join keke_witkey_status f\n".
+				"left join :keke_witkey_status f\n".
 				"on b.task_status = f.sid and f.model_code = m.model_code and f.stype = 'task'\n".
-				"left join keke_witkey_space e\n".
+				"left join :keke_witkey_space e\n".
 				"on b.uid  = e.uid";
 		
 		$base_uri = PHP_URL . "/task/sreward_user";

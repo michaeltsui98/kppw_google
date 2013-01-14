@@ -69,7 +69,7 @@ class Control_shop_goods_user extends Control_user{
 			 "left join :keke_witkey_status d\n".
 			 "on d.sid=a.order_status and d.stype='service' and d.model_code='goods'\n".
 			 "left join :keke_witkey_mark e\n".
-			 "on e.origin_id=a.order_id and e.mark_type=':type'";
+			 "on e.origin_id=a.order_id and e.mark_type=:type";
 			
 		$sql = DB::query($sql)->tablepre(':keke_')->param(':type',$type)->compile(Database::instance());
 		

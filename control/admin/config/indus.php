@@ -20,6 +20,8 @@ class Control_admin_config_indus extends Control_admin{
 		$del_uri = BASE_URL.'/index.php/admin/config_indus/del';
 		//添加，编辑uri
 		$add_uri = BASE_URL.'/index.php/admin/config_indus/add';
+		//合并uri
+		$merge_uri=BASE_URL.'/index.php/admin/config_indus/merge';
 		$t_arr = array ();
 		//生成树开数组
 		Keke::get_tree ( $indus_arr, $t_arr, 'cat', NULL, 'indus_id', 'indus_pid', 'indus_name' );

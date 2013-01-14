@@ -3,7 +3,7 @@
 /**
  * 模型操作的基类
  * 可以操作所有表映射类
- * @author michael
+ * @author Michaeltsui98
  * @version 3.0
  */
 

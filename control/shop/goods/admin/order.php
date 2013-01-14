@@ -33,7 +33,7 @@ class Control_shop_goods_admin_order extends Control_admin_shop_order{
 				"left join  :Pwitkey_order as b on a.order_id = b.order_id and a.obj_type = 'service'\n";
     	$sql  = DB::query($sql)->tablepre(':P')->__toString();
     	extract($this->get_url($base_uri));
-        $where .= " and b.model_id = '$model_id'";
+        $where .= " and a.model_id = '$model_id'";
     	$group = " GROUP BY b.order_id";
     	 
     

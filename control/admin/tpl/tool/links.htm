@@ -1,0 +1,43 @@
+<!--{include control/admin/tpl/admin_header}-->
+<div class="page_title">
+	<h1>witkey_link</h1>
+	<div class="tool"> 
+		<a href="{BASE_URL}/index.php/admin/tool_links" {if $_K['action'] != 'add'}class="here"{/if}>{$_lang['list']}</a>
+		<a href="{BASE_URL}/index.php/admin/tool_links/add" {if $_K['action'] == 'add'}class="here"{/if}>{if $link_id}{$_lang['edit']}{else}{$_lang['add']}{/if}</a>
+	</div>
+</div>
+<div class="box search">
+<form method="get" action="{BASE_URL}/index.php/admin/tool_links" >
+	<!--{include control/admin/tpl/search}-->
+</form>
+</div>
+<div class="box list">
+<table class="detail" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','link_id',{$ord_tag})">连接ID{if $_GET['f']=='link_id'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','link_type',{$ord_tag})">连接类型{if $_GET['f']=='link_type'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','link_name',{$ord_tag})">连接名称{if $_GET['f']=='link_name'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','link_url',{$ord_tag})">连接地址{if $_GET['f']=='link_url'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','link_pic',{$ord_tag})">连接图片{if $_GET['f']=='link_pic'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','listorder',{$ord_tag})">排序{if $_GET['f']=='listorder'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','link_status',{$ord_tag})">状态{if $_GET['f']=='link_status'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','on_time',{$ord_tag})">时间{if $_GET['f']=='on_time'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','obj_type',{$ord_tag})">对象类型{if $_GET['f']=='obj_type'}{$ord_char}{/if}</a></th>		<th width="9%"><a href="javascript:;" onclick="submitSort('{$uri}','obj_id',{$ord_tag})">对象ID{if $_GET['f']=='obj_id'}{$ord_char}{/if}</a></th>
+		<th width="60">{$_lang['operate']}</th>
+	</tr>
+	{loop $list_arr $k $v}
+	 <tr class="item">
+		<td><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['link_id']}"> {$v['link_id']}</td>		<td>{$v['link_type']}</td>		<td>{$v['link_name']}</td>		<td>{$v['link_url']}</td>		<td>{$v['link_pic']}</td>		<td>{$v['listorder']}</td>		<td>{$v['link_status']}</td>		<td>{$v['on_time']}</td>		<td>{$v['obj_type']}</td>		<td>{$v['obj_id']}</td>
+		<td>
+			<a href="{$add_uri}?link_id={$v['link_id']}" class="button dbl_target">{$_lang['edit']}</a>
+			<a href="{$del_uri}?link_id={$v['link_id']}" onclick="return cdel(this);" class="button">{$_lang['delete']}</a>
+		</td>
+	</tr>
+	{/loop}
+	<tfoot>
+		<tr>
+			<td colspan="11">
+				<div class="page">{$pages}</div>
+				<input type="checkbox" onclick="checkall(event);" id="checkbox" name="checkbox"/>
+				<label for="checkbox"> {$_lang['select_all']}</label>
+				<button type="submit" name="sbt_action" onclick="return batch_act(this)" value="{$_lang['mulit_delete']}">
+				{$_lang['mulit_delete']}
+				</button>
+			</td>
+		</tr>
+	</tfoot>
+</table>
+</div>
+<!--{include control/admin/tpl/admin_footer}-->

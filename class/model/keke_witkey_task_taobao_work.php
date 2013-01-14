@@ -1,12 +1,174 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_task_taobao_work  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_task_taobao_work' );		 }	    
-	    		public function getTbwk_id(){			 return self::$_data ['tbwk_id']; 		}		public function getTask_id(){			 return self::$_data ['task_id']; 		}		public function getWork_id(){			 return self::$_data ['work_id']; 		}		public function getWb_type(){			 return self::$_data ['wb_type']; 		}		public function getFans(){			 return self::$_data ['fans']; 		}		public function getWb_url(){			 return self::$_data ['wb_url']; 		}		public function getWb_account(){			 return self::$_data ['wb_account']; 		}		public function getWb_sid(){			 return self::$_data ['wb_sid']; 		}		public function getGet_cash(){			 return self::$_data ['get_cash']; 		}		public function getWb_data(){			 return self::$_data ['wb_data']; 		}		public function getHf_num(){			 return self::$_data ['hf_num']; 		}		public function getFocus_num(){			 return self::$_data ['focus_num']; 		}		public function getWb_num(){			 return self::$_data ['wb_num']; 		}		public function getFaver_num(){			 return self::$_data ['faver_num']; 		}		public function getCreate_day(){			 return self::$_data ['create_day']; 		}		public function getFgd_num(){			 return self::$_data ['fgd_num']; 		}		public function getHyd_num(){			 return self::$_data ['hyd_num']; 		}		public function getCbd_num(){			 return self::$_data ['cbd_num']; 		}		public function getYxl_num(){			 return self::$_data ['yxl_num']; 		}		public function getWb_leve(){			 return self::$_data ['wb_leve']; 		}		public function getClick_num(){			 return self::$_data ['click_num']; 		}		public function getIp(){			 return self::$_data ['ip']; 		}		public function getJump_url(){			 return self::$_data ['jump_url']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setTbwk_id($value){ 			 self::$_data ['tbwk_id'] = $value;			 return $this ; 		}		public function setTask_id($value){ 			 self::$_data ['task_id'] = $value;			 return $this ; 		}		public function setWork_id($value){ 			 self::$_data ['work_id'] = $value;			 return $this ; 		}		public function setWb_type($value){ 			 self::$_data ['wb_type'] = $value;			 return $this ; 		}		public function setFans($value){ 			 self::$_data ['fans'] = $value;			 return $this ; 		}		public function setWb_url($value){ 			 self::$_data ['wb_url'] = $value;			 return $this ; 		}		public function setWb_account($value){ 			 self::$_data ['wb_account'] = $value;			 return $this ; 		}		public function setWb_sid($value){ 			 self::$_data ['wb_sid'] = $value;			 return $this ; 		}		public function setGet_cash($value){ 			 self::$_data ['get_cash'] = $value;			 return $this ; 		}		public function setWb_data($value){ 			 self::$_data ['wb_data'] = $value;			 return $this ; 		}		public function setHf_num($value){ 			 self::$_data ['hf_num'] = $value;			 return $this ; 		}		public function setFocus_num($value){ 			 self::$_data ['focus_num'] = $value;			 return $this ; 		}		public function setWb_num($value){ 			 self::$_data ['wb_num'] = $value;			 return $this ; 		}		public function setFaver_num($value){ 			 self::$_data ['faver_num'] = $value;			 return $this ; 		}		public function setCreate_day($value){ 			 self::$_data ['create_day'] = $value;			 return $this ; 		}		public function setFgd_num($value){ 			 self::$_data ['fgd_num'] = $value;			 return $this ; 		}		public function setHyd_num($value){ 			 self::$_data ['hyd_num'] = $value;			 return $this ; 		}		public function setCbd_num($value){ 			 self::$_data ['cbd_num'] = $value;			 return $this ; 		}		public function setYxl_num($value){ 			 self::$_data ['yxl_num'] = $value;			 return $this ; 		}		public function setWb_leve($value){ 			 self::$_data ['wb_leve'] = $value;			 return $this ; 		}		public function setClick_num($value){ 			 self::$_data ['click_num'] = $value;			 return $this ; 		}		public function setIp($value){ 			 self::$_data ['ip'] = $value;			 return $this ; 		}		public function setJump_url($value){ 			 self::$_data ['jump_url'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_task_taobao_work  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_task_taobao_work		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['tbwk_id'] )) { 						self::$_where = array ('tbwk_id' => self::$_data ['tbwk_id'] );						unset(self::$_data['tbwk_id']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_task_taobao_work,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_task_taobao_work records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_task_taobao_work, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where tbwk_id = $this->_tbwk_id "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_task_taobao_work  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_task_taobao_work' );
+			self::$pk = 'tbwk_id';
+		}
+		 public function getTbwk_id(){
+			return self::$_data ['tbwk_id'];
+		}
+		 public function getTask_id(){
+			return self::$_data ['task_id'];
+		}
+		 public function getWork_id(){
+			return self::$_data ['work_id'];
+		}
+		 public function getWb_type(){
+			return self::$_data ['wb_type'];
+		}
+		 public function getFans(){
+			return self::$_data ['fans'];
+		}
+		 public function getWb_url(){
+			return self::$_data ['wb_url'];
+		}
+		 public function getWb_account(){
+			return self::$_data ['wb_account'];
+		}
+		 public function getWb_sid(){
+			return self::$_data ['wb_sid'];
+		}
+		 public function getGet_cash(){
+			return self::$_data ['get_cash'];
+		}
+		 public function getWb_data(){
+			return self::$_data ['wb_data'];
+		}
+		 public function getHf_num(){
+			return self::$_data ['hf_num'];
+		}
+		 public function getFocus_num(){
+			return self::$_data ['focus_num'];
+		}
+		 public function getWb_num(){
+			return self::$_data ['wb_num'];
+		}
+		 public function getFaver_num(){
+			return self::$_data ['faver_num'];
+		}
+		 public function getCreate_day(){
+			return self::$_data ['create_day'];
+		}
+		 public function getFgd_num(){
+			return self::$_data ['fgd_num'];
+		}
+		 public function getHyd_num(){
+			return self::$_data ['hyd_num'];
+		}
+		 public function getCbd_num(){
+			return self::$_data ['cbd_num'];
+		}
+		 public function getYxl_num(){
+			return self::$_data ['yxl_num'];
+		}
+		 public function getWb_leve(){
+			return self::$_data ['wb_leve'];
+		}
+		 public function getClick_num(){
+			return self::$_data ['click_num'];
+		}
+		 public function getIp(){
+			return self::$_data ['ip'];
+		}
+		 public function getJump_url(){
+			return self::$_data ['jump_url'];
+		}
+		public function setTbwk_id($value){
+			return self::$_data ['tbwk_id'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setTask_id($value){
+			return self::$_data ['task_id'] = $value;
+			$this;
+		}
+		public function setWork_id($value){
+			return self::$_data ['work_id'] = $value;
+			$this;
+		}
+		public function setWb_type($value){
+			return self::$_data ['wb_type'] = $value;
+			$this;
+		}
+		public function setFans($value){
+			return self::$_data ['fans'] = $value;
+			$this;
+		}
+		public function setWb_url($value){
+			return self::$_data ['wb_url'] = $value;
+			$this;
+		}
+		public function setWb_account($value){
+			return self::$_data ['wb_account'] = $value;
+			$this;
+		}
+		public function setWb_sid($value){
+			return self::$_data ['wb_sid'] = $value;
+			$this;
+		}
+		public function setGet_cash($value){
+			return self::$_data ['get_cash'] = $value;
+			$this;
+		}
+		public function setWb_data($value){
+			return self::$_data ['wb_data'] = $value;
+			$this;
+		}
+		public function setHf_num($value){
+			return self::$_data ['hf_num'] = $value;
+			$this;
+		}
+		public function setFocus_num($value){
+			return self::$_data ['focus_num'] = $value;
+			$this;
+		}
+		public function setWb_num($value){
+			return self::$_data ['wb_num'] = $value;
+			$this;
+		}
+		public function setFaver_num($value){
+			return self::$_data ['faver_num'] = $value;
+			$this;
+		}
+		public function setCreate_day($value){
+			return self::$_data ['create_day'] = $value;
+			$this;
+		}
+		public function setFgd_num($value){
+			return self::$_data ['fgd_num'] = $value;
+			$this;
+		}
+		public function setHyd_num($value){
+			return self::$_data ['hyd_num'] = $value;
+			$this;
+		}
+		public function setCbd_num($value){
+			return self::$_data ['cbd_num'] = $value;
+			$this;
+		}
+		public function setYxl_num($value){
+			return self::$_data ['yxl_num'] = $value;
+			$this;
+		}
+		public function setWb_leve($value){
+			return self::$_data ['wb_leve'] = $value;
+			$this;
+		}
+		public function setClick_num($value){
+			return self::$_data ['click_num'] = $value;
+			$this;
+		}
+		public function setIp($value){
+			return self::$_data ['ip'] = $value;
+			$this;
+		}
+		public function setJump_url($value){
+			return self::$_data ['jump_url'] = $value;
+			$this;
+		}
+}

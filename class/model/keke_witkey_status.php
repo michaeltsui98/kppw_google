@@ -1,12 +1,55 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_status  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_status' );		 }	    
-	    		public function getS(){			 return self::$_data ['s']; 		}		public function getSid(){			 return self::$_data ['sid']; 		}		public function getScode(){			 return self::$_data ['scode']; 		}		public function getStype(){			 return self::$_data ['stype']; 		}		public function getStatus(){			 return self::$_data ['status']; 		}		public function getModel_code(){			 return self::$_data ['model_code']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setS($value){ 			 self::$_data ['s'] = $value;			 return $this ; 		}		public function setSid($value){ 			 self::$_data ['sid'] = $value;			 return $this ; 		}		public function setScode($value){ 			 self::$_data ['scode'] = $value;			 return $this ; 		}		public function setStype($value){ 			 self::$_data ['stype'] = $value;			 return $this ; 		}		public function setStatus($value){ 			 self::$_data ['status'] = $value;			 return $this ; 		}		public function setModel_code($value){ 			 self::$_data ['model_code'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_status  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_status		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['s'] )) { 						self::$_where = array ('s' => self::$_data ['s'] );						unset(self::$_data['s']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_status,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_status records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_status, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where s = $this->_s "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_status  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_status' );
+			self::$pk = 's';
+		}
+		 public function getS(){
+			return self::$_data ['s'];
+		}
+		 public function getSid(){
+			return self::$_data ['sid'];
+		}
+		 public function getScode(){
+			return self::$_data ['scode'];
+		}
+		 public function getStype(){
+			return self::$_data ['stype'];
+		}
+		 public function getStatus(){
+			return self::$_data ['status'];
+		}
+		 public function getModel_code(){
+			return self::$_data ['model_code'];
+		}
+		public function setS($value){
+			return self::$_data ['s'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setSid($value){
+			return self::$_data ['sid'] = $value;
+			$this;
+		}
+		public function setScode($value){
+			return self::$_data ['scode'] = $value;
+			$this;
+		}
+		public function setStype($value){
+			return self::$_data ['stype'] = $value;
+			$this;
+		}
+		public function setStatus($value){
+			return self::$_data ['status'] = $value;
+			$this;
+		}
+		public function setModel_code($value){
+			return self::$_data ['model_code'] = $value;
+			$this;
+		}
+}

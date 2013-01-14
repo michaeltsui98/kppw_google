@@ -1,12 +1,90 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_pay_api  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_pay_api' );		 }	    
-	    		public function getPay_id(){			 return self::$_data ['pay_id']; 		}		public function getPayment(){			 return self::$_data ['payment']; 		}		public function getType(){			 return self::$_data ['type']; 		}		public function getPay_name(){			 return self::$_data ['pay_name']; 		}		public function getStatus(){			 return self::$_data ['status']; 		}		public function getPay_user(){			 return self::$_data ['pay_user']; 		}		public function getPay_account(){			 return self::$_data ['pay_account']; 		}		public function getPay_tel(){			 return self::$_data ['pay_tel']; 		}		public function getPid(){			 return self::$_data ['pid']; 		}		public function getKey(){			 return self::$_data ['key']; 		}		public function getMem(){			 return self::$_data ['mem']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setPay_id($value){ 			 self::$_data ['pay_id'] = $value;			 return $this ; 		}		public function setPayment($value){ 			 self::$_data ['payment'] = $value;			 return $this ; 		}		public function setType($value){ 			 self::$_data ['type'] = $value;			 return $this ; 		}		public function setPay_name($value){ 			 self::$_data ['pay_name'] = $value;			 return $this ; 		}		public function setStatus($value){ 			 self::$_data ['status'] = $value;			 return $this ; 		}		public function setPay_user($value){ 			 self::$_data ['pay_user'] = $value;			 return $this ; 		}		public function setPay_account($value){ 			 self::$_data ['pay_account'] = $value;			 return $this ; 		}		public function setPay_tel($value){ 			 self::$_data ['pay_tel'] = $value;			 return $this ; 		}		public function setPid($value){ 			 self::$_data ['pid'] = $value;			 return $this ; 		}		public function setKey($value){ 			 self::$_data ['key'] = $value;			 return $this ; 		}		public function setMem($value){ 			 self::$_data ['mem'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_pay_api  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_pay_api		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['pay_id'] )) { 						self::$_where = array ('pay_id' => self::$_data ['pay_id'] );						unset(self::$_data['pay_id']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_pay_api,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_pay_api records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_pay_api, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where pay_id = $this->_pay_id "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_pay_api  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_pay_api' );
+			self::$pk = 'pay_id';
+		}
+		 public function getPay_id(){
+			return self::$_data ['pay_id'];
+		}
+		 public function getPayment(){
+			return self::$_data ['payment'];
+		}
+		 public function getType(){
+			return self::$_data ['type'];
+		}
+		 public function getPay_name(){
+			return self::$_data ['pay_name'];
+		}
+		 public function getStatus(){
+			return self::$_data ['status'];
+		}
+		 public function getPay_user(){
+			return self::$_data ['pay_user'];
+		}
+		 public function getPay_account(){
+			return self::$_data ['pay_account'];
+		}
+		 public function getPay_tel(){
+			return self::$_data ['pay_tel'];
+		}
+		 public function getPid(){
+			return self::$_data ['pid'];
+		}
+		 public function getKey(){
+			return self::$_data ['key'];
+		}
+		 public function getMem(){
+			return self::$_data ['mem'];
+		}
+		public function setPay_id($value){
+			return self::$_data ['pay_id'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setPayment($value){
+			return self::$_data ['payment'] = $value;
+			$this;
+		}
+		public function setType($value){
+			return self::$_data ['type'] = $value;
+			$this;
+		}
+		public function setPay_name($value){
+			return self::$_data ['pay_name'] = $value;
+			$this;
+		}
+		public function setStatus($value){
+			return self::$_data ['status'] = $value;
+			$this;
+		}
+		public function setPay_user($value){
+			return self::$_data ['pay_user'] = $value;
+			$this;
+		}
+		public function setPay_account($value){
+			return self::$_data ['pay_account'] = $value;
+			$this;
+		}
+		public function setPay_tel($value){
+			return self::$_data ['pay_tel'] = $value;
+			$this;
+		}
+		public function setPid($value){
+			return self::$_data ['pid'] = $value;
+			$this;
+		}
+		public function setKey($value){
+			return self::$_data ['key'] = $value;
+			$this;
+		}
+		public function setMem($value){
+			return self::$_data ['mem'] = $value;
+			$this;
+		}
+}

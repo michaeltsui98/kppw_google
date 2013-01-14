@@ -1,12 +1,62 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_priv_item  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_priv_item' );		 }	    
-	    		public function getOp_id(){			 return self::$_data ['op_id']; 		}		public function getModel_id(){			 return self::$_data ['model_id']; 		}		public function getOp_code(){			 return self::$_data ['op_code']; 		}		public function getOp_name(){			 return self::$_data ['op_name']; 		}		public function getAllow_times(){			 return self::$_data ['allow_times']; 		}		public function getLimit_obj(){			 return self::$_data ['limit_obj']; 		}		public function getCondit(){			 return self::$_data ['condit']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setOp_id($value){ 			 self::$_data ['op_id'] = $value;			 return $this ; 		}		public function setModel_id($value){ 			 self::$_data ['model_id'] = $value;			 return $this ; 		}		public function setOp_code($value){ 			 self::$_data ['op_code'] = $value;			 return $this ; 		}		public function setOp_name($value){ 			 self::$_data ['op_name'] = $value;			 return $this ; 		}		public function setAllow_times($value){ 			 self::$_data ['allow_times'] = $value;			 return $this ; 		}		public function setLimit_obj($value){ 			 self::$_data ['limit_obj'] = $value;			 return $this ; 		}		public function setCondit($value){ 			 self::$_data ['condit'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_priv_item  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_priv_item		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['op_id'] )) { 						self::$_where = array ('op_id' => self::$_data ['op_id'] );						unset(self::$_data['op_id']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_priv_item,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_priv_item records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_priv_item, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where op_id = $this->_op_id "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_priv_item  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_priv_item' );
+			self::$pk = 'op_id';
+		}
+		 public function getOp_id(){
+			return self::$_data ['op_id'];
+		}
+		 public function getModel_id(){
+			return self::$_data ['model_id'];
+		}
+		 public function getOp_code(){
+			return self::$_data ['op_code'];
+		}
+		 public function getOp_name(){
+			return self::$_data ['op_name'];
+		}
+		 public function getAllow_times(){
+			return self::$_data ['allow_times'];
+		}
+		 public function getLimit_obj(){
+			return self::$_data ['limit_obj'];
+		}
+		 public function getCondit(){
+			return self::$_data ['condit'];
+		}
+		public function setOp_id($value){
+			return self::$_data ['op_id'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setModel_id($value){
+			return self::$_data ['model_id'] = $value;
+			$this;
+		}
+		public function setOp_code($value){
+			return self::$_data ['op_code'] = $value;
+			$this;
+		}
+		public function setOp_name($value){
+			return self::$_data ['op_name'] = $value;
+			$this;
+		}
+		public function setAllow_times($value){
+			return self::$_data ['allow_times'] = $value;
+			$this;
+		}
+		public function setLimit_obj($value){
+			return self::$_data ['limit_obj'] = $value;
+			$this;
+		}
+		public function setCondit($value){
+			return self::$_data ['condit'] = $value;
+			$this;
+		}
+}

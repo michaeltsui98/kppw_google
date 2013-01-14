@@ -24,7 +24,8 @@ class Keke_session_file extends Keke_session {
 	 * @return null
 	 */
 	protected function _read($id = NULL) {
-		$path = S_ROOT . 'data' . DIRECTORY_SEPARATOR . 'session';
+		//$path = S_ROOT . 'data' . DIRECTORY_SEPARATOR . 'session';
+		$path = Dir::tmp();
 		ini_set ( 'session.save_handler', 'files' );
 		session_save_path ( $path );
 		// Sync up the session cookie with Cookie parameters

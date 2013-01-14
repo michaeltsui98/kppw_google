@@ -14,10 +14,6 @@ class usermodel {
 	var $db;
 	var $base;
 
-	/* function __construct(&$base) {
-		$this->usermodel($base);
-	} */
-
 	function usermodel($base) {
 		$this->base = $base;
 		$this->db = $base->db;
@@ -36,7 +32,7 @@ class usermodel {
 	function check_username($username) {
 		$guestexp = '\xA1\xA1|\xAC\xA3|^Guest|^\xD3\xCE\xBF\xCD|\xB9\x43\xAB\xC8';
 		$len = strlen($username);
-		if($len > 15 || $len < 3 || preg_match("/\s+|^c:\\con\\con|[%,\*\"\s\<\>\&]|$guestexp/is", $username)) {
+		if($len > 21 || $len < 3 || preg_match("/\s+|^c:\\con\\con|[%,\*\"\s\<\>\&]|$guestexp/is", $username)) {
 			return FALSE;
 		} else {
 			return TRUE;

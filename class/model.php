@@ -4,15 +4,16 @@
  * 模型操作的基类
  * 可以操作所有表映射类
  * @author michael
- * @version 2.1
+ * @version 3.0
  */
 
 abstract class Model {
 	public $_db;
 	public $_tablename;
-	public $_pk;
-	public $_lifetime;
 	public $_replace = 0;
+	public static $pk = NULL;
+	public static $pk_val = NULL;
+	public static $_data = array ();
 	public static $_where = NULL;
 	public static $_instance = null;
 	
@@ -39,7 +40,15 @@ abstract class Model {
 	 *设置条件
 	 * @return Model
 	 */
-	abstract public function setWhere($where);
+	//abstract public function setWhere($where);
+	public function setWhere($value) {
+		self::$_where = $value;
+		return $this;
+	}
+	
+	public function getWhere() {
+		return self::$_where;
+	}
 	
 	/**
 	 * 字段设值,只对添加，更新有效
@@ -47,15 +56,40 @@ abstract class Model {
 	 * @param $array 字段健值对数组        	
 	 * @return Model
 	 */
-	abstract public function setData($array);
+	//abstract public function setData($array);
+	
+	public function setData($array) {
+		self::$_data = array_filter ( $array, array (
+				'Model',
+				'remove_null'
+		) );
+		return $this;
+	}
 	/**
 	 * 插入数据
 	 */
-	abstract public function create();
+	function create($return_last_id = 1) {
+		$res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace );
+		$this->reset ();
+		return $res;
+	}
 	/**
 	 * 更新数据
 	 */
-	abstract public function update();
+	 
+	function update() {
+		if ($this->getWhere ()) {
+			$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere () );
+		} elseif (isset ( self::$pk_val )) {
+			self::$_where = array (
+					self::$pk => self::$pk_val
+			);
+				
+			$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere () );
+		}
+		$this->reset ();
+		return $res;
+	}
 	/**
 	 *
 	 * @param string $fields
@@ -65,18 +99,55 @@ abstract class Model {
 	 * @param
 	 *        	array
 	 */
-	abstract public function query($fields='*', $cache_time=0);
+	 
+	function query($fields = '*', $cache_time = 0) {
+		empty ( $fields ) and $fields = '*';
+		if ($this->getWhere ()) {
+			$sql = "select $fields from $this->_tablename where " . $this->getWhere ();
+		} else {
+			$sql = "select $fields from $this->_tablename";
+		}
+		empty ( $fields ) and $fields = '*';
+		$this->reset ();
+		//DB::query($sql)->cached()->execute();
+		return $this->_db->cached ( $cache_time )->cache_data ( $sql );
+	}
 	/**
 	 * 删除记录
 	 */
-	abstract public function del();
+	
+	function del() {
+		if ($this->getWhere ()) {
+			$sql = "delete from $this->_tablename where " . $this->getWhere ();
+		} else if(isset(self::$pk_val)){
+			$sql = "delete from $this->_tablename where ".self::$pk." = ".self::$pk_val;
+		}
+		$this->reset ();
+		if($sql){
+			return $this->_db->query ( $sql, Database::DELETE );
+		}
+		return 0;
+	}
 	/**
 	 * 统计记录数
 	 */
-	abstract public function count();
+	function count() {
+		if ($this->getWhere ()) {
+			$sql = "select count(*) as count from $this->_tablename where " . $this->getWhere ();
+		} else {
+			$sql = "select count(*) as count from $this->_tablename";
+		}
+		$this->reset ();
+		return $this->_db->get_count ( $sql );
+	}
+	
 	function reset() {
 		self::$_where = NULL;
 	}
+	
+	
+	
+	
 /**
  * 获取网格数据
  * @param String $fields  字段  必须

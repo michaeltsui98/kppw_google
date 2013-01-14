@@ -1,12 +1,55 @@
-<?php defined ('IN_KEKE' ) or die ( 'Access Denied' );
-	class Keke_witkey_task_match_work  extends Model {
-	    protected static $_data = array ();
-	     function  __construct(){ 			 parent::__construct ( 'witkey_task_match_work' );		 }	    
-	    		public function getMw_id(){			 return self::$_data ['mw_id']; 		}		public function getWork_id(){			 return self::$_data ['work_id']; 		}		public function getWiki_deposit(){			 return self::$_data ['wiki_deposit']; 		}		public function getDeposit_cash(){			 return self::$_data ['deposit_cash']; 		}		public function getDeposit_credit(){			 return self::$_data ['deposit_credit']; 		}		public function getWitkey_contact(){			 return self::$_data ['witkey_contact']; 		}		public function getWhere(){			 return self::$_where; 		}
-	    		public function setMw_id($value){ 			 self::$_data ['mw_id'] = $value;			 return $this ; 		}		public function setWork_id($value){ 			 self::$_data ['work_id'] = $value;			 return $this ; 		}		public function setWiki_deposit($value){ 			 self::$_data ['wiki_deposit'] = $value;			 return $this ; 		}		public function setDeposit_cash($value){ 			 self::$_data ['deposit_cash'] = $value;			 return $this ; 		}		public function setDeposit_credit($value){ 			 self::$_data ['deposit_credit'] = $value;			 return $this ; 		}		public function setWitkey_contact($value){ 			 self::$_data ['witkey_contact'] = $value;			 return $this ; 		}		public function setWhere($value){ 			 self::$_where = $value;			 return $this; 		}		public function setData($array){ 			self::$_data = array_filter($array,array('Model','remove_null')); 			return $this; 		} 
-	    /**		 * insert into  keke_witkey_task_match_work  ,or add new record		 * @return int last_insert_id		 */		function create($return_last_id=1){		 $res = $this->_db->insert ( $this->_tablename, self::$_data, $return_last_id, $this->_replace ); 		 $this->reset(); 			 return $res; 		 } 
-	    /**		 * update table keke_witkey_task_match_work		 * @return int affected_rows		 */		function update() {				if ($this->getWhere()) { 					$res =  $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere());				} elseif (isset ( self::$_data ['mw_id'] )) { 						self::$_where = array ('mw_id' => self::$_data ['mw_id'] );						unset(self::$_data['mw_id']);						$res = $this->_db->update ( $this->_tablename, self::$_data, $this->getWhere() );				}				$this->reset();				return $res;		}
-	    /**		 * query table: keke_witkey_task_match_work,if isset where return where record,else return all record		 * @return array 		 */		function query($fields = '*',$cache_time = 0){ 			 empty ( $fields ) and $fields = '*';			 if($this->getWhere()){ 				 $sql = "select $fields from $this->_tablename where ".$this->getWhere(); 			 }else{ 				 $sql = "select $fields from $this->_tablename"; 			 } 			 empty($fields) and $fields = '*'; 			 $this->reset();			 return $this->_db->cached ( $cache_time )->cache_data ( $sql );		 } 
-	    /**		 * query count keke_witkey_task_match_work records,if iset where query by where 		 * @return int count records		 */		function count(){ 			 if($this->getWhere()){ 				 $sql = "select count(*) as count from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "select count(*) as count from $this->_tablename"; 			 } 			 $this->reset(); 			 return $this->_db->get_count ( $sql ); 		 } 
-	    /**		 * delete table keke_witkey_task_match_work, if isset where delete by where 		 * @return int deleted affected_rows 		 */		function del(){ 			 if($this->getWhere()){ 				 $sql = "delete from $this->_tablename where ".$this->getWhere(); 			 } 			 else{ 				 $sql = "delete from $this->_tablename where mw_id = $this->_mw_id "; 			 } 			 $this->reset(); 			 return $this->_db->query ( $sql, Database::DELETE ); 		 } 
-   } //end 
+<?php defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
+ /** 
+ * @copyright keke-tech 
+ * @author Michaeltsui98 
+ * @version 3.0 2013-1-14 10:09:46 
+ */
+class Keke_witkey_task_match_work  extends Model {
+		function  __construct(){
+			parent::__construct ( 'witkey_task_match_work' );
+			self::$pk = 'mw_id';
+		}
+		 public function getMw_id(){
+			return self::$_data ['mw_id'];
+		}
+		 public function getWork_id(){
+			return self::$_data ['work_id'];
+		}
+		 public function getWiki_deposit(){
+			return self::$_data ['wiki_deposit'];
+		}
+		 public function getDeposit_cash(){
+			return self::$_data ['deposit_cash'];
+		}
+		 public function getDeposit_credit(){
+			return self::$_data ['deposit_credit'];
+		}
+		 public function getWitkey_contact(){
+			return self::$_data ['witkey_contact'];
+		}
+		public function setMw_id($value){
+			return self::$_data ['mw_id'] = $value;
+			self::$pk_val = $value;
+			$this;
+		}
+		public function setWork_id($value){
+			return self::$_data ['work_id'] = $value;
+			$this;
+		}
+		public function setWiki_deposit($value){
+			return self::$_data ['wiki_deposit'] = $value;
+			$this;
+		}
+		public function setDeposit_cash($value){
+			return self::$_data ['deposit_cash'] = $value;
+			$this;
+		}
+		public function setDeposit_credit($value){
+			return self::$_data ['deposit_credit'] = $value;
+			$this;
+		}
+		public function setWitkey_contact($value){
+			return self::$_data ['witkey_contact'] = $value;
+			$this;
+		}
+}

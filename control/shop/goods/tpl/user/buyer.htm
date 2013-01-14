@@ -1,4 +1,5 @@
 <!--{include user/header}-->
+<script type="text/javascript" src="{BASE_URL}/static/js/common.js"></script>
     <!--content start-->
     <div class="wrapper">
     	<article class="article container">
@@ -13,34 +14,46 @@
 		                </header>
 		                <nav class="box_nav">
 								<ul id="test_ul" class="clearfix">
-									<li class="selected"><a href="#">待付款</a></li>
-									<li><a href="#">待发货</a></li>
-									<li><a href="#">待确认</a></li>
-									<li><a href="#">待互评</a></li>
-									<li><a href="#">交易成功</a></li>
+									<li {if $status=='0'} class="selected" {/if}><a href="$base_uri?status=0">待付款</a></li>
+									<li {if $status=='1'} class="selected" {/if}><a href="$base_uri?status=1">待发货</a></li>
+									<li {if $status=='2'} class="selected" {/if}><a href="$base_uri?status=2">待确认</a></li>
+									<li {if $status=='3'} class="selected" {/if}><a href="$base_uri?status=3">待互评</a></li>
+									<li {if $status=='4'} class="selected" {/if}><a href="$base_uri?status=4">交易成功</a></li>
 								</ul>
 		                </nav>
 		                <div class="box_detail">
-
-		                	<div class="toolbar">
-		                		<div class="actions">
-		                			<input type="search" placeholder="请输入关键字"><input type="button" value="搜索">
-		                		</div>
-		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
-					            </div>
+							<div class="toolbar">
+		                		<form class="detail" action="{$base_uri}" method="get" id="frm_user_search">
+										<table cellspacing="0" cellpadding="0">
+											<tbody>
+											<tr>
+										    <td> 条件
+										       <select name="slt_fields">
+										       	<option></option>
+										       	{loop $query_fields $k $v}
+										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
+												{/loop} 
+										       </select>
+											 <select name="slt_cond">
+											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
+												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
+												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
+												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
+											 </select>
+										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
+											 <select name="page_size">
+												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
+												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
+												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
+											</select>
+											 <input type="submit" value="{$_lang['search']}">
+											 </td>
+										</tr>
+										</tbody>
+										</table>
+								</form>
+		                	 
 		                	</div>
-
 		                	<!--date_table数据表格 start-->
 		                    <div class="data_list">
 		                        <table  class="data_table">
@@ -54,148 +67,52 @@
 		                            </tr>
 		                            </thead>
 		                            <tbody>
-		                            <tr>
+		                            {if $order_arr}
+		                            {loop $order_arr $v}
+									<tr>
 		                              <td>
 		                              	
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">网页设计作业 学生网页成品 html静态 dw网页作业制作 暑假</a>
+		                              	<a href="{PHP_URL}/goods/{$v['obj_id']}">{$v['order_name']}</a>
 		                              	<p>
-		                              		订单编号:00222568
-		                              		下单时间：2012-12-21 12:21:21
+		                              		订单编号:{$v['order_id']}
+		                              		下单时间:{date('Y-m-d H:i:s',$v['order_time'])}
 		                              	</p>
 		                              </td>
 
 		                              <td>
-		                              	<span class="money">￥300.00</span>
+		                              	<span class="money">{$v['price']}</span>
 		                              	
 		                              </td>
 		                              <td>
-		                              	1
+		                              	{$v['num']}
 		                              </td>
 		                              <td>
 		                              	<p>
-		                              		<a href="#">灵媒师</a>
+		                              		<a href="{PHP_URL}/space?member_id=$v['seller_uid']">{$v[seller_username]}</a>
 		                              	</p>
 		                              	<p>
-		                              		<a href="#">发私信</a>
+		                              		<a href="javascript:void(0)" onclick="sendMessage('$v[seller_uid]','$v[seller_username]','$redirect_uri');">发私信</a>
 		                              	</p>
-		                              	<p>15527267663</p>
-		                              	<p>
-		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+		                              	<p>{$v['mobile']}</p>
+		                              	{if $v['qq']}
+										<p>
+		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$v['qq']}&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:{$v['qq']}:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
 		                              	</p>
+										{/if}
 		                              </td>
 		                              <td>
-		                              	<p>等待付款</p>
-		                              	<p><a href="#">付款</a></p>
+		                              	{$v['goods_status']}
+										<p><!--{eval echo $this->buyer_status($v['scode'],$v['order_id'],$v['mark_id'],$v['mark_status'])}--></p>
 		                              </td>
 		                            </tr>
-		                            <tr>
-		                              <td>
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">DIV+CSS切图-PSD图片转html-静态网页制作-专业、快速</a> 
-		                              	<p>
-		                              		订单编号:00222574
-		                              		下单时间：2012-12-21 12:21:21
-		                              	</p>
-		                              </td>
-
-		                              <td>
-		                              	<span class="money">￥300.00</span>
-		                              	
-		                              </td>
-		                              <td>
-		                              	1天
-		                              </td>
-		                              <td>
-		                              	<p>
-		                              		<a href="#">王子在线商务</a>
-		                              		
-		                              	</p>
-		                              	<p>
-		                              		<a href="#">发私信</a>
-		                              	</p>
-		                              	<p>15527267663</p>
-		                              	<p>
-		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
-		                              	</p>
-
-		                              </td>
-		                              <td>
-		                              	<p>已付款，待发货</p>
-		                              	<p><a href="#">提醒发货</a></p>
-		                              </td>
-		                            </tr>
-		                            
-		                            <tr>
-		                              <td>
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">2000余套网站模板,纯DIV+CSS网页模板(含PSD),精美HTML模板</a>
-		                              	<p>
-		                              		订单编号:00222574
-		                              		下单时间：2012-12-21 12:21:21
-		                              	</p>
-		                              </td>
-
-		                              <td>
-		                              	<span class="money">￥300.00</span>
-		                              	
-		                              </td>
-		                              <td>
-		                              	1
-		                              </td>
-		                              <td>
-		                              	<p>
-		                              		<a href="#">网信互联</a>
-		                              	
-		                              	</p>
-		                              	<p>
-		                              		<a href="#">发私信</a>
-		                              	</p>
-		                              	<p>
-		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
-		                              	</p>
-
-		                              </td>
-		                              <td>
-		                              	<p>已发货，待确认</p>
-		                              	<a href="#">收货确认</a>
-		                              </td>
-		                            </tr>
-		                            <tr>
-		                              <td>
-		                              	<img class="item_pic" src="{BASE_URL}/{SKIN_PATH}/ui/images/s_avatar.png" alt="avatar">
-		                              	<a href="#">2000余套网站模板,纯DIV+CSS网页模板(含PSD),精美HTML模板</a>
-		                              	<p>
-		                              		订单编号:00222574
-		                              		下单时间：2012-12-21 12:21:21
-		                              	</p>
-		                              </td>
-
-		                              <td>
-		                              	<span class="money">￥300.00</span>
-		                              	
-		                              </td>
-		                              <td>
-		                              	1
-		                              </td>
-		                              <td>
-		                              	<p>
-		                              		<a href="#">网信互联</a>
-		                              	
-		                              	</p>
-		                              	<p>
-		                              		<a href="#">发私信</a>
-		                              	</p>
-		                              	<p>
-		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
-		                              	</p>
-
-		                              </td>
-		                              <td>
-		                              	<p>交易成功</p>
-		                              	<a href="#">互评</a>
-		                              </td>
-		                            </tr>
+									{/loop}
+		                            {else}
+										<tfoot>
+					                            <tr>
+						                            <td colspan="5" class="t_c">暂无记录</td>
+						                        </tr>
+					                    </tfoot>
+										{/if}
 		                            </tbody>
 		                            
 		                          </table>
@@ -205,17 +122,7 @@
 			               	<div class="toolbar bottom">
 		                		
 		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
+					                <p>$pages['page']</p>
 					            </div>
 		                	</div>
 
@@ -226,5 +133,6 @@
     		</div>
     	</article>
     </div>
+
     <!--content end-->
 <!--{include user/footer}-->

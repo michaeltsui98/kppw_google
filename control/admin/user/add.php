@@ -1,10 +1,14 @@
 <?php	defined ( 'IN_KEKE' ) or exit ( 'Access Denied' );
 /**
- * 用户添加
+ *  后台用户添加
+ * @author michael
+ * @version 3.0 
+ * 2012-11-01
+ *
  */
 class Control_admin_user_add extends Control_admin{
 	function action_index(){
-		
+
 		$uid = $_GET['uid'];
 		if ($uid){
 			$where .= ' uid='.$uid;
@@ -33,7 +37,7 @@ class Control_admin_user_add extends Control_admin{
 		$_POST = Keke_tpl::chars($_POST);
 		//防止跨域提交
 		Keke::formcheck($_POST['formhash']);
-		
+
 		//密码md5加密
 		$password = md5($_POST['password']);
 		//需要插入数据库的字段
@@ -64,19 +68,20 @@ class Control_admin_user_add extends Control_admin{
 			if(!$_POST['cash'] AND !$_POST['credit']){
 				Keke::show_msg("充值或者扣除金额不得为0或者空!!!","admin/user_add/charge","warning");
 			}
-			
+
 			CHARSET=='gbk' and $user = Keke::utftogbk($_POST['user']);
-			$info = $this->get_info($user);
+			$type=$_POST['uid_type'];
+			$info = $this->get_info($user,$type);
 			//现金的充值和扣除
 			if ($_POST['cash_type']==0 AND $_POST['cash']>$info['balance'] || 
 				$_POST['credit_type']==0 AND $_POST['credit']>$info['credit']){
 				Keke::show_msg("扣除的现金/代金券超出了可用余额!!!","admin/user_add/charge","warning");
 			}
-			 
+
 			$cash = (float)$_POST['cash'];
-			
+
 			$credit = (float)$_POST['credit'];
-			
+
 			if((int)$_POST['cash_type']==0){
 				$cash = -$cash;
 			}

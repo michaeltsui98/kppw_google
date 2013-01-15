@@ -44,7 +44,7 @@ class Control_shop_goods_admin_list extends Control_admin_shop_list{
     	//·ÖÒ³Êý¾Ý
     	$pages = $data_info['pages'];
     	
-    	$shop_status = Control_shop_goods_base::get_goods_status();
+    	$shop_status = Control_shop_goods_trade::get_goods_status();
     
      	require Keke_tpl::template('control/shop/'.$this->_model_code.'/tpl/admin/list');
     }

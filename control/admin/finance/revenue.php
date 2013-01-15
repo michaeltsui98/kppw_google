@@ -128,10 +128,11 @@ class Control_admin_finance_revenue extends Control_admin {
 		$list = Dbfactory::query ( sprintf ( ' select sum(cash) cash, 
 					count(wid) count,type from %switkey_withdraw where 1 = 1 ', TABLEPRE ) . $w_sql . ' group by type', 1, 3600 );
 		$list && $list = Keke::get_arr_by_key ( $list, 'type' );
-		// var_dump($list);
+// 		 var_dump($list);
 		$bank_arr = Keke_global::get_bank ();
-		$pay_online = Keke_global::get_payment_config ( '', 'online' );
-		
+		//$pay_online = Keke_global::get_payment_config ( '', 'online' );
+		$pay_online = DB::select()->from('witkey_pay_api')->where("type='online'")->execute();
+// 		var_dump($pay_online);
 		// 加载模板，这有点费J8话,地球人都懂的
 		require Keke_tpl::template ( 'control/admin/tpl/finance/re_withdraw' );
 	}

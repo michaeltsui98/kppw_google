@@ -418,20 +418,29 @@ class File {
 		//global $_lang;
 		$filename = S_ROOT . $file_path;
 		if (! file_exists ( $filename ) || strrpos ( $filename, ".php" ) !== false) {
-			Keke::show_msg ( 'file_not_exist', $_SERVER ['HTTP_REFERER'], "3" );
+			Keke::show_msg ( 'file_not_exist', $_SERVER ['HTTP_REFERER'], 'error');
 		}
+		$file_name = urldecode($file_name);
 		
 		$downfilename = str_replace(' ','%20',$file_name);
+		
+		$downfilename = str_replace('+','%20',$file_name);
+		$ua = $_SERVER["HTTP_USER_AGENT"];
 		
 		Header ( "Content-type: application/octet-stream" );
 		Header ( "Accept-Ranges: bytes" );
 		Header ( "Accept-Length: " . filesize ( $filename ) );
-		Header ( "Content-Disposition: attachment; filename=" . $downfilename );
+		if (preg_match("/MSIE/", $ua)) {
+			Header ( "Content-Disposition: attachment; filename=" . $downfilename );
+		}elseif(preg_match("/Firefox/", $ua)){
+			Header('Content-Disposition: attachment; filename*="utf8/'/'' . $file_name . '"');
+		}else{
+			Header('Content-Disposition: attachment; filename="' . $file_name . '"');
+		}
 		$file = fopen ( $filename, "r" );
 		echo fread ( $file, filesize ( $filename ) );
 		fclose ( $file );
 		die ();
-	
 	}
 	/**
 	 *

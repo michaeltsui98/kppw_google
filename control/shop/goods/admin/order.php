@@ -29,19 +29,18 @@ class Control_shop_goods_admin_order extends Control_admin_shop_order{
     	
     	 
     	
-    	$sql = "SELECT b.*,b.order_id as order_id,a.num FROM `:Pwitkey_order_detail` as a \n".
-				"left join  :Pwitkey_order as b on a.order_id = b.order_id and a.obj_type = 'service'\n";
+    	$sql = "SELECT a.*,a.order_id as order_id,b.num FROM `:Pwitkey_order` as a \n".
+				"left join  :Pwitkey_order_detail as b on b.order_id = a.order_id and b.obj_type = 'service'\n";
     	$sql  = DB::query($sql)->tablepre(':P')->__toString();
     	extract($this->get_url($base_uri));
-        $where .= " and a.model_id = '$model_id'";
+        $where .= " and b.model_id = '$model_id'";
     	$group = " GROUP BY b.order_id";
     	 
     
     	$data = Model::sql_grid($sql,$where,$uri,$order,$group);
     	$list_arr = $data['data'];
     	$pages = $data['pages'];
-    	$order_status = Control_shop_goods_base::get_order_status();
-     
+    	$order_status = Control_shop_goods_trade::get_order_status();
     	require Keke_tpl::template('control/shop/'.$this->_model_code.'/tpl/admin/order');
     }
        

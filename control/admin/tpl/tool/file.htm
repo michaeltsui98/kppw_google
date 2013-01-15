@@ -8,34 +8,8 @@
 
 <div class="box search p_relative">
 		 <form method="get" action="{BASE_URL}/index.php/admin/tool_file"  id="frm_list">
-        	<table class="detail" cellspacing="0" cellpadding="0">
-			 <tbody>
-			 	<tr>
-		                <th>查询字段
-		                   <select name="slt_fields">
-		                   	<option></option>
-		                   	{loop $query_fields $k $v}
-		                   	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
-							{/loop} 
-		                   </select>
-						 <select name="slt_cond">
-						 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
-							<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
-							<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
-							<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
-						 </select>
-		                 <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
-						 <select name="page_size">
-                			<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
-                			<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
-                			<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
-            			</select>
-						 <input type="submit" value="{$_lang['search']}">
-						 </td>
-	            </tr>
-			 </tbody>
-			</table>
-			</form>
+         <!--{include control/admin/tpl/search}-->
+		 </form>
  </div>
 
 
@@ -53,7 +27,7 @@
         	<td ><input type="checkbox" name="ckb[]" class="checkbox" value="{$v['file_id']}">{$v['file_id']}</td>
             <td >{$file_type_arr[$v['obj_type']]}</td>
             <td ><a href="../../$v['save_name']" target="_blank" >{$v['file_name']}</a></td>
-            <td><!--{date('Y-m-d',$v['on_time'])}--></td>
+            <td><!--{eval echo date('Y-m-d',$v['on_time'])}--></td>
             <td>
               <a href="{$del_uri}?file_id={$v['file_id']}" onclick="return cdel(this);" class="button"> 
 			   <span class="trash icon"></span>{$_lang['delete']}</a>

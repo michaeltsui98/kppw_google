@@ -56,21 +56,30 @@
             </td>
         </tr>
         <!-- code -->
-        <tbody id="div_ad_1" {if !$ad_info['ad_type'] or $ad_info['ad_type'] =='code' } {else} class="hidden" {/if}>
+        <tbody id="div_ad_1">
             <tr><th>{$_lang['html_code']}</th><td>
             	<textarea name="code_ad_content" title={$_lang['according_display_effect_enter_content']} cols="100" rows="10" class="txt">{$ad_info['ad_content']}</textarea>
             	</td>
             </tr>
         </tbody>
         <!-- 文字 -->
-        <tbody id="div_ad_2" {if $ad_info['ad_type'] !='text' } class="hidden" {/if}>
+        <tbody id="div_ad_2">
             <tr><th>{$_lang['text_content']}</th><td>
             	<textarea name="txt_ad_content" cols="100" title={$_lang['according_display_effect_enter_content']} rows="10" class="txt">{$ad_info['ad_content']}</textarea>
             	</td>
             </tr>
+			<tr>
+				<th>链接地址</th>
+				<td><input type="text" value="{$ad_info['ad_url']}" name="txt_ad_url" class="txt" style=" width:260px;"
+				limit="type:url"
+				msg="链接地址输入有误"
+				title="链接地址只能为URL"
+				msgArea="ad_url_msg" />
+				<span id="ad_url_msg"></span></td>
+			</tr>
         </tbody>
 		 <!-- 图片 -->
-         <tbody id="div_ad_3" {if $ad_info['ad_type'] !='image' } class="hidden" {/if}">
+         <tbody id="div_ad_3">
             <tr>
             	<th>{$_lang['img_address']}</th>
 				<td>							
@@ -94,9 +103,18 @@
 				</td>
  
 			</tr>
+			<tr>
+			<th>链接地址</th>
+				<td><input type="text" value="{$ad_info['ad_url']}" name="txt_ad_url" class="txt" style=" width:260px;"
+				limit="type:url"
+				msg="链接地址输入有误"
+				title="链接地址只能为URL"
+				msgArea="ad_url_msg" />
+				<span id="ad_url_msg"></span></td>
+			</tr>
 	        </tbody>
         <!-- flash -->
-        <tbody id="div_ad_4" {if $ad_info['ad_type'] !='flash'} class="hidden" {/if}">
+        <tbody id="div_ad_4">
             <tr><th>{$_lang['flash_address']}</th>
 			<td>
             	<div id="flash_way">
@@ -108,6 +126,15 @@
            		</div>
 			</td>
             </tr>
+			<tr>
+				<th>链接地址</th>
+				<td><input type="text" value="{$ad_info['ad_url']}" name="txt_ad_url" class="txt" style=" width:260px;"
+				limit="type:url"
+				msg="链接地址输入有误"
+				title="链接地址只能为URL"
+				msgArea="ad_url_msg" />
+				<span id="ad_url_msg"></span></td>
+			</tr>
 			</tbody> 
 		<tr>
 			<th>宽度</th><td><input type="text" class="txt" value="{if $ad_info['width']}$ad_info['width']{else}0{/if}" name="txt_ad_width"  id="ad_width"
@@ -124,17 +151,6 @@
 			 title="高度只能为整数"
 			 msgArea="ad_height_msg"/>
 			 <span id="ad_height_msg"></span></td> </tr>
-		{if $ad_info['ad_type']!='code'}
-		<tr>
-			<th>链接地址</th>
-			<td><input type="text" value="{$ad_info['ad_url']}" name="txt_ad_url" class="txt" style=" width:260px;"
-			limit="type:url"
-			msg="链接地址输入有误"
-			title="链接地址只能为URL"
-			msgArea="ad_url_msg" />
-			<span id="ad_url_msg"></span></td>
-		</tr>
-		{/if}
         <tr>
         	<th>{$_lang['order']}</th>
         	<td><input type="text" name="txt_ad_listorder" value="{$ad_info['listorder']}" class="txt" 
@@ -241,6 +257,11 @@ function set_target(obj){
 //初始化广告剩余数
 $(function(){
 	set_target($("#sel_target_id").val());
+	if('$ad_info[ad_type]'=='code'){swaptab('ad','backLava','',4,1);}
+	if('$ad_info[ad_type]'=='text'){swaptab('ad','backLava','',4,2);}
+	if('$ad_info[ad_type]'=='image'){swaptab('ad','backLava','',4,3);}
+	if('$ad_info[ad_type]'=='flash'){swaptab('ad','backLava','',4,4);}
+
 });
 
 </script>

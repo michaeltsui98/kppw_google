@@ -14,7 +14,7 @@ class Control_admin_tool_file extends Control_admin{
 		global $_K,$_lang;
 		
 		//要显示的字段,即SQl中SELECT要用到的字段
-		$fields = ' `file_id`,`obj_type`,`obj_id`,`task_id`,`work_id`,`file_name`,`save_name`,`on_time` ';
+		$fields = ' `file_id`,`obj_type`,`obj_id`,`file_name`,`save_name`,`on_time` ';
 		//要查询的字段,在模板中显示用的
 		$query_fields = array('file_id'=>$_lang['id'],'file_name'=>$_lang['name'],'on_time'=>$_lang['time']);
 		//总记录数,分页用的，你不定义，数据库就是多查一次的。为了少个Sql语句，你必须要写的，亲!

@@ -1918,14 +1918,9 @@ function swaptab(name, cls_show, cls_hide, cnt, cur,exp) {
 		szone = $('#'+spre + name + '_' + i);
 		mzone = $('#'+mpre + name + '_' + i);
 		if (i == cur) {
-			szone.removeClass('hidden').addClass('block');
-			hide==1&&szone.next().removeClass('hidden');
-			mzone.attr('class', cls_show);
-			(exp.ajax==1&&exp.url)&&ajaxTab(spre + name + '_' + i,exp.data,exp.url);
+			szone.show();
 		} else {
-			szone.removeClass('block').addClass('hidden');
-			hide==1&&szone.next().addClass('hidden');
-			mzone.attr('class', cls_hide);
+			szone.hide();
 		}
 	}
 }

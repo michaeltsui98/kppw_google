@@ -208,7 +208,10 @@ class Control_task_sreward_pub extends Control_task_task{
 			$arr['{选稿结束时间}'] = date('Y-m-d',(((int)$task_info['sub_time']+(int)$this->_conf['choose_time'])*3600*24)+SYS_START_TIME);
 		}
 		//生送短信
-		Keke_msg::instance()->to_user($_SESSION['uid'])->set_tpl($msg_type)->set_var($arr)->send();
+		//register_shutdown_function(function($msg_type,$arr){
+			Keke_msg::instance()->to_user($_SESSION['uid'])->set_tpl($msg_type)->set_var($arr)->send();
+		//})
+		
 	
 	}
  

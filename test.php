@@ -15,6 +15,13 @@ $ad = new Keke_witkey_ad();
 ->setOn_time(123456)->create();
 
  
+ foreach ($querys as $v){
+ 	$v = strtr($v,array("keke_"=>TABLEPRE));
+ 	db_factory::execute($v);
+ }
+ 
+ 
+ 
  
 var_dump($res);
 

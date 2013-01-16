@@ -41,7 +41,7 @@
   	file_exists($lock_sign) and exit(L('has_been_installed'));
   	
   	//sql文件不存在
-  	file_exists(INSTALL_ROOT.'data/keke_kppw_install.sql') or exit(L('main_sql_file_does_not_exist'));
+  	file_exists($sqlfile) or exit(L('main_sql_file_does_not_exist'));
   	
   	$step = $_REQUEST['step'] ? $_REQUEST['step'] : 'start';
   	switch ($step){
@@ -174,6 +174,7 @@
   			$db = new db_tool();
   			$db->connect($dbhost, $dbuser, $dbpw, $dbname, DBCHARSET);
   			$temp_arr = array("dbhost"=>$dbhost, "dbname"=>$dbname, "dbuser"=>$dbuser,"dbpass"=>$dbpw,"tablepre"=>$tablepre,'cookie_path'=>$c_path);
+  			$temp_arr['base_url'] = rtrim($c_path,'/');
   			$config_content = Keke_tpl::sreadfile($config_path);
   			foreach ($temp_arr as $key=>$value){
   				$key = strtoupper($key);

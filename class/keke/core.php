@@ -236,6 +236,7 @@ class Keke extends Keke_core {
 		if(self::$_inited==TRUE){
 			return;
 		}
+		Keke_base::check_install();
 		self::$_inited = TRUE;
 		if(isset($set['index_file'])){
 			Keke::$_index_file = rtrim($set['index_file'],'/');

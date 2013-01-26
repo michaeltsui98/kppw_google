@@ -10,7 +10,9 @@ class Keke_user_mark {
      * 互评状态
      * @return array  
      */
-	public static $_mark_status= array('1'=>'好评','2'=>'中评','3'=>'差评');
+	public static function get_mark_status(){
+		return array('1'=>'好评','2'=>'中评','3'=>'差评');
+	}  
 	
 	/**
 	 * 互评项的键值对
@@ -89,16 +91,16 @@ class Keke_user_mark {
 		 ->param(':uid', $to_uid)->execute();
 	}
 	/**
-	 * 获取用户的头衔，与图标地址
+	 * 获取用户的头衔，与图标地址,好评率
 	 * @param int $uid
 	 * @param string $user_type (buyer,seller)
 	 * @return array
 	 */
 	public static function get_title($uid,$user_type=NULL){
-		$sql = "select a.g_title title,a.g_ico ico from :keke_witkey_mark_rule a left join :keke_witkey_space b \n".
+		$sql = "select a.g_title title,a.g_ico ico, cast((b.buyer_good_num/b.buyer_total_num)*100 as decimal(10,2)) buyer_good_rate from :keke_witkey_mark_rule a left join :keke_witkey_space b \n".
 				"on a.mark_rule_id = b.buyer_level  where b.uid = ':uid'\n".
 				"UNION \n".
-				"select c.m_title,c.m_ico from :keke_witkey_mark_rule c LEFT JOIN :keke_witkey_space  b \n".
+				"select c.m_title,c.m_ico,cast((b.seller_good_num/b.seller_total_num)*100 as decimal(10,2)) seller_good_rate from :keke_witkey_mark_rule c LEFT JOIN :keke_witkey_space  b \n".
 				"on c.mark_rule_id = b.seller_level\n".
 				"where b.uid = ':uid'";
 		$arr = DB::query($sql)->tablepre(':keke_')->param(':uid', (int)$uid)->execute();
@@ -119,6 +121,33 @@ class Keke_user_mark {
 			$e=0;
 		}
 		return $e;
+	}
+	/**
+	 * 星星制造器
+	 * @param int $num  星星的评分
+	 * @param string $name 每组星星的名字
+	 * @param boolean $disabled 星星是否可点
+	 * @param $star_len 要生成的星星的长度(多少颗),有些地方需要5颗,有些地方需要10颗...
+	 * @return input radio html
+	 */
+	public static function gen_star($num, $name,$disabled=true, $star_len=10) {
+		$j = round ( $num * 2 );
+		$str = "";
+		$s = "";
+		$disabled  and $ds = " disabled=\"disabled\" ";
+		for($i = 1; $i <= $star_len; $i ++) {
+			if ($j == $i){
+				$s = " checked ";
+			}else{
+				$s = "";
+			}
+			$str .= "<input name=\"star_$name\" type=\"radio\" class=\" star {split:2} star_$name\" value=\"$i\"
+			$ds $s />";
+				
+		}
+		$str.="<span id=\"span_star_$name\"></span>";
+		//print_r($str);die();
+		return  $str;
 	}
 	
 }

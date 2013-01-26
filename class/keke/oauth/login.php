@@ -2,7 +2,7 @@
 /**
  *
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-9
  */
 abstract  class Keke_oauth_login {

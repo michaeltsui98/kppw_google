@@ -2,7 +2,7 @@
 /**
  * 用户中心-客服管理首页 --举报
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-25
  */
 class Control_user_custom_report extends Control_user{

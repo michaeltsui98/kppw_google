@@ -1,120 +1,124 @@
 <!--{include user/header}-->
-    <!--content start-->
-    <div class="wrapper">
-    	<article class="article container">
-    		<!--{include user/seller/side}-->
-    		<div class="content">
-    			<div class="box">
-		            <div class="inner clearfix">
-		                <header class="box_header">
-		                    <div class="box_title">
-		                        <h2 title="我的任务" class="title">店铺管理</h2>
-		                    </div>
-		                </header>
-		                <nav class="box_nav">
-								<ul id="test_ul" class="clearfix">
-									<li><a href="{USER_URL}/seller_shop">店铺设置</a></li>
-									<li><a href="{USER_URL}/seller_shop/case">店铺案例</a></li>
-									<li class="selected"><a href="{USER_URL}/seller_shop/member">店铺成员</a></li>
-								</ul>
-		                </nav>
-		                <div class="box_detail">
-							<form action="{$member_save_uri}" method="post" name="form_member" id="form_member" onsubmit="return checkForm(this)" enctype="multipart/form-data">
-							<input type="hidden" name="formhash" value="{FORMHASH}">
-							<input type="hidden" name="hdn_shop_id" value="{$shop_arr['shop_id']}">
-							<input type="hidden" name="hdn_member_id" value="{$member_info['member_id']}">
-							<div class="form_row">
-	                			<label class="form_label">姓名：</label>
-	                			<input type="text" name="txt_truename" value="{$member_info['truename']}"
-								limit="required:true;len:2-20"
-								title="姓名的长度为2到20个字符"
-								msg="姓名输入有误"
-								msgArea="msg_truename" />
-	                			<span id="msg_truename"></span>
-							</div>
+<div class="wrapper">
+<article class="article container">
+<!--{include user/seller/side}-->
+<div class="content">
+<div class="box">
+    <div class="inner clearfix">
+        <header class="box_header">
+            <div class="box_title">
+                <h2 class="title">店铺管理</h2>
+            </div>
+        </header>
+        <nav class="box_nav">
+				<ul id="test_ul" class="clearfix">
+					<li><a href="{USER_URL}/seller_shop">店铺设置</a></li>
+					<li><a href="{USER_URL}/seller_shop/case">店铺案例</a></li>
+					<li class="selected"><a href="{USER_URL}/seller_shop/member">店铺成员</a></li>
+				</ul>
+        </nav>
+        <div class="box_detail">
+			<form action="{$member_save_uri}" method="post" onsubmit="return checkForm(this)" enctype="multipart/form-data">
+			<input type="hidden" name="formhash" value="{FORMHASH}">
+			<input type="hidden" name="hdn_shop_id" value="{$shop_arr['shop_id']}">
+			<input type="hidden" name="hdn_member_id" value="{$member_info['member_id']}">
+			
+			<div class="float_row">
+    			<label class="form_label">姓名：</label>
+				<div class="detail">
+    			<input type="text" name="txt_truename" value="{$member_info['truename']}"
+				limit="required:true;len:2-20"
+				title="姓名的长度为2到20个字符"
+				msg="姓名输入有误"
+				msgArea="msg_truename" />
+    			<span id="msg_truename"></span>
+				</div>
+			</div>
 
 
-	                		<div class="form_row float_row">
-	                			<label class="form_label">头像：</label>
-
-	                			<div class="detail">
-	                				<input type="file" name="fil_member_pic">
-	                				<p>成员图片,推荐大小150X150。支持.jpg,.gif,.png,.jpeg格式。</p>
-	                				<p><img class="pic_larger" width="150" src="{BASE_URL}/{$member_info['member_pic']}" alt="{$member_info['truename']}"></p>
-	                			</div>
-	                		</div>
-							<div class="form_row">
-	                			<label class="form_label">职位：</label>
-	                			<select name="sel_member_job">
-	                				{loop $inc_job $v}
-	                				<option value="$v" {if $v==$member_info['member_job']} selected {/if} >$v</option>
-									{/loop}
-								</select>
-	                		</div>
-	                		<div class="form_row">
-	                			<label class="form_label">学历：</label>
-	                			<select name="sel_top_eduction">
-	                				{loop $eduction $v}
-										<option value="$v" {if $v==$member_info['top_eduction']} selected {/if}>$v</option>
-									{/loop}
-								</select>
-	                		</div>
-	                		<div class="form_row">
-	                			<label class="form_label">毕业学校：</label>
-	                			<input type="text" name="txt_school" value="{$member_info['school']}"
-								limit="required:true;len:2-20"
-								title="毕业学校长度为4到30个字符"
-								msg="毕业学校输入有误"
-								msgArea="msg_school"/>
-								<span id="msg_school"></span>
-	                		</div>
-							
-	                		<div class="form_row">
-	                			<label class="form_label">工作时间：</label>
-	                			<select name="sel_left_entry_age" id="sel_left_entry_age">
-	                				{loop $year $v}
-										<option value="$v" {if $s_year == $v}selected{/if}>$v</option>
-									{/loop}
-								</select>-
-								<select name="sel_right_entry_age"
-								limit="required:true;bigger:sel_left_entry_age"
-								title="结束时间必须大于开始时间"
-								msg="工作时间有误"
-								msgArea="msg_entry_entry_age">
-	                				{loop $year $v}
-										<option value="$v" {if $e_year == $v}selected{/if}>$v</option>
-									{/loop}
-								</select>
-								<span id="msg_entry_age"></span>
-	                		</div>
-						
-							
-	                		<div class="form_row">
-	                			<label class="form_label">介绍：</label>
-	                			<textarea name="txa_member_desc" cols="60" rows="5"
-								limit="required:true"
-								title="介绍不能为空"
-								msg="介绍输入有误"
-								msgArea="msg_member_desc">{$member_info['member_desc']}</textarea>
-								<span id="msg_member_desc"></span>
-	                		</div>
-							
-	                		<div class="form_line">
-	                			<hr>
-	                		</div>
-
-	                		<div class="form_footer">
-	                			<input type="submit" value="提交" >
-	                		</div>
-							</form>
-		                </div>
-		            </div>
-		        </div>
+    		<div class="float_row">
+    			<label class="form_label">头像：</label>
+    			<div class="detail">
+    				<input type="file" name="fil_member_pic">
+    				<p>成员图片,推荐大小150X150。支持.jpg,.gif,.png,.jpeg格式。</p>
+    				<p><img class="pic_larger" width="150" src="{BASE_URL}/{$member_info['member_pic']}" alt="{$member_info['truename']}"></p>
+    			</div>
     		</div>
-    	</article>
+			
+			<div class="form_row">
+    			<label class="form_label">职位：</label>
+    			<select name="sel_member_job">
+    				{loop $inc_job $v}
+    				<option value="$v" {if $v==$member_info['member_job']} selected {/if} >$v</option>
+					{/loop}
+				</select>
+    		</div>
+			
+    		<div class="form_row">
+    			<label class="form_label">学历：</label>
+    			<select name="sel_top_eduction">
+    				{loop $eduction $v}
+						<option value="$v" {if $v==$member_info['top_eduction']} selected {/if}>$v</option>
+					{/loop}
+				</select>
+    		</div>
+			
+    		<div class="form_row">
+    			<label class="form_label">毕业学校：</label>
+    			<input type="text" name="txt_school" value="{$member_info['school']}"
+				limit="required:true;len:2-20"
+				title="毕业学校长度为4到30个字符"
+				msg="毕业学校输入有误"
+				msgArea="msg_school"/>
+				<span id="msg_school"></span>
+    		</div>
+			
+    		<div class="form_row">
+    			<label class="form_label">工作时间：</label>
+    			<select name="sel_left_entry_age" id="sel_left_entry_age">
+    				{loop $year $v}
+						<option value="$v" {if $s_year == $v}selected{/if}>$v</option>
+					{/loop}
+				</select>-
+				<select name="sel_right_entry_age"
+				limit="required:true;bigger:sel_left_entry_age"
+				title="结束时间必须大于开始时间"
+				msg="工作时间有误"
+				msgArea="msg_entry_entry_age">
+    				{loop $year $v}
+						<option value="$v" {if $e_year == $v}selected{/if}>$v</option>
+					{/loop}
+				</select>
+				<span id="msg_entry_age"></span>
+    		</div>
+		
+			
+    		<div class="form_row">
+    			<label class="form_label">介绍：</label>
+    			<textarea name="txa_member_desc" cols="60" rows="5"
+				limit="required:true"
+				title="介绍不能为空"
+				msg="介绍输入有误"
+				msgArea="msg_member_desc">{$member_info['member_desc']}</textarea>
+				<span id="msg_member_desc"></span>
+    		</div>
+			
+    		<div class="form_line">
+    			<hr>
+    		</div>
+
+    		<div class="form_footer">
+    			<input type="submit" value="提交" >
+    		</div>
+			</form>
+        </div>
     </div>
-    <!--content end-->
-	<script type="text/jscript">
-		In('valid');
-	</script>
+</div>
+</div>
+</article>
+</div>
+    
+<script type="text/jscript">
+	In('valid');
+</script>
 <!--{include user/footer}-->

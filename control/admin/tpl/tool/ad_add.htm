@@ -162,9 +162,9 @@
             </th>
             <td>
                 <div class="clearfix padt10">
-                	<input type="hidden" name="sbt_action" value="1">
-                    <button class="positive pill primary button" type="button" name="sbt_action" value="{$_lang['submit']}" onclick="checkform();">
-                        <span class="check icon"></span>{$_lang['submit']}
+                	 
+                    <button  type="submit" name="sbt_action" value="{$_lang['submit']}" onclick="return checkform()">
+                         {$_lang['submit']}
                     </button>
 					<button class="pill button" onclick="to_back();" value="{$_lang['return']}" type="button"><span class="uparrow icon"></span>{$_lang['return']}</button>
                 </div>
@@ -190,19 +190,15 @@
         });
 	})	 
 	function checkform(){
+		
 		var adtarget_num=document.getElementById('adtarget_num');
-		if(adtarget_num.value<=0 && "{$ad_info['ad_id']}"=='' ){
+		
+		if(adtarget_num.value<=0){
 			art.dialog.alert("当前广告位已经被占满，无法继续添加");
-			return flase;				
+			return false;				
 		}
-		var i = checkForm(document.getElementById('form1'));
-		if(i){
-					
-		 	document.getElementById("form1").submit();
-													
-		}else{
-			return false;
-		}
+		return  checkForm(document.getElementById('form1'));
+		
 	}
 //图片上传	  	
 	function pic_upload(id){

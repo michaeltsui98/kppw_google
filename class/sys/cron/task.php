@@ -18,7 +18,7 @@ abstract  class Sys_cron_task {
 	/**
 	 * 
 	 * @param string $name
-	 * @return Sys_task_cron
+	 * @return Control_task_sreward_cron
 	 */
 	public static function factory($name = NULL){
 		if($name===NULL){
@@ -54,16 +54,16 @@ abstract  class Sys_cron_task {
 	/**
 	 * 执行
 	 */
-	abstract  public function run();
+	abstract  public function run($config);
 	/**
 	 * 批量执行
 	 */
 	public static function batch_run(){
 		$where = "model_type='task' and model_status = 1";
-		$models = DB::select('model_code')->from('witkey_model')->where($where)->execute();
-		//Keke::$_log->add(log::DEBUG, __CLASS__.'function: '.__FUNCTION__)->write();
+		$models = DB::select('model_code','config')->from('witkey_model')->where($where)->execute();
+		 
 		foreach ($models as $v){
-			Sys_cron_task::factory($v['model_code'])->run();
+			Sys_cron_task::factory($v['model_code'])->run($v['config']);
 		}
 	}
 }//end

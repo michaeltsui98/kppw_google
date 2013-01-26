@@ -3,8 +3,8 @@
 <head>
 <meta charset="{$_K['charset']}">
 <title>{$_K['page_title']}</title>
-<meta name="keywords" content="{$_K['page_keyword']}">
-<meta name="description" content="{$_K['page_description']}">
+<meta name="keywords" content="{$_K['seo_keyword']}">
+<meta name="description" content="{$_K['seo_desc']}">
 <meta name="generator" content="{$_lang['keke_pub']} {KEKE_VERSION}" />
 <!-- 手版专用代码 -->
 <meta name="viewport" content="width=320,initial-scale=1, user-scalable=no">
@@ -22,23 +22,9 @@
 	var INDEX      = "{$_K['control']}";
 	var BASE_URL  = "{BASE_URL}";
 </script>
-<!--
-<link href="{BASE_URL}/static/css/reset.css" rel="stylesheet">
  
-<link href="{BASE_URL}/static/css/base.css" rel="stylesheet">
- 
-<link href="{BASE_URL}/static/css/box.css" rel="stylesheet">
- 
-<link href="{BASE_URL}/static/css/layout/layout.css" rel="stylesheet">-->
-
-<!--<link href="{BASE_URL}/static/css/animate.css" rel="stylesheet">
-
-<link href="{BASE_URL}/{SKIN_PATH}/css/common.css" rel="stylesheet">
-
-<link href="{$_K['siteurl']}/{SKIN_PATH}/theme/{$_K['theme']}/css/{$_K['theme']}_style.css" rel="stylesheet">
-
-<link href="{PHP_URL}/min?f=base.css,box.css,reset.css,animate.css&b=static/css" rel="stylesheet">-->
 <link href="{BASE_URL}/static/css/layout/layout.css" rel="stylesheet">
+
 <link href="{PHP_URL}/min?g=css" rel="stylesheet">
 
 <!--[if lte IE 8]>
@@ -56,36 +42,38 @@
 	In.add('waypoints',{path:"{BASE_URL}/static/js/jqplugins/waypoints/waypoints.min.js",type:'js'});
  
  	In.add('valid',{path:"{BASE_URL}/static/js/system/valid.js",type:'js'});
-	In.add('task',{path:"{BASE_URL}/static/js/system/task.js",type:'js'});
+	
+	//In.add('task',{path:"{BASE_URL}/static/js/system/task.js",type:'js'});
+	
  	In.add('calendar',{path:"{BASE_URL}/static/js/system/calendar.js",type:'js'}); 
 	In.add('xheditor',{path:"{BASE_URL}/static/js/xheditor/xheditor.js",type:'js'});  
  	In.add('script_city',{path:"{BASE_URL}/static/js/system/script_city.js",type:'js'}); 
  	
-	In.add('rating',{path:"{BASE_URL}/static/js/jqplugins/starrating/jquery.rating.js",type:'js'}); 
-	In.add('metaData',{path:"{BASE_URL}/static/js/jqplugins/starrating/jquery.MetaData.js",type:'js'}); 
  
-	In.add('tipsy',{path:"{BASE_URL}/static/js/jqplugins/tipsy/jquery.tipsy.js",type:'js'});
+ 
+	//In.add('tipsy',{path:"{BASE_URL}/static/js/jqplugins/tipsy/jquery.tipsy.js",type:'js'});
 	 
-	
- 	 
-	
 	In.add('ajaxfileupload',{path:"{BASE_URL}/static/js/system/ajaxfileupload.js",type:'js'});
+	
+	
+	
+	In.add('artif',{path:"{BASE_URL}/static/js/artdialog/plugins/iframeTools.js",type:'js',rely:['art']});
+	
+	In.add('art',{path:"{BASE_URL}/static/js/artdialog/artDialog.js?skin=default",type:'js'});
 	
 	In.add('common',{path:"{BASE_URL}/static/js/common.js",type:'js'}); 
 	
 	
 	In.add('lazy',{path:"{BASE_URL}/static/js/jqplugins/jquery.lazyload.js",type:'js'});
+	
 	//css异步加载预定义
 	In.add('css_tipsy',{path:"{BASE_URL}//static/js/jqplugins/tipsy/tipsy.css",type:'css'});
 	 
-	In.add('css_task',{path:"{BASE_URL}/{SKIN_PATH}/theme/{$_K['theme']}/css/task.css",type:'css'});
+	//In.add('css_task',{path:"{BASE_URL}/{SKIN_PATH}/theme/{$_K['theme']}/css/task.css",type:'css'});
 	 
-    In.add('css_rating',{path:"{BASE_URL}/static/js/jqplugins/starrating/jquery.rating.css",type:'css'});
     
 	In.add('city',{path:"{BASE_URL}/static/js/system/city.js",type:'js'});
-  		
-	 
-	
+ 	
 	
 </script>
 
@@ -112,7 +100,7 @@
 		
 			 
     <!--头部 start-->
-    <header class="header">
+    <div class="header">
         <div class="container_24 clearfix">
         	<!--logo start-->
             <hgroup class="grid_5 logo">
@@ -150,75 +138,28 @@
             	<!--用户登录注册 start-->
             	<div class="user_box clearfix">
                 	<!--注册登录按钮 start-->
-                  	<ul id="login_sub" class="user_login {if $uid}hidden{/if}">
+                  	<ul id="login_sub" class="user_login {if self::$uid}hidden{/if}">
                         <li><a href="index.php?do=register" >{$_lang['free_register']}</a></li>
                         <li><a id="login" href="index.php?do=login">{$_lang['login']} ▼</a></li>
                     </ul>
                     <!--注册登录按钮 end--> 
 					<div class="clear"></div>
-		            <!--登录弹出框 start-->
-		            <!--注{$_lang['zh_mh']}验证信息请跳转到登录页面去显示-->
-		            <div id="login_box" class="login_pop box hidden">
-		            	<div id="login_form">
-		            		<div class="t_c hidden pad10" id="loading">
-								<img src="{BASE_URL}/static/img/system/loading.gif">
-							</div>
-		            		<div class="t_c hidden pad10" id="loading_error">
-							</div>
-							<div id="load">
-								<form action="index.php?do=login&login_type=3" method="post">
-									<p class="textbox">
-										<label for="log_name">{$_lang['user_email_tel']}</label>
-										<input type="text" spellcheck="false" autocomplete="off" id="log_name" class="txt_input" value="$log_account" size="18" name="log_name" tabindex="1">
-									</p>
-									<div class="textbox">
-										<div class="clearfix">
-											<span class="fl_r"><a href="index.php?do=get_password" class=" minor">{$_lang['forget_pwd']}</a></span>
-											<label for="pwd_password">{$_lang['pwd']}</label>
-										</div>
-										<input type="password" maxlength="16" autocomplete="off" id="log_password" onkeydown="login_keydown(event);" class="txt_input" size="18" name="log_password" tabindex="2">
-									</div>
-									<p class="remember clearfix">
-										<button type="button" name="login_submit" id="login_submit" tabindex="4" class="fl_r" onclick="ajaxLogin('')">{$_lang['login']}</button>
-										<input type="checkbox" id="log_remember" name="autologin" value="1" tabindex="3">
-										<label for="log_remember" class="minor">{$_lang['remember_me']}</label>
-									</p>
-								</form>
-			                    <div class="login_other clearfix">
-			                    	<span class="fl_l">{$_lang['other_account_login']}</span>
-									{loop $api_open $k $v}
-										{if $weibo_list[$k.'_app_id']}
-											<a href="index.php?do=oauth_login&type={$k}">
-												<img src="{BASE_URL}/static/img/ico/{$k}_t.gif">
-											</a>
-					                   {/if}			
-									{/loop}
-			                    </div>
-		                    </div>
-						</div>
-		            </div>
-		            <!--登录弹出框 end-->
-					
-					
-					
+		           
 					
                     <!--登录成功 start-->
-                    <div id="logined" class="{if !$uid}hidden{/if}">
+                    <div id="logined" class="{if !self::$uid}hidden{/if}">
                     	<!--用户登录后内容 start-->
                         <ul class="user_logined clearfix">
                             <li id="avatar">
-                            	<a href="index.php?do=user&view=index">
-                            		
-                                   
+                            	<a href="{PHP_URL}/user">
+                            		{avatar(self::$uid,small)} {$_SESSION['username']}
                             	</a>
-								 
 							</li>
-                             
                         </ul>
-        </div>
-                      <div class="clear"></div>
+        			</div>
+                    <div class="clear"></div>
                 </div>
              </div>
              <div class="clear"></div>
         </div>
-    </header>
+    </div>

@@ -2,7 +2,7 @@
 /**
  * 后台配置列表
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-19
  */
 
@@ -18,30 +18,30 @@ class Control_shop_goods_admin_list extends Control_admin_shop_list{
     function action_index(){
     	global $_K,$_lang;
     	
-    	//要显示的字段,即SQl中SELECT要用到的字段
+    	 
     	$fields = ' `sid`,`title`,`username`,`price`,`unite_price`,`service_time`,`unit_time`,`sale_num`,`status`,`on_time`,`is_top`';
-    	//要查询的字段,在模板中显示用的
+    	 
     	$query_fields = array('sid'=>$_lang['id'],'title'=>$_lang['title'],'price'=>$_lang['cash']);
-    	//总记录数,分页用的，你不定义，数据库就是多查一次的。为了少个Sql语句，你必须要写的，亲!
-    	$count = intval($_GET['count']);
-    	//基本uri,当前请求的uri ,本来是能通过Rotu类可以得出这个uri,为了程序灵活点，自己手写好了
+    	 
+    	 
+    	 
     	$base_uri = $this->_base_uri;
-    	//添加编辑的uri,add这个action 是固定的
+    	 
     	$add_uri =  $base_uri.'/add';
-    	//删除uri,del也是一个固定的，写成其它的，你死定了
+    	 
     	$del_uri = $base_uri.'/del';
-    	//默认排序字段，这里按时间降序
+     
     	$this->_default_ord_field = 'sid';
-    	//这里要口水一下，get_url就是处理查询的条件
+     
     	extract($this->get_url($base_uri));
-    	//查指定类型的商品
+    	 
     	$model_id = DB::select('model_id')->from('witkey_model')->where("model_code='$this->_model_code'")->get_count()->execute();
     	$where  .= " and model_id = $model_id";
-    	//获取列表分页的相关数据,参数$where,$uri,$order,$page来自于get_url方法
-    	$data_info = Model::factory('witkey_service')->get_grid($fields,$where,$uri,$order,$page,$count,$_GET['page_size']);
-    	//列表数据
+    	 
+    	$data_info = Model::factory('witkey_service')->get_grid($fields,$where,$uri,$order,$page);
+    	 
     	$list_arr = $data_info['data'];
-    	//分页数据
+    	 
     	$pages = $data_info['pages'];
     	
     	$shop_status = Control_shop_goods_trade::get_goods_status();
@@ -54,20 +54,20 @@ class Control_shop_goods_admin_list extends Control_admin_shop_list{
     public function action_add(){
     	global  $_K ,$_lang;
     	$sid = $this->_sid;
-    	 //获取商品信息
+    	 
         $service_info = $this->get_service_info();
         
         $base_uri = $this->_base_uri;
         
-        $process_arr = Control_shop_list::can_operate($service_info['shop_status']);
+         
         
         $indus_option_arr = Sys_indus::get_indus_tree($service_info['indus_id']);
-        //单赏商品状态
-        $status_arr = Control_shop_goods_base::get_goods_status();
+        //商品状态
+        $status_arr = Control_shop_goods_trade::get_goods_status();
         //获取商品的增值项
         $payitem_list = Sys_payitem::get_service_payitem($this->_sid);
         
-        $file_list = Control_shop_list::get_service_file($this->_sid);
+        $file_list = Control_admin_shop_list::get_service_file($this->_sid);
          
     	require Keke_tpl::template('control/shop/'.$this->_model_code.'/tpl/admin/edit');
     }
@@ -94,14 +94,15 @@ class Control_shop_goods_admin_list extends Control_admin_shop_list{
      * 上架
      */
     public function action_recommend(){
-    	 $this->set_recommend();
+    	 //$this->set_recommend();
+    	 Control_shop_goods_trade::up_down($this->_sid,1);
     }
     /**
      * 下架
      */
     public function action_unrecommend(){
-    	//改变商品的is_top 为0
-    	$this->set_unrecommend();
+    	 
+    	Control_shop_goods_trade::up_down($this->_sid,0);
     }
      
     /**
@@ -148,7 +149,7 @@ class Control_shop_goods_admin_list extends Control_admin_shop_list{
     	$data = Model::sql_grid($sql,$where,$uri,$order,$group);
     	$list_arr = $data['data'];
     	$pages = $data['pages'];
-    	$order_status = Control_shop_goods_base::get_order_status();
+    	$order_status = Control_shop_goods_trade::get_order_status();
      
     	require Keke_tpl::template('control/shop/'.$this->_model_code.'/tpl/admin/s_order');
     }
@@ -175,8 +176,6 @@ class Control_shop_goods_admin_list extends Control_admin_shop_list{
     	//互评项
     	require Keke_tpl::template('control/shop/'.$this->_model_code.'/tpl/admin/s_mark');
     }
-    
-  
-
+     
     
 }

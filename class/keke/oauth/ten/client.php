@@ -2,7 +2,7 @@
 /**
  *
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-9
  */
 require_once S_ROOT.'client/weibo/ten/Tencent.php';

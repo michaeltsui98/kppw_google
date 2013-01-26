@@ -2,7 +2,7 @@
 /**
  *
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-9
  */ 
 class Keke_oauth_taobao_client extends Keke_oauth_login{

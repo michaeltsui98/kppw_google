@@ -52,7 +52,7 @@ class Control_user_seller_shop extends Control_user{
 		
 		extract ( $this->get_url ( $base_uri ) );
 		
-		$data_info = Model::factory ( 'witkey_shop_case' )->get_grid ( $fields, $where, $uri, $order, $page, $count, $_GET ['page_size'] );
+		$data_info = Model::factory ( 'witkey_shop_case' )->get_grid ( $fields, $where, $uri, $order );
 		
 		$shop_case_list=$data_info['data'];
 
@@ -125,12 +125,12 @@ class Control_user_seller_shop extends Control_user{
 		$query_fields = array (	'member_id' => '成员ID',	'truename' => '成员名称');
 		
 		$this->_default_ord_field='member_id';
-		
+		 
 		$base_uri = USER_URL.'/seller_shop/member';
 		
 		extract ( $this->get_url ( $base_uri ) );
 		
-		$data_info = Model::factory ( 'witkey_shop_member' )->get_grid ( $fields, $where, $uri, $order, $page, $count, $_GET ['page_size'] );
+		$data_info = Model::factory ( 'witkey_shop_member' )->get_grid ( $fields, $where, $uri, $order );
 		
 		$shop_member_list=$data_info['data'];
 		

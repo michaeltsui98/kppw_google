@@ -1,63 +1,36 @@
-/**
- * 页头js
- */
-
-$(function(){
+var ajaxwaitid = window.document.getElementById('ajaxwaitid');
+function kconfirm(o,s,func){
+	d = art.dialog;
+	var c = "确认？";
+	if(s){
+		c=s;
+	}
+	d.confirm(c, function(){
+		$.ajax({
+			url:o.href,
+			dataType:'text',
+			beforeSend:function(){
+	 	        $(ajaxwaitid).children().html('删除中...').addClass('tips_info'); 
+			},
+			success: function(data){
+				if(typeof func =='function'){
+					func(o);
+				}else if(typeof func =='string'){
+					eval(func);
+				}else{
+				   location.href= location.href;	
+				}
+			},
+			complete:function(){
+				$(ajaxwaitid).children().html('提交成功!')
+				 clear_tips();
+			}
+		});
+	}).follow(o);
 	
-	
-	//显示登录层
-	$("#login").click(function(){
-			$("#login_box").toggleClass("hidden");
-			$(this).toggleClass("selected");
-			$("#txt_account").focus();
-			return false;
-	});
-	
-	//方法-隐藏登录弹出层
-	var hideLoginPopup = function(){
-		if (!$("#login_box").is(".hidden")) {
-			$("#login").removeClass("selected");
-			$("#login_box").addClass("hidden");
-			
-		}
-	}; 
-	//body点击触发隐藏方法
-	$("body").click(function(){
-		hideLoginPopup();
-		$("#user_menu").addClass("hidden");
-		$("#search_select a").not(".selected").addClass("hidden");
-	});
-	
-	//登录后用户导航菜单
-	$("#avatar").hover(function(){
-		$("#user_menu").removeClass("hidden");
-	},
-	function(){
-		$("#user_menu").addClass("hidden");
-	});
-	
-	
-	//阻止点击隐藏方法
-	$("#login_box,#user_menu,#search_select").click(function (e) {
-		e.stopPropagation();
-	});
-		
-	//搜索选项
-	$("#search_select a.selected").click(function(){
-		$(this).nextAll("a").removeClass("hidden");
-	});
-
-	$("#search_select a").not(".selected").click(function(){
-		$("#search_select .selected").attr("rel",$(this).attr("rel")).children("span").html($(this).html()).end().nextAll("a").addClass("hidden");
-	})
-	
-	
-	//语言选项 
-	$("#lan_menu a").click(function(){
-		setLang($(this).attr("rel"));
-	})
-
-});
+	return false;
+} 
+ 
 
 $(function (){ 
 	$("#lan_menu").hover(function(){
@@ -179,7 +152,6 @@ function check_user_login(url) {
 		}else if (typeof 'art' == 'function'){
 			art.dialog.alert(L.you_not_login_now_login);
 		}
-		
 		return false;
 	} else {
 		return true;
@@ -197,18 +169,7 @@ function login() {
 	location.href= BASE_URL+"index.php/login";
 }
 
-function redirect_url(url){
-	 
-   var furl = window.location.href;
-   var tourl =url?url:"index.php?do=login";
-   url = tourl.replace(/\?/,"\\?"); 
-   var pos = furl.search(url);  
-   if(pos == -1){ 
-   	   setcookie('loginrefer',furl,120);
-   }
-  
- window.location.href = tourl;
-}
+
 /**
  * 上传进度条
  * 
@@ -436,43 +397,14 @@ function checkInner(obj,maxLength){
 	len<0?len=0:'';
 
 	var Remain = Math.abs(maxLength-len);
-
+    var v = obj.value.toString();
+	 
 	if(maxLength>=len){
-	   
+	    
 	    $("#length_show").text(L.has_input_length+len+','+L.can_also_input+Remain+L.word);
 	}else{
+		obj.value = v.substring(1,maxLength);
 		$("#length_show").text(L.can_input+maxLength+L.word+','+L.has_exceeded_length+Remain+L.word);
 	}
 }
 
-
-
-/**
-* 
-* @param string  form 表单ID或者操作链接
-* @param int     type 操作类型，为链接时默认为1；为表单时为2；
-* @param boolean check 是否验证表单。默认为false，需验证请设置为true 
-*/
-function formSub(form,type,check){
-
-var t      = type=='form'?'form':'url';//操作类型 1为链接型，二为表单型
-var c      = check==true?true:false;//是否需验证表单 true为验证,默认为false
-var pass   = true;//默认为通过 ,当表单验证不过时为false;
-switch(t){
-	case 'url'://链接
-		var url = form;
-		break;
-	case 'form'://表单
-		if(c==true){
-			pass = checkForm(document.getElementById(form));
-		}
-		break;
-}
-if(pass==true){
-	if(t=='url'){
-		showWindow('sitesub',url,'get','0');return false;
-	}else{
-		showWindow('sitesub',form,'post','0');return false;
-	}
-}
-}

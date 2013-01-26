@@ -3,7 +3,7 @@
  * Ucenter ÓÃ»§µÇÂ¼
  * 
  * @author Michael
- * @version 2.2 2012-11-06
+ * @version 3.0 2012-11-06
  */
 require_once S_ROOT . 'client/pw_client/uc_client.php';
 class Keke_user_login_pw extends Keke_user_login {

@@ -121,8 +121,9 @@ class Keke_core extends Keke_base {
 		$stime = explode ( ' ', SYS_START_TIME );
 		$etime = explode ( ' ', microtime ( 1 ) );
 		$ex_time = ($etime [0] - $stime[0]);
-		$memory = sprintf ( ' memory usage: %s', Num::bytes_to_size ( memory_get_usage() ) );
-		return array (	$ex_time,$memory);
+		$memory = sprintf ( '%s', Num::bytes_to_size ( memory_get_usage() ) );
+		
+		return array (	$ex_time,$memory,Database::instance()->get_query_num());
 	}
 	
 	static function lang($key) {
@@ -335,6 +336,7 @@ class Keke extends Keke_core {
 		$_K ['i'] = 0;
 		$_K ['refer'] = "index.php";
 		$_K ['block_search'] = $_K ['block_replace'] = array ();
+		$_K['session_id'] = session_id();
 		$_lang = array ();
 		
 		$config_arr ['seo_title'] and $_K ['html_title'] = $config_arr ['seo_title'] or $_K ['html_title'] = $config_arr ['website_name'];
@@ -584,5 +586,15 @@ class Keke extends Keke_core {
 			unset($GLOBALS[$name]);
 		}
 	}
+	/**
+	 * 异步执行，php-fpm开启后，不影响请求体验，直到register_shutdown_function执行完成
+	 */
+	public static function async_request(){
+		if (function_exists('fastcgi_finish_request()')) {
+			fastcgi_finish_request();
+		}
+	}
+	
+	
 
 }

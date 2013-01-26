@@ -20,7 +20,7 @@
            <div class="rowElem clearfix">
              <label class="grid_3"><strong>{$_lang['mark_content']}</strong></label>
                <div class="grid_9 alpha">
-                 <textarea cols="52" rows="3" name="tar_content" id="tar_content" title="{$_lang['mark_content']}" onkeydown="checkInner(this,100,event);">{if $mark_info['mark_content']}{$mark_info['mark_content']}{/if}</textarea>
+                 <textarea cols="52" rows="3" name="tar_content" id="tar_content" title="{$_lang['mark_content']}" onkeydown="checkInner(this,140,event);">{if $mark_info['mark_content']}{$mark_info['mark_content']}{/if}</textarea>
                  <div class="clear"></div>
                  <div class="c999" id="length_show">{$_lang['mark_content_msg']}</div>
                </div>
@@ -37,7 +37,7 @@
 					<div class="grid_2 omega">{$v['aid_name']}</div>
                       <div class="grid_3 alpha">
                          <div class="star" style="width:150px;margin:5px 0">
-     							<!--{eval echo keke_user_mark_class::gen_star($v[avg],$k,0);}-->
+     							<!--{eval echo Keke_user_mark::gen_star($v[avg],$k,0);}-->
                           </div>
                         </div>   
 				</div>     
@@ -66,9 +66,8 @@
 <script type="text/javascript" src="static/js/jqplugins/starrating/jquery.rating.js"></script>
 <script type="text/javascript" src="static/js/jqplugins/starrating/jquery.MetaData.js"></script>
 <script type="text/javascript">
-	var mark_id = parseInt('{$mark_info[mark_id]}')+0;
-	var task_id = parseInt('{$task_id}')+0;
-	//alert(task_id);
+var mark_id = parseInt('{$mark_info[mark_id]}');
+	
 $(function(){
 	$("div[class*='star_']").click(function(event){
 		var classStr = this.className;
@@ -97,16 +96,6 @@ function confirmMark(){
 		},'json');
 	}
 }
-/**
- * 评价完成跳转
- */
-function doJump(url){
-		if(url){
-			dojump = url.replace(/\-/g,'=').replace(/\*/g,'&');
-			location.href="{$_K['siteurl']}/index.php?"+dojump;
-		}else{
-			location.href="index.php?do=task&task_id="+task_id+"&view=mark";
-		}
-}
+
 </script>
 <!--{include footer}-->

@@ -4,9 +4,9 @@
  * 用户头象
  * @copyright keke-tech
  * @author Michael
- * @version v 2.2 2012-11-11
+ * @version 3.0 2012-11-11
  */
-Keke_lang::load_lang_class('keke_user_avatar_class');
+//Keke_lang::load_lang_class('keke_user_avatar_class');
 
 define ( '_DATADIR', S_ROOT . "data/" );
 global $_K;
@@ -109,7 +109,7 @@ class Keke_user_avatar  {
 		}
 		
 		$filetype = '.jpg';
-		@unlink ( _DATADIR . './tmp/upload' . $uid . $filetype );
+		unlink ( _DATADIR . './tmp/upload' . $uid . $filetype );
 		
 		if ($success) {
 			

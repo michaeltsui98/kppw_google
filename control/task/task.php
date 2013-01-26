@@ -2,10 +2,10 @@
 /**
  * ÈÎÎñ¸¸¿ØÖÆÆ÷
  * @author Michael
- * @version 2.2 2012-12-20
+ * @version 3.0 2012-12-20
  *
  */
-class Control_task_task extends Controller {
+class Control_task_task extends Control_front {
     
 	
 	/**

@@ -49,7 +49,7 @@ class Sys_upload {
 		if(in_array($url_data['task_id'],array('ad','auth','mark','tools')) or intval($url_data['task_id'])>0){
 			$this->_task_id = (int)$url_data ['task_id'];
 		}
-		$url_data ['pid'] and $this->_work_id = $url_data ['pid'];
+		$url_data ['pid'] and $this->_pid = $url_data ['pid'];
 		$url_data ['obj_id'] and $this->_obj_id = $url_data ['obj_id'];
 		$url_data ['obj_type'] and $this->_obj_type = $url_data ['obj_type'];
 		$url_data ['flash'] and $this->_flash = 1;
@@ -69,7 +69,7 @@ class Sys_upload {
 				if ($this->_img_width != $w) {
 					$err = $_lang ['upload_fail_picture_width_is'] . $w . "," . $_lang ['picture_limit_width'] . $this->_img_width . "," . $_lang ['picture_adjust_and_then_upload'];
 					$_K ['charset'] == 'gbk' and $err = Keke::gbktoutf ( $err );
-					echo Keke::json_encode_k ( array ('err' => $err, 'msg' => 'error' ) );
+					echo Keke::json_encode ( array ('err' => $err, 'msg' => 'error' ) );
 					die ();
 				}
 			}
@@ -81,7 +81,7 @@ class Sys_upload {
 				if ($this->_img_height != $h) {
 					$err = $_lang ['upload_fail_picture_heigth'] . $h . "," . $_lang ['picture_limit_height'] . $this->_img_height . "," . $_lang ['picture_adjust_and_then_upload'];
 					$_K ['charset'] == 'gbk' and $err = Keke::gbktoutf ( $err );
-					echo Keke::json_encode_k ( array ('err' => $err, 'msg' => 'error' ) );
+					echo Keke::json_encode ( array ('err' => $err, 'msg' => 'error' ) );
 					die ();
 				}
 			}
@@ -120,7 +120,7 @@ class Sys_upload {
 			$msg = $savename;
 		}
 		$_K ['charset'] != 'utf-8' and $msg = Keke::gbktoutf ( $msg );
-		echo Keke::json_encode_k ( array ('err' => $err, 'msg' => $msg, 'fid' => $fid ) );
+		echo Keke::json_encode ( array ('err' => $err, 'msg' => $msg, 'fid' => $fid ) );
 		die ();
 	}
 	
@@ -144,7 +144,7 @@ class Sys_upload {
 		}
 		$fid = $this->save_db($filepath);
 		
-		echo Keke::json_encode_k ( array ('err' => $err, 'path' => $filepath, 
+		echo Keke::json_encode ( array ('err' => $err, 'path' => $filepath, 
 				'filename' => $filename, 'localname' => $real_file, 'fid' => $fid ) );
 		die ();
 	}
@@ -179,7 +179,7 @@ class Sys_upload {
 				 'fid' => $fid, 'size' => $size_a [0] . ',' . $size_b [0] );
 		($this->_flash&&CHARSET == 'gbk') && $msg = Keke::gbktoutf ( $msg );
 		$_K ['charset'] != 'utf-8' and $msg = Keke::gbktoutf ( $msg );
-		echo Keke::json_encode_k ( $msg );
+		echo Keke::json_encode ( $msg );
 		die ();
 	}
 	

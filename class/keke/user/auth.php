@@ -2,7 +2,7 @@
 /**
  * 用户认证信息
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-12
  */
 

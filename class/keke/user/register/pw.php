@@ -2,7 +2,7 @@
 /**
  * phpWind ÓÃ»§×¢²á
  * @author Michael
- * @version 2.2 2012-11-09
+ * @version 3.0 2012-11-09
  */
 
 include_once S_ROOT.'client/pw_client/uc_client.php';

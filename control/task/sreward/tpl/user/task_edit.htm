@@ -70,7 +70,7 @@
 							
 		                	<div class="form_row">
 	                			<label class="form_label">需求：</label>
-	                			<textarea name="txa_task_desc" id="" cols="70" rows="10" {if $task_info['task_status'] > "1" } disabled="disabled" {/if}
+	                			<textarea name="txa_task_desc" class="xheditor-simple" id="" cols="70" rows="10" {if $task_info['task_status'] > "1" } disabled="disabled" {/if}
 								limit="required:true;len:5-1000"
 								title="任务描述为5到1000个字符"
 								msg="任务描述输入有误"
@@ -80,7 +80,7 @@
 
 	                		<div class="form_row">
 	                			<label class="form_label">附加需求：</label>
-	                			<textarea name="txa_att_desc" id="" cols="70" rows="5">{$task_info['att_desc']}</textarea>
+	                			<textarea name="txa_att_desc" class="xheditor-simple" id="" cols="70" rows="5">{$task_info['att_desc']}</textarea>
 	                		</div>
 							<div class="form_line">
 	                			<hr>
@@ -116,7 +116,7 @@
 		function rm(o){
 		   location.href = location.href ;
 		}
-		In('valid');		
+		In('valid','edit');		
 	</script>
 <script src="{BASE_URL}/static/js/system/ajaxfileupload.js" type="text/javascript"></script>
 <script src="{BASE_URL}/static/js/uploadify/jquery.uploadify-3.1.min.js" type="text/javascript"></script>

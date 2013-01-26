@@ -3,7 +3,7 @@
  * 站内短信
  * 
  * @author Michael
- * @version 2.2
+ * @version 3.0
  *          2012-11-02
  *         
  */
@@ -107,6 +107,7 @@ class Keke_msg_keke extends Keke_msg {
 			 $content = strtr($this->_tpl_info['sms_tpl'],self::$_var);
 		}
 		register_shutdown_function(array(Keke_sms::instance(),'send'),$mobile, $content);
+		Keke::async_request();
 	}
 	/**
 	 * 发送邮件
@@ -122,7 +123,7 @@ class Keke_msg_keke extends Keke_msg {
 			$title = $this->_tpl_info['desc'];
 		}
 		register_shutdown_function(array(Keke,'send_mail'),$email,$title,$content);
-		 
+		Keke::async_request(); 
 		
 	}
 }

@@ -373,15 +373,23 @@ class Keke_base {
 		}
 		
 		$arr = array ('msg' => $msg, 'status' => $status, 'data' => $dataarr );
-		echo self::json_encode_k ( $arr );
+		echo self::json_encode ( $arr );
 		exit ();
 	}
-	static function json_encode_k($array) {
+	static function json_encode($array) {
 		if (function_exists ( 'json_encode' )) {
 			return json_encode ( $array );
 		} else {
 			$json_obj = new json;
 			return $json_obj->encode ( $array );
+		}
+	}
+	static function json_decode($json,$is_arr){
+		if(function_exists('json_decode')){
+			return json_decode($json,$is_arr);
+		}else{
+			$json = new json();
+			return $json->decode($json,$is_arr);
 		}
 	}
 	
@@ -865,5 +873,3 @@ function step1_key($str = '') {
 	
 	return $res;
 }
-
-?>

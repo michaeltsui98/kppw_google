@@ -42,7 +42,7 @@ class Control_task_sreward_user extends Control_user{
 		$ord_char = $this->_ord_char;
 		
 		$list_arr = $data ['data'];
-		
+
 		$pages = $data ['pages'];
 		
 		require Keke_tpl::template('control/task/sreward/tpl/user/task_list');
@@ -56,8 +56,10 @@ class Control_task_sreward_user extends Control_user{
 	function pub_task($status,$cond=NULL){
 		$sql = "SELECT a.task_id,a.task_cash,a.task_title,a.work_num,a.start_time,\n".
 				"a.task_status status_id,a.sub_status,a.real_cash,\n".
+				"b.model_code,b.config,\n".
 				"c.`status` task_status,c.scode status_scode,\n".
 				"f.`status` work_status,e.uid wuid,e.username wusername,\n".
+				"e.work_id,e.work_price,\n".
 				"g.mobile,g.qq,\n".
 				"k.mark_status,\n".
 				"o.order_id,o.price,o.num\n".
@@ -91,6 +93,8 @@ class Control_task_sreward_user extends Control_user{
 			 $where .= " and k.mark_status =0 ";	
 		}elseif( $status == 'jf'){
 			 $where .= " and a.task_status = 6 and a.sub_status = 1";
+		}elseif ($status=='xg'){
+			$where .= " and  (c.scode = '$status' or c.scode='tg') ";
 		}elseif($status){
 			$where .= " and  c.scode = '$status' ";
 		}
@@ -114,8 +118,6 @@ class Control_task_sreward_user extends Control_user{
 	function pub_task_status($task_info){
 		$str = '';
 		if($task_info['status_scode']=='jf' AND $task_info['sub_status']==1){
-			//$str .= '<p><a href="#">提醒交付</a></p>';
-			//$p = '?task_id='.$task_info['task_id'].'&wuid='.$task_info['wuid'].'&cash='.$task_info['real_cash'];
 			$str .= '<p><a onclick="return kdel(this,\'确认验收后，将付款给中标用户？\')" href="'.PHP_URL.'/task/sreward_user/gz_confirm/'.$task_info['task_id'].'" >确认验收</a></p>';
 		}elseif($task_info['status_scode']=='wait'){
 			$str .='<p>';
@@ -150,16 +152,44 @@ class Control_task_sreward_user extends Control_user{
 		$task_id = $this->request->param('id');
 		$data = $this->pub_task('jf'," a.task_id = '$task_id'");
 		$task_info = $data['data'][0];
+		$task_config = unserialize($task_info['config']);
 		//打款给中标者
 		Sys_finance::get_instance($task_info['wuid'])->set_action('task_bid')
 		->set_mem(array(':task_id'=>$task_id,':task_title'=>$task_info['task_title']))
 		->set_obj('task', $task_id)
 		->cash_in($task_info['real_cash'],0,$task_info['task_cash']-$task_info['real_cash']);
+		
 		//改变任务状态
 		DB::update('witkey_task')
 		->set(array('task_status','sub_status'))->value(array('7',''))
 		->where("task_id = $task_id and uid = $this->uid")
 		->execute();
+		
+		//生成互记录,如果是一对多的话，这里要注意
+		$array=array(
+				'model_code'=>$task_info['model_code'],
+				'origin_id'=>$task_info['task_id'],
+				'obj_id'=>$task_info['work_id'],
+				'obj_cash'=>$task_info['work_price'],
+				'uid'=>$task_info['wuid'],
+				'username'=>$task_info['wusername'],
+				'by_uid'=>$task_info['uid'],
+				'by_username'=>$task_info['username'],
+				'mark_status'=>0,
+				'mark_value'=>0,
+				'mark_max_time'=>SYS_START_TIME+($task_config['max_mark']*3600),
+				'mark_type'=>'seller'
+		);
+		Model::factory('witkey_mark')->setData($array)->create();
+			
+		$array['uid']=$task_info['uid'];
+		$array['username']=$task_info['username'];
+		$array['by_uid']=$task_info['wuid'];
+		$array['by_username']=$task_info['wusername'];
+		$array['mark_type']='buyer';
+			
+		Model::factory('witkey_mark')->setData($array)->create();
+		
 		//发通知
 		Keke_msg::instance()->to_user($task_info['wuid'])
 		->set_tpl('task_confirm_accept')
@@ -220,7 +250,8 @@ class Control_task_sreward_user extends Control_user{
 				'att_desc'=>$_POST['txa_att_desc'],
 		);
 		$task_id = $_POST ['hdn_task_id'];
-		Model::factory ( 'witkey_task' )->setData ( $array )->setWhere ( "task_id = '$task_id'" )->update ();
+		Model::factory ( 'witkey_task' )->setData ( $array )
+		->setWhere ( "task_id = '$task_id'" )->update ();
 		
 		$this->request->redirect ( "task/sreward_user/edit?task_id=$task_id" );
 	}
@@ -300,15 +331,15 @@ class Control_task_sreward_user extends Control_user{
 			$where .= " and  c.scode ='{$_GET['status']}' ";
 		}
 		
-		$where .= "  and a.uid = $this->uid";
-		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
+		$where .= "  and a.uid = $this->uid and b.model_id='1'";
+		$sql = DB::query($sql)->tablepre('keke_')->compile(Database::instance());
 		$group_by=" GROUP BY a.task_id ";
 				
 		$data=Model::sql_grid($sql,$where,$uri,$order,$group_by);
 		
 		$work_list=$data['data'];
 		$pages=$data['pages'];
-		//var_dump($work_list);
+
 		require Keke_tpl::template('control/task/sreward/tpl/user/task_seller');
 	}
 	function action_wk_confirm(){

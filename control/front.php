@@ -8,10 +8,14 @@
  */
 abstract  class Control_front extends Controller{
 	 
+	protected  static $uid =NULL;
 	function before(){
 		parent::before();
 		$this->check_web_close();
+		self::$uid = $_SESSION['uid'];
+		
 	}
+	
 	/**
 	 * еп╤омЬу╬йг╥Я╧ь╠у
 	 */

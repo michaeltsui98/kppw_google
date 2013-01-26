@@ -81,31 +81,21 @@
 	<tr>
 		<th scope="row" width="200" class="t_r">{$_lang['task_public_time']}{$_lang['zh_mh']}</th>
 		 <td>
-			<input type="text" size="10" id="notice_period"  name="conf[notice_period]"  value="{$model_info['notice_period']}" limit="type:int;require:true;between:0-" msg="{$_lang['task_public_time_msg']}" title="{$_lang['task_public_time_title']}" msgArea="span_notice_period" class="txt">{$_lang['task_public_time_notice']}
+			<input type="text" size="10" id="sp_time"  name="conf[sp_time]"  
+			value="{$model_info['sp_time']}" limit="type:int;require:true;between:0-" 
+			msg="{$_lang['task_public_time_msg']}" title="{$_lang['task_public_time_title']}" 
+			msgArea="span_notice_period" class="txt">{$_lang['task_public_time_notice']}
 			<span id="span_notice_period"></span>
 		 </td>
 	</tr>
 	<tr>
-		<th scope="row" width="200" class="t_r">{$_lang['task_min_day']}{$_lang['zh_mh']}</th>
+		<th scope="row" width="200" class="t_r">Ωª∏Â ±º‰{$_lang['zh_mh']}</th>
 		 <td>
 			<input type="text" size="10" id="min_day"  name="conf[min_day]"  value="{$model_info['min_day']}" limit="type:int;require:true;between:1-" msg="{$_lang['task_min_day_msg']}" title="{$_lang['task_min_day_title']}" msgArea="span_min_day" class="txt">{$_lang['task_public_time_notice']}
 			<span id="span_min_day"></span>
 		 </td>
 	</tr>
-	<tr>
-		<th scope="row" width="200" class="t_r">{$_lang['task_vote_time']}{$_lang['zh_mh']}</th> 
-			<td>
-				<input type="text" size="10" id="vote_period" name="conf[vote_period]"  value="{$model_info['vote_period']}" limit="type:int;required:true;between:1-" msg="{$_lang['task_vote_time_msg']}" title="{$_lang['task_vote_time_title']}" msgArea="span_vote_period" class="txt">{$_lang['task_vote_time_notice']}<br>
-				<span id="span_vote_period"></span>
-			</td>
-	</tr>
-	<tr>
-		<th scope="row" width="200" class="t_r">{$_lang['limit_new_register_user_vote_time']}</th> 
-		  <td>
-			 <input type="text" size="10" id="reg_vote_limit"  name="conf[reg_vote_limit]"  value="{$model_info['reg_vote_limit']}" limit="type:int;require:true" msg="{$_lang['new_register_user_vote_time_msg']}" title="{$_lang['new_register_user_vote_time_title']}" msgArea="reg_vote_limit_time_msg" class="txt">{$_lang['new_register_user_vote_time_notice']}
-			<br><span id="reg_vote_limit_time_msg"></span>
-		 </td>
-	</tr>
+	 
 	<tr>
 		<th scope="row" width="200" class="t_r">{$_lang['set_choose_time']}{$_lang['zh_mh']}</th> 
 		 <td>

@@ -17,12 +17,13 @@ class Control_admin_tool_ad extends Control_admin {
  	
 		$base_uri = BASE_URL . "/index.php/admin/tool_ad";
 		// 删除uri，del是固定的
+		
 		$del_uri = $base_uri . "/del";
 		$add_uri = $base_uri . "/add";
+		
 		// 修改广告位状态的URI
 		$change_uri = $base_uri . "/changestates";
-		// 不需要分页，page_size设置大
-		$page_size = $_GET ['page_size'];
+		
 		
 		$targets = DB::select('target_id,name')->from('witkey_ad_target')->execute();
 		
@@ -37,7 +38,7 @@ class Control_admin_tool_ad extends Control_admin {
 			$target_id = $_GET['target_id'];
 			$where .= " and target_id = {$_GET['target_id']}";
 		}
-		$data_info = Model::factory ( 'witkey_ad' )->get_grid ( $fields, $where, $uri, $order, $page, $count, $_GET ['page_size'] );
+		$data_info = Model::factory ( 'witkey_ad' )->get_grid ( $fields, $where, $uri, $order );
 		// 列表数据
 		$ad_list = $data_info ['data'];
 		
@@ -165,11 +166,14 @@ class Control_admin_tool_ad extends Control_admin {
 	 * 查询广告位剩余广告数
 	 */
 	function action_get_targetnum(){
-		$target_id = intval($_GET['target_id']);
-		$adtarget_info= DB::select ()->from ( 'witkey_ad_target' )->where ( "target_id = $target_id" )->get_one()->execute ();
-		$ad_info=Dbfactory::query("select count(*) from ".TABLEPRE."witkey_ad where target_id = $target_id");
-		$adtarget_num=$adtarget_info['ad_num']-$ad_info[0]['count(*)'];
-		echo "$adtarget_num";
+		$target_id = (int)$_GET['target_id'];
+		$sql ="SELECT a.ad_num - count(b.ad_id) \n".
+				"FROM `:keke_witkey_ad_target` a \n".
+				"LEFT JOIN :keke_witkey_ad b \n".
+				"on a.target_id = b.target_id \n".
+				"where a.target_id = $target_id \n".
+				"GROUP BY a.target_id ";
+		echo DB::query($sql)->tablepre(':keke_')->get_count()->execute();
 	}
 }
 	

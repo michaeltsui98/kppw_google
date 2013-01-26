@@ -144,6 +144,24 @@ class Keke_valid {
 	public static function color($str){
 		return (bool) preg_match('/^#?+[0-9a-f]{3}(?:[0-9a-f]{3})?$/iD', $str);
 	}
+	/**
+	 * 小于
+	 * @param numeric $value
+	 * @param numeric $min
+	 * @return boolean
+	 */
+	public static function less($value,$min){
+		return (bool)(float)$value<=(float)$min;
+	}
+	/**
+	 * 大于
+	 * @param numeric $value
+	 * @param numeric $max
+	 * @return boolean
+	 */
+	public static function large($value,$max){
+		return (bool)(float)$value>=(float)$max;
+	}
+	
 }
 
-?>

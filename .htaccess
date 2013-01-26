@@ -1,13 +1,13 @@
 RewriteEngine On
   
-RewriteBase /kppw_google/
+RewriteBase /kppw30/
   
-RewriteCond $1 ^(index.php|robots.txt|favicon.ico|images|js|css)
+RewriteCond $1 ^(index.php|robots.txt|favicon.ico|static|payment|install|data)
   
 # No rewriting
 RewriteRule ^(.*)$ - [PT,L]
 
-RewriteCond %{REQUEST_URI} !^.*(\.css|\.js|\.swf|\.gif|\.png|\.jpg|\.jpeg|\.xml|payment.*|install.*|test\.*)
+RewriteCond %{REQUEST_URI} !^.*(\.css|\.js|\.swf|\.gif|\.png|\.jpg|\.jpeg|\.xml|test\.*)
 
   
 # Rewrite all other URLs to index.php/URL
@@ -16,5 +16,3 @@ RewriteCond %{REQUEST_URI} !^.*(\.css|\.js|\.swf|\.gif|\.png|\.jpg|\.jpeg|\.xml|
 RewriteRule ^(.*)$ index.php [L,E=PATH_INFO:$1]
 #isapi model
 #RewriteRule ^(.*)$ index.php/$1 [PT,L]
-
-

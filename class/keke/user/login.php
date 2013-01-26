@@ -4,7 +4,7 @@
  * 用户登录基类
  * 
  * @author Michael
- * @version 2.2
+ * @version 3.0
  *          2012-11-06
  *         
  */
@@ -190,6 +190,7 @@ abstract class Keke_user_login   {
 		$this->_session->regenerate ();
 		Cookie::delete('remember_me');
 	}
+	
 	/**
 	 * 登录的返回状态 
 	 */

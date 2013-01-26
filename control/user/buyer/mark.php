@@ -2,7 +2,7 @@
 /**
  * 用户中心-买家-评价
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-19
  */
 
@@ -18,13 +18,12 @@ class Control_user_buyer_mark extends Control_user{
 	 * @var 二级菜单选中项,空值不做选择
 	 */
 	protected static $_left = 'mark';
-	public  static $_mark = array(1=>'好评',2=>'中评',3=>'差评');
-/* 	protected $_uri ;
-	protected $_ord_tag;
-	protected $_ord_char; */
+	public  static $_mark ;
+ 
 	
 	function before(){
 		Control_user_buyer_index::init_nav();
+		 self::$_mark = Keke_user_mark::get_mark_status();
 	}
 	
 	function action_index(){
@@ -42,10 +41,9 @@ class Control_user_buyer_mark extends Control_user{
 		$ord_tag = $this->_ord_tag;
 		
 		$ord_char = $this->_ord_char;
-		// 列表数据
+		 
 		$list_arr = $data ['data'];
-//  		explode($delimiter, $string)
-		// 分页数据
+ 
 		$pages = $data ['pages'];
 		
 		require Keke_tpl::template('user/buyer/mark');
@@ -88,8 +86,11 @@ class Control_user_buyer_mark extends Control_user{
 			$where .= " and a.mark_status=".intval($status);
 		}
 		$this->_uri = $uri;
+		
 		$this->_ord_tag = $ord_tag;
+		
 		$this->_ord_char = $ord_char;
+		
 		return Model::sql_grid($sql,$where,$uri,$order,$group);
 	}
 	

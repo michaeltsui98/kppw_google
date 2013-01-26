@@ -13,32 +13,24 @@
 		                </header>
 		                <nav class="box_nav">
 								<ul id="test_ul" class="clearfix">
-									<li class="selected"><a href="#">待选</a></li>
-									<li><a href="#">中标的</a></li>
-									<li><a href="#">淘汰的</a></li>
-									<li><a href="#">交付中</a></li>
-									<li><a href="#">待互评</a></li>
-								</ul>
+									<li {if $_GET['status']=='wait'} class="selected" {/if}><a href="{PHP_URL}/task/mreward_user/seller?status=wait">待选</a></li>
+									<li {if $_GET['status']=='one'} class="selected" {/if}><a href="{PHP_URL}/task/mreward_user/seller?status=one">一等奖</a></li>
+									<li {if $_GET['status']=='two'} class="selected" {/if}><a href="{PHP_URL}/task/mreward_user/seller?status=two">二等奖</a></li>
+									<li {if $_GET['status']=='three'} class="selected" {/if}><a href="{PHP_URL}/task/mreward_user/seller?status=three">三等奖</a></li>
+									<li {if $_GET['status']=='out'} class="selected" {/if}><a href="{PHP_URL}/task/mreward_user/seller?status=out">淘汰的</a></li>
+									<!--
+									<li {if $_GET['status']=='jf'} class="selected" {/if}><a href="{PHP_URL}/task/sreward_user/seller?status=jf">待交付</a></li>
+									-->
+									<!--<li {if $_GET['status']=='hp'} class="selected" {/if}><a href="{PHP_URL}/task/mreward_user/seller?status=hp">待互评</a></li>
+									-->
+							</ul>
 		                </nav>
 		                <div class="box_detail">
 
 		                	<div class="toolbar">
-		                		<div class="actions">
-		                			<input type="search" placeholder="请输入标题关键字"><input type="button" value="搜索标题">
-		                		</div>
-		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
-					            </div>
+		                		<form class="detail" action="{PHP_URL}/task/mreward_user/seller" method="get" id="frm_user_search">
+										<!--{include control/admin/tpl/search}-->
+								</form>
 		                	</div>
 
 		                	<!--date_table数据表格 start-->
@@ -47,92 +39,48 @@
 		                            <thead>
 		                            <tr>
 		                              <th scope="col">任务标题</th>
-		                              <th scope="col">任务金额</th>
+		                              <th scope="col">中标金额</th>
+		                              <th scope="col">实得赏金</th>
 		                              <th scope="col">状态</th>
 		                              <th scope="col">买家</th>
 		                              <th scope="col">参与时间</th>
 		                            </tr>
 		                            </thead>
-		                            <tbody>
-		                            <tr>
-		                              <td>
-		                              	<a href="#" class="title">武汉理工大学接待中心大楼外立面设计加急!</a>
-		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>中标</td>
-		                              <td>
-		                              	<p>
-		                              		<a href="#">灵媒师</a>
-		                              	</p>
-		                              	<p>15527267663</p>
-		                              	<p>
-		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
-		                              	</p>
-		                              </td>
-		                              <td>2012-12-21</td>
-		                            </tr>
-		                            <tr>
-		                              <td>
-		                              	<a href="#" class="title">维科天猫旗舰店推广第一期:旺旺/QQ群不限,2元一稿</a>
-		                              	
-		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>淘汰</td>
-		                              <td>-</td>
-		                              <td>2011-08-25</td>
-		                            </tr>
-		                            <tr>
-		                              <td>
-		                              	<a href="#" class="title">维科天猫旗舰店推广第一期:旺旺/QQ群不限,2元一稿</a>
-		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>待选</td>
-		                              <td>-</td>
-		                              <td>2011-08-25</td>
-		                            </tr>
-		                            <tr>
-		                              <td>
-		                              	<a href="#" class="title">饰品主题连锁店系列装修风格效果图征集</a>
-		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>
-		                              	<p>交付中</p>
-		                              	<p><a href="#">确认交付</a></p>
-		                              	<p><a href="#">提醒买家验收</a></p><!--确认交付完成后才会出现-->
-		                              </td>
-		                              <td>
-		                              	<p>
-		                              		<a href="#">灵媒师</a>
-		                              	</p>
-		                              	<p>15527267663</p>
-		                              	<p>
-		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
-		                              	</p>
-		                              </td>
-		                              <td>2011-08-25</td>
-		                            </tr>
-		                            <tr>
-		                              <td>
-		                              	<a href="#" class="title">饰品主题连锁店系列装修风格效果图征集</a>
-		                              </td>
-		                              <td><span class="money">￥300.00</span></td>
-		                              <td>
-		                              	<p>已结束</p>
-		                              	<p><a href="#">互评</a></p>
-		                              </td>
-		                              <td>
-		                              	<p>
-		                              		<a href="#">灵媒师</a>
-		                              	</p>
-		                              	<p>15527267663</p>
-		                              	<p>
-		                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
-		                              	</p>
-		                              </td>
-		                              <td>2011-08-25</td>
-		                            </tr>
-		                            </tbody>
-		                            
+		                           
+		                            {if $work_list}
+									<tbody>
+			                          {loop $work_list $v}
+										<tr>
+			                              <td>
+			                              	<a href="{PHP_URL}/task/{$v['task_id']}" class="title">{$v['task_title']} </a>
+			                              </td>
+			                              <td><span class="money">{if in_array($v['work_status'],array(1,2,3))}{c:$v['work_price']}{else}--{/if}</span></td>
+			                              <td><span class="money">{if in_array($v['work_status'],array(1,2,3))}{c:$v['bid_cash']}{else}--{/if}</span></td>
+			                              <td>{$v['status']}</td>
+			                              <td>
+			                              	{if in_array($v['work_status'],array('1','2','3'))}
+			                              	<p>
+			                              		<a href="{PHP_URL}/space/{$v['uid']}">{$v['username']}</a>
+			                              	</p>
+			                              	<p>$v['mobile']</p>
+											{if $v['qq']}
+			                              	<p>
+			                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin={$v['qq']}&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:{$v['qq']}:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+			                              	</p>
+											{/if}
+											{/if}
+			                              </td>
+			                              <td>{date('Y-m-d',$v['work_time'])}</td>
+			                            </tr>
+										</tbody>
+								       {/loop}
+		                             {else}
+									<tfoot>
+				                            <tr>
+					                            <td colspan="5" class="t_c">暂无记录</td>
+					                        </tr>
+				                    </tfoot>
+									{/if}
 		                          </table>
 		                    </div>
 			               	<!--data_table数据表格 end-->
@@ -140,21 +88,9 @@
 			               	<div class="toolbar bottom">
 		                		
 		                		<div class="page">
-					                <p>
-					                    <a href="###" title="第一页">&#171;</a>
-					                    <a href="###" title="上一页">&#139;</a>
-					                    <a href="###" class="selected">1</a>
-					                    <a href="###">2</a>
-					                    <a href="###">3</a>
-					                    <a href="###">4</a>
-					                    <a href="###" title="下一页">&#155;</a>
-					                    <a href="###" title="最后一页">&#187;</a>
-					                    <span class="stats">1/10</span>
-					                </p>
+					                 {$pages['page']}
 					            </div>
 		                	</div>
-
-
 		                </div>
 		            </div>
 		        </div>

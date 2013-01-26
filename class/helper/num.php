@@ -5,7 +5,7 @@ defined ( 'IN_KEKE' ) or die ( 'Access Dinied' );
  * 数据处理
  * 
  * @author Michael
- * @version 2.2 2012-11-22
+ * @version 3.0 2012-11-22
  *         
  */
 class Num {

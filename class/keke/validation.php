@@ -11,7 +11,7 @@ class Keke_validation implements ArrayAccess {
 	protected  $_errors;
 	protected  $_rules;
 	protected  $_labels;
-	protected $_empty_rules = array('not_empty', 'matches');
+	protected $_empty_rules = array('Keke_valid::not_empty', 'Keke_valid::matches');
 	/**
 	 * 
 	 * @param array $arr
@@ -157,7 +157,7 @@ class Keke_validation implements ArrayAccess {
 		
 			// 绑定字段的名称与值
 			$this->bind(array(':field' => $field,':value' => $value,));
-		
+			
 			foreach ($set as $array)
 			{
 				// 规则的参数
@@ -171,7 +171,7 @@ class Keke_validation implements ArrayAccess {
 						$params[$key] = $this->_bound[$param];
 					}
 				}
-		
+				
 				// 默认的错误名称
 				$error_name = $rule;
 		        if (is_array($rule))
@@ -185,6 +185,7 @@ class Keke_validation implements ArrayAccess {
 		
 					// 回调判断规则是否通过
 					$error_name = $rule[1];
+					
 					$passed = call_user_func_array($rule, $params);
 				}
 				elseif ( ! is_string($rule))
@@ -212,23 +213,26 @@ class Keke_validation implements ArrayAccess {
 				}
 				else
 				{
+					
 					//分隔类与方法
 					list($class, $method) = explode('::', $rule, 2);
-		
+					
 					//调用静态方法
 					$method = new ReflectionMethod($class, $method);
 		
 					// 通过映射调用方法
 					$passed = $method->invokeArgs(NULL, $params);
 					
+					
 				}
-		
+// 				var_dump($this->_empty_rules,$rule);die;
 				// 当字段为空时，跳出循环
 				if ( ! in_array($rule, $this->_empty_rules) AND ! Keke_valid::not_empty($value))
 					continue;
-		
+				
 				if ($passed === FALSE AND $error_name !== FALSE)
 				{
+					 
 					// 保存验证错误的规则
 					$this->error($field, $error_name, $params);
 		
@@ -258,8 +262,14 @@ class Keke_validation implements ArrayAccess {
 			return $this->_errors;
 		}
 		if($out_html === TRUE){
+		    
 			foreach ($this->_errors as $k=>$v){
-				$h .= '使用：'.$v[0].'验证字段:'.$k.'值'.$v[1][0].'输入错误!'.PHP_EOL;
+				if($v[1][2]){
+					$h.=$v[1][2].PHP_EOL;
+				}else{
+					list($i,$j) = explode('::', $v[0]);
+					$h .= $k.'的'.$j.'为'.$v[1][1].PHP_EOL;
+				}
 			}
 			return $h;
 		}

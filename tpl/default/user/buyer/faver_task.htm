@@ -1,121 +1,91 @@
 <!--{include user/header}-->
-    <!--content start-->
-    <div class="wrapper">
-    	<article class="article container">
-    		<!--{include user/buyer/side}-->
-    		<div class="content">
-    			<div class="box">
-		            <div class="inner clearfix">
-		                <header class="box_header">
-		                    <div class="box_title">
-		                        <h2 class="title">我的收藏</h2>
-		                    </div>
-		                </header>
-		                <nav class="box_nav">
-								<ul id="test_ul" class="clearfix">
-									<li><a href="{USER_URL}/buyer_faver">商品</a></li>
-									<li class="selected"><a href="{USER_URL}/buyer_faver/task">任务</a></li>
-								 
-								</ul>
-		                </nav>
-		                <div class="box_detail">
+<!--content start-->
+<div class="wrapper">
+<article class="article container">
+<!--{include user/buyer/side}-->
+<div class="content">
+	<div class="box">
+        <div class="inner clearfix">
+            <header class="box_header">
+                <div class="box_title">
+                    <h2 class="title">我的收藏</h2>
+                </div>
+            </header>
+            <nav class="box_nav">
+					<ul id="test_ul" class="clearfix">
+						<li><a href="{USER_URL}/buyer_faver">商品</a></li>
+						<li class="selected"><a href="{USER_URL}/buyer_faver/task">任务</a></li>
+					</ul>
+            </nav>
+            <div class="box_detail">
 
-		                	<div class="toolbar">
-		                		 <form class="detail" action="{USER_URL}/buyer_faver/task" method="get" id="frm_user_search">
-										<table cellspacing="0" cellpadding="0">
-											<tbody>
-											<tr>
-										    <td> 条件
-										       <select name="slt_fields">
-										       	<option></option>
-										       	{loop $query_fields $k $v}
-										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
-												{/loop} 
-										       </select>
-											 <select name="slt_cond">
-											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
-												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
-												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
-												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
-											 </select>
-										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
-											 <select name="page_size">
-												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
-												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
-												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
-											</select>
-											 <input type="submit" value="{$_lang['search']}">
-											 </td>
-										</tr>
-										</tbody>
-										</table>
-								</form>
-		                	</div>
+            	<div class="toolbar">
+            		 <form class="detail" action="{USER_URL}/buyer_faver/task" method="get" id="frm_user_search">
+							 <!--{include control/admin/tpl/search}-->
+					</form>
+            	</div>
 
-		                	<!--date_table数据表格 start-->
-		                    <div class="data_list">
-		                        <table  class="data_table">
-		                            <thead>
-		                            <tr>
-		                              <th scope="col" width="5%"></th>	
-		                              <th scope="col">任务标题</th>
-		                              <th scope="col">任务金额</th>
-		                              <th scope="col">状态</th>
-		                            </tr>
-		                            </thead>
-		                            <tbody>
-		                            {if $list_arr}
-		                            {loop $list_arr $k $v}	
-		                            <tr>
-		                              <td><input type="checkbox" value="$v['fid']" name="ckb[]"></td>
-		                              <td>
-		                              	<a href="{PHP_URL}/task/{$v['origin_id']}" class="title">{$v['task_title']}</a>
-		                              	<div class="item_action">
-		                              		<a href="{USER_URL}/buyer_faver/del/?id={$v['fid']}" onclick="return kdel(this,'',rm)">删除</a>
-											<a href="{PHP_URL}/task/{$v['origin_id']}">查看</a>
-		                              	</div>
-		                              </td>
-		                              <td><span class="money">{c:$v['task_cash']}</span></td>
-		                              <td>{$v['status']}</td>
-		                            </tr>
-		                             {/loop}
-								   {else}
-									<tfoot>
-				                            <tr>
-					                            <td colspan="4" class="t_c">暂无记录</td>
-					                        </tr>
-				                    </tfoot>
-									{/if}
-		                            </tbody>
-		                            
-		                          </table>
-		                    </div>
-			               	<!--data_table数据表格 end-->
+            	<!--date_table数据表格 start-->
+                <div class="data_list">
+                    <table  class="data_table">
+                        <thead>
+                        <tr>
+                          <th scope="col" width="5%"></th>	
+                          <th scope="col">任务标题</th>
+                          <th scope="col">任务金额</th>
+                          <th scope="col">状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {if $list_arr}
+                        {loop $list_arr $k $v}	
+                        <tr>
+                          <td><input type="checkbox" value="$v['fid']" name="ckb[]"></td>
+                          <td>
+                          	<a href="{PHP_URL}/task/{$v['origin_id']}" class="title">{$v['task_title']}</a>
+                          	<div class="item_action">
+                          		<a href="{USER_URL}/buyer_faver/del/?id={$v['fid']}" onclick="return kdel(this,'',rm)">删除</a>
+								<a href="{PHP_URL}/task/{$v['origin_id']}">查看</a>
+                          	</div>
+                          </td>
+                          <td><span class="money">{c:$v['task_cash']}</span></td>
+                          <td>{$v['status']}</td>
+                        </tr>
+                         {/loop}
+					   {else}
+						<tfoot>
+	                            <tr>
+		                            <td colspan="4" class="t_c">暂无记录</td>
+		                        </tr>
+	                    </tfoot>
+						{/if}
+                        </tbody>
+                      </table>
+                </div>
+               	<!--data_table数据表格 end-->
 
-			               	<div class="toolbar bottom">
-		                		<div class="actions">
-		                			<input type="button" value="全选" onclick="check_all();">
-		                		</div>
-		                		<div class="actions">
-		                			<input type="button" value="删除" onclick="return batch_del(this);">
-		                		</div>
-		                		<div class="page">
-					                {$pages['page']}
-					            </div>
-		                	</div>
-
-
-		                </div>
+               	<div class="toolbar bottom">
+            		<div class="actions">
+            			<input type="button" value="全选" onclick="check_all();">
+            		</div>
+            		<div class="actions">
+            			<input type="button" value="删除" onclick="return batch_del(this);">
+            		</div>
+            		<div class="page">
+		                {$pages['page']}
 		            </div>
-		        </div>
-    		</div>
-    	</article>
+            	</div>
+				
+            </div>
+        </div>
     </div>
-    <!--content end-->
+</div>
+</article>
+</div>
+<!--content end-->
 <script>
 	function rm(o){
 		 $(o).parents('tr').remove();
-		
 	}
 </script>		
 <!--{include user/footer}-->

@@ -2,7 +2,7 @@
 /**
  *  用户中心控制层基类
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-25
  */
 define('USER_URL', PHP_URL.'/user');
@@ -41,6 +41,7 @@ abstract  class Control_user extends Controller{
     protected static $_buyer_nav = array(
     		//'index'=>array('我发的任务','buyer_index'),
     		//'shop'=>array('我买的商品','buyer_goods'),
+    		//70=>array('link'=>array('我的连接'=>'buyer_link')),
     		80=>array('faver'=>array('我的收藏'=>'buyer_faver')),
     		100=>array('mark'=>array('评价管理'=>'buyer_mark')),
     		);
@@ -89,12 +90,12 @@ abstract  class Control_user extends Controller{
     	 
     	$this->uid = $_SESSION['uid'];
     	$this->username = $_SESSION['username'];
-    	if(Keke_user_login::instance()->logged_in()===FALSE){
-    		Cookie::set('last_page', $this->request->uri());
-    		$this->request->redirect('login');
-    	}
-    	$res = Keke_user::instance()->get_user_info($this->uid,'group_id');
-    	$this->group_id = $res['group_id'];
+    	
+    	$this->group_id = $_SESSION['group_id'];
+    	
+    	Keke_user::check_login();
+    	
+    	
     	if($this->group_id==3){
     		unset(self::$_account_nav['detail']);
     	}

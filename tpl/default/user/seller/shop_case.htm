@@ -1,114 +1,78 @@
 <!--{include user/header}-->
-    <!--content start-->
-    <div class="wrapper">
-    	<article class="article container">
-    		<!--{include user/seller/side}-->
-    		<div class="content">
-    			<div class="box">
-		            <div class="inner clearfix">
-		                <header class="box_header">
-		                    <div class="box_title">
-		                        <h2 title="我的任务" class="title">店铺管理</h2>
-		                    </div>
-		                </header>
-		                <nav class="box_nav">
-								<ul id="test_ul" class="clearfix">
-									<li ><a href="{USER_URL}/seller_shop">店铺设置</a></li>
-									<li class="selected"><a href="{USER_URL}/seller_shop/case">店铺案例</a></li>
-									<li><a href="{USER_URL}/seller_shop/member">店铺成员</a></li>
-								</ul>
-		                </nav>
-		                <div class="box_detail">
- 		                	<div class="toolbar">
-		                		<form class="detail" action="{$case_uri}" method="get" id="frm_user_search">
-										<table cellspacing="0" cellpadding="0">
-											<tbody>
-											<tr>
-										    <td> 条件
-										       <select name="slt_fields">
-										       	<option></option>
-										       	{loop $query_fields $k $v}
-										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
-												{/loop} 
-										       </select>
-											 <select name="slt_cond">
-											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
-												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
-												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
-												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
-											 </select>
-										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
-											 <select name="page_size">
-												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
-												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
-												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
-											</select>
-											 <input type="submit" value="{$_lang['search']}">
-											 <a href = "{$case_add_uri}" class="submit">添加案例</a>
-											 
-											 </td>
-										</tr>
-										</tbody>
-										</table>
-								</form>
-		                	 
-		                	</div>
-
-		                	<!--date_table数据表格 start-->
-		                    <div class="data_list">
-		                        <table  class="data_table">
-		                            <thead>
-		                            <tr>
-		                              <th scope="col">展示</th>
-		                              <th scope="col">案例介绍</th>
-		                            </tr>
-		                            </thead>
-		                            <tbody>
-		                            	{loop $shop_case_list $v}
-										<tr>
-		                            	  <td>
-		                              		<img width="50px" height="50px" class="pic_larger mt_5" src="{BASE_URL}/{$v['case_pic']}" alt="{$v['case_name']}">
-		                              	  </td>
-		                            	  <td>
-		                              		<a href="#" class="title">{$v['case_name']}</a> 
-		                              		<p class="ws_break">{cutstr($v['case_desc'],200)}</p>
-		                              		<div class="item_action">
-		                              			<a href="{$case_add_uri}?case_id={$v['case_id']}">编辑</a>
-		                              			<a href="{$case_del_uri}?case_id={$v['case_id']}" onclick="return kdel(this,'',rm)">删除</a>
-		                              			{if $v['case_type']=="1"}
-												<a href="#">查看</a>
-												{elseif $v['case_type']=="2"}
-												<a href="{$v['case_url']}">查看</a>
-												{/if}
-		                              		</div>
-		                             	 </td>                             
-		                           	   </tr>
-									   {/loop}
-		                            </tbody>
-		                            
-		                          </table>
-		                    </div>
-			               	<!--data_table数据表格 end-->
-
-			               	<div class="toolbar bottom">
-		                		<div class="actions">
-		                			<a href = "{$case_add_uri}" class="submit">添加案例</a>
-		                		</div>
-		                		<div class="page">
-					                <p>{$pages['page']}</p>
-					            </div>
-		                	</div>
-		                </div>
-		            </div>
-		        </div>
-    		</div>
-    	</article>
+<div class="wrapper">
+<article class="article container">
+<!--{include user/seller/side}-->
+<div class="content">
+<div class="box">
+    <div class="inner clearfix">
+        <header class="box_header">
+            <div class="box_title">
+                <h2 class="title">店铺管理</h2>
+            </div>
+        </header>
+        <nav class="box_nav">
+				<ul id="test_ul" class="clearfix">
+					<li ><a href="{USER_URL}/seller_shop">店铺设置</a></li>
+					<li class="selected"><a href="{USER_URL}/seller_shop/case">店铺案例</a></li>
+					<li><a href="{USER_URL}/seller_shop/member">店铺成员</a></li>
+				</ul>
+        </nav>
+        <div class="box_detail">
+        	<div class="toolbar">
+        		<form class="detail" action="{$case_uri}" method="get" id="frm_user_search">
+						<!--{include control/admin/tpl/search}-->
+				</form>
+        	</div>
+	        <div class="data_list">
+	            <table  class="data_table">
+	                <thead>
+		                <tr>
+		                  <th scope="col">展示</th>
+		                  <th scope="col">案例介绍</th>
+		                </tr>
+	                </thead>
+	                <tbody>
+	                	{loop $shop_case_list $v}
+						<tr>
+	                	  <td>
+	                  		<img width="50px" height="50px" class="pic_larger mt_5" src="{BASE_URL}/{$v['case_pic']}" alt="{$v['case_name']}">
+	                  	  </td>
+	                	  <td>
+	                  		<a href="#" class="title">{$v['case_name']}</a> 
+	                  		<p class="ws_break">{cutstr($v['case_desc'],200)}</p>
+	                  		<div class="item_action">
+	                  			<a href="{$case_add_uri}?case_id={$v['case_id']}">编辑</a>
+	                  			<a href="{$case_del_uri}?case_id={$v['case_id']}" onclick="return kdel(this,'',rm)">删除</a>
+	                  			{if $v['case_type']=="1"}
+								<a href="#">查看</a>
+								{elseif $v['case_type']=="2"}
+								<a href="{$v['case_url']}">查看</a>
+								{/if}
+	                  		</div>
+	                 	 </td>                             
+	               	   </tr>
+					   {/loop}
+	                </tbody>
+	                
+	              </table>
+	        </div>
+       	 	<div class="toolbar bottom">
+        		<div class="actions">
+        			<a href = "{$case_add_uri}" class="submit">添加案例</a>
+        		</div>
+        		<div class="page">
+	                <p>{$pages['page']}</p>
+	            </div>
+        	</div>
+        </div>
     </div>
+</div>
+</div>
+</article>
+</div>
 <script>
 	function rm(o){
 		 $(o).parents('tr').remove();
-		
 	}
 </script>	
-    <!--content end-->
 <!--{include user/footer}-->

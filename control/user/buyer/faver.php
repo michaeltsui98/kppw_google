@@ -2,7 +2,7 @@
 /**
  * 用户中心-买家-我买的商品
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-19
  */
 
@@ -18,6 +18,7 @@ class Control_user_buyer_faver extends Control_user{
 	 * @var 二级菜单选中项,空值不做选择
 	 */
 	protected static $_left = 'faver';
+	
 	function before(){
 		Control_user_buyer_index::init_nav();
 	}
@@ -109,7 +110,7 @@ class Control_user_buyer_faver extends Control_user{
 		$this->_ord_tag = $ord_tag;
 		$this->_ord_char = $ord_char;
 		 
-		return (array)Model::sql_grid($sql,$where,$uri,$order,$group);
+		return (array)Model::sql_grid($sql,$where,$uri,$order);
 	}
 	/**
 	 *用户收藏任务数据
@@ -141,7 +142,7 @@ class Control_user_buyer_faver extends Control_user{
 		$this->_ord_tag = $ord_tag;
 		$this->_ord_char = $ord_char;
 	
-		return (array)Model::sql_grid($sql,$where,$uri,$order,$group);
+		return (array)Model::sql_grid($sql,$where,$uri,$order);
 	}
 	
 }

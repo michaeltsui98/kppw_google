@@ -160,7 +160,7 @@ class Keke_tpl {
 		$_K ['i'] ++;
 		$search = "<!--DATE_TAG_{$_K['i']}-->";
 		$_K ['block_search'] [$_K ['i']] = $search;
-		$_K ['block_replace'] [$_K ['i']] = "<?php if({$value}){echo date({$parameter},{$value}); } ?>";
+		$_K ['block_replace'] [$_K ['i']] = "<?php if((int){$value}){echo date({$parameter},{$value}); } ?>";
 		return $search;
 	}
 	

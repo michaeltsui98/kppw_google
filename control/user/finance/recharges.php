@@ -2,7 +2,7 @@
 /**
  * 用户中心-账号管理首页-用户充值记录
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-25
  */
 
@@ -20,6 +20,7 @@ class Control_user_finance_recharges extends Control_user{
 	
 	function action_index(){
 		//编号		金额 	账户 	状态 	时间
+		$query_fields = array('a.status'=>'状态','a.pay_name'=>'时间');
 		
 		$sql = sprintf("select a.*,
 				b.pay_id pid,b.payment bpayment,b.type btype,b.pay_user bpay_user,
@@ -27,7 +28,7 @@ class Control_user_finance_recharges extends Control_user{
 				from %switkey_recharge a 
 				left join %switkey_pay_api b 
 				on a.pay_id= b.pay_id ",TABLEPRE,TABLEPRE);
-		$query_fields = array('a.status'=>'状态','a.pay_name'=>'时间');
+		
 		//充值状态
 		$status_arr = Sys_payment::recharge_status();
 		//查询状态转换
@@ -35,7 +36,9 @@ class Control_user_finance_recharges extends Control_user{
 		
 	 
 		$this->_default_ord_field = 'pay_time';
+		
 		$base_uri = BASE_URL.'/index.php/user/finance_recharges	';
+		
 		extract($this->get_url($base_uri));
 		
 		//收件	条件
@@ -48,7 +51,7 @@ class Control_user_finance_recharges extends Control_user{
 		$pages = $data_info['pages'];
 		
 		$bank_names = Keke_global::get_bank();
-		//echo $bank_names['aboc'];
+		 
 		
 		require Keke_tpl::template('user/finance/recharges');
 	}

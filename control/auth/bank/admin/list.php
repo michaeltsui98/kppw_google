@@ -2,7 +2,7 @@
 /**
  * 后面实名认证列表页
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-11
  */
 class Control_auth_bank_admin_list extends Controller {

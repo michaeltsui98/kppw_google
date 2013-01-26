@@ -1,6 +1,6 @@
 <?php defined ( 'IN_KEKE' ) or exit('Access Denied');
 
-class Control_pub extends Controller{
+class Control_pub extends Control_front{
 	
 	private $_default = 'sreward';
 	/**

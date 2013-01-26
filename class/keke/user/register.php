@@ -3,7 +3,7 @@
  * 
  * ÓÃ»§×¢²á
  * @author Michael
- * @version 2.2 2012-11-08
+ * @version 3.0 2012-11-08
  *
  */
 abstract class Keke_user_register {

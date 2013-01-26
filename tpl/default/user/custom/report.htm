@@ -22,35 +22,8 @@
 		                	<div class="toolbar">
 		                		<div class="actions">
 		                			<form class="detail" action="{USER_URL}/custom_report/{if $my}my{/if}" method="get" id="frm_user_search">
-										   <input type="hidden" value="{$page}" name="page">
-										<table cellspacing="0" cellpadding="0">
-											<tbody>
-											<tr>
-										    <td> 查询字段
-										       <select name="slt_fields">
-										       	<option></option>
-										       	{loop $query_fields $k $v}
-										       	 <option  value="$k" {if $k == $_GET['slt_fields']} selected="selected" {/if}>{$v}</option>
-												{/loop} 
-										       </select>
-											 <select name="slt_cond">
-											 	<option value="=" {if $_GET['slt_cond']=='='}selected="selected"{/if}>=</option>
-												<option value=">" {if $_GET['slt_cond']=='>'}selected="selected"{/if}>></option>
-												<option value="<" {if $_GET['slt_cond']=='<'}selected="selected"{/if}><</option>
-												<option value="like" {if $_GET['slt_cond']=='like'}selected="selected"{/if}>Like</option>
-											 </select>
-										     <input type="text" class="txt" name="txt_condition" id="txt_condition" value="{$_GET['txt_condition']}">
-											 <select name="page_size">
-												<option value="10" {if $_GET['page_size']=='10'}selected="selected"{/if}>{$_lang['page_size']}10条</option>
-												<option value="20" {if $_GET['page_size']=='20'}selected="selected"{/if}>{$_lang['page_size']}20条</option>
-												<option value="30" {if $_GET['page_size']=='30'}selected="selected"{/if}>{$_lang['page_size']}30条</option>
-											</select>
-											 <input type="submit" value="{$_lang['search']}">
-											 </td>
-										</tr>
-										</tbody>
-										</table>
-										</form>
+										    <!--{include control/admin/tpl/search}-->
+									</form>
 					            </div>
 		                	</div>
 

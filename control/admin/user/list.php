@@ -2,7 +2,7 @@
 /**
  *  后台用户列表
  * @author michael
- * @version 2.2 
+ * @version 3.0 
  * 2012-11-01
  *
  */

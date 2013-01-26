@@ -13,8 +13,8 @@
 		                </header>
 		                <nav class="box_nav">
 								<ul id="test_ul" class="clearfix">
-									<li {if $status==2}class="selected" {/if}><a href="{$base_uri}?status=2">上架</a></li>
-									<li {if $status==1}class="selected" {/if}><a href="{$base_uri}?status=1">下架</a></li>
+									<li {if $status=='1'}class="selected" {/if}><a href="{$base_uri}?status=1">上架</a></li>
+									<li {if $status=='0'}class="selected" {/if}><a href="{$base_uri}?status=0">下架</a></li>
 								</ul>
 		                </nav>
 		                <div class="box_detail">
@@ -71,7 +71,7 @@
 		                              <td>
 		                              	<a href="{PHP_URL}/goods/{$v['sid']}" class="title">{cutstr($v['title'],40)}</a>
 		                              	<div class="item_action">
-		                              		<a href="{PHP_URL}/shop/goods_user/change_status?sid={$v['sid']}&status=$v['status']">{if $v['status']==1}上架{elseif $v['status']==2}下架{/if}</a>
+		                              		<a href="{PHP_URL}/shop/goods_user/change_status?sid={$v['sid']}&status=$v['status']">{if $v['status']==0}上架{elseif $v['status']==1}下架{/if}</a>
 		                              		<a href="{PHP_URL}/shop/goods_user/edit?sid={$v['sid']}">编辑</a>
 		                              		<a href="{PHP_URL}/shop/goods_user/del?sid={$v['sid']}&status={$v['status']}" onclick="return kdel(this,'',rm)">删除</a>
 		                              		<a href="{PHP_URL}/goods/{$v['sid']}">查看</a>
@@ -80,7 +80,7 @@
 		                              <td><span class="money">{$v['price']}</span></td>
 		                              <td>{$v['unite_price']}</td>
 		                              <td>{$v['sale_num']}</td>
-		                              <td>{if $v['status']=='1'}下架{elseif $v['status']=='2'}上架{/if}</td>
+		                              <td>{if $v['status']=='0'}下架{elseif $v['status']=='1'}上架{/if}</td>
 		                              <td>{date('Y-m-d',$v['on_time'])}</td>
 		                            </tr>
 									{/loop}

@@ -138,7 +138,7 @@ function setHomepage(url){
 
 
  
-var STYLEID = '1', STATICURL = '', IMGDIR = 'static/img/keke', VERHASH = 'cC0', charset = 'gbk', keke_uid = '0', cookiepre = 'keke', cookiedomain = '', cookiepath = '', attackevasive = '0', disallowfloat = '', creditnotice = ''
+var STYLEID = '1', STATICURL = '', IMGDIR = BASE_URL+'/static/img/keke', VERHASH = 'cC0', charset = 'gbk', keke_uid = '0', cookiepre = 'keke', cookiedomain = '', cookiepath = '', attackevasive = '0', disallowfloat = '', creditnotice = ''
 var BROWSER = {};
 var USERAGENT = navigator.userAgent.toLowerCase();
 browserVersion({'ie':'msie','firefox':'','chrome':'','opera':'','safari':'','maxthon':'','mozilla':'','webkit':''});
@@ -1153,7 +1153,7 @@ function evalscript(s) {
 	}
 	return s;
 }
-
+JSLOADED = [];
 function appendscript(src, text, reload, charset) {
 	var id = hash(src + text);
 	var evalscripts = [];
@@ -1170,10 +1170,21 @@ function appendscript(src, text, reload, charset) {
 	try {
 		if(src) {
 			scriptNode.src = src;
+			scriptNode.onloadDone = false;
+			scriptNode.onload = function () {
+				scriptNode.onloadDone = true;
+				JSLOADED[src] = 1;
+			};
+			scriptNode.onreadystatechange = function () {
+				if((scriptNode.readyState == 'loaded' || scriptNode.readyState == 'complete') && !scriptNode.onloadDone) {
+					scriptNode.onloadDone = true;
+					JSLOADED[src] = 1;
+				}
+			};
 		} else if(text){
 			scriptNode.text = text;
 		}
-		document.getElementById('append_parent').appendChild(scriptNode);
+		document.getElementsByTagName('head')[0].appendChild(scriptNode);
 	} catch(e) {}
 }
 
@@ -1213,46 +1224,36 @@ function ajaxget(url, showid, waitid, loading, display, recall) {
 	x.setWaitId(waitid);
 	x.display = typeof display == 'undefined' || display == null ? '' : display;
 	x.showId = document.getElementById(showid);
-	if(x.showId) x.showId.orgdisplay = typeof x.showId.orgdisplay === 'undefined' ? x.showId.style.display : x.showId.orgdisplay;
-
-	if(url.substr(strlen(url) - 1) == '#') {
+ 	if(url.substr(strlen(url) - 1) == '#') {
 		url = url.substr(0, strlen(url) - 1);
 		x.autogoto = 1;
 	}
 
 	var url = url + '&inajax=1&ajaxtarget=' + showid;
-	x.get(url, function(s, x) { 
+	x.get(url, function(s, x) {
+		
 		var evaled = false;
 		
-		if(s.indexOf('ajaxerror') != -1) {  
+		if(s.indexOf('ajaxerror') != -1) {
 			evalscript(s);
 			evaled = true;
 		}
-		
-		if(!evaled && (typeof ajaxerror == 'undefined' || !ajaxerror)) {
-			
-			if(x.showId) {
-				x.showId.style.display = x.showId.orgdisplay;
+		if(!evaled && (typeof ajaxerror == 'undefined' || !ajaxerror)) { 
+			if(x.showId) { 
 				x.showId.style.display = x.display;
-				x.showId.orgdisplay = x.showId.style.display; 
-				 
 				ajaxinnerhtml(x.showId, s);
-			
-				ajaxupdateevents(x.showId,showid);
-			
+				ajaxupdateevents(x.showId);
 				if(x.autogoto) scroll(0, x.showId.offsetTop);
-				
 			}
 		}
-
+		
 		ajaxerror = null;
-		if(typeof recall == 'function') { 
-		 
-			recall(); 
-		} else {
-			
+		if(recall && typeof recall == 'function') {
+			recall();
+		} else if(recall) {
 			eval(recall);
 		}
+		 
 		//if(!evaled) evalscript(s);
 	});
 }

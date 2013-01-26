@@ -2,7 +2,7 @@
 /**
  * 在线充值请求处理
  * @author Michael
- * @version 2.2 2012-11-24
+ * @version 3.0 2012-11-24
  *
  */
 abstract class Sys_payment {

@@ -2,7 +2,7 @@
 /**
  * 用户基类
  * @author michael
- * @version 2.2 
+ * @version 3.0 
  * 2012-11-6
  *
  */
@@ -62,5 +62,12 @@ abstract class Keke_user {
 	 * @param unknown $uid
 	 */
 	abstract public function avatar_flash($uid);
+	
+	public static function check_login(){
+		if(Keke_user_login::instance()->logged_in()===FALSE){
+			Cookie::set('last_page', Keke_Request::current()->uri());
+			Keke_Request::current()->redirect('login');
+		}
+	}
 
 }

@@ -99,7 +99,7 @@ $lang = array (
 /**mark.php**/
 	'mark_sya_busy_try_later'=>'互评系统繁忙，请稍后再试!',
 	'mark_content'=>'评价内容：',
-	'mark_content_msg'=>'已输入长度:0,还可以输入:100',
+	'mark_content_msg'=>'已输入长度:0,还可以输入:140',
 	'assistant_mark'=>'辅助评价：',
 	'assistant_mark'=>'评价质量',
 	'mark_type'=>'评价类型：',

@@ -71,10 +71,10 @@ class Control_user_seller_mark extends Control_user{
 			$base_uri .= '/?status='.$status;
 		}
 		
-		// 默认排序字段，这里按时间降序
+		 
 		$this->_default_ord_field = 'mark_time';
 		
-		// 这里要口水一下，get_url就是处理查询的条件
+		 
 		extract ( $this->get_url ( $base_uri ) );
 		
 		$where .= " and a.mark_status >0 and a.mark_type = 2 and a.uid = $this->uid ";

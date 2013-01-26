@@ -432,8 +432,6 @@ class File {
 		Header ( "Accept-Length: " . filesize ( $filename ) );
 		if (preg_match("/MSIE/", $ua)) {
 			Header ( "Content-Disposition: attachment; filename=" . $downfilename );
-		}elseif(preg_match("/Firefox/", $ua)){
-			Header('Content-Disposition: attachment; filename*="utf8/'/'' . $file_name . '"');
 		}else{
 			Header('Content-Disposition: attachment; filename="' . $file_name . '"');
 		}
@@ -581,7 +579,7 @@ class File {
 						Keke::show_msg ( $err, Keke_Request::initial()->referrer(),'error' );
 						break;
 					case "json" :
-						echo Keke::json_encode_k ( array (
+						echo Keke::json_encode ( array (
 								'err' => $err 
 						) );
 						die ();

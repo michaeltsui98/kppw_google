@@ -3,7 +3,7 @@
 /**
  * 整全UCenter 用户注册
  * @author Michael
- * @version 2.2 2012-11-08
+ * @version 3.0 2012-11-08
  *
  */
 include_once S_ROOT.'client/ucenter/client.php';

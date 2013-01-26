@@ -2,7 +2,7 @@
 /**
  * 计件后台配置列表
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-19
  */
 

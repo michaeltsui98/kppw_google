@@ -2,7 +2,7 @@
 /**
  * 任务基类
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-21
  */
 Keke_lang::load_lang_class('public','shop');

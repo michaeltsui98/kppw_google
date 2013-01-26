@@ -1,7 +1,7 @@
 <?php  defined ( 'IN_KEKE' ) or exit('Access Denied');
 /**
  * this not free,powered by keke-tech
- * @version kppw 2.0
+ * @version 3.0
  * @auther 九江
  * 
  */
@@ -19,15 +19,17 @@ isset($_GET['inajax']) and $_K['inajax']= $_GET['inajax'];
 isset($_GET['ajaxmenu']) and $_K['ajaxmenu'] = $_GET['ajaxmenu'];
  
 
-Route::set('task', '(<controller>(/<id>))',
+Route::set('task', '(<controller>(/<id>(/<v>)))',
 array(
 'controller'=>'(task|service|article)',
 'id' => '\d+',
+'v'=>'\w+'
 ))
 ->defaults(array(
 'controller'=>'index',
 'action' => 'index'
 ));
+
 
 
 //js ,css 压缩
@@ -39,9 +41,10 @@ Route::set('minify', 'min')
 ));
 
 //支持子目录的路由
-Route::set('sections', '<directory>(/<controller>(/<action>(/<id>)))',
+Route::set('sections', '<directory>(/<controller>(/<action>(/<id>(/<ids>))))',
 array(
-'directory' => '(admin|ajax|auth|payitem|space|user|task|shop)'
+'directory' => '(admin|ajax|auth|payitem|space|user|task|shop)',
+'ids'=>'.*'
 		))
 		->defaults(array(
 		'controller' => 'index',

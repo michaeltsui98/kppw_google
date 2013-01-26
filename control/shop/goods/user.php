@@ -28,7 +28,6 @@ class Control_shop_goods_user extends Control_user{
 		$type="buyer";
 		$status=$_GET['status'];
 		$data=$this->get_order($type,$status);
-		$data=$this->get_order('buyer',$_GET['status']);
 		$order_arr=$data['data'];
 		$pages=$data['pages'];
 		require Keke_tpl::template('control/shop/goods/tpl/user/buyer');
@@ -148,10 +147,10 @@ class Control_shop_goods_user extends Control_user{
 		$sql="select a.order_id,a.order_uid,a.seller_uid,a.seller_username,a.order_id,a.order_username,\n".
 			 "b.price,b.num,b.name,b.obj_id,b.model_id,\n".
 			 "c.model_code\n".
-			 "from keke_witkey_order a\n".
-			 "left join keke_witkey_order_detail b\n".
+			 "from :keke_witkey_order a\n".
+			 "left join :keke_witkey_order_detail b\n".
 			 "on b.order_id=a.order_id\n".
-			 "left join keke_witkey_model c\n".
+			 "left join :keke_witkey_model c\n".
 			 "on c.model_id=b.model_id \n".
 			 "where a.order_id=:order_id";
 		$order_info = DB::query($sql)->tablepre(':keke_')->param(':order_id', $order_id)->get_one()->execute();
@@ -166,12 +165,7 @@ class Control_shop_goods_user extends Control_user{
 		call_user_func(array(Control_shop_goods_trade,$code),$order_id,$origin_id,$mark_type);
 		$this->refer();
 	}
-// 	function action_mark(){
-// 		$code = $_GET['ac'];
-// 		$mark_id = $_GET['mark_id'];
-// 		call_user_func(array(Control_shop_goods_trade,$code),$mark_id);
-// 		$this->refer();
-// 	}
+ 
 	/**
 	 * 发布的商品列表
 	 */
@@ -183,10 +177,13 @@ class Control_shop_goods_user extends Control_user{
 		 $base_uri = PHP_URL."/shop/goods_user/pub";
 		 extract ( $this->get_url ( $base_uri ) );
 		 $where .= " and uid='$this->uid' and model_id='6'";
-		 if($_GET['status']){
-		 	$status=$_GET['status'];
-			$where .="and status =$status";
+		 
+		 if(isset($_GET['status'])){
+		 	$status=(int)$_GET['status'];
+		 	
+			$where .=" and status =$status";
 		 }
+		 //var_dump($where);die;
 		 $data_info = Model::factory('witkey_service')->get_grid( $fields, $where, $uri, $order);
 		 $list_arr = $data_info['data'];
 		 $pages = $data_info['pages'];
@@ -196,10 +193,14 @@ class Control_shop_goods_user extends Control_user{
 	 * 上下架商品
 	 */
 	function action_change_status(){
+		
 		$sid=(int)$_GET['sid'];
-		$status=(int)$_GET['status']==1?2:1;
-		DB::update('witkey_service')->set(array('status'))->value(array($status))->where("sid='$sid'")->execute();
-		$this->request->redirect ( "shop/goods_user/pub?status={$_GET['status']}" );
+		
+		$status=(int)$_GET['status']==1?0:1;
+		
+		Control_shop_goods_trade::up_down($sid,$status);
+		
+		$this->request->redirect ( "shop/goods_user/pub?status=$status" );
 	}
 	/**
 	 * 删除商品
@@ -215,7 +216,9 @@ class Control_shop_goods_user extends Control_user{
 		Control_user_seller_index::init_nav();
 		$sid=$_GET['sid'];
 		$sql="select a.sid,a.indus_id,a.title,a.price,a.service_time,a.unit_time,a.content,\n".
-			 "GROUP_CONCAT(conv(oct(b.file_id),8,10)) file_id,GROUP_CONCAT(b.file_name) file_name,GROUP_CONCAT(b.save_name) save_name\n".
+			 "GROUP_CONCAT(conv(oct(b.file_id),8,10)) file_id,
+			 GROUP_CONCAT(b.file_name) file_name,
+			 GROUP_CONCAT(b.save_name) save_name\n".
 			 "from	:keke_witkey_service a\n".
 			 "LEFT JOIN	:keke_witkey_file b\n".
 			 "on a.sid = b.obj_id\n".
@@ -260,7 +263,9 @@ class Control_shop_goods_user extends Control_user{
 	 * 删除商品附件
 	 */
 	function action_del_file(){
+		
 		File::del_att_file($_GET['fid'],$_GET['file_path']);
+		
 	}
 	
 }

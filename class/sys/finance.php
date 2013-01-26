@@ -97,7 +97,7 @@ class Sys_finance {
 		}
 		$user_info = $this->_uinfo;
 		$res = false;
-		$sys_config = Keke::$_sys_config;
+		 
 		$fo = new Keke_witkey_finance;
 		$fo->setFina_action ( $this->_action );
 		$fo->setFina_type ( "out" );
@@ -108,53 +108,53 @@ class Sys_finance {
 		$fo->setUsername ( $user_info ['username'] );
 		$user_balance = $user_info ['balance'];
 		$user_credit = $user_info ['credit'];
-		$credit_allow =  (int)$sys_config ['credit_is_allow'] + 0;
+		$credit_allow =  (int)Keke::$_sys_config ['credit_is_allow'];
+		if($credit_allow == 2){
+			//积分没有开启，用户积发为0 
+			$user_credit = 0;
+		}
 		
 		$action = $this->_action;
-		if ($cash && $action) {
-			try {
-				// 判断积分是否开启
-				$credit_allow == 2 and $user_credit = 0;
-				// 是否有钱付款
-				if ($user_balance + $user_credit < $cash) {
-					//负数，表示还差多少钱
-					return (float)(($user_balance+$user_credit)-$cash);
-				}
-				$where = "uid ='{$user_info['uid']}'";
-				// 提现判断,代金券不能用提现
-				if ($action == 'withdraw') {
-					// 扣除人个帐户
-					Dbfactory::execute("update " . TABLEPRE . "witkey_space set balance = balance-".abs((float)$cash)." where $where");
-					$fo->setFina_cash ( $cash );
-					$fo->setFina_credit ( 0 );
-					$fo->setUser_balance ( $user_balance - abs ( $cash ) );
-				} else {
-					// 计算剩余积分，先扣代金券
-					$sy_credit = $user_credit - $cash;
-					if ($sy_credit > 0) {
-						// 更新用户积分
-						Dbfactory::execute ( "update " . TABLEPRE . "witkey_space set credit = credit-{$cash} where $where" );
-						$fo->setFina_credit ( $cash );
-						$fo->setFina_cash ( 0 );
-						$fo->setUser_balance ( $user_balance );
-						$fo->setUser_credit ( $user_credit - $cash );
-					} else {
-						// 更新余额与积分
-						Dbfactory::execute ( "update " . TABLEPRE . "witkey_space set credit = credit-{$user_credit},balance = balance-" . abs ( $sy_credit ) . " where $where" );
-						$fo->setFina_credit ( $user_credit );
-						$fo->setFina_cash ( abs ( $sy_credit ) );
-						$fo->setUser_balance ( $user_balance - abs ( $sy_credit ) );
-						$fo->setUser_credit ( 0 );
-					}
-				}
-				$fo->setFina_time ( SYS_START_TIME );
-				$fo->setFina_mem ( $this->_mem );
-				return (int) $fo->create ();
-			} catch ( Exception $e ) {
-				throw new Keke_exception( $e );
+		
+		if ($cash<=0 OR !$action) {
+			return false;
+		}
+		
+		// 是否有钱付款
+		if ($user_balance + $user_credit < $cash) {
+			//负数，表示还差多少钱
+			return (float)(($user_balance+$user_credit)-$cash);
+		}
+		
+		$where = "uid ='{$user_info['uid']}'";
+		// 提现判断,代金券不能用提现
+		if ($action == 'withdraw') {
+			Dbfactory::execute("update " . TABLEPRE . "witkey_space set balance = balance-".abs((float)$cash)." where $where");
+			$fo->setFina_cash ( $cash );
+			$fo->setFina_credit ( 0 );
+			$fo->setUser_balance ( $user_balance - abs ( $cash ) );
+		} else {
+			// 计算剩余积分，先扣代金券
+			$sy_credit = $user_credit - $cash;
+			if ($sy_credit > 0) {
+				// 更新用户积分
+				Dbfactory::execute ( "update " . TABLEPRE . "witkey_space set credit = credit-{$cash} where $where" );
+				$fo->setFina_credit ( $cash );
+				$fo->setFina_cash ( 0 );
+				$fo->setUser_balance ( $user_balance );
+				$fo->setUser_credit ( $user_credit - $cash );
+			} else {
+				// 更新余额与积分
+				Dbfactory::execute ( "update " . TABLEPRE . "witkey_space set credit = credit-{$user_credit},balance = balance-" . abs ( $sy_credit ) . " where $where" );
+				$fo->setFina_credit ( $user_credit );
+				$fo->setFina_cash ( abs ( $sy_credit ) );
+				$fo->setUser_balance ( $user_balance - abs ( $sy_credit ) );
+				$fo->setUser_credit ( 0 );
 			}
 		}
-		 
+		$fo->setFina_time ( SYS_START_TIME );
+		$fo->setFina_mem ( $this->_mem );
+		return (int) $fo->create (); 
 	}
 	/**
 	 * 威客用户收入计算处理
@@ -190,9 +190,12 @@ class Sys_finance {
 		
 		$cash = (float)$cash;
 		$credit = (float)$credit;
-		$sql = "update " . TABLEPRE . "witkey_space set balance = balance+{$cash},
+		
+		$sql = "update keke_witkey_space set balance = balance+{$cash},
 		credit = credit+{$credit} where uid ='{$user_info['uid']}'";
-		$res = Dbfactory::execute($sql);
+		
+		$res = DB::query($sql,Database::UPDATE)->execute();
+		
 		if ($res) {
 			$fo->setFina_time ( SYS_START_TIME );
 			return (int) $fo->create ();

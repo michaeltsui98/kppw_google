@@ -2,7 +2,7 @@
 /**
  * 客客系统的站内登录
  * @author Michael	
- * @version 2.2 
+ * @version 3.0 
  * 2012-11-06
  *
  */

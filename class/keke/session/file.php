@@ -4,7 +4,7 @@ defined ( "IN_KEKE" ) or die ( "Access Denied" );
 /**
  *
  * @author Michael
- * @version 2.2
+ * @version 3.0
  *          2012-10-9
  */
 class Keke_session_file extends Keke_session {

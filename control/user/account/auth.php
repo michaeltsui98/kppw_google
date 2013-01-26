@@ -2,7 +2,7 @@
 /**
  * 用户中心-账号管理-账号安全
  * @author Michael
- * @version 2.2
+ * @version 3.0
    2012-10-25
  */
 

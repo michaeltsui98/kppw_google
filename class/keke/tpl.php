@@ -5,6 +5,8 @@
 */
 
 class Keke_tpl {
+	static private  $tpl_path = 'data/tpl_c';
+	
 	static function parse_code($tag_code, $tag_id, $tag_type = 'tag') {
 		global $_K;
 		$tplfile = 'db/' . $tag_type . '_' . $tag_id;
@@ -12,6 +14,11 @@ class Keke_tpl {
 		//read
 		$tag_code = Keke_tpl::parse_rule ( $tag_code );
 		//write
+		if(!is_dir(self::$tpl_path)){
+			if(!mkdir(self::$tpl_path,07777,TRUE)){
+				throw new Keke_exception ( 'Directory tpl_c must be writable');
+			}
+		}
 		Keke_tpl::swritefile ( $objfile, $tag_code ) or exit ( "File: $objfile can not be write!" );
 		
 		return $objfile;
@@ -23,7 +30,7 @@ class Keke_tpl {
 		$tplfile = S_ROOT . './' . $tpl . '.htm';
 		$objfile = S_ROOT . './data/tpl_c/' . str_replace ( '/', '_', $tpl ) . '.php';
 		//read
-		if (! file_exists ( $tplfile )) {
+		if (! is_file( $tplfile )) {
 			$tpl = str_replace ( '/' . $_K ['template'] . '/', '/default/', $tpl );
 			$tplfile = S_ROOT . './' . $tpl . '.htm';
 		
@@ -34,6 +41,11 @@ class Keke_tpl {
 		
 		$template = Keke_tpl::parse_rule ( $template, $tpl );
 		//write
+		if(!is_dir(self::$tpl_path)){
+			if(!mkdir(self::$tpl_path,07777,TRUE)){
+				throw new Keke_exception ( 'Directory tpl_c must be writable');
+			}
+		}
 		Keke_tpl::swritefile ( $objfile, $template ) or exit ( "File: $objfile can not be write!" );
 	
 	}

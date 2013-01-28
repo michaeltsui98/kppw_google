@@ -1,0 +1,126 @@
+<!--{include header}-->
+<div class="winbody {$_K['theme']}_style">
+ <div class="clearfix box pad10">
+
+	<div class="messages m_infor">
+    <span class="icon16"></span>
+				 当前第{$delay_num}次延期,本次延期最小金额为{$delay_cash}元。还可延期{$use_delay}次。
+	</div>
+    <!--from表单 start-->
+    <form method="post" name="frm_delay" action="" onsubmit="return delay_sub(this)" >
+    <input type="hidden" value="{FORMHASH}" name='formhash'>
+    <div class="rowElem clearfix">
+      		 <label class="fl_l">您当前的余额是: </label>
+             <div class="fl_l">
+			  <strong class="red">{c:$user_info['balance']}</strong>　
+              <strong class="red">{CREDIT_NAME}{c:$user_info['credit']}</strong>
+			  <div class="clear"></div>
+			</div>
+
+     </div>
+	 <div class="rowElem clearfix">
+
+      		 <label class="fl_l">您是否需要延期： </label>
+             <div class="fl_l">
+              	<input type="radio" name="taskdelay" id="not_delay" value="2"/><label>加价</label>
+      		 	<input type="radio" name="taskdelay" id="delay" value="1" checked /><label>延期加价</label>
+			 </div>
+      </div>
+     <div class="rowElem clearfix">
+
+      		<label class="fl_l">您希望增加赏金：</label>
+			 <div class="fl_l">
+				<input type="text" name="delay_cash" id="delay_cash"  class="txt_input" 
+				 limit="required:true"
+				 onkeyup="clearstr(this)">(最少加价{c:$delay_cash})
+			  </div>
+
+      </div>
+     <div class="rowElem clearfix" id="is_delay">
+
+      		<label class="fl_l">您希望延长天数：</label>
+			 <div class="fl_l">
+				<input type="text" name="delay_day" id="delay_day" class="txt_input" 
+				 onkeyup="clearstr(this)">(最长延期{$delay_day}{$_lang['day']})
+			 </div>
+
+      </div>
+	  <div class="rowElem clearfix">
+          <fieldset>
+          	<legend>延期规则</legend>
+            	<ul>
+			  		 
+			  		{loop $delay_rule $k $v}
+						<li>{$v['defer_times']}.{$_lang['di']}{$v['defer_times']}次延期不得少于任务总金额的$v['defer_rate']%</li>
+					{/loop}
+			  	</ul>
+			</fieldset>
+      </div>
+      <div class="rowElem clearfix form_button">
+       	 	 <button type="submit" class="button" >{$_lang['submit']}</button>
+		 	 <button type="button" class="button" onclick="hideWindow('taskdelay')">{$_lang['cancel']}</button>
+      </div>
+   </form>
+  <!--from表单 end-->
+  </div>
+
+</div>
+<script type="text/javascript">
+	In('valid','artif');
+	$(function(){
+		$("#delay").click(function(){$("#is_delay").show()})
+		$("#not_delay").click(function(){$("#is_delay").hide()})
+	});
+
+	/**
+	 * 延期判断
+	 */
+	function delay_sub(obj){
+		if(checkForm(obj)==false){
+			return false;
+		}
+		
+		var type  	 = parseInt($(":radio[name='taskdelay']:checked").val());
+		var cash  	 = parseInt($("#delay_cash").val());
+		var maxDay   = parseInt("{$delay_day}");
+		var minCash  = parseInt("{$delay_cash}");
+		var day      = '0';//默认延期天数为0   
+		
+		if(isNaN(cash) || cash==0  || cash<minCash){
+			showDialog("加价金额不能小于"+minCash,"error","{$_lang['warning']}");return false;
+		}
+		if(type=='1'){//延期
+		    var day = parseInt($("#delay_day").val());
+			if(isNaN(day)||day==0 || day>maxDay){
+				showDialog("延期天数不能超过"+maxDay,"error","{$_lang['warning']}");return false;
+			}
+		}
+		
+		if(cashCheck(cash)){
+			
+			art.dialog.confirm("您确定要延期？",function(){
+				window.document.forms['frm_delay'].submit();
+			});
+			
+			
+		}else{
+			showDialog("您的余额不足，请充值！",'error',"{$_lang['warning']}");return false;
+		}
+		
+		
+		return false;	
+	}
+	/**
+	 * 延期金额检测
+	 */
+	function cashCheck(cash){
+		var balance     = parseFloat("{$user_info['balance']}").toFixed(2);
+		var credit      = parseFloat("{$user_info['credit']}").toFixed(2);
+		if(balance+credit < cash){
+		  return false;  	
+		}
+		return true; 
+	}
+
+</script>
+<!--{include footer}-->

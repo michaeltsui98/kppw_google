@@ -1,0 +1,21 @@
+升级说明:
+  确保kppw3.0 与kppw2.1在同一台机器上,如果是虚机请先将kppw2.1的库，复制到本地库
+  在本地上升级数据库后，再更新程序到kppw3.0,
+  如果您在kppw2.1上有对数据库进行过二次开发，请联系官方，申请数据库升级服务
+
+升级步骤
+
+1.先安装kppw3.0 【表前缀要与kppw2.1一致,默认为keke_】
+
+2.上传upldate_sql.php到kppw2.1网站根目录【并修改update_sql.php中$db30的值为 kppw3.0的数据库名称】
+
+3.执行kppw2.1中的update_sql.php
+
+4.修改kppw3.0 /config/config.inc.php 中的DBNAME的值为kppw2.1的数据库名称 
+
+到此kppw2.1的用户就可升到kppw3.0了
+
+注：kppw3.0 无法兼容原先kppw2.1的程序
+
+
+

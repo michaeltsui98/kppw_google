@@ -1,0 +1,70 @@
+<!--{include header}-->
+<div class="winbody">
+ <div class="clearfix pad10">
+
+   <div class="clearfix box" id="upload_tip">
+    <!--from表单 start-->
+    <form method="post" id="frm_reward" name="frm_reward" action='#' onsubmit="return checkForm(this);">
+     <input type="hidden" name="formhash" value="{FORMHASH}">
+     <div class="rowElem clearfix">
+  		 <label class=" t_r">任务稿件 </label>
+		 
+		 	<input type="hidden" name="file_ids" id="file_ids">
+		 	<input type="file" class="file" name="upload" id="upload">
+	  	 	文件大小：{$_K['max_size']}M,文件格式:{$flie_types}
+            
+		 
+      </div>
+	  <div class="rowElem ">
+	                              
+			隐藏稿件：<input type="radio" name="hide_work"  value="1"/><label>{$_lang['yes']}</label>
+              	<input type="radio" name="hide_work" value="0" checked /><label>{$_lang['no']}</label>
+			 	  	  
+	   </div>
+       <div class="rowElem clearfix" id="desc">
+      		 <label class="fl_l t_r">稿件描述:</label>
+			 <div class="fl_l">
+	      		 <textarea cols="68" rows="8" name="work_desc" class="txt_input" 
+				 onkeydown="checkInner(this,200)" style="width:350px;height:100px" 
+				 limit="required:true;len:10-" msgArea="length_show" msg="不能少于10字!"></textarea>
+	      		 <div class="clear"></div>
+	             <div class="c999" id="length_show">{$_lang['enter_info']}</div>
+			 </div>
+      </div>
+	  
+      <div class="rowElem clearfix form_button">
+       	 	 <input type="submit" value="{$_lang['submit']}"/>
+		 	 
+      </div>
+   </form>
+  <!--from表单 end-->
+  </div>
+
+
+ </div>
+</div>
+<script src="{BASE_URL}/static/js/system/ajaxfileupload.js" type="text/javascript"></script>
+<script src="{BASE_URL}/static/js/uploadify/jquery.uploadify-3.1.min.js" type="text/javascript"></script>
+<link href="{BASE_URL}/static/js/uploadify/uploadify.css" rel="stylesheet">
+<script type="text/javascript">
+	In('valid');
+	$(function(){
+					uploadify({
+					auto:true,
+					size:"{$_K['max_size']}MB",
+					exts:'{$flie_types}',
+					file:'upload',
+					restext:'file_ids',
+					limit:2}
+				,{
+					fileType:'att',
+					objType:'work',
+					obj_id:0,
+					pid:"{$task_info['task_id']}"
+				});
+		})	
+	 
+		//var shtml  = contentCheck('tar_content','{$title}',5,100,1,'upload_tip');
+	 
+</script>
+<!--{include footer}-->

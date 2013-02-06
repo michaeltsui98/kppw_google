@@ -21,7 +21,7 @@ class Control_user_account_detail extends Control_user{
 	 * 工作经历
 	 */
 	function action_index(){
-		$where = "uid = $this->uid";
+		$where = "uid = ".self::$uid;
 		$works  = DB::select()->from('witkey_member_work')->where($where)->execute();
 		$inc_indus = self::$inc_indus;
 		$inc_job = self::$inc_job;
@@ -49,7 +49,7 @@ class Control_user_account_detail extends Control_user{
 		}
 		foreach ($data as $v){
 			$columns = array('uid','inc_name','inc_indus','inc_time','inc_job');
-		    $values = array($this->uid,$v[1],$v[2],$v[4].','.$v[5],$v[3]);
+		    $values = array(self::$uid,$v[1],$v[2],$v[4].','.$v[5],$v[3]);
 		  	if($v[0]){
 				$where = "wid = $v[0]";
 				DB::update('witkey_member_work')->set($columns)->value($values)->where($where)->execute();
@@ -64,7 +64,7 @@ class Control_user_account_detail extends Control_user{
 	 */
 	function action_work_del(){
 		$wid = $_GET['wid'];
-		DB::delete('witkey_member_work')->where("wid = $wid and uid = $this->uid")->execute();
+		DB::delete('witkey_member_work')->where("wid = $wid and uid = ".self::$uid)->execute();
 	}
 	/**
 	 * @var 公司行业
@@ -123,7 +123,7 @@ class Control_user_account_detail extends Control_user{
 	 * 技能证书
 	 */
 	function action_skill(){
-		$where = "uid = $this->uid";
+		$where = "uid = self::$uid";
 		$certs = DB::select()->from('witkey_member_cert')->where($where)->execute();
 		$year = Date::get_year();
 	    //global $_K;
@@ -153,7 +153,7 @@ class Control_user_account_detail extends Control_user{
 		
 		foreach ($data as $v){
 			$columns = array('cid','uid','name','year','pic');
-			$values = array($v[0],$this->uid,$v[1],$v[2],$v[3]);
+			$values = array($v[0],self::$uid,$v[1],$v[2],$v[3]);
 			$arr = array_combine($columns, $values);
 			if($v[0]){
 				Model::factory('witkey_member_cert')->setData($arr)->setWhere("cid=$v[0]")->update();
@@ -169,7 +169,7 @@ class Control_user_account_detail extends Control_user{
 	function action_skill_del(){
 		$cid = $_GET['cid'];
 		$pic = $_GET['pic'];
-		$res = Model::factory('witkey_member_cert')->setWhere("cid = $cid and uid = $this->uid")->del();
+		$res = Model::factory('witkey_member_cert')->setWhere("cid = $cid and uid = ".self::$uid)->del();
 		if($res){
 			unlink(S_ROOT.$pic);
 		}
@@ -178,14 +178,14 @@ class Control_user_account_detail extends Control_user{
 	 * 持能标签
 	 */
 	function action_skill_tag(){
-		$where = "uid = $this->uid";
+		$where = "uid = ".self::$uid;
 		//用户的技能
 		$sql = "select group_concat(b.skill_id) skill_id, GROUP_CONCAT(b.skill_name) as skill_name from :keke_witkey_skill b \n".
 				"right join :keke_witkey_space a on \n".
 				"FIND_IN_SET(b.skill_id,a.skill_ids)\n".
 				"where a.uid=:uid\n".
 				"GROUP BY a.uid";
-	    $skills = DB::query($sql)->tablepre(':keke_')->param(':uid', $this->uid)->get_one()->execute();	
+	    $skills = DB::query($sql)->tablepre(':keke_')->param(':uid', self::$uid)->get_one()->execute();	
 		
 	    //用户选中的技能
 		if(Keke_valid::not_empty($skills['skill_id'])){
@@ -216,7 +216,7 @@ class Control_user_account_detail extends Control_user{
 		//用户选中的技能数组
 		$skills = $_POST['skill'];
 		
-		$use_skill = DB::select('skill_ids')->from('witkey_space')->where("uid= $this->uid")->get_count()->execute();
+		$use_skill = DB::select('skill_ids')->from('witkey_space')->where("uid= ".self::$uid)->get_count()->execute();
 		if($use_skill){
 			$use_skill = explode(',', trim($use_skill,','));
 		}else{
@@ -248,7 +248,7 @@ class Control_user_account_detail extends Control_user{
 		//转成字符串
 		$tags = implode(',', $t);
 		if($tags){
-			$sql = "update :keke_witkey_space set skill_ids = '$tags' where uid = $this->uid";
+			$sql = "update :keke_witkey_space set skill_ids = '$tags' where uid = ".self::$uid;
 			DB::query($sql,Database::UPDATE)->tablepre(':keke_')->execute();
 		}
 		$this->request->redirect('user/account_detail/skill_tag');
@@ -272,7 +272,7 @@ class Control_user_account_detail extends Control_user{
 	function action_tag_del(){
 		$tag_id  = $_GET['tag'];
 		
-		$skill_ids  = DB::select('skill_ids')->from('witkey_space')->get_count()->where("uid = $this->uid")->execute();
+		$skill_ids  = DB::select('skill_ids')->from('witkey_space')->get_count()->where("uid = ".self::$uid)->execute();
 		$skill_ids = explode(',', $skill_ids);
 		
 		$skill_ids = array_flip($skill_ids);
@@ -281,7 +281,7 @@ class Control_user_account_detail extends Control_user{
 		
 		$skill_ids = implode(',', $skill_ids);
 		
-		DB::update('witkey_space')->set(array('skill_ids'))->value(array($skill_ids))->where("uid=$this->uid")->execute();
+		DB::update('witkey_space')->set(array('skill_ids'))->value(array($skill_ids))->where("uid=".self::$uid)->execute();
 
 	}
 	

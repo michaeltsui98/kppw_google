@@ -5,6 +5,7 @@
 */
 
 class Keke_tpl {
+	
 	static private  $tpl_path = 'data/tpl_c';
 	
 	static function parse_code($tag_code, $tag_id, $tag_type = 'tag') {

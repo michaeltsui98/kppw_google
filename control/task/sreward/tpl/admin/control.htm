@@ -43,9 +43,14 @@
 	<tr>
 		<th scope="row" width="200" class="t_r">{$_lang['task_automate_choose']}{$_lang['zh_mh']}</th> 
 		 <td>
-			<label for="auto_bid_1"><input type="radio"  {if $model_info['auto_bid'] =='no'||!$model_info['auto_bid']}checked{/if} name="conf[auto_bid]" id="auto_bid_1" value="no">{$_lang['close']}</label>
-			<label for="auto_bid_3"><input type="radio" {if $model_info['auto_bid'] =='yes' }checked{/if} name="conf[auto_bid]" id="auto_bid_2" value="yes">{$_lang['open']}</label>
-			<label id="slt" {if $model_info['auto_bid'] =='no'}style="display:none"{/if}><input type="text" name="conf[witkey_num]" value="{$model_info['witkey_num']}" id="witkey_num" limit="type:int;between:1-" msg="{$_lang['task_automate_choose_msg']}" title="{$_lang['task_automate_choose_title']}" class="txt">{$_lang['task_automate_choose_notice']}</label>
+			<label for="auto_bid_1"><input type="radio"  {if $model_info['auto_bid'] =='0'||!$model_info['auto_bid']}checked{/if} name="conf[auto_bid]" id="auto_bid_1" value="0">{$_lang['close']}</label>
+			<label for="auto_bid_3"><input type="radio" {if $model_info['auto_bid'] =='1' }checked{/if} name="conf[auto_bid]" id="auto_bid_2" value="1">{$_lang['open']}</label>
+			<label id="slt" {if $model_info['auto_bid'] =='0'}style="display:none"{/if}>
+				<select name="conf[choose_rule]">
+					<option value="first_work" {if $model_info['choose_rule'] =='first_work' }selected{/if}>最先交稿</option>
+					<option value="max_seller_credit" {if $model_info['choose_rule'] =='max_seller_credit'}selected{/if}>能力值最高</option>
+				</select>
+			</label>
 		 </td>
 	</tr>
     <tr>
@@ -103,13 +108,7 @@
 		</td>
 	</tr>
 	
-	<tr>
-		<th scope="row" width="200" class="t_r">{$_lang['choose_in_doing']}{$_lang['zh_mh']}</th> 
-		<td>
-			<label for="open_select_yes"><input type="radio" name="conf[open_select]"  {if !$model_info['open_select']||$model_info['open_select'] =='open'} checked {/if} id="open_select_yes" value="open">{$_lang['open']}</label>
-			<label for="open_select_no"><input type="radio" name="conf[open_select]" {if $model_info['open_select'] =='close'} checked {/if} id="open_select_no" value="close">{$_lang['close']}</label>
-		</td>
-	</tr>
+ 
 	<tr>
 		 <th scope="row" width="200"><h4>{$_lang['set_delay_rule']}{$_lang['zh_mh']}</h4><td>&nbsp;</td></th>  
 	</tr>

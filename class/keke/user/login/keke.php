@@ -68,7 +68,7 @@ class Keke_user_login_keke extends Keke_user_login {
 		}elseif($type==1){
 			$where = "uid = '$this->_username'";
 		}
-		$res = DB::select('username,status,group_id')->from('witkey_space')->where($where)->get_one()->execute();
+		$res = DB::select('username,status,group_id,msg_num')->from('witkey_space')->where($where)->get_one()->execute();
 		list($username,$status) = array($res['username'],$res['status']);
 	   //ÕËºÅ²»´æÔÚ
 		if(!Keke_valid::not_empty($username)){
@@ -82,6 +82,7 @@ class Keke_user_login_keke extends Keke_user_login {
 			return -4;
 		}
 		$this->_session->set('group_id', $res['group_id']);
+		$this->_session->set('msg_num', $res['msg_num']);
 		return $username;
 	}
 

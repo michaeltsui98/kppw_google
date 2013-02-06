@@ -2047,6 +2047,29 @@ function d_time(end_time){
     return d_arr;
     
 }
+/**
+ * µ¹¼ÆÊ±
+ */
+function ddtime(){
+    var e = function(obj){
+		var ed = $(obj).attr('ed');
+ 		if (ed) {
+			var djs = d_time(ed);
+			var str = djs[0] + L.day + djs[1] + L.hour + djs[2]
+			+ L.minutes + djs[3] +L.seconds;
+		} else {
+			var str = $(obj).attr("title");
+		}
+		$(obj).html(str);
+	}
+	var c_time = function(){
+		$(".d_time").each(function(){
+			 e(this);
+		});
+		setTimeout(c_time,1000);
+	}
+	c_time();
+}
 window.onload = function(){ 
     
 /*   

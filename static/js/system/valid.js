@@ -162,7 +162,7 @@ function test_hidden(ele){
 	var test = $(ele).parents();
 	$(test).each(function(){
 		
-		if(this.style.display=='none'){
+		if(this.style.display=='none' || $(ele).attr('class').indexOf('hidden')!=-1){
 			test_a = 1; 
 		} 
 	})

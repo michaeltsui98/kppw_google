@@ -7,7 +7,7 @@
  */
 define('USER_URL', PHP_URL.'/user');
 abstract  class Control_user extends Controller{
-	protected $uid ;
+	protected static $uid ;
 	protected $username;
 	protected $group_id;
 	protected $_uri ;
@@ -88,7 +88,7 @@ abstract  class Control_user extends Controller{
     function __construct($request,$response){
     	parent::__construct($request, $response);
     	 
-    	$this->uid = $_SESSION['uid'];
+    	self::$uid = $_SESSION['uid'];
     	$this->username = $_SESSION['username'];
     	
     	$this->group_id = $_SESSION['group_id'];

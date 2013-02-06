@@ -11,17 +11,19 @@ class Control_task_preward_trade extends Sys_task_trade{
 	/**
 	 * @return 返回计件悬赏任务状态
 	 */
-	public static function get_task_status() {
-		global $_lang;
-		return array ("0" => $_lang ['task_no_pay'], "1" => $_lang ['task_wait_audit'], "2" => $_lang ['task_vote_choose'], "3" => $_lang ['task_choose_work'], "7" => $_lang ['freeze'], "8" => $_lang ['task_over'], "9" => $_lang ['fail'], "10" => $_lang ['task_audit_fail']);
+	public static function task_status() {
+		$arr = DB::select()->from('witkey_status')->where("stype='task' and model_code ='preward'")->cached(9999)->execute();
+		return Arr::get_arr_by_key($arr, 'sid');
 	}
 	/**
 	 * @return 返回计件悬赏稿件状态
 	 * 
 	 */
-	public static function get_work_status() {
-		global $_lang;
-		return array ('6' => $_lang ['hg'], '7' => $_lang ['not_recept'], '8' => $_lang ['task_can_not_choose_bid'] );
+	public static function work_status() {
+		
+		$arr = DB::select()->from('witkey_status')->where("stype='work' and model_code ='preward'")->cached(9999)->execute();
+		return Arr::get_arr_by_key($arr, 'sid');
+		
 	}
 
 }

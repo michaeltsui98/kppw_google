@@ -24,7 +24,7 @@ class Control_user_account_bind extends Control_user{
 		
 		$api_name = Keke_global::get_open_api();
 
-		$bind_info = DB::select()->from('witkey_member_oauth')->where("uid = $this->uid")->execute();
+		$bind_info = DB::select()->from('witkey_member_oauth')->where("uid = ".self::$uid)->execute();
 		$bind_info = Arr::get_arr_by_key($bind_info, 'type');
 		
 		require Keke_tpl::template('user/account/bind');
@@ -79,7 +79,7 @@ class Control_user_account_bind extends Control_user{
 	function save_bind($type,$account){
 		DB::insert('witkey_member_oauth')
 		->set(array('uid','username','type','account'))
-		->value(array($this->uid,$this->username,$type,$account))
+		->value(array(self::$uid,$this->username,$type,$account))
 		->execute();
 	}
 	/**
@@ -88,7 +88,7 @@ class Control_user_account_bind extends Control_user{
 	function action_unbind(){
 		$account = $_GET['account'];
 		$type = $_GET['type'];
-		$where = " uid = $this->uid and type='$type'";
+		$where = " uid = ".self::$uid." and type='$type'";
 		DB::delete('witkey_member_oauth')->where($where)->execute();
 		$this->request->redirect('user/account_bind');
 	}

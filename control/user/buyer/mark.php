@@ -79,7 +79,7 @@ class Control_user_buyer_mark extends Control_user{
 		// 这里要口水一下，get_url就是处理查询的条件
 		extract ( $this->get_url ( $base_uri ) );
 		
-		$where .= " and a.mark_status >0 and a.mark_type = 1 and a.uid = $this->uid ";
+		$where .= " and a.mark_status >0 and a.mark_type = 'buyer' and a.uid = ".self::$uid;
 		
 		$group = " group by a.mark_id";
 		if($status >0 ){

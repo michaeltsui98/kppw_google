@@ -52,7 +52,7 @@ class Keke_user_login_pw extends Keke_user_login {
 	 */
 	function check_account($uid) {
 		$where = "uid ='$uid'";
-		$res = DB::select ( 'username,status' )->from ( 'witkey_space' )->where ( $where )->get_one ()->execute ();
+		$res = DB::select('username,status,group_id,msg_num')->from('witkey_space')->where($where)->get_one()->execute();
 		list ( $username, $status ) = array (
 				$res ['username'],
 				$res ['status'] 
@@ -68,6 +68,9 @@ class Keke_user_login_pw extends Keke_user_login {
 			// ÕËºÅÎ´¼¤»î
 			return - 4;
 		}
+		$this->_session->set('group_id', $res['group_id']);
+		$this->_session->set('msg_num', $res['msg_num']);
+		
 		return 1;
 	}
 }

@@ -109,7 +109,7 @@ abstract class Keke_user_login   {
 		$this->_session->set ( 'uid', $uid );
 		$this->_session->set ( 'username', $username );
 		$columns = array('last_login_time','reg_ip');
-		$values = array(time(),Keke::get_ip());
+		$values = array(SYS_START_TIME,Keke::get_ip());
 		$where = "uid = '$uid'";
 		//更新登录时间
 		return (bool)DB::update('witkey_space')->set($columns)->value($values)->where($where)->execute();
@@ -180,6 +180,7 @@ abstract class Keke_user_login   {
 		// 删除登录用户会话
 		$this->_session->delete ( 'uid' );
 		$this->_session->delete ( 'username' );
+		
 		//删除所有token 的值
 		foreach ($this->_session->as_array() as $k=>$v){
 			if(strpos(strtolower($k), '_token')!==FALSE){

@@ -154,11 +154,17 @@ class Control_user_msg_in extends Control_user{
 	function change_view_status($msg_id){
 		if(is_array($msg_id)){
 			$msg_ids = implode(',', $msg_id);
-			 
+			$msg_num = sizeof($msg_id); 
 			DB::update('witkey_msg')->set(array('view_status'))->value(array(1))->where("msg_id in ($msg_ids)")->execute();
 		}else{
+			$msg_num = 1;
 			DB::update('witkey_msg')->set(array('view_status'))->value(array(1))->where("msg_id = $msg_id")->execute();
 		}
+		
+		$sql = "update keke_witkey_space set msg_num = msg_num - $msg_num where uid = ".self::$uid;
+		
+		DB::query($sql,Database::UPDATE)->tablepre('keke_')->execute();
+		
 	}
 	function to_next_one($action,$msg_id){
 		$where = " 1=1";

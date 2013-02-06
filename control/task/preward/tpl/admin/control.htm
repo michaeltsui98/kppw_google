@@ -51,6 +51,19 @@
 			</label>{$_lang['deal_fail_task_notice']}
 		 </td>
 	</tr>
+	<tr>
+		<th scope="row" width="200" class="t_r">{$_lang['task_automate_choose']}{$_lang['zh_mh']}</th> 
+		 <td>
+			<label for="auto_bid_1"><input type="radio"  {if $model_info['auto_bid'] =='0'||!$model_info['auto_bid']}checked{/if} name="conf[auto_bid]" id="auto_bid_1" value="0">{$_lang['close']}</label>
+			<label for="auto_bid_3"><input type="radio" {if $model_info['auto_bid'] =='1' }checked{/if} name="conf[auto_bid]" id="auto_bid_2" value="1">{$_lang['open']}</label>
+			<label id="slt" {if $model_info['auto_bid'] =='0'}style="display:none"{/if}>
+				<select name="conf[choose_rule]">
+					<option value="first_work" {if $model_info['choose_rule'] =='first_work' }selected{/if}>最先交稿</option>
+					<option value="max_seller_credit" {if $model_info['choose_rule'] =='max_seller_credit'}selected{/if}>能力值最高</option>
+				</select>
+			</label>
+		 </td>
+	</tr>
   	<tr><th scope="row" width="200">{$_lang['set_task_time_rule']}{$_lang['zh_mh']}</th><td>&nbsp;</td></tr>
 	<tr>
 	 <th scope="row" width="200" class="t_r">{$_lang['time_rule']}{$_lang['zh_mh']}</th>
@@ -90,13 +103,7 @@
 			<input type="text" size="10" name="conf[mark_day]" id="choose_time" value="{$model_info['mark_day']}"  limit="required:true;type:int;between:1-20" msg="{$_lang['auto_evaluation_not_correct']}" title="{$_lang['auto_evaluation_not_one_day']}"  msgArea="mark_day_delay" class="txt"><b style="color:red">*</b>{$_lang['day']}<span id="mark_day_delay"></span>
 		</td>
 	</tr>
-	<tr>
-		<th scope="row" width="200" class="t_r">{$_lang['choose_in_doing']}{$_lang['zh_mh']}</th> 
-		<td>
-			<label for="open_select_yes"><input type="radio" name="conf[open_select]"  {if !$model_info['open_select']||$model_info['open_select'] =='open'} checked {/if} id="open_select_yes" value="open">{$_lang['open']}</label>
-			<label for="open_select_no"><input type="radio" name="conf[open_select]" {if $model_info['open_select'] =='close'} checked {/if} id="open_select_no" value="close">{$_lang['close']}</label>
-		</td>
-	</tr>
+ 
 	<tr>
 		 <th scope="row" width="200"><h4>{$_lang['set_delay_rule']}{$_lang['zh_mh']}</h4><td>&nbsp;</td></th>  
 	</tr>
@@ -137,19 +144,7 @@
 			<input type="text" name="conf[work_percent]" value="{$model_info['work_percent']}" limit="type:int;required:true;between:0-" msg={$_lang['ratio_number_incorrect_manuscripts']} tips={$_lang['input_manuscript_number_proportion']} msgArea="span_work_percent" class="txt"/><b style="color:red">*</b>% &nbsp;({$_lang['not_more_required_number_manuscripts']})<span id="span_work_percent"></span>
 		</td>		
 	</tr>
-	<tr>
-		<th scope="row" width="200" class="t_r">{$_lang['automatic_selection']}{$_lang['zh_mh']}</th> 
-		<td>
-			<label for="is_auto_adjourn_yes"><input type="radio" name="conf[is_auto_adjourn]"  {if $model_info['is_auto_adjourn'] =='1'} checked {/if} id="is_auto_adjourn_yes" value="1">{$_lang['open']}</label>
-			<label for="is_auto_adjourn_no"><input type="radio" name="conf[is_auto_adjourn]" {if !$model_info['is_auto_adjourn'] ||$model_info['is_auto_adjourn']  =='2'} checked {/if} id="is_auto_adjourn_no" value="2">{$_lang['close']}</label>
-		</td>
-	</tr>
-	<tr>
-		<th scope="row" width="200" class="t_r">{$_lang['automatic_selection_former_N']}{$_lang['zh_mh']}</th> 
-		<td>
-			<input type="text" name="conf[adjourn_num]" value="{$model_info['adjourn_num']}" limit="type:int;required:true;between:0-" msg={$_lang['manuscript_number_input_not_correct']} tips={$_lang['enter_manuscript_number']} msgArea="span_adjourn_num" class="txt"/><b style="color:red">*</b>{$_lang['ge']} &nbsp;({$_lang['if_open_automatic_info']})<span id="span_adjourn_num"></span>
-		</td>
-	</tr>																											
+																										
 	<tr>
 		<th scope="row" width="200">&nbsp;</th>
 		<td>
@@ -163,16 +158,16 @@
    </div>
 <script type="text/javascript">
 $(function(){
-	if($("#end_action_1").attr("checked")==true){
+	if($("#auto_bid_1").attr("checked")==true){
 		$("#slt").hide();
 	}
-	if($("#end_action_2").attr("checked")==true){
+	if($("#auto_bid_2").attr("checked")==true){
 		 $("#slt").show();
 	 }
-	$("#end_action_1").click(function(){
+	$("#auto_bid_1").click(function(){
 		$("#slt").hide();
 	})
-	$("#end_action_2").click(function(){
+	$("#auto_bid_2").click(function(){
 		  $("#slt").show();
 	})
 	

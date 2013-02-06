@@ -22,10 +22,10 @@ class Control_user_account_auth extends Control_user{
 	 */
 	function action_index(){
 		
-		$auth_info = DB::select()->from('witkey_auth_realname')->where("uid= $this->uid")->get_one()->execute();
+		$auth_info = DB::select()->from('witkey_auth_realname')->where("uid= ".self::$uid)->get_one()->execute();
 		
 		
-		$gid = DB::select('group_id')->from('witkey_space')->where("uid= $this->uid")->get_count()->execute();
+		$gid = DB::select('group_id')->from('witkey_space')->where("uid= ".self::$uid)->get_count()->execute();
 		if($gid==3){
 			$this->action_enter();
 		}else{
@@ -51,7 +51,7 @@ class Control_user_account_auth extends Control_user{
 		$sql = "replace into `:keke_witkey_auth_realname`\n".
 				"(uid,username,realname,id_code,pic,id_pic,start_time,auth_status) \n".
 				"values (:uid,:username,:realname,:id_code,:pic,:id_pic,:start_time,:auth_status)";
-		$params = array(':uid'=>$this->uid,':username'=>$this->username,':realname'=>$realname,
+		$params = array(':uid'=>self::$uid,':username'=>$this->username,':realname'=>$realname,
 				      ':id_code'=>$id_code,':pic'=>$pic,':id_pic'=>$id_pic,
 					  ':start_time'=>SYS_START_TIME,':auth_status'=>0);
 		
@@ -74,7 +74,7 @@ class Control_user_account_auth extends Control_user{
 	 */
 	function action_enter(){
 		
-		$auth_info = DB::select()->from('witkey_auth_enterprise')->where("uid=$this->uid")->get_one()->execute();
+		$auth_info = DB::select()->from('witkey_auth_enterprise')->where("uid=".self::$uid)->get_one()->execute();
 	     
 		require Keke_tpl::template('user/account/auth_enter');
 	}
@@ -101,7 +101,7 @@ class Control_user_account_auth extends Control_user{
 		$sql ="replace into  `:keke_witkey_auth_enterprise` \n".
 				"(uid,username,company,licen_num,licen_pic,start_time,auth_status,legal,url,id_code,id_pic,pic)\n".
 				"VALUES\n".
-				"('$this->uid','$this->username','$company','$licen_num','$licen_pic','$start_time',0,'$legal','$url','$id_code','$id_pic','$pic')";
+				"(".self::$uid.",'$this->username','$company','$licen_num','$licen_pic','$start_time',0,'$legal','$url','$id_code','$id_pic','$pic')";
 		
 		DB::query($sql,Database::UPDATE)->tablepre(':keke_')->execute();
 		

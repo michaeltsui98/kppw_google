@@ -25,9 +25,9 @@
 	        <td>{date('Y-m-d',$v['work_time'])}</td>
 			<td>$v['status']</td>
 			<td> 
-			  <!--{eval $arr = (array)$this->work_op($v);}-->
-			   {loop $arr $k $o}
-			   		<a href="{PHP_URL}/task/{$v['task_id']}/set_work?s={$k}&w=$v['work_id']" onclick="return kconfirm(this);">{$o}</a>
+			  <!--{eval $arr = (array)$this->work_op($v); }-->
+			   {loop $arr  $o}
+			   		  {$o['a']}
 			   {/loop}
 			</td>
 			

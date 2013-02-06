@@ -21,7 +21,7 @@ function submitSort(uri,f,ord){
 //删除单条
 function kdel(o,s,func){
 	d = art.dialog;
-	var c = "确认删除？";
+	var c = "确认？";
 	if(s){
 		c=s;
 	}
@@ -30,7 +30,7 @@ function kdel(o,s,func){
 			url:o.href,
 			dataType:'text',
 			beforeSend:function(){
-	 	        $(tips).children().html('删除中...').addClass('tips_info'); 
+	 	        $(tips).children().html('提交中...').addClass('tips_info'); 
 			},
 			success: function(data){
 				if(typeof func =='function'){
@@ -49,6 +49,7 @@ function kdel(o,s,func){
 	}).follow(o);
 	return false;
 }
+ 
 //删除多条
 function batch_del(obj){
 	d = art.dialog;
@@ -94,15 +95,8 @@ function check_all(){
     	}
     })
 }
-function kconfirm(o,s){
-	d = art.dialog;
-	var c = "{$_lang['confirm']}?";
-	if(s){
-		c=s;
-	}
-	d.confirm(c, function(){
-			location.href = o.href;
-	}).follow(o);
+function kconfirm(o,s,func){
+	kdel(o,s,func);
 	return false;
 }
 var xyq = "<!--{eval echo $xyq = session_id();}-->";

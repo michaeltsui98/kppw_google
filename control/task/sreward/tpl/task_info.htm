@@ -7,6 +7,8 @@
 
 任务金额：{$task_info['task_cash']}
 <br/>
+{$time_desc['time_desc']}：<span class="d_time" ed="{$time_desc['time']}" title="{$time_desc['ext_desc']}"></span>
+<br/>
 任务内容：{$task_info['task_desc']}
 <br/>
 附加需示:{$task_info['att_desc']}
@@ -33,13 +35,14 @@
 <br/>
 买家图片：{avatar($task_info['uid'],small)}
 <br/>
-买家信誉：<img src="{BASE_URL}/{$buyer_leve['ico']}" > $buyer_leve['title']
-好评率：  {$buyer_leve['buyer_good_rate']}
+买家信誉：<img src="{BASE_URL}/{$buyer_level['buyer_ico']}" >  
+好评率：  {$buyer_level['buyer_good_rate']}%
 <br/>
 
 <!--{eval $this->action_work();}-->
-
 <script>
 	In('artif');
+	ddtime();	 
 </script>
+
 <!--{include footer}-->	

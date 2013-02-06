@@ -23,7 +23,7 @@ class Control_user_account_index extends Control_user{
 		
 		$uinfo = self::get_user_info();
 
-		$user_title = Keke_user_mark::get_title($this->uid);
+		$user_title = Keke_user_mark::get_title(self::$uid);
 	     
 		require Keke_tpl::template('user/account/index');
 	}
@@ -34,7 +34,7 @@ class Control_user_account_index extends Control_user{
 	 */
 	function get_user_info($uid=NULL){
 		if($uid===NULL){
-			$uid = $this->uid;
+			$uid = self::$uid;
 		}
 		$sql = "select a.uid,a.group_id,a.credit,a.balance,
                 a.truename,a.residency,a.sex,a.birthday,a.qq,a.phone,
@@ -57,12 +57,12 @@ class Control_user_account_index extends Control_user{
 	}
 	//邮件解绑
 	function action_unemail(){
-		DB::update('witkey_auth_email')->set(array('auth_status'))->value(array(0))->where("uid=$this->uid")->execute();
+		DB::update('witkey_auth_email')->set(array('auth_status'))->value(array(0))->where("uid=".self::$uid)->execute();
 		$this->request->redirect('user/account_index');
 	}
 	//手机解绑
 	function action_unmobile(){
-		DB::update('witkey_auth_mobile')->set(array('auth_status'))->value(array(0))->where("uid=$this->uid")->execute();
+		DB::update('witkey_auth_mobile')->set(array('auth_status'))->value(array(0))->where("uid=".self::$uid)->execute();
 		$this->request->redirect('user/account_index');
 	}
 	

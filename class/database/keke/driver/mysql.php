@@ -96,20 +96,20 @@ final class Keke_driver_mysql extends Keke_database {
 		// 数据rollback 支持
 		if ($this->_trans == 0) {
 			$sql = "start transaction";
-			$this->query ( $sql );
+			$this->execute ( $sql );
 		}
 		$this->_trans ++;
 		return;
 	}
 	public function commit() {
 		if ($this->_trans > 0) {
-			$this->query ( "commit" );
+			$this->execute ( "commit" );
 		}
 		return true;
 	}
 	public function rollback() {
 		if ($this->_trans > 0) {
-			$this->query ( "ROLLBACK" );
+			$this->execute ( "ROLLBACK" );
 			$this->_trans = 0;
 		}
 		return true;

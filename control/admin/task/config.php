@@ -112,7 +112,7 @@ abstract class Control_admin_task_config extends Control_admin{
 	 */
 	function get_delay_rule(){
 		$where = "model_id = ".$this->_model_info['model_id'];
-		return DB::select()->from('witkey_task_delay_rule')->where($where)->execute();
+		return DB::select()->from('witkey_task_delay_rule')->where($where)->order('defer_times')->execute();
 	}
 	/**
 	 * 保存延期规则

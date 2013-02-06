@@ -2,12 +2,4 @@
 
 include 'app_boot.php';
  
-//ĞÂÄ£ĞÍ²âÊÔ
-
-
-$i = 1608821;
- 
-$d = date('Y-m-d H:i:s',$i); 
-var_dump($d);
-
-die;
+//Sys_cron_task::factory('preward')->batch_run();

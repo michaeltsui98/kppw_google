@@ -17,7 +17,9 @@ class Control_task_mreward_cron extends Sys_cron_task {
      	
      }
      function gs_to_jf(){}
-     function jf_to_hp(){}
-     function hp_to_end(){}
+     
+     function jf_to_end(){}
+     
+     function end_to_hp(){}
 	
 }

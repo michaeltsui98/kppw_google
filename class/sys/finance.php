@@ -128,6 +128,7 @@ class Sys_finance {
 		
 		$where = "uid ='{$user_info['uid']}'";
 		// 提现判断,代金券不能用提现
+		Database::instance()->begin();
 		if ($action == 'withdraw') {
 			Dbfactory::execute("update " . TABLEPRE . "witkey_space set balance = balance-".abs((float)$cash)." where $where");
 			$fo->setFina_cash ( $cash );
@@ -154,7 +155,9 @@ class Sys_finance {
 		}
 		$fo->setFina_time ( SYS_START_TIME );
 		$fo->setFina_mem ( $this->_mem );
-		return (int) $fo->create (); 
+		$fid = (int) $fo->create ();
+		Database::instance()->commit();
+		return $fid; 
 	}
 	/**
 	 * 威客用户收入计算处理
@@ -193,18 +196,13 @@ class Sys_finance {
 		
 		$sql = "update keke_witkey_space set balance = balance+{$cash},
 		credit = credit+{$credit} where uid ='{$user_info['uid']}'";
-		
-		$res = DB::query($sql,Database::UPDATE)->execute();
-		
-		if ($res) {
-			$fo->setFina_time ( SYS_START_TIME );
-			return (int) $fo->create ();
-		} else {
-			return false;
-		}
+		$fo->setFina_time ( SYS_START_TIME );
+		Database::instance()->begin();
+		$fid = (int) $fo->create ();
+		$res = DB::query($sql,Database::UPDATE)->tablepre('keke_')->execute();
+		Database::instance()->commit();
+		return $fid;
 	}
-	
- 
 	/**
 	 * 通过收支类目得到收支明细,收支明细中的变量数组array(':task_id'=>'12',':task_title'=>'任务标题')
 	 * @param string $action  收支类目
@@ -234,21 +232,21 @@ class Sys_finance {
 	public static function get_action_tpl() {
 		global $_lang;
 		return array (
-		'pub_task' => $_lang ['release'] . ':model_name' . $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>', 
-		'task_delay' => $_lang ['extension_task'] . '<a href="index.php/task/:task_id">:task_title</a>', 
-		'buy_service' => $_lang ['purchase_service_goods'] . '<a href="index.php/service/:service_id">:title</a>', 
+		'pub_task' => $_lang ['release'] . ':model_name' . $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>', 
+		'task_delay' => $_lang ['extension_task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>', 
+		'buy_service' => $_lang ['purchase_service_goods'] . '<a href="'.PHP_URL.'/service/:service_id">:title</a>', 
 		'payitem' => $_lang ['purchase'] . ':item_name' . $_lang ['value_add_services'], 
-		'hosted_reward' => $_lang ['managed'] . ':model_name' . $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['bounty'], 
-		'task_fail' => ':model_name' . $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['failure_refund'], 
-		'host_deposit' => $_lang ['managed'] . ':model_name' . $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['earnest_money'], 
-		'task_bid' => $_lang ['involved_task'] . '<a href="index.php/task/:task_id">:task_title</a>，' . $_lang ['manuscript_selected_success'], 
-		'task_auto_return' => ':model_name' . $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['automate_return_remain'], 
-		'sale_service' => $_lang ['sell_services_goods'] . '<a href="index.php/service&sid=:service_id">:title</a>' . $_lang ['income'], 
-		'task_remain_return' => ':model_name' . $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['settlement_balance_return'], 
-		'task_hosted_return' => ':model_name' . $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['managed_balance_return'], 
+		'hosted_reward' => $_lang ['managed'] . ':model_name' . $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['bounty'], 
+		'task_fail' => ':model_name' . $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['failure_refund'], 
+		'host_deposit' => $_lang ['managed'] . ':model_name' . $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['earnest_money'], 
+		'task_bid' => $_lang ['involved_task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>，' . $_lang ['manuscript_selected_success'], 
+		'task_auto_return' => ':model_name' . $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['automate_return_remain'], 
+		'sale_service' => $_lang ['sell_services_goods'] . '<a href="'.PHP_URL.'/service&sid=:service_id">:title</a>' . $_lang ['income'], 
+		'task_remain_return' => ':model_name' . $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['settlement_balance_return'], 
+		'task_hosted_return' => ':model_name' . $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['managed_balance_return'], 
 		'order_cancel' => $_lang ['order'] . ':order_id' . $_lang ['terminate_rebate'], 
-		'host_return' => $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['managed_commission_refund'], 
-		'host_split' => $_lang ['task'] . '<a href="index.php/task/:task_id">:task_title</a>' . $_lang ['managed_commission_allocate'], 
+		'host_return' => $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['managed_commission_refund'], 
+		'host_split' => $_lang ['task'] . '<a href="'.PHP_URL.'/task/:task_id">:task_title</a>' . $_lang ['managed_commission_allocate'], 
 		'withdraw' => ':pay_way' . $_lang ['account'] . ':pay_account' . $_lang ['user'] . ':pay_name' . $_lang ['to_cash'], 
 		'withdraw_fail' => ':pay_way' . $_lang ['account'] . ':pay_account' . $_lang ['user'] . ':pay_name' . $_lang ['cash_failed_return_refund'], 
 		'recharge' => ":bank 充值 :cash" );

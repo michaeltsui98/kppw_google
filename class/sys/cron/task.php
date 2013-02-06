@@ -44,13 +44,13 @@ abstract  class Sys_cron_task {
      */	
 	abstract public function gs_to_jf();
 	/**
-	 * 交付到位互评
+	 * 交付到结束
 	 */
-	abstract public function jf_to_hp();
+	abstract public function jf_to_end();
 	/**
-	 * 互评到结束
+	 * 结束到互评
 	 */
-	abstract public function hp_to_end();
+	abstract public function end_to_hp();
 	/**
 	 * 执行
 	 */
@@ -60,10 +60,33 @@ abstract  class Sys_cron_task {
 	 */
 	public static function batch_run(){
 		$where = "model_type='task' and model_status = 1";
-		$models = DB::select('model_code','config')->from('witkey_model')->where($where)->execute();
-		 
+		$models = DB::select('model_code,config')->from('witkey_model')->where($where)->cached(99999)->execute();
 		foreach ($models as $v){
 			Sys_cron_task::factory($v['model_code'])->run($v['config']);
+		}
+	}
+	
+	
+	/**
+	 * 任务退款
+	 */
+	function task_recash($task_arr){
+		if(Keke_valid::not_empty($task_arr)==FALSE){
+			return ;
+		}
+		foreach ($task_arr as $v){
+			$cash = $v['task_cash']*(1-self::$config['task_fail_rate']/100);
+			$credit = 0;
+			if(self::$config['defeated']==2){
+				$credit = $cash;
+				$cash = 0;
+			}
+	
+			Sys_finance::get_instance($v['uid'])->set_action('task_fail')
+	
+			->set_mem(array(':model_name'=>$v['model_name'],':task_id'=>$v['task_id'],':task_title'=>$v['task_title']))
+	
+			->set_obj('task', $v['task_id'])->cash_in($cash,$credit);
 		}
 	}
 }//end

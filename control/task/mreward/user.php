@@ -24,8 +24,7 @@ class Control_task_mreward_user extends Control_user{
 	 * 我发布的任务
 	 */
 	function action_index(){
-		self::$_default = 'seller';
-		self::$_left = 'mreward';
+		 
 		Control_user_buyer_index::init_nav();
 		
 		$model_name = Keke::$_model_list[2]['model_name'];
@@ -68,7 +67,7 @@ class Control_task_mreward_user extends Control_user{
 	
 		extract ( $this->get_url ( $base_uri ) );
 	
-		$where .= "  and a.uid = $this->uid";
+		$where .= "  and a.uid = ".self::$uid;
 	
 		$this->_uri = $uri;
 		$this->_ord_tag = $ord_tag;
@@ -84,10 +83,10 @@ class Control_task_mreward_user extends Control_user{
 		self::$_left = 'mreward';
 		Control_user_buyer_index::init_nav();
 		self::$task_id = (int)$_GET['task_id'];
-		$query_fields = array ('c.work_id' => '任务ID', 'c.work_title' => '任务标题');
+		$query_fields = array ('c.work_id' => '任务ID', 'c.work_desc' => '任务标题');
 		
 	   $sql="select a.task_id,a.task_status,\n".
-		   	"c.work_id,c.uid,c.work_title,c.work_price,	c.work_status,c.work_time,\n".
+		   	"c.work_id,c.uid,c.work_desc,c.work_price,	c.work_status,c.work_time,\n".
 			"d.`status`,\n".
 			"b.username,b.mobile,b.qq\n".
 			"from :keke_witkey_task a\n".
@@ -133,7 +132,7 @@ class Control_task_mreward_user extends Control_user{
 				"where task_id=:task_id and prize=:prize),\n".
 				"a.work_status=:prize\n".
 				"where a.work_id = :work_id and b.uid=:uid";
-		$arr = array(':task_id'=>$task_id,':prize'=>$prize,':work_id'=>$work_id,':uid'=>$this->uid);
+		$arr = array(':task_id'=>$task_id,':prize'=>$prize,':work_id'=>$work_id,':uid'=>self::$uid);
 		$sql=DB::query($sql,Database::UPDATE)->tablepre(':keke_')->parameters($arr)->execute();
 		$this->refer();
 	}
@@ -233,11 +232,11 @@ class Control_task_mreward_user extends Control_user{
 				"on a.task_id = c.task_id\n".
 				"left join keke_witkey_comment d\n".
 				"on a.task_id = d.obj_id and d.obj_type = 'task'\n".
-				"where a.task_id = '{$_GET['task_id']}' and a.uid = $this->uid";
+				"where a.task_id = '{$_GET['task_id']}' and a.uid = ".self::$uid;
 		//删除任务与稿件
 		DB::query($sql,Database::DELETE)->tablepre(':keke_')->execute();
 		//删除任务与稿件的附件
-		File::del_file_by_task($_GET['task_id'],$this->uid);
+		File::del_file_by_task($_GET['task_id'],self::$uid);
 	}
 	
 	/**
@@ -278,7 +277,7 @@ class Control_task_mreward_user extends Control_user{
 			$where .= " and  c.scode ='{$_GET['status']}' ";
 		}
 		
-		$where .= "  and a.uid = $this->uid and b.model_id = '2'";
+		$where .= "  and a.uid = ".self::$uid." and b.model_id = '2'";
 		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
 		$group_by=" GROUP BY a.task_id ";
 		

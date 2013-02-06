@@ -52,16 +52,11 @@ abstract class Control_admin_task_list extends Control_admin{
      * (2,3,4,5) 可以冻结 ,这里模板上判断
      */
     public function set_freeze(){
-    	 
-    	//生成冻结记录
-    	$task_info = $this->get_task_info();
-    	$columns = array('frost_status','task_id','frost_time','admin_uid','admin_username');
-    	$values = array($task_info['task_status'],$task_info['task_id'],time(),$_SESSION['admin_uid'],$_SESSION['admin_username']);
-    
-    	DB::insert('witkey_task_frost')->set($columns)->value($values)->execute();
-    	//改变任务状态为7 freeze
-    	$this->set_status(7);
-    	 
+    	$sql = "INSERT INTO keke_witkey_task_frost(frost_status,task_id,frost_time,admin_uid,admin_username) \n".
+    			"SELECT task_status,task_id,UNIX_TIMESTAMP(),'{$_SESSION['admin_uid']}','{$_SESSION['admin_username']}' \n".
+    			"FROM keke_witkey_task where task_id = '{$_GET['task_id']}'";
+    	DB::query($sql,Database::INSERT)->tablepre('keke_')->execute();
+    	$this->set_status(8);
     }
     /**
      * 任务解冻

@@ -18,6 +18,8 @@ class Control_task_sreward_user extends Control_user{
 	 */
 	protected static $_left = 'sreward';
 	
+	private static $task_info = array();
+	
 	function before(){
 		parent::before();
 		Control_user_buyer_index::init_nav();
@@ -55,13 +57,13 @@ class Control_task_sreward_user extends Control_user{
 	 */
 	function pub_task($status,$cond=NULL){
 		$sql = "SELECT a.task_id,a.task_cash,a.task_title,a.work_num,a.start_time,\n".
-				"a.task_status status_id,a.sub_status,a.real_cash,\n".
+				"a.task_status status_id,a.sub_status,a.real_cash,a.uid,a.username,\n".
 				"b.model_code,b.config,\n".
 				"c.`status` task_status,c.scode status_scode,\n".
 				"f.`status` work_status,e.uid wuid,e.username wusername,\n".
 				"e.work_id,e.work_price,\n".
 				"g.mobile,g.qq,\n".
-				"k.mark_status,\n".
+				"k.mark_status,k.mark_id,\n".
 				"o.order_id,o.price,o.num\n".
 				"FROM :keke_witkey_task a  \n".
 				"left join :keke_witkey_model b \n".
@@ -75,10 +77,10 @@ class Control_task_sreward_user extends Control_user{
 				"left join :keke_witkey_space g \n".
 				"on e.uid = g.uid\n".
 				"left join :keke_witkey_mark k \n".
-				"on a.task_id = k.origin_id and b.model_code = k.model_code and k.mark_type = 2 and k.uid = a.uid\n".
+				"on a.task_id = k.origin_id and b.model_code = k.model_code and k.mark_type = 'seller' and k.by_uid = a.uid\n".
 				"left join :keke_witkey_order_detail o \n".
 				"on a.task_id = o.obj_id and o.obj_type = 'task'";
-				//"where a.uid = 5";
+				
 	
 		$sql = DB::query($sql)->tablepre(':keke_')->compile(Database::instance());
 		
@@ -103,7 +105,7 @@ class Control_task_sreward_user extends Control_user{
 			$where .= " and $cond";
 		}
 		
-		$where .= "  and a.uid = $this->uid  and a.model_id = '1'";
+		$where .= "  and a.uid = ".self::$uid."  and a.model_id = '1'";
 		
 		$this->_uri = $uri;
 		$this->_ord_tag = $ord_tag;
@@ -123,6 +125,8 @@ class Control_task_sreward_user extends Control_user{
 			$str .='<p>';
 			$str .='<a href="'.USER_URL.'/finance_recharge?order_id='.$task_info['order_id'].'&cash='.$task_info['price'].'">付款</a>';
 			$str .='</p>';
+		}elseif($task_info['status_scode']=='hp' and $task_info['mark_id']>0){
+			$str = '<p><a href="'.PHP_URL.'/mark/?id='.$task_info['mark_id'].'">互评</a></p>';
 		}
 		return $str;
 	}
@@ -145,6 +149,78 @@ class Control_task_sreward_user extends Control_user{
 		}
 		return $str;
 	}
+	
+	function action_buyer_work(){
+		$task_id  = (int)$_GET['task_id'];
+		$status = $_GET['status'];
+		$sql ="SELECT a.*,\n".
+				"c.`status`,c.scode,\n".
+				"e.uid,e.username,e.mobile,e.qq,\n".
+				"r.m_title ,r.m_ico,\n".
+				"cast((e.seller_good_num/e.seller_total_num)*100 as decimal(10,2)) seller_good_rate,\n".
+				"GROUP_CONCAT(conv(oct(f.file_id),8,10)) fids,\n".
+				"group_concat(f.file_name) fnames,\n".
+				"GROUP_CONCAT(f.save_name) fsnames\n".
+				"from keke_witkey_task_work a \n".
+				"left join keke_witkey_task b \n".
+				"on a.task_id = b.task_id \n".
+				"left join keke_witkey_model m\n".
+				"on b.model_id = m.model_id \n".
+				"left join keke_witkey_status c\n".
+				"on a.work_status = c.sid and c.model_code = m.model_code and c.stype = 'work'\n".
+				"left join keke_witkey_space e \n".
+				"on a.uid  = e.uid \n".
+				"left join keke_witkey_mark_rule r \n".
+				"on r.mark_rule_id = e.seller_level\n".
+				"left join keke_witkey_file f\n".
+				"on f.obj_type='work' 
+				and f.obj_id = a.work_id and b.uid = ".self::$uid."
+				and f.pid = a.task_id\n";
+			
+		
+		$sql = DB::query($sql)->tablepre('keke_')->compile(Database::instance());
+		
+		$this->_default_ord_field = 'a.work_id';
+		
+		$base_uri = PHP_URL.'/task/sreward_user/buyer_work?task_id='.$task_id;
+		
+		extract ( $this->get_url ( $base_uri ) );
+		
+		 
+		if($status){	
+			$where .= " and c.scode='$status' ";
+		}
+		
+		$where .= " and  m.model_code = 'sreward' and b.task_id=".$task_id;
+		
+		$group_by = ' group by a.work_id';
+		
+		$data = Model::sql_grid($sql,$where,$base_uri,$order,$group_by);
+		
+		$work_list = $data['data'];
+			
+		$pages = $data['pages']['page'];
+		
+		self::$task_info = $this->get_task_info($task_id);
+		
+		require Keke_tpl::template('control/task/sreward/tpl/user/buyer_work');
+	}
+	
+	function work_op($work_info){
+
+	 
+		$task_obj = new Control_task_sreward_info($this->request, $this->response);
+		return $task_obj->work_op($work_info,self::$task_info);
+		 
+	}
+	
+	
+	function get_task_info($task_id){
+		
+		$task_obj = new Control_task($this->request, $this->response);
+		return $task_obj->get_task_info($task_id);
+	}
+	
 	/**
 	 * 雇主确认验收,打款给威客，结束任务交易，双方进行互评
 	 */
@@ -152,6 +228,7 @@ class Control_task_sreward_user extends Control_user{
 		$task_id = $this->request->param('id');
 		$data = $this->pub_task('jf'," a.task_id = '$task_id'");
 		$task_info = $data['data'][0];
+		
 		$task_config = unserialize($task_info['config']);
 		//打款给中标者
 		Sys_finance::get_instance($task_info['wuid'])->set_action('task_bid')
@@ -161,8 +238,8 @@ class Control_task_sreward_user extends Control_user{
 		
 		//改变任务状态
 		DB::update('witkey_task')
-		->set(array('task_status','sub_status'))->value(array('7',''))
-		->where("task_id = $task_id and uid = $this->uid")
+		->set(array('task_status','sub_status'))->value(array('7','3'))
+		->where("task_id = $task_id and uid = ".self::$uid)
 		->execute();
 		
 		//生成互记录,如果是一对多的话，这里要注意
@@ -177,9 +254,10 @@ class Control_task_sreward_user extends Control_user{
 				'by_username'=>$task_info['username'],
 				'mark_status'=>0,
 				'mark_value'=>0,
-				'mark_max_time'=>SYS_START_TIME+($task_config['max_mark']*3600),
+				'mark_max_time'=>SYS_START_TIME+($task_config['max_mark']*3600*24),
 				'mark_type'=>'seller'
 		);
+		
 		Model::factory('witkey_mark')->setData($array)->create();
 			
 		$array['uid']=$task_info['uid'];
@@ -267,11 +345,11 @@ class Control_task_sreward_user extends Control_user{
 				"on a.task_id = c.task_id\n".
 				"left join keke_witkey_comment d\n".
 				"on a.task_id = d.obj_id and d.obj_type = 'task'\n".
-				"where a.task_id = '{$_GET['task_id']}' and a.uid = $this->uid";
+				"where a.task_id = '{$_GET['task_id']}' and a.uid = self::$uid";
 		//删除任务与稿件
 		DB::query($sql,Database::DELETE)->tablepre(':keke_')->execute();
 		//删除任务与稿件的附件
-		File::del_file_by_task($_GET['task_id'],$this->uid);
+		File::del_file_by_task($_GET['task_id'],self::$uid);
 	}
 	
 	/**
@@ -297,21 +375,83 @@ class Control_task_sreward_user extends Control_user{
 		self::$_default = 'seller';
 		self::$_left = 'sreward';
 		Control_user_seller_index::init_nav();
-		$query_fields = array ('a.task_id' => '任务ID', 'b.task_title' => '任务标题');
+		$query_fields = array ('b.task_id' => '任务ID', 'b.task_title' => '任务标题');
 		
-		$sql="SELECT a.work_id, a.work_time,a.work_status,\n".
-				"b.task_id,b.model_id,b.task_status,b.sub_status,b.task_title,b.task_cash,\n".
-				"c.`status`,c.scode work_scode,\n".
-				"d.mark_status,d.mark_id,\n".
-				"e.uid,e.username,e.mobile,e.qq,\n".
-				"f.scode task_scode\n".
-				"from keke_witkey_task_work a \n".
-				"left join keke_witkey_task b \n".
-				"on a.task_id = b.task_id \n".
-				"left join keke_witkey_model m\n".
+		$model_name = Keke::$_model_list[1]['model_name'];
+		
+		$status = $_GET['status'];
+		
+		$base_uri = PHP_URL . "/task/sreward_user/seller";
+		
+		$seller_work_uri = PHP_URL.'/task/sreward_user/seller_work';
+		
+		$sql = "SELECT \n".
+				"a.work_id, a.work_time, \n".
+				"b.task_id,b.model_id,b.task_status,b.sub_status,b.task_title,b.task_cash, \n".
+				"c.`status` tstatus,\n".
+				"e.uid,e.username,e.mobile,e.qq\n".
+				"from keke_witkey_task_work a  \n".
+				"left join keke_witkey_task b  \n".
+				"on a.task_id = b.task_id  \n".
+				"left join keke_witkey_model m \n".
+				"on b.model_id = m.model_id \n".
+				"left join keke_witkey_status c\n".
+				"on b.task_status = c.sid and c.model_code = m.model_code and c.stype = 'task'\n".
+				"left join keke_witkey_mark k \n".
+				"on a.work_id = k.obj_id \n".
+				"and k.origin_id = b.task_id \n".
+				"and k.mark_type='buyer'".
+				"left join keke_witkey_space e\n".
+				"on b.uid  = e.uid\n";
+				//"where a.uid = :uid and m.model_code = 'sreward' \n";
+		$sql= DB::query($sql)->tablepre('keke_')->compile(Database::instance());		 
+	    	
+		extract ( $this->get_url ( $base_uri ) );
+		
+		if( $status =='hp'){
+			$where .= " and k.mark_status =0 ";
+		}elseif( $status == 'jf'){
+			$where .= " and b.task_status = 6 and b.sub_status = 1";
+		}elseif ($status=='xg'){
+			$where .= " and  (c.scode = '$status' or c.scode='tg') ";
+		}elseif($status){
+			$where .= " and  c.scode = '$status' ";
+		}
+		
+		$where .= "  and  a.uid = ".self::$uid." and m.model_code = 'sreward'";
+		
+		$data = (array)Model::sql_grid($sql,$where,$uri,$order,'group by a.task_id');
+		
+		$list_arr = $data ['data'];
+		
+		$pages = $data ['pages']['page'];
+		
+		
+		require Keke_tpl::template('control/task/sreward/tpl/user/task_seller');
+	}
+	/**
+	 * 我参与任务的稿件
+	 */
+	function action_seller_work(){
+		self::$_default = 'seller';
+		self::$_left = 'sreward';
+		Control_user_seller_index::init_nav();
+		$query_fields = array ('a.work_id' => '稿件ID', 'b.work_desc' => '稿件内容');
+		$base_uri = PHP_URL.'/task/sreward_user/seller_work?task_id='.$_GET['task_id'];
+		$sql="SELECT \n".
+				"a.work_id, a.work_time,a.work_desc, \n".
+				"b.task_id,b.model_id,b.task_status,b.sub_status,b.task_title,b.task_cash, \n".
+				"c.`status` work_status,c.scode work_scode, \n".
+				"d.mark_status,d.mark_id, \n".
+				"e.uid,e.username,e.mobile,e.qq, \n".
+				"f.scode task_scode \n".
+				"from keke_witkey_task_work a  \n".
+				"left join keke_witkey_task b  \n".
+				"on a.task_id = b.task_id  \n".
+				"left join keke_witkey_model m \n".
 				"on b.model_id = m.model_id \n".
 				"left join keke_witkey_mark d\n".
-				"on d.origin_id=a.task_id and d.obj_id=a.work_id and d.uid=a.uid and d.mark_type=1 \n".
+				"on d.origin_id=a.task_id and d.obj_id=a.work_id and d.by_uid=a.uid and d.mark_type='buyer'\n".
 				"left join keke_witkey_status c\n".
 				"on a.work_status = c.sid and c.model_code = m.model_code and c.stype = 'work'\n".
 				"left join keke_witkey_status f\n".
@@ -319,8 +459,6 @@ class Control_task_sreward_user extends Control_user{
 				"left join keke_witkey_space e\n".
 				"on b.uid  = e.uid";
 		
-		$base_uri = PHP_URL . "/task/sreward_user";
-				
 		extract ( $this->get_url ( $base_uri ) );
 		
 		if($_GET['status']=='jf'){
@@ -331,30 +469,38 @@ class Control_task_sreward_user extends Control_user{
 			$where .= " and  c.scode ='{$_GET['status']}' ";
 		}
 		
-		$where .= "  and a.uid = $this->uid and b.model_id='1'";
+		$where .= "  and a.uid = self::$uid and a.task_id = {$_GET['task_id']} and m.model_code = 'sreward'  ";
+		
 		$sql = DB::query($sql)->tablepre('keke_')->compile(Database::instance());
-		$group_by=" GROUP BY a.task_id ";
-				
-		$data=Model::sql_grid($sql,$where,$uri,$order,$group_by);
+		
+		$data=Model::sql_grid($sql,$where,$uri,$order);
 		
 		$work_list=$data['data'];
 		$pages=$data['pages'];
-
-		require Keke_tpl::template('control/task/sreward/tpl/user/task_seller');
+		
+		require Keke_tpl::template('control/task/sreward/tpl/user/seller_work');
 	}
+	
 	function action_wk_confirm(){
-		$task_id=$_GET['task_id'];
+		$task_id = (int)$this->request->param('id');
 		$where="task_id= '$task_id'";
 		Model::factory('witkey_task')->setData(array('sub_status'=>1))->setWhere($where)->update();
-		$this->request->redirect ( "task/sreward_user/seller?status=jf" );
+		//$this->request->redirect ( "task/sreward_user/seller?status=jf" );
 	}
-	function join_task_ststus($v){
+	/**
+	 * 我参与搞件的操作
+	 * @param array $v work_info
+	 * @return string
+	 */
+	function join_task_op($v){
 		if($v['task_status']=='6' && $v['sub_status']=='0'){
-			$str = '<p><a onclick="return kdel(this,\'是否确认交付？\')" href="'.PHP_URL.'/task/sreward_user/wk_confirm?task_id='.$v['task_id'].'" >确认交付</a></p>';
+			$str = '<p><a onclick="return kdel(this,\'是否确认交付？\')" href="'.PHP_URL.'/task/sreward_user/wk_confirm/'.$v['task_id'].'" >确认交付</a></p>';
 		}elseif($v['task_status']=='6' && $v['sub_status']=='1'){
 			$str = '<p><a href="#" >提醒验收</a></p>';
-		}elseif($v['task_status']=='7'&& $v['mark_status']<'1'){
-			$str = '<p><a href="#?mark_id='.$v['mark_id'].'">互评</a></p>';
+		}elseif($v['task_status']=='7' and $v['mark_id']>0){
+			$str = '<p><a href="'.PHP_URL.'/mark/?id='.$v['mark_id'].'">互评</a></p>';
+		}else{
+			$str = "<p>{$v['work_status']}</p>";
 		}
 		return $str;
 	}

@@ -58,7 +58,7 @@ class Control_user_account_basic extends Control_user{
 			  "values (:uid,:username,'$mobile','$rand_code',0,:time)";
 		
 		DB::query($sql,Database::UPDATE)->tablepre(':keke_')
-		->param(':uid', $this->uid)->param(':username', $this->username)
+		->param(':uid', self::$uid)->param(':username', $this->username)
 		->param(':time', SYS_START_TIME)->execute();
 		Keke_msg::instance()->send_sms($mobile,'手机验证码:'.$rand_code);
 		echo 1;
@@ -71,7 +71,7 @@ class Control_user_account_basic extends Control_user{
 		$code = $this->request->param('id');
 		$code = trim($code);
 		$rows =(int)DB::update('witkey_auth_mobile')->set(array('auth_status'))->value(array(1))
-		->where("uid=$this->uid and valid_code='$code'")->execute();
+		->where("uid=".self::$uid." and valid_code='$code'")->execute();
 		//$list = Database::instance()->get_query_list();
 		if($rows==0){
 			return FALSE;
@@ -81,7 +81,7 @@ class Control_user_account_basic extends Control_user{
 				"on a.uid = b.uid left join :keke_witkey_member_auth c on a.uid = c.uid \n".
 				"set a.mobile = b.mobile ,c.mobile=1\n".
 				"where b.uid = :uid";
-		DB::query($sql,Database::UPDATE)->tablepre(':keke_')->param(':uid', $this->uid)->execute(); 
+		DB::query($sql,Database::UPDATE)->tablepre(':keke_')->param(':uid', self::$uid)->execute(); 
 		
 		Keke::show_msg('手机绑定成功','user/account_basic');
 	}
@@ -117,7 +117,7 @@ class Control_user_account_basic extends Control_user{
 				"values\n".
 				"(:uid,:username,:email,:auth_time,:auth_status,:end_time)";
 		//生成认证记录
-		DB::query($sql,Database::UPDATE)->tablepre(':keke_')->param(':uid', $this->uid)
+		DB::query($sql,Database::UPDATE)->tablepre(':keke_')->param(':uid', self::$uid)
 		->param(':username', $this->username)
 		->parameters(array(':email'=>$email,
 							':auth_time'=>SYS_START_TIME,
@@ -125,9 +125,9 @@ class Control_user_account_basic extends Control_user{
 							':end_time'=>SYS_START_TIME+(3600*24)
 		))->execute();
 		
-		//Keke::$_log->add(Log::DEBUG, '发送前的数据:'.$this->uid.$email.(int)SYS_START_TIME)->write();
+		//Keke::$_log->add(Log::DEBUG, '发送前的数据:'.self::$uid.$email.(int)SYS_START_TIME)->write();
 		//生成认证码
-		$valid_code = hash_hmac('md5', $this->uid.$email.(int)SYS_START_TIME, $this->uid);
+		$valid_code = hash_hmac('md5', self::$uid.$email.(int)SYS_START_TIME, self::$uid);
 		//生成激活连接
 		$action_url = $_K['website_url'].'/index.php/user/account_basic/active_mail/'.$valid_code;
 		
@@ -145,11 +145,11 @@ class Control_user_account_basic extends Control_user{
 	function action_active_mail(){
 		$code = $this->request->param('id');
 		$info = DB::select('email,auth_time,end_time')->from('witkey_auth_email')
-		->where("uid = $this->uid")->get_one()->execute();
+		->where("uid = ".self::$uid)->get_one()->execute();
 		
-		//Keke::$_log->add(Log::DEBUG, '接收后的数据:'.$this->uid.$info['email'].$info['auth_time'])->write();
+		//Keke::$_log->add(Log::DEBUG, '接收后的数据:'.self::$uid.$info['email'].$info['auth_time'])->write();
 		
-		if(hash_hmac('md5', $this->uid.$info['email'].$info['auth_time'], $this->uid) != trim($code)){
+		if(hash_hmac('md5', self::$uid.$info['email'].$info['auth_time'], self::$uid) != trim($code)){
 			Keke::show_msg('激活地址不合法','user/account_basic','error');
 		}
 		if((int)SYS_START_TIME > $info['end_time']){
@@ -162,7 +162,7 @@ class Control_user_account_basic extends Control_user{
 				"set a.auth_status=1 , b.email=:email,c.email = 1\n".
 				"where a.uid = :uid";
 		
-		$params = array(':email'=>$info['email'],':uid'=>$this->uid);
+		$params = array(':email'=>$info['email'],':uid'=>self::$uid);
 		
 		DB::query($sql,Database::UPDATE)->tablepre(':keke_')->parameters($params)->execute();
 		Keke::show_msg('邮件绑定成功','user/account_basic');
@@ -178,7 +178,7 @@ class Control_user_account_basic extends Control_user{
 		
 		$columns = array('group_id','sex','indus_id','residency','summary');
 		$values = array($_POST['usertype'],$_POST['sex'],$_POST['indus'],$residency,$_POST['summary']);
-		$where = "uid = $this->uid";
+		$where = "uid = ".self::$uid;
 		DB::update('witkey_space')->set($columns)->value($values)->where($where)->execute();
 		Keke::show_msg('提交成功','user/account_basic');
 	}

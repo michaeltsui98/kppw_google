@@ -104,7 +104,7 @@ class Control_user_buyer_faver extends Control_user{
 	
 		extract ( $this->get_url ( $base_uri ) );
 	
-		$where .= "  and a.uid = $this->uid and b.model_type='shop'";
+		$where .= "  and a.uid = ".self::$uid." and b.model_type='shop'";
 			
 		$this->_uri = $uri;
 		$this->_ord_tag = $ord_tag;
@@ -136,7 +136,7 @@ class Control_user_buyer_faver extends Control_user{
 	
 		extract ( $this->get_url ( $base_uri ) );
 	
-		$where .= " and  b.model_type='task' and a.uid = $this->uid ";
+		$where .= " and  b.model_type='task' and a.uid = ".self::$uid;
 			
 		$this->_uri = $uri;
 		$this->_ord_tag = $ord_tag;

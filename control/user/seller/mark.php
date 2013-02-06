@@ -77,7 +77,7 @@ class Control_user_seller_mark extends Control_user{
 		 
 		extract ( $this->get_url ( $base_uri ) );
 		
-		$where .= " and a.mark_status >0 and a.mark_type = 2 and a.uid = $this->uid ";
+		$where .= " and a.mark_status >0 and a.mark_type = 'seller' and a.uid = ".self::$uid;
 		
 		$group = " group by a.mark_id";
 		if($status >0 ){

@@ -93,6 +93,9 @@ class Keke_msg_keke extends Keke_msg {
 		}
 		$columns = array('uid','username','to_uid','to_username','title','content','on_time');
 		$values = array($uid,$username,$to_uid,$to_username,$title,$content,time());
+		//收付人未读短信数加+1
+		$sql = "update keke_witkey_space set msg_num = msg_num+1 where uid = $to_uid";
+		DB::query($sql,Database::UPDATE)->tablepre('keke_')->execute();
 		return DB::insert('witkey_msg')->set($columns)->value($values)->execute();
 		
 	}

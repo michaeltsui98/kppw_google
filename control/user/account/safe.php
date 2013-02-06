@@ -44,7 +44,7 @@ class Control_user_account_safe extends Control_user{
 	 * @return boolean
 	 */
 	function check_pwd($pwd){
-		return (bool)(md5($pwd) == DB::select('password')->from('witkey_member')->where("uid=$this->uid")->get_count()->execute());
+		return (bool)(md5($pwd) == DB::select('password')->from('witkey_member')->where("uid=".self::$uid)->get_count()->execute());
 	}
 	/**
 	 * 更新用户密码,找回密码可以用这个方法重置密码
@@ -53,7 +53,7 @@ class Control_user_account_safe extends Control_user{
 	 */
 	function update_pwd($pwd,$uid=NULL){
 		if($uid===NULL){
-			$uid = $this->uid;
+			$uid = self::$uid;
 		}
 		DB::update('witkey_member')->set(array('password'))->value(array(md5($pwd)))->where("uid=$uid")->execute();
 	}

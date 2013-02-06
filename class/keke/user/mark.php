@@ -35,7 +35,7 @@ class Keke_user_mark {
 	 * @param float $obj_cash 交易金额
 	 * @param int $mark_state (1,2,3)好中差
 	 */
-	public static function update_user($to_uid,$user_type,$obj_cash,$mark_state){
+	/* public static function update_user($to_uid,$user_type,$obj_cash,$mark_state){
 		$obj_cash = (float)$obj_cash;
 		$mark_state = (int)$mark_state;
 		$to_uid = (int)$to_uid;
@@ -55,11 +55,11 @@ class Keke_user_mark {
 		 ->tablepre(':uid',$to_uid)
 		 ->execute();
 		 self::update_level($to_uid, $user_type);
-	}
+	} */
 	/**
 	 * 互评规则,好评*1，中评*0.5,差评*0
 	 */
-	public static function mark_rule($user_type,$obj_cash,$mark_state){
+	/* public static function mark_rule($user_type,$obj_cash,$mark_state){
 		$arr = array();
 		if($mark_state==1){
 			$arr['credit'] = $user_type.'_credit+'.(float)$obj_cash*1;
@@ -75,21 +75,21 @@ class Keke_user_mark {
 			$arr['total_num'] = $user_type.'_total_num+1';
 		}
 		return $arr;
-	}
+	} */
 	/**
 	 * 根据用户的能力值，信誉值更新用户等级
 	 * @param  $to_uid
 	 * @param  $user_type
 	 * @return void
 	 */
-	public static function update_level($to_uid,$user_type){
+	/* public static function update_level($to_uid,$user_type){
 		 $sql = "UPDATE :Pwitkey_space a set a.:buyer_level = \n".
 			"(select mark_rule_id from :Pwitkey_mark_rule b \n".
 			"where  b.:buyer_value<=a.:buyer_credit order by b.mark_rule_id desc limit 0,1)\n".
 			"where a.uid = :uid";
 		 DB::query($sql,Database::UPDATE)->tablepre(':P')->tablepre(':buyer', $user_type)
 		 ->param(':uid', $to_uid)->execute();
-	}
+	} */
 	/**
 	 * 获取用户的头衔，与图标地址,好评率
 	 * @param int $uid
@@ -111,6 +111,26 @@ class Keke_user_mark {
 		}
 		return $arr;
 	}
+	/**
+	 * 用户等级信息
+	 * @param int $uid
+	 * @return array()
+	 */
+	public static function user_level($uid){
+		$sql = "select \n".
+				"mr.g_title buyer_title,mr.g_ico buyer_ico,\n".
+				"IFNULL(cast((s.buyer_good_num/s.buyer_total_num)*100  as decimal(10,2)),0) buyer_good_rate,\n".
+				"m.m_title seller_title,m.m_ico seller_ico,\n".
+				"IFNULL(cast((s.seller_good_num/s.seller_total_num)*100  as decimal(10,2)),0) seller_good_rate\n".
+				"from keke_witkey_space s \n".
+				"left join keke_witkey_mark_rule mr\n".
+				"on mr.mark_rule_id = s.buyer_level\n".
+				"left join keke_witkey_mark_rule m\n".
+				"on m.mark_rule_id = s.seller_level \n".
+				"where s.uid = :uid ";
+		return DB::query($sql)->tablepre('keke_')->param(':uid', $uid)->get_one()->execute();
+	}
+	
 	/**
 	 * 将空值变为0
 	 * @param float $e

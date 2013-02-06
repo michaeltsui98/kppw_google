@@ -289,6 +289,11 @@ $lang = array(
 	'return_top'=>'返回顶部',
 	'system_msg'=>'系统消息',
 	'system'=>'系统',
+	'first_page'=>'第一页',
+	'Previous_page'=>'上一页',
+	'page'=>'页',
+	'next_page'=>'下一页',
+	'last_page'=>'最后一页',
 
 //标点符号 zh_:中文,en_英文
 	'zh_wh'=>'？',
@@ -363,8 +368,8 @@ $lang = array(
 	'now_employer_can_choose_work'=>'当前阶段雇主可以选稿',
 	'from_choose_deadline'=>'距选稿截止',
 	'task_choosing_wait_employer_choose'=>'任务选稿中、等待雇主选稿',
-	'from_vote_deadline'=>'距投票截止',
-	'task_voting_can_vote'=>'任务进入投票阶段、欢迎积极投票',
+	'jf_deadline'=>'距交付截止',
+	 
 	'from_gs_deadline'=>'距公示截止',
 	'task_haved_choose_bid_and_user_look'=>'任务已选标，用户可以此任务进行监督',
 	'task_in_jf_rate'=>'任务已进入交付阶段',

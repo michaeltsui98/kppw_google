@@ -26,7 +26,7 @@ class Control_user_seller_shop extends Control_user{
 	 * 店铺开通，店铺设置
 	 */
 	function action_index(){
-		global $_K,$_lang;
+	
 		//是否认证
 		$case_uri= USER_URL ."/seller_shop/case";
 		$member_uri=USER_URL."/seller_shop/member";
@@ -68,11 +68,11 @@ class Control_user_seller_shop extends Control_user{
 		$case_id = $_GET ['case_id'];
 		$case_info = DB::select ()->from ( 'witkey_shop_case' )->where ( "case_id = '$case_id'" )->get_one ()->execute ();
 		
-		$shop_arr= DB::select ('shop_id')->from ( 'witkey_shop' )->where ( "uid = '$this->uid'" )->get_one ()->execute ();
+		$shop_arr= DB::select ('shop_id')->from ( 'witkey_shop' )->where ( "uid = ".self::$uid )->get_one ()->execute ();
 
 		$indus_arr = Sys_indus::get_indus_tree($case_info['indus_id']);
 
-		$service_arr = DB::select('sid,title')->from('witkey_service')->where("uid = $this->uid")->execute();	
+		$service_arr = DB::select('sid,title')->from('witkey_service')->where("uid = ".self::$uid)->execute();	
 		
 		require Keke_tpl::template('user/seller/shop_case_add');
 	}
@@ -143,7 +143,7 @@ class Control_user_seller_shop extends Control_user{
 	function action_member_add(){
 		$member_save_uri=USER_URL."/seller_shop/member_save";
 		$member_id = $_GET ['member_id'];
-		$shop_arr= DB::select ('shop_id')->from ( 'witkey_shop' )->where ( "uid = '$this->uid'" )->get_one ()->execute ();
+		$shop_arr= DB::select ('shop_id')->from ( 'witkey_shop' )->where ( "uid = ".self::$uid )->get_one ()->execute ();
 		$member_info = DB::select ()->from ( 'witkey_shop_member' )->where ( "member_id = '$member_id'" )->get_one ()->execute ();
 		//获取职位名称
 		$inc_job=Control_user_account_detail::$inc_job;
@@ -194,7 +194,7 @@ class Control_user_seller_shop extends Control_user{
 	function action_save(){
 		$_POST = Keke_tpl::chars($_POST);
 		$arr = array('shop_name'=>$_POST['shop_name'],'shop_desc'=>$_POST['shop_desc'],
-				'uid'=>$this->uid,'username'=>$this->username,'shop_type'=>$this->group_id==3?2:1
+				'uid'=>self::$uid,'username'=>$this->username,'shop_type'=>$this->group_id==3?2:1
 				);
 		if($_POST['hdn_shop_id']){
 			DB::update('witkey_shop')->set(array_keys($arr))->value(array_values($arr))->where("shop_id = '{$_POST['hdn_shop_id']}'")->execute();

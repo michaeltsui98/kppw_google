@@ -1,6 +1,6 @@
 RewriteEngine On
   
-RewriteBase /kppw_google/
+RewriteBase /kppw30/
   
 RewriteCond $1 ^(index.php|robots.txt|favicon.ico|static|payment|install|data)
   

@@ -15,7 +15,6 @@ class Control_admin_main extends Control_admin {
 		}
 		
 		$dbsize = round ( $dbsize / 1024 / 1024, 2 ); // 转换单位
-		
 		$mysql_ver = Database::instance()->version(); // 获得 MySQL 版本
 		 
 		

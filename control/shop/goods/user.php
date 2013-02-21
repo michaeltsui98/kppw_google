@@ -77,9 +77,9 @@ class Control_shop_goods_user extends Control_user{
 		extract ( $this->get_url ( $base_uri ) );
 		//$where .=" and e.mark_type='$type'";
 		if($type=='seller'){
-			$where .= " and a.seller_uid=$this->uid ";
+			$where .= " and a.seller_uid= ".self::$uid;
 		}elseif ($type=='buyer'){
-			$where .= " and a.order_uid=$this->uid ";
+			$where .= " and a.order_uid= ".self::$uid;
 		}
 		if(isset($status)){
 			$where .=" and a.order_status= '$status'";
@@ -176,7 +176,7 @@ class Control_shop_goods_user extends Control_user{
 		 $query_fields = array('sid'=>'商品ID','title'=>'商品标题');
 		 $base_uri = PHP_URL."/shop/goods_user/pub";
 		 extract ( $this->get_url ( $base_uri ) );
-		 $where .= " and uid='$this->uid' and model_id='6'";
+		 $where .= " and uid='".self::$uid."' and model_id='6'";
 		 
 		 if(isset($_GET['status'])){
 		 	$status=(int)$_GET['status'];

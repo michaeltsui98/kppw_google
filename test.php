@@ -2,4 +2,5 @@
 
 include 'app_boot.php';
  
-//Sys_cron_task::factory('preward')->batch_run();
+
+include Keke_tpl::template('test');

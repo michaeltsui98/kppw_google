@@ -82,8 +82,7 @@ class Keke_tpl {
 		
 		//PHP代码
 		$template = preg_replace ( "/\<\!\-\-\{eval\s+(.+?)\s*\}\-\-\>/ies", "Keke_tpl::evaltags('\\1')", $template );
-		
-		$template = preg_replace ( "/\{php\s+(.+)\}/", "<?php \\1?>", $template );
+				
 		//开始处理
 		//变量
 		$var_regexp = "((\\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)(\[[a-zA-Z0-9_\-\.\"\'\[\]\$\x7f-\xff]+\])*)";

@@ -5,7 +5,7 @@
  * @version 3.0
  */
 class Control_task_sreward_cron extends Sys_cron_task {
-	private static $config = NULL;
+	 
 	function run($config) {
 		if(!is_array($config)){
 			$config = unserialize($config);

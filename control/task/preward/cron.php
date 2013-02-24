@@ -5,7 +5,7 @@
  * @version 3.0
  */
 class Control_task_preward_cron extends Sys_cron_task {
-	private static $config = NULL;
+	
 	function run($config) {
 		if(!is_array($config)){
 			$config = unserialize($config);
@@ -46,6 +46,7 @@ class Control_task_preward_cron extends Sys_cron_task {
 		->execute();
 		//退款，改变任务状态为结束 
 		if(sizeof($task_arr)>0){
+			 
 			$this->task_recash($task_arr);
 			$sql = "update \n".
 					"keke_witkey_task a \n".

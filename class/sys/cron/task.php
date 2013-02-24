@@ -15,6 +15,7 @@ abstract  class Sys_cron_task {
 	 * @var ÊµÀý
 	 */
 	public static $instance = array();
+	protected  static $config = NULL;
 	/**
 	 * 
 	 * @param string $name

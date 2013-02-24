@@ -1,0 +1,14 @@
+
+<h1>第一步</h1>
+
+<form action="{PHP_URL}/task/preward_pub/step2" method="post"  onsubmit="return checkForm(this)">
+	<input type="hidden" name="formhash" value="{FORMHASH}">
+	<p>任务金额:<input type="text" name="task_cash" value="{$task_info['task_cash']}" limit="required:true"></p>
+	<p>所需要稿件数：<input type="text" name="need_work" value="{$task_info['need_work']}" limit="required:true"></p>
+	
+	<p>任务周期:<input type="text" name="sub_time" value="{$task_info['sub_time']}" limit="required:true"></p>
+	
+	<p><input type="submit"/></p>
+</form>
+
+ 

@@ -1,0 +1,48 @@
+<!--{include header}-->
+
+任务状态：{$task_info['status']}
+<br/>
+任务名称：{$task_info['task_title']}
+<br/>
+
+任务金额：{$task_info['task_cash']}
+<br/>
+{$time_desc['time_desc']}：<span class="d_time" ed="{$time_desc['time']}" title="{$time_desc['ext_desc']}"></span>
+<br/>
+任务内容：{$task_info['task_desc']}
+<br/>
+附加需示:{$task_info['att_desc']}
+<br/>
+{if $task_info['point']}
+任务地图：<a href="{PHP_URL}/ajax/map?p={$task_info['point']}" onclick="showWindow('map',this.href);return false;">查看</a>
+{/if}
+<br/>
+{if $file_arr}
+任务附件：
+	{loop $file_arr $v}
+	<a href = "{PHP_URL}/down?file_name={$v['save_name']}&file_path={$v['file_name']}">{$v['file_name']}</a><br/>
+	{/loop}
+{/if}
+<br/>
+任务稿件数：{$task_info['work_num']}
+<br/>
+<!--{eval echo  $this->task_op();}-->
+
+
+买家信息：
+<br/>
+买家名称：{$task_info['username']}
+<br/>
+买家图片：{avatar($task_info['uid'],small)}
+<br/>
+买家信誉：<img src="{BASE_URL}/{$buyer_leve['ico']}" >  
+好评率：  {$buyer_leve['buyer_good_rate']}%
+<br/>
+
+<!--{eval $this->action_work();}-->
+<script>
+	In('artif');
+	ddtime();	 
+</script>
+
+<!--{include footer}-->	

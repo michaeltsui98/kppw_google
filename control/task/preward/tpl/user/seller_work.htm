@@ -1,0 +1,86 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/seller/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 title="我的任务" class="title">我的任务</h2>
+		                    </div>
+		                </header>
+		                <nav class="box_nav">
+								<ul id="test_ul" class="clearfix">
+									<li {if $_GET['status']=='wait'} class="selected" {/if}><a href="{$base_uri}&status=wait">待选</a></li>
+									<li {if $_GET['status']=='bid'} class="selected" {/if}><a href="{$base_uri}&status=bid">中标</a></li>
+									<li {if $_GET['status']=='out'} class="selected" {/if}><a href="{$base_uri}&status=out">淘汰的</a></li>
+									<li {if $_GET['status']=='jf'} class="selected" {/if}><a href="{$base_uri}&status=jf">待交付</a></li>
+									<li {if $_GET['status']=='hp'} class="selected" {/if}><a href="{$base_uri}&status=hp">待互评</a></li>
+								</ul>
+		                </nav>
+		                <div class="box_detail">
+
+		                	<div class="toolbar">
+		                		<form class="detail" action="{$base_uri}" method="get" id="frm_user_search">
+										<!--{include control/admin/tpl/search}-->
+								</form>
+		                	</div>
+
+		                	<!--date_table数据表格 start-->
+		                    <div class="data_list">
+		                        <table  class="data_table">
+		                            <thead>
+		                            <tr>
+		                              <th scope="col">稿件内容</th>
+		                              <th scope="col">任务金额</th>
+		                              <th scope="col">稿件状态</th>
+		                              <th scope="col">买家</th>
+		                              <th scope="col">参与时间</th>
+		                            </tr>
+		                            </thead>
+		                            <tbody>
+			                          {loop $work_list $v}
+										<tr>
+			                              <td>
+			                              	<a href="{PHP_URL}/task/{$v['task_id']}" class="title">{$v['task_title']} </a>
+			                              </td>
+			                              <td><span class="money">{$v['work_desc']}</span></td>
+			                              <td>{$v['status']}<!--{eval echo $this->join_task_op($v)}--></td>
+			                              <td>
+			                              	{if $v['work_scode']=='bid'}
+			                              	<p>
+			                              		<a href="#">{$v['username']}</a>
+			                              	</p>
+			                              	<p>$v['mobile']</p>
+											{if !$v['qq']}
+			                              	<p>
+			                              		<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=253773980&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:253773980:46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+			                              	</p>
+											{/if}
+											{/if}
+			                              </td>
+			                              <td>{date('Y-m-d',$v['work_time'])}</td>
+			                            </tr>
+								       {/loop}
+		                         	 </tbody>
+		                            
+		                          </table>
+		                    </div>
+			               	<!--data_table数据表格 end-->
+
+			               	<div class="toolbar bottom">
+		                		
+		                		<div class="page">
+					                 {$pages['page']}
+					            </div>
+		                	</div>
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+<!--{include user/footer}-->

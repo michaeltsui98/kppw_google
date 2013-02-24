@@ -1,0 +1,124 @@
+<!--{include user/header}-->
+    <!--content start-->
+    <div class="wrapper">
+    	<article class="article container">
+    		<!--{include user/buyer/side}-->
+    		<div class="content">
+    			<div class="box">
+		            <div class="inner clearfix">
+		                <header class="box_header">
+		                    <div class="box_title">
+		                        <h2 class="title">任务编辑</h2>
+		                    </div>
+		                </header>
+		                
+		                <div class="box_detail">
+		                	<form action="{$save_uri}" method="post" enctype="multipart/form-data" name="form_task" id="form_task" onsubmit="return checkForm(this)">
+		                	<input type="hidden" value="{$task_info['task_id']}" name="hdn_task_id">
+							<div class="form_row">
+	                			<label class="form_label">分类：</label>
+	                			<select name="sel_indus_id" id=""> 
+	                				{loop $indus_arr $v}
+									$v
+									{/loop}
+	                			</select>
+	                		</div>
+		                	<div class="form_row">
+	                			<label class="form_label">标题：</label>
+	                			<input type="text" name="txt_task_title" size="70" {if $task_info['task_status'] > "1" } disabled="disabled" {/if} value="{$task_info['task_title']}"
+								limit="required:true"
+								title="请输入任务标题"
+								msg="任务标题输入有误"
+								msgArea="msg_task_title">
+								<span id="msg_task_title"></sapn>
+	                		</div>
+		                	
+	                		<div class="form_row">
+	                			<label class="form_label">赏金：</label>
+	                			<span class="money">{$task_info['task_cash']}</span>
+	                		</div>
+
+	                		<div class="form_row" name="txt_contact">
+	                			<label class="form_label">电话号码：</label>
+	                			<input type="tel" name="txt_contact" value="{$task_info['contact']}"
+								limit="required:true;type:tel"
+								title="请输入真实电话号码"
+								msg="电话号码输入有误"
+								msgArea="msg_contact">
+								<span id="msg_contact"></span>
+	                		</div>
+
+	                		<div class="form_row float_row">
+	                			<label class="form_label">附件：</label>
+	                			<div class="detail">
+		                			<input type="hidden" name="file_ids" id="file_ids">
+									{if $length!=0}
+										<input type="file" class="file" name="upload" id="upload">
+									{/if}
+									{if $file_info[0][0]}
+									<ul>
+									{loop $file_info $v}
+									   <li>
+                							<a href="{$file_down_uri}?file_name={$v[1]}&file_path={$v[0]}" class="mr_10">{$v[1]}</a> 
+                							<a href="{$del_uri}?fid={$v[2]}&file_path={$v[0]}" onclick="return kdel(this,'',rm)">删除</a>
+                						</li>
+									{/loop}
+									</ul>
+									{/if}
+								</div>
+	                		</div>
+							
+		                	<div class="form_row">
+	                			<label class="form_label">需求：</label>
+	                			<textarea name="txa_task_desc" class="xheditor-simple" id="" cols="70" rows="10" {if $task_info['task_status'] > "1" } disabled="disabled" {/if}
+								limit="required:true;len:5-1000"
+								title="任务描述为5到1000个字符"
+								msg="任务描述输入有误"
+								msgArea="msg_task_desc">{$task_info['task_desc']}</textarea>
+	                			<span id="msg_task_desc"></span>
+							</div>
+
+	                		<div class="form_row">
+	                			<label class="form_label">附加需求：</label>
+	                			<textarea name="txa_att_desc" class="xheditor-simple" id="" cols="70" rows="5">{$task_info['att_desc']}</textarea>
+	                		</div>
+							<div class="form_line">
+	                			<hr>
+	                		</div>
+
+	                		<div class="form_footer">
+	                			<input type="submit" value="提交">
+	                		</div>
+						</from>
+		                </div>
+		            </div>
+		        </div>
+    		</div>
+    	</article>
+    </div>
+    <!--content end-->
+	<script type="text/javascript">
+		$(function(){
+					uploadify({
+					auto:true,
+					size:"{$_K['max_size']}MB",
+					exts:'{$ext}',
+					file:'upload',
+					restext:'file_ids',
+					debug:false,
+					limit:parseInt("$length")}
+				,{
+					fileType:'att',
+					objType:'task',
+					obj_id:"{$task_info['task_id']}"
+				});
+		})
+		function rm(o){
+		   location.href = location.href ;
+		}
+		In('valid','edit');		
+	</script>
+<script src="{BASE_URL}/static/js/system/ajaxfileupload.js" type="text/javascript"></script>
+<script src="{BASE_URL}/static/js/uploadify/jquery.uploadify-3.1.min.js" type="text/javascript"></script>
+<link href="{BASE_URL}/static/js/uploadify/uploadify.css" rel="stylesheet">
+<!--{include user/footer}-->

@@ -1,0 +1,36 @@
+<!--{include header}-->
+<a href="{BASE_URL}/pub/index/preward">发布的第一步</a>
+<a href="{BASE_URL}/index.php/task/preward_pub/step2">发布的第二步</a>
+<a href="{BASE_URL}/index.php/task/preward_pub/step3">发布的第三步</a>
+
+<h1>任务订单结算</h1>
+
+<form action="{PHP_URL}/task/preward_pub/step4" method="post" >
+	
+	<p>任务标题:{$task_info['task_title']}</p>
+	
+	<p>任务金额:{$task_info['task_cash']}</p>
+	
+	<p>是否要发票:<input type="checkbox" name="allow_fp"></p>
+	<fieldset id="fp_info" style="display:none;">
+	<legend>发票信息</legend>	
+	
+	
+	<p>发票抬头:<input name="fp_title"></p>
+	<p>发票地址:<input name="fp_address"></p>
+	<p>联系人:<input name="fp_linxiren"></p>
+	<p>邮编:<input name="fp_zip" ></p>
+	<p>设为常用:<input name="fp_use" type="checkbox" ></p>
+	</fieldset>
+	<p><input type="submit" /></p>
+
+</form>
+<script>
+$(function(){
+	$('input:checkbox[name="allow_fp"]').click(function(){
+		$('#fp_info').slideToggle()
+	})
+})	
+</script>
+
+<!--{include footer}-->

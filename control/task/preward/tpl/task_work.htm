@@ -1,0 +1,50 @@
+<table border="1" width="auto">
+    <tr>
+        <td>稿件ID</td>
+        <td>稿件内容</td>
+        <td>交稿人</td>
+        <td>交稿时间</td>
+		<td>稿件状态</td>
+        <td>稿件操作</td>
+    </tr>
+{if $work_arr}
+
+	{loop $work_arr $v}
+	    <tr>
+	        <td>$v['work_id']</td>
+	        <td>$v['work_desc']
+			<br/>
+			{if $v['fnames']}
+			<!--{eval $file_arr =  $this->get_files($v['fnames'],$v['fsnames']);}-->
+				{loop $file_arr $f}
+				   <a href="{PHP_URL}/down?file_name=$f[0]&file_path=$f[1]">$f[0]</a>
+				{/loop}
+			{/if}
+			</td>
+	        <td>$v['username']</td>
+	        <td>{date('Y-m-d',$v['work_time'])}</td>
+			<td>$v['status']</td>
+			<td> 
+			  <!--{eval $arr = (array)$this->work_op($v);}-->
+			   {loop $arr  $o}
+			   		  {$o['a']}
+			   {/loop}
+			</td>
+			
+			
+	    </tr>
+	{/loop}
+	<tr>
+		<td colspan="6">{$pages}</t>
+	</tr>
+
+{else}
+    <tr>
+    	<td colspan="6">任务没有稿件</td>
+    </tr>
+{/if}
+	
+</table>
+
+
+ 

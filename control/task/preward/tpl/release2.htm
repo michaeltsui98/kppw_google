@@ -1,0 +1,18 @@
+<a href="{BASE_URL}/pub/index/preward">发布的第一步</a>
+<a href="{BASE_URL}/index.php/task/preward_pub/step2">发布的第二步</a>
+<a href="{BASE_URL}/index.php/task/preward_pub/step3">发布的第三步</a>
+ 
+<form action="{PHP_URL}/task/preward_pub/step3" method="post" >
+	
+	<p>任务标题:<input type="text" name="task_title" value="{$task_info['task_title']}"></p>
+	
+	<p>任务需求:<input type="text" name="task_desc" value="{$task_info['task_desc']}"></p>
+	
+	<p>任务附件:<input type="text" name="task_file" value="{$task_info['task_file']}"></p>
+	
+	<p>任务行业:<input type="text" name="task_indus"value="{$task_info['task_indus']}" ></p>
+	
+	<p>联系方式:<input type="text" name="task_contact"value="{$task_info['task_contact']}" ></p>
+	
+	<p><input type="submit" /></p>
+</form>

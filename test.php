@@ -19,7 +19,7 @@ function get_dir($dir,$ext){
 	
 }
 
-Sys_cron_task::factory('preward')->batch_run();
+
 
 
 

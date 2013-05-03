@@ -108,6 +108,8 @@ class AlipaySubmit {
 		
 		$sHtml = $sHtml."<script>document.forms['alipaysubmit'].submit();</script>";
 		
+		 
+		
 		return $sHtml;
 	}
 	

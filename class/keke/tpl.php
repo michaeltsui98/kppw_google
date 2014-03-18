@@ -3,10 +3,10 @@
 	模板文件夹在 tpl 目录下， 默认是default文件夹。
 	模板缓存在 data/tpl_c目录下。
 */
-
+ 
 class Keke_tpl {
 	
-	static private  $tpl_path = 'data/tpl_c';
+	static private  $tpl_path = 'views/tpl_c';
 	
 	static function parse_code($tag_code, $tag_id, $tag_type = 'tag') {
 		global $_K;
